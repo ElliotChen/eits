@@ -8,7 +8,7 @@ import tw.com.dsc.domain.support.Condition;
 import tw.com.dsc.domain.support.LikeMode;
 import tw.com.dsc.domain.support.Page;
 
-public interface BaseDao<T extends Identifiable, Oid extends Serializable> {
+public interface BaseDao<T, Oid extends Serializable> {
 	T findById(Oid oid);
 
 	void create(T entity);

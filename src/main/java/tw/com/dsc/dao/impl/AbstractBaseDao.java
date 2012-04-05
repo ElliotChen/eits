@@ -24,7 +24,7 @@ import tw.com.dsc.domain.support.Condition;
 import tw.com.dsc.domain.support.LikeMode;
 import tw.com.dsc.domain.support.Page;
 
-public abstract class AbstractBaseDao<T extends Identifiable, ID extends Serializable> {
+public abstract class AbstractBaseDao<T extends Identifiable<Serializable>, Oid extends Serializable> {
 	protected Class<T> domainClass;
 	
 	@Autowired
@@ -51,17 +51,15 @@ public abstract class AbstractBaseDao<T extends Identifiable, ID extends Seriali
 		this.sessionFactory = sessionFactory;
 	}
 
-	public T findById(ID id) {
+	public T findById(Oid id) {
 		return (T) this.sessionFactory.getCurrentSession().get(this.domainClass, id);
 	}
 
 	public void create(T entity) {
-		entity.setCreateDate(new Date());
 		this.sessionFactory.getCurrentSession().save(entity);
 	}
 
 	public void update(T entity) {
-		entity.setUpdateDate(new Date());
 		this.sessionFactory.getCurrentSession().saveOrUpdate(entity);
 	}
 
