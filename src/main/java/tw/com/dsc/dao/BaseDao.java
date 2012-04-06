@@ -3,13 +3,12 @@ package tw.com.dsc.dao;
 import java.io.Serializable;
 import java.util.List;
 
-import tw.com.dsc.domain.Identifiable;
 import tw.com.dsc.domain.support.Condition;
 import tw.com.dsc.domain.support.LikeMode;
 import tw.com.dsc.domain.support.Page;
 
 public interface BaseDao<T, Oid extends Serializable> {
-	T findById(Oid oid);
+	T findByOid(Oid oid);
 
 	void create(T entity);
 

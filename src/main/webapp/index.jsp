@@ -5,9 +5,14 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>EITS</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <div id="header"></div>
+        <div id="menu">
+        	
+        </div>
+        <div id="main"></div>
+        <div id="footer"></div>
     </body>
 </html>

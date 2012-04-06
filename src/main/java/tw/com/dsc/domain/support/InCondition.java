@@ -11,7 +11,7 @@ public class InCondition implements Condition {
 	public InCondition(String fieldName, Object[] values) {
 		super();
 		this.fieldName = fieldName;
-		this.values = values;
+		this.values = values.clone();
 	}
 
 	public String getFieldName() {
@@ -23,11 +23,11 @@ public class InCondition implements Condition {
 	}
 
 	public Object[] getValues() {
-		return values;
+		return values.clone();
 	}
 
 	public void setValues(Object[] values) {
-		this.values = values;
+		this.values = values.clone();
 	}
 
 	@Override

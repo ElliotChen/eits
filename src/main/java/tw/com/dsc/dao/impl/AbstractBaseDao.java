@@ -2,7 +2,6 @@ package tw.com.dsc.dao.impl;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
-import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -51,8 +50,8 @@ public abstract class AbstractBaseDao<T extends Identifiable<Serializable>, Oid 
 		this.sessionFactory = sessionFactory;
 	}
 
-	public T findById(Oid id) {
-		return (T) this.sessionFactory.getCurrentSession().get(this.domainClass, id);
+	public T findByOid(Oid oid) {
+		return (T) this.sessionFactory.getCurrentSession().get(this.domainClass, oid);
 	}
 
 	public void create(T entity) {
