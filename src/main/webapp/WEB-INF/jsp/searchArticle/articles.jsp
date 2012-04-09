@@ -124,8 +124,9 @@ Latest Articles:
 <script type="text/javascript">
 	var disTable;
 	$().ready(function() {
-		disTable = $("#faqArticles").dataTable();
+		disTable = $("#faqArticles").dataTable({"bFilter" : false, "bPaginate" : false});
 		disTable = $("#latestArticles").dataTable({
-			"sPaginationType" : "full_numbers"});
+			"sPaginationType" : "full_numbers",
+			"bFilter" : false});
 	});
 </script>
