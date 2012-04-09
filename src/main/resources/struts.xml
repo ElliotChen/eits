@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+	<constant name="struts.devMode" value="false" />
+	<constant name="struts.custom.i18n.resources" value="i18n" />
+	<package namespace="/" name="root" extends="tiles-default">
+		<result-types>
+			<result-type name="json" class="org.apache.struts2.json.JSONResult" />
+		</result-types>
+		<default-interceptor-ref name="paramsPrepareParamsStack" />
+
+		<action name="index">
+			<result>/index.jsp</result>
+		</action>
+
+		<action name="searchArticle!*" method="{1}" class="searchArticle">
+			<result name="index">/WEB-INF/jsp/searchArticle/index.jsp</result>
+			<result name="articles">/WEB-INF/jsp/searchArticle/articles.jsp</result>
+			<result name="create">/WEB-INF/jsp/searchArticle/create.jsp</result>
+			<result name="update">/WEB-INF/jsp/searchArticle/update.jsp</result>
+			<result name="reload" type="redirect">/employee.action</result>
+		</action>
+	</package>
+
+</struts>
