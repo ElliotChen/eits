@@ -101,8 +101,8 @@
 			<artifactId>hibernate-core</artifactId>
 			<version>${hibernate.version}</version>
 		</dependency>
-		<!-- Merge into core from 3.6.0 <dependency> <groupId>org.hibernate</groupId> 
-			<artifactId>hibernate-annotations</artifactId> <version>${hibernate.version}</version> 
+		<!-- Merge into core from 3.6.0 <dependency> <groupId>org.hibernate</groupId>
+			<artifactId>hibernate-annotations</artifactId> <version>${hibernate.version}</version>
 			</dependency> -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -236,6 +236,10 @@
 					<artifactId>commons-logging-api</artifactId>
 					<groupId>commons-logging</groupId>
 				</exclusion>
+				<exclusion>
+					<artifactId>tiles-core</artifactId>
+					<groupId>org.apache.tiles</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -250,6 +254,24 @@
 			<version>${struts2.version}</version>
 		</dependency>
 
+		<!-- Tiles 2 -->
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-jsp</artifactId>
+			<version>${tiles.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-ognl</artifactId>
+			<version>${tiles.version}</version>
+		</dependency>
+		<!--  -->
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-extras</artifactId>
+			<version>${tiles.version}</version>
+		</dependency>
+		
 		<!-- JSON Library -->
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
@@ -258,7 +280,7 @@
 		</dependency>
 		<dependency>
 			<groupId>displaytag</groupId>
-			<artifactId>displaytag</artifactId>
+			<artifactId>displaytag-dsc</artifactId>
 			<version>1.2</version>
 			<exclusions>
 				<exclusion>
@@ -267,6 +289,10 @@
 				</exclusion>
 				<exclusion>
 					<artifactId>slf4j-log4j12</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jcl104-over-slf4j</artifactId>
 					<groupId>org.slf4j</groupId>
 				</exclusion>
 			</exclusions>
@@ -320,7 +346,7 @@
 							<artifactId>maven-project-info-reports-plugin</artifactId>
 							<!-- 可不指定version -->
 							<version>2.4</version>
-							<!-- dependencyDetailsEnabled 及 dependencyLocationsEnabled 設為false 
+							<!-- dependencyDetailsEnabled 及 dependencyLocationsEnabled 設為false
 								時會讓 dependencies report 少產生部份資訊 -->
 							<configuration>
 								<dependencyDetailsEnabled>false</dependencyDetailsEnabled>
@@ -382,8 +408,8 @@
 							<artifactId>maven-jxr-plugin</artifactId>
 							<version>2.3</version>
 						</plugin>
-						<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-checkstyle-plugin</artifactId> 
-							<version>2.6</version> <configuration> <configLocation>${basedir}/buildtools/maven_checks.xml</configLocation> 
+						<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-checkstyle-plugin</artifactId>
+							<version>2.6</version> <configuration> <configLocation>${basedir}/buildtools/maven_checks.xml</configLocation>
 							</configuration> </plugin> -->
 						<plugin>
 							<groupId>com.atlassian.maven.plugins</groupId>

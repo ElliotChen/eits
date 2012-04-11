@@ -6,12 +6,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>EITS</title>
+<title><tiles:getAsString name="title" /></title>
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/superfish.css" />" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/superfish-navbar.css" />" />
-<!-- <link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.dataTables.css" />" />-->
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.dataTables.css" />" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.datepick.css" />" />
-<link rel="stylesheet" type="text/css" href="<c:url value="/css/displaytag.css" />" />
+<!--<link rel="stylesheet" type="text/css" href="<c:url value="/css/displaytag.css" />" />-->
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery-1.7.2.min.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.form.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.validate.min.js" />"></script>
@@ -50,38 +50,18 @@
 <body>
 	<form id="menuForm" >
 	</form>
-	<div id="header" style="height:90px; width: 90%; position: relative;"></div>
+	<div id="header" style="height:90px; width: 90%; position: relative;">
+		<tiles:insertAttribute name="header" />
+	</div>
 	<div id="menu" style="height:100px; width: 90%; position: relative;">
-		<ul id="sample-menu-4" class="sf-menu sf-navbar">
-			<li><a class="sf-with-ul" href="#">Article<span class="sf-sub-indicator"> &#187;</span></a>
-				<ul>
-					<li><a id="m1" href="javascript:switchMenu('m1', 'searchArticle!index.action');">Search</a></li>
-				</ul>
-			</li>
-			<li class="current"><a class="sf-with-ul" href="#">menu item<span class="sf-sub-indicator"> &#187;</span></a>
-				<ul>
-					<li class="current"><a class="sf-with-ul" href="#">path to current<span class="sf-sub-indicator">
-								&#187;</span></a>
-						<ul>
-							<li><a href="#">menu item</a></li>
-							<li><a href="#aba">menu item</a></li>
-							<li><a href="#abb">menu item</a></li>
-							<li class="current"><a href="#abc">current page</a></li>
-							<li><a href="#abd">menu item</a></li>
-						</ul></li>
-				</ul></li>
-			<li><a class="sf-with-ul" href="#">&nbsp;</a></li>
-			<li><a class="sf-with-ul" href="#">&nbsp;</a></li>
-			<li><a class="sf-with-ul" href="#">&nbsp;</a></li>
-			<li><a class="sf-with-ul" href="#">&nbsp;</a></li>
-			<li><a class="sf-with-ul" href="#">&nbsp;</a></li>
-			<li><a class="sf-with-ul" href="#">&nbsp;</a></li>
-			<li><a class="sf-with-ul" id="login" href="javascript:switchMenu('login');">Login</a></li>
-		</ul>
+		<tiles:insertAttribute name="menu" />
 	</div>
 	
 	<div id="main" style="height:300px; width: 90%; position: relative;">
+		<tiles:insertAttribute name="main" />
 	</div>
-	<div id="footer"></div>
+	<div id="footer">
+		<tiles:insertAttribute name="footer" />
+	</div>
 </body>
 </html>

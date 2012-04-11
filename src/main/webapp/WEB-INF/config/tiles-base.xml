@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN" "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+	<definition name=".baseLayout" template="/WEB-INF/jsp/commons/baseLayout.jsp">
+		<put-attribute name="header" value="/WEB-INF/jsp/commons/header.jsp" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/commons/menu.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/jsp/commons/footer.jsp" />
+		<put-attribute name="main" value="/WEB-INF/jsp/commons/blank.jsp" />
+	</definition>
+	<definition name="index" extends=".baseLayout">
+        <put-attribute name="body" value="/WEB-INF/jsp/commons/blank.jsp" />
+    </definition>
+    <definition name="searchArticle" extends=".baseLayout">
+        <put-attribute name="body" value="/WEB-INF/jsp/commons/blank.jsp" />
+    </definition>
+</tiles-definitions>

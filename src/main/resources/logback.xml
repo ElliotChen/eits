@@ -2,21 +2,33 @@
 <configuration>
 	<jmxConfigurator />
 	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
-		<layout class="ch.qos.logback.classic.PatternLayout">
+		<encoder>
 			<pattern>%-20(%d{HH:mm:ss.SSS} [%thread]) %-5level %logger{80} - %msg%n</pattern>
-		</layout>
+		</encoder>
 	</appender>
 	<appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<fileNamePattern>logs/%d{yyyy/MM/dd}/eits.log</fileNamePattern>
 		</rollingPolicy>
-		<layout class="ch.qos.logback.classic.PatternLayout">
-			<Pattern>%date %level [%thread] %logger{10} [%file : %line] %msg%n</Pattern>
-		</layout>
+		<encoder>
+			<Pattern>%date %level [%thread] %logger{50} [%file : %line] %msg%n</Pattern>
+		</encoder>
 	</appender>
-	<logger name="tw.com.dsc" level="DEBUG"/>
-	<root level="DEBUG">
+	<appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logs/%d{yyyy/MM/dd}/error.log</fileNamePattern>
+		</rollingPolicy>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>WARN</level>
+		</filter>
+		<encoder>
+			<Pattern>%date %level [%thread] %logger{50} [%file : %line] %msg%n</Pattern>
+		</encoder>
+	</appender>
+	<logger name="tw.com.dsc" level="DEBUG" />
+	<root level="INFO">
 		<appender-ref ref="stdout" />
 		<appender-ref ref="file" />
+		<appender-ref ref="error" />
 	</root>
 </configuration>

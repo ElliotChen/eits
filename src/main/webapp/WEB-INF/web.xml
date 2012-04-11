@@ -56,9 +56,20 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+	<!-- Struts default -->
 	<listener>
 		<listener-class>org.apache.struts2.tiles.StrutsTilesListener</listener-class>
 	</listener>
+	
+	<!-- Tiles with OGNL Support 
+	<listener>
+        <listener-class>org.apache.tiles.extras.complete.CompleteAutoloadTilesListener</listener-class>
+    </listener>-->
+    <context-param>
+		<param-name>org.apache.tiles.impl.BasicTilesContainer.DEFINITIONS_CONFIG</param-name>
+		<param-value>/WEB-INF/config/tiles-base.xml</param-value>
+	</context-param>
+	
 	<session-config>
 		<session-timeout>30</session-timeout>
 	</session-config>
