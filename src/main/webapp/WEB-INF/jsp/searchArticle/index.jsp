@@ -22,6 +22,7 @@ Product Series:<select name="series"><option value="pa">PS1</option>
 			<option value="pb">PS2</option></select>
 Product Model:<select name="model"><option value="">----</option></select>
 		<s:submit value="Search" />
+		<!-- <input type="hidden" name="d-16544-p" value="2" />-->
 		<div id="distagArea">
 			
 		</div>
