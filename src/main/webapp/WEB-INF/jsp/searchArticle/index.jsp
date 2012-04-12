@@ -17,11 +17,6 @@
 		$('#searchForm #distagArea').children().remove();
 		$('#searchForm #distagArea').append('<input type="text" name="a">');
 	}
-	
-	function viewArticle(oid) {
-		$('#oid').val(oid);
-		$('#articleform').submit();
-	}
 </script>
 Knowledge Base Language:
 <select name="language"><option value="en">EN</option></select>
@@ -38,10 +33,6 @@ Product Model:<select name="example.model"><option value="">----</option></selec
 	<s:form id="displaytagform" namespace="/" action="searchArticle!search" theme="simple">
 		<div id="distagArea" class="distagArea">
 		</div>
-	</s:form>
-	
-	<s:form id="articleform" namespace="/" action="searchArticle!detail" theme="simple">
-		<input id="oid" type="hidden" name="oid" />
 	</s:form>
 </div>
 <script type="text/javascript">

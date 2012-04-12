@@ -45,17 +45,26 @@
 		
 		
 	}
+	
+	function viewArticle(oid) {
+		$('#oid').val(oid);
+		$('#articleform').submit();
+	}
 </script>
 </head>
 <body>
 	<form id="menuForm" >
 	</form>
+	<s:form id="articleform" namespace="/" action="searchArticle!detail" theme="simple">
+		<input id="oid" type="hidden" name="oid" />
+	</s:form>
 	<div id="header" style="height:90px; width: 90%; position: relative;"></div>
 	<div id="menu" style="height:100px; width: 90%; position: relative;">
 		<ul id="sample-menu-4" class="sf-menu sf-navbar">
 			<li><a class="sf-with-ul" href="#">Article<span class="sf-sub-indicator"> &#187;</span></a>
 				<ul>
 					<li><a id="m1" href="javascript:switchMenu('m1', 'searchArticle!index.action');">Search</a></li>
+					<li><a id="m2" href="javascript:switchMenu('m2', 'searchArticle!index.action');">Create New Article</a></li>
 				</ul>
 			</li>
 			<li class="current"><a class="sf-with-ul" href="#">menu item<span class="sf-sub-indicator"> &#187;</span></a>
@@ -80,7 +89,7 @@
 		</ul>
 	</div>
 	
-	<div id="main" style="height:300px; width: 90%; position: relative;">
+	<div id="main" style="width: 90%; position: relative;">
 	</div>
 	<div id="footer"></div>
 </body>

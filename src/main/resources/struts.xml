@@ -31,6 +31,7 @@
 			<result name="rating" type="json">
 				<param name="root">jsonMsg</param>
 			</result>
+			<result name="copy">/WEB-INF/jsp/article/copy.jsp</result>
 		</action>
 	</package>
 

@@ -28,6 +28,8 @@ public class ArticleAction extends ActionSupport implements Preparable, RequestA
 	private String articleId;
 	private String ratingNumber;
 	private JsonMsg jsonMsg;
+	private String oid;
+	private ArticleTO article;
 	@Override
 	public void prepare() throws Exception {
 		example = new ArticleTO();
@@ -42,6 +44,22 @@ public class ArticleAction extends ActionSupport implements Preparable, RequestA
 		this.jsonMsg = new JsonMsg("Thanks for your rating for articleId - "+articleId+"");
 		return "rating";
 	}
+	
+	public String precopy() {
+		article = new ArticleTO();
+		article.setOid(oid);
+		article.setId("artId01");
+		article.setSummary("Summary XYZ");
+		article.setPublishDate(new Date());
+		article.setLanguage("English");
+		article.setHitCount(120);
+		
+		article.setQuestion("How to restore and clear rom-d on P-663 in English");
+		article.setAnswer("The tag provides metadata about the HTML document. Metadata will not be displayed on the page, but will be machine parsable. Meta elements are typically used to specify page description, keywords, author of the document, last modified, and other metadata. The tag always goes inside the element.");
+
+		return "copy";
+	}
+	
 	public String index() {
 		return "index";
 	}
@@ -95,6 +113,22 @@ public class ArticleAction extends ActionSupport implements Preparable, RequestA
 
 	public void setJsonMsg(JsonMsg jsonMsg) {
 		this.jsonMsg = jsonMsg;
+	}
+
+	public String getOid() {
+		return oid;
+	}
+
+	public void setOid(String oid) {
+		this.oid = oid;
+	}
+
+	public ArticleTO getArticle() {
+		return article;
+	}
+
+	public void setArticle(ArticleTO article) {
+		this.article = article;
 	}
 	
 }
