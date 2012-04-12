@@ -29,20 +29,21 @@ th a:hover {
 
 th.sorted a,th.sortable a {
 	background-position: right;
+	background-repeat: no-repeat;
 	display: block;
 	width: 100%;
 }
 
 th.sortable a {
-	background-image: url(../img/arrow_off.png);
+	background-image: url(../images/arrow_off.png);
 }
 
 th.order1 a {
-	background-image: url(../img/arrow_down.png);
+	background-image: url(../images/arrow_down.png);
 }
 
 th.order2 a {
-	background-image: url(../img/arrow_up.png);
+	background-image: url(../images/arrow_up.png);
 }
 
 tr.odd {
@@ -69,23 +70,23 @@ span.export {
 }
 
 span.excel {
-	background-image: url(../img/ico_file_excel.png);
+	background-image: url(../images/ico_file_excel.png);
 }
 
 span.csv {
-	background-image: url(../img/ico_file_csv.png);
+	background-image: url(../images/ico_file_csv.png);
 }
 
 span.xml {
-	background-image: url(../img/ico_file_xml.png);
+	background-image: url(../images/ico_file_xml.png);
 }
 
 span.pdf {
-	background-image: url(../img/ico_file_pdf.png);
+	background-image: url(../images/ico_file_pdf.png);
 }
 
 span.rtf {
-	background-image: url(../img/ico_file_rtf.png);
+	background-image: url(../images/ico_file_rtf.png);
 }
 
 span.pagebanner {

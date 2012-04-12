@@ -15,16 +15,19 @@ import tw.com.dsc.to.ArticleTO;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 
-@Component("searchArticle")
+@Component("searchArticleAction")
 @Scope("prototype")
 public class SearchArticleAction extends ActionSupport implements Preparable, RequestAware {
 
 	private static final long serialVersionUID = -2112640721474475257L;
 	private static final Logger logger = LoggerFactory.getLogger(SearchArticleAction.class);
 	private Map<String, Object> request;
+	private ArticleTO example;
+	private String articleId;
+	private String oid;
 	@Override
 	public void prepare() throws Exception {
-
+		example = new ArticleTO();
 	}
 
 	@Override
@@ -48,21 +51,52 @@ public class SearchArticleAction extends ActionSupport implements Preparable, Re
 		request.put("faqArticles", faqArticles);
 		request.put("latestArticles", latestArticles);
 		
-		return "articles";
+		return "list";
+	}
+	
+	public String detail() {
+		ArticleTO article = new ArticleTO();
+		if ("1".equals(this.oid) || "2".equals(this.oid)) {
+			article.setOid(oid);
+			article.setId("artId01");
+			article.setSummary("Summary XYZ");
+			article.setPublishDate(new Date());
+			article.setLanguage("English");
+			article.setHitCount(120);
+			
+			article.setQuestion("How to restore and clear rom-d on P-663 in English");
+			article.setAnswer("The tag provides metadata about the HTML document. Metadata will not be displayed on the page, but will be machine parsable. Meta elements are typically used to specify page description, keywords, author of the document, last modified, and other metadata. The tag always goes inside the element.");
+		} else {
+			article.setOid(oid);
+			article.setId("artId01");
+			article.setSummary("Summary XYZ");
+			article.setPublishDate(new Date());
+			article.setLanguage("Chinese");
+			article.setHitCount(120);
+			
+			article.setQuestion("如何回復與清除P-663的ROM ? Chinese");
+			article.setAnswer("你知道這是中文就好！");
+		}
+		request.put("article", article);
+		return "detail";
 	}
 	
 	private void mockArticles(final ArrayList<ArticleTO> list) {
 		ArticleTO a1 = new ArticleTO();
+		a1.setOid("1");
 		a1.setId("19230");
 		a1.setSummary("All in!");
 		a1.setPublishDate(new Date());
 		a1.setHitCount(271);
+		a1.setLanguage("EN");
 		
 		ArticleTO a2 = new ArticleTO();
+		a2.setOid("2");
 		a2.setId("15490");
 		a2.setSummary("Don't do this!");
 		a2.setPublishDate(new Date());
 		a2.setHitCount(157);
+		a1.setLanguage("EN");
 		
 		list.add(a1);
 		list.add(a2);
@@ -72,4 +106,29 @@ public class SearchArticleAction extends ActionSupport implements Preparable, Re
 	public void setRequest(Map<String, Object> request) {
 		this.request = request;
 	}
+
+	public ArticleTO getExample() {
+		return example;
+	}
+
+	public void setExample(ArticleTO example) {
+		this.example = example;
+	}
+
+	public String getArticleId() {
+		return articleId;
+	}
+
+	public void setArticleId(String articleId) {
+		this.articleId = articleId;
+	}
+
+	public String getOid() {
+		return oid;
+	}
+
+	public void setOid(String oid) {
+		this.oid = oid;
+	}
+	
 }

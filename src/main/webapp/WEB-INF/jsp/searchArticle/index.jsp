@@ -5,11 +5,22 @@
 		$('#searchForm').ajaxForm({
             target: '#articles'
         });
+		$('#displaytagform').ajaxForm({
+            target: '#articles'
+        });
+		$('#articleform').ajaxForm({
+            target: '#main'
+        });
 	});
 	
 	function addelements() {
 		$('#searchForm #distagArea').children().remove();
 		$('#searchForm #distagArea').append('<input type="text" name="a">');
+	}
+	
+	function viewArticle(oid) {
+		$('#oid').val(oid);
+		$('#articleform').submit();
 	}
 </script>
 Knowledge Base Language:
@@ -18,16 +29,32 @@ Knowledge Base Language:
 <div id="search">
 	<s:form id="searchForm" namespace="/" action="searchArticle!search" theme="simple">
 Keyword:<input type="text" maxlength="40" />
-Product Series:<select name="series"><option value="pa">PS1</option>
+Product Series:<select name="example.series"><option value="pa">PS1</option>
 			<option value="pb">PS2</option></select>
-Product Model:<select name="model"><option value="">----</option></select>
+Product Model:<select name="example.model"><option value="">----</option></select>
 		<s:submit value="Search" />
-		<!-- <input type="hidden" name="d-16544-p" value="2" />-->
-		<div id="distagArea">
-			
+	</s:form>
+	
+	<s:form id="displaytagform" namespace="/" action="searchArticle!search" theme="simple">
+		<div id="distagArea" class="distagArea">
 		</div>
 	</s:form>
+	
+	<s:form id="articleform" namespace="/" action="searchArticle!detail" theme="simple">
+		<input id="oid" type="hidden" name="oid" />
+	</s:form>
 </div>
+<script type="text/javascript">
+<!--
+function displaytagform(formname, fields) {
+	$('#'+formname+' .distagArea').children().remove();
+	for (j=fields.length-1;j>=0;j--) {
+		$('#'+formname+' .distagArea').append('<input type=\"hidden\" name=\"'+fields[j].f+'\" value=\"'+fields[j].v+'\"/>');
+	}
+	$('#' + formname).submit();
+} 
+//-->
+</script>
 <div id="articles">
 	<button onclick="addelements();" value="AddElement"></button>
 </div>

@@ -12,7 +12,7 @@
 <!-- <link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.dataTables.css" />" />-->
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.datepick.css" />" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/displaytag.css" />" />
-<script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery-1.7.2.min.js" />"></script>
+<script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery-1.7.2.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.form.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.validate.min.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.blockUI.js" />"></script>
