@@ -6,11 +6,20 @@ public class ArticleTO {
 	private String oid;
 	private String id;
 	private String summary;
+	private String type;
 	private Date publishDate;
 	private Integer hitCount;
 	private String language;
 	private String question;
 	private String answer;
+	private Date entryDate;
+	private String keywords;
+	private String technology;
+	private String product;
+	private String level;
+	private String firmware;
+	private String state;
+	private String entryUser;
 	public String getOid() {
 		return oid;
 	}
@@ -59,5 +68,58 @@ public class ArticleTO {
 	public void setAnswer(String answer) {
 		this.answer = answer;
 	}
-	
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public Date getEntryDate() {
+		return entryDate;
+	}
+	public void setEntryDate(Date entryDate) {
+		this.entryDate = entryDate;
+	}
+	public String getKeywords() {
+		return keywords;
+	}
+	public void setKeywords(String keywords) {
+		this.keywords = keywords;
+	}
+	public String getTechnology() {
+		return technology;
+	}
+	public void setTechnology(String technology) {
+		this.technology = technology;
+	}
+	public String getProduct() {
+		return product;
+	}
+	public void setProduct(String product) {
+		this.product = product;
+	}
+	public String getLevel() {
+		return level;
+	}
+	public void setLevel(String level) {
+		this.level = level;
+	}
+	public String getFirmware() {
+		return firmware;
+	}
+	public void setFirmware(String firmware) {
+		this.firmware = firmware;
+	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	public String getEntryUser() {
+		return entryUser;
+	}
+	public void setEntryUser(String entryUser) {
+		this.entryUser = entryUser;
+	}
 }

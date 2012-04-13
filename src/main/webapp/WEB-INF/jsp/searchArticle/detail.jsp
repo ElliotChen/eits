@@ -18,7 +18,7 @@
 //-->
 </script>
 <s:form id="transform" action="article!precopy" theme="simple">
-	<s:hidden name="oid" value="article.oid" />
+	<input type="hidden" name="oid" value="${article.oid}" />
 <table>
 	<tr><td><input type="submit" value="Translate"/></td></tr>
 </table>
@@ -31,7 +31,7 @@
 		<td>General Type</td>
 		<th>Language</th>
 		<td><s:select name="oid" list="#{'1':'English','5':'Chinese'}"
-				value="oid" onchange="viewArticle(this.value);"></s:select>
+				value="oid" onchange="viewArticle(this.value);" /></td>
 	</tr>
 	<tr>
 		<th>Level</th>

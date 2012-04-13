@@ -8,9 +8,6 @@
 		$('#displaytagform').ajaxForm({
             target: '#articles'
         });
-		$('#articleform').ajaxForm({
-            target: '#main'
-        });
 	});
 	
 	function addelements() {

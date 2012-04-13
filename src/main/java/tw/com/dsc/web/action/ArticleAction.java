@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.RequestAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import tw.com.dsc.to.ArticleTO;
 import tw.com.dsc.to.JsonMsg;
+import tw.com.dsc.util.ThreadLocalHolder;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
@@ -30,9 +32,26 @@ public class ArticleAction extends ActionSupport implements Preparable, RequestA
 	private JsonMsg jsonMsg;
 	private String oid;
 	private ArticleTO article;
+	private ArticleTO copy;
 	@Override
 	public void prepare() throws Exception {
 		example = new ArticleTO();
+		article = new ArticleTO();
+		copy = new ArticleTO();
+		
+		if (StringUtils.isNotEmpty(oid)) {
+			article.setOid(oid);
+			article.setId("artId01");
+			article.setSummary("Summary XYZ");
+			article.setType("General");
+			article.setPublishDate(new Date());
+			article.setLanguage("English");
+			article.setHitCount(120);
+			article.setEntryDate(new Date());
+			article.setKeywords("keyword123");
+			article.setQuestion("How to restore and clear rom-d on P-663 in English");
+			article.setAnswer("The tag provides metadata about the HTML document. Metadata will not be displayed on the page, but will be machine parsable. Meta elements are typically used to specify page description, keywords, author of the document, last modified, and other metadata. The tag always goes inside the element.");
+		}
 	}
 
 	@Override
@@ -46,34 +65,23 @@ public class ArticleAction extends ActionSupport implements Preparable, RequestA
 	}
 	
 	public String precopy() {
-		article = new ArticleTO();
-		article.setOid(oid);
-		article.setId("artId01");
-		article.setSummary("Summary XYZ");
-		article.setPublishDate(new Date());
-		article.setLanguage("English");
-		article.setHitCount(120);
-		
-		article.setQuestion("How to restore and clear rom-d on P-663 in English");
-		article.setAnswer("The tag provides metadata about the HTML document. Metadata will not be displayed on the page, but will be machine parsable. Meta elements are typically used to specify page description, keywords, author of the document, last modified, and other metadata. The tag always goes inside the element.");
-
 		return "copy";
 	}
 	
 	public String index() {
 		return "index";
 	}
-
-	public String detail() {
-		ArticleTO article = new ArticleTO();
-		article.setId(articleId);
-		article.setSummary("Summary XYZ");
-		article.setPublishDate(new Date());
-		article.setHitCount(120);
-		request.put("article", article);
-		return "detail";
+	
+	public String previewCopy() {
+		this.copy.setEntryUser(ThreadLocalHolder.getUser().getName());
+		this.article = this.copy;
+		return "preview";
 	}
 	
+	public String copy() {
+		this.oid = article.getOid();
+		return "detail";
+	}
 	@Override
 	public void setRequest(Map<String, Object> request) {
 		this.request = request;
@@ -129,6 +137,14 @@ public class ArticleAction extends ActionSupport implements Preparable, RequestA
 
 	public void setArticle(ArticleTO article) {
 		this.article = article;
+	}
+
+	public ArticleTO getCopy() {
+		return copy;
+	}
+
+	public void setCopy(ArticleTO copy) {
+		this.copy = copy;
 	}
 	
 }

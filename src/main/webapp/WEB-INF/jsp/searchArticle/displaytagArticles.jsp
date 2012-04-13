@@ -9,7 +9,7 @@
 
 <div id="latestArticleBlock">
 <display:table name="latestArticles" partialList="true" pagesize="5" size="20" form="displaytagform" sort="external" id="article">
-	<display:setProperty name="pagination.pagenumber.param" value="pageNO" />
+	<display:setProperty name="pagination.pagenumber.param" value="pageNo" />
 	<display:column property="id" title="ID" sortable="true" sortName="id" sortProperty="id" />
 	<display:column property="summary" title="Summary" sortable="true" sortName="summary" sortProperty="summary"/>
 	<display:column title="Function" >
