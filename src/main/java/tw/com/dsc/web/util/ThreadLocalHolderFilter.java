@@ -59,7 +59,7 @@ public class ThreadLocalHolderFilter implements Filter {
 			session.removeAttribute(SystemConstants.SESSION_USER);
 		}
 		
-		ThreadLocalHolder.setUser(null);
+		ThreadLocalHolder.removeUser();
 	}
 
 	@Override

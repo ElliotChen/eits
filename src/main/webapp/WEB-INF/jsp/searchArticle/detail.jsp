@@ -12,17 +12,35 @@
 			oid : '${article.oid}',
 			ratingNumber : $('input[name=ratingNumber]:checked').val()
 		}, function(data) {
-			$('#ratingMsg').append(data.message);
+			$('#ratingMsg').html(data.message);
+			$('#ratingButton').remove();
+		}, 'json');
+	}
+	
+	function suggest() {
+		if ($('#suggestion').val().trim() == "") {
+			alert('Suggestion could not be empty!');
+			return false;
+		}
+		$.post('/eits/article!suggest.action', {
+			oid : '${article.oid}',
+			suggestion : $('#suggestion').val()
+		}, function(data) {
+			$('#suggestMsg').html(data.message);
+			$('#suggestion').remove();
+			$('#sugButton').remove();
 		}, 'json');
 	}
 //-->
 </script>
-<s:form id="transform" action="article!precopy" theme="simple">
+<s:if test="!@tw.com.dsc.util.ThreadLocalHolder@getUser().guest">
+<s:form id="transform" action="article!preCopy" theme="simple">
 	<input type="hidden" name="oid" value="${article.oid}" />
 <table>
 	<tr><td><input type="submit" value="Translate"/></td></tr>
 </table>
 </s:form>
+</s:if>
 <table>
 	<tr>
 		<th>Article ID</th>
@@ -65,7 +83,7 @@
 			name="ratingNumber" type="radio" value="3" />3 <input
 			name="ratingNumber" type="radio" value="4" />4 <input
 			name="ratingNumber" type="radio" value="5" checked="checked" />5
-		Excellent <input type="button" value="Rating" onclick="rating();" />
+		Excellent <input type="button" id="ratingButton" value="Rating" onclick="rating();" />
 		<div id="ratingMsg" style="color: blue;"></div>
 	</fieldset>
 </div>
@@ -75,6 +93,8 @@
 		<legend>Suggest new content or let us know we can imporve
 			this content:</legend>
 		<textarea id="suggestion" name="suggestion" rows="10" cols="80"></textarea>
-		<input type="button" value="Send" />
+		<input type="button" id="sugButton" value="Send" onclick="suggest();"/>
+		<div id="suggestMsg" style="color: blue;"></div>
 	</fieldset>
+	
 </div>

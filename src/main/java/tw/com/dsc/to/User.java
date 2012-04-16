@@ -1,7 +1,10 @@
 package tw.com.dsc.to;
 
+import org.apache.commons.lang.StringUtils;
+
 public class User {
 	private String account;
+	private String password;
 	private String name;
 	private String group;
 	public String getAccount() {
@@ -23,5 +26,32 @@ public class User {
 		this.group = group;
 	}
 	
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public boolean isL3Admin() {
+		return "l3admin".equals(this.account);
+	}
 	
+	public boolean isL2Admin() {
+		return "l2admin".equals(this.account);
+	}
+	
+	public boolean isL3User() {
+		return this.account.startsWith("l3");
+	}
+	
+	public boolean isL2User() {
+		return this.account.startsWith("l2");
+	}
+	
+	public boolean isGuest() {
+		if (StringUtils.isEmpty(account) || "Guest".equalsIgnoreCase(account)) {
+			return true;
+		}
+		return !this.account.startsWith("l2") && !this.account.startsWith("l3");
+	}
 }

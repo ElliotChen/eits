@@ -7,6 +7,8 @@
 
 	<constant name="struts.devMode" value="false" />
 	<constant name="struts.custom.i18n.resources" value="i18n" />
+	<constant name="struts.ognl.allowStaticMethodAccess" value="true" />
+	
 	<package namespace="/" name="root" extends="tiles-default">
 		<result-types>
 			<result-type name="json" class="org.apache.struts2.json.JSONResult" />
@@ -16,7 +18,10 @@
 		<action name="index">
 			<result>/index.jsp</result>
 		</action>
-
+		<action name="system" method="{1}" class="systemAction">
+			<result name="index">/index.jsp</result>
+		</action>
+		
 		<action name="searchArticle!*" method="{1}" class="searchArticleAction">
 			<result name="index">/WEB-INF/jsp/searchArticle/index.jsp</result>
 			<result name="list">/WEB-INF/jsp/searchArticle/list.jsp</result>
@@ -48,6 +53,18 @@
 			<result name="draft">/WEB-INF/jsp/edit/draft.jsp</result>
 			<result name="expired">/WEB-INF/jsp/edit/expired.jsp</result>
 			<result name="edit">/WEB-INF/jsp/edit/edit.jsp</result>
+			<result name="preview">/WEB-INF/jsp/article/preview.jsp</result>
+		</action>
+		
+		<action name="language" method="{1}" class="languageAction">
+			<result name="list">/WEB-INF/jsp/language/list.jsp</result>
+			<result name="language">/WEB-INF/jsp/language/language.jsp</result>
+		</action>
+		
+		<action name="ajaxFunction" method="{1}" class="ajaxAction">
+			<result name="jsonModels" type="json">
+				<param name="root">options</param>
+			</result>
 		</action>
 	</package>
 

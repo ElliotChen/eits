@@ -24,20 +24,20 @@
         });
 	});
 	
-	function displaytagform(formname, fields) {
-		$('#'+formname+' .distagArea').children().remove();
-		for (j=fields.length-1;j>=0;j--) {
-			$('#'+formname+' .distagArea').append('<input type=\"hidden\" name=\"'+fields[j].f+'\" value=\"'+fields[j].v+'\"/>');
-		}
-		$('#' + formname).submit();
-	}
 </script>
+<s:if test="hasActionMessages()">
+   <div>
+      <s:actionmessage/>
+   </div>
+</s:if>
 
 <s:form id="searchUnpublishedForm" namespace="/" action="edit!searchUnpublished" theme="simple">
-	<input type="text" name="example.id" />
-	<input type="text" name="example.summary" />
-	<input type="text" name="example.entryUser" />
-	<input type="text" name="example.entryDate" />
+	<input type="text" name="example.id" size="8"/>
+	<input type="text" name="example.summary" size="16"/>
+	<input type="text" name="example.entryUser" size="7"/>
+	<input type="text" name="example.entryDate" size="14"/>
+	<input type="text" name="example.product" size="15"/>
+	<input type="text" name="example.state" size="5"/>
 	<s:submit value="Search" />
 </s:form>
 
@@ -49,8 +49,11 @@
 </div>
 
 <s:form id="searchDraftForm" namespace="/" action="edit!searchDraft" theme="simple">
-	<input type="text" name="example.id" />
-	<input type="text" name="example.summary" />
+	<input type="text" name="example.id" size="9"/>
+	<input type="text" name="example.summary" size="18"/>
+	<input type="text" name="example.entryUser" size="8"/>
+	<input type="text" name="example.entryDate" size="16"/>
+	<input type="text" name="example.product" size="17"/>
 	<s:submit value="Search" />
 </s:form>
 
@@ -62,8 +65,11 @@
 </div>
 
 <s:form id="searchExpiredForm" namespace="/" action="edit!searchExpired" theme="simple">
-	<input type="text" name="example.id" />
-	<input type="text" name="example.summary" />
+	<input type="text" name="example.id" size="9"/>
+	<input type="text" name="example.summary" size="18"/>
+	<input type="text" name="example.entryUser" size="8"/>
+	<input type="text" name="example.entryDate" size="16"/>
+	<input type="text" name="example.product" size="17"/>
 	<s:submit value="Search" />
 </s:form>
 

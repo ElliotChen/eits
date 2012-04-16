@@ -71,22 +71,27 @@ span.export {
 
 span.excel {
 	background-image: url(../images/ico_file_excel.png);
+	background-repeat: no-repeat;
 }
 
 span.csv {
 	background-image: url(../images/ico_file_csv.png);
+	background-repeat: no-repeat;
 }
 
 span.xml {
 	background-image: url(../images/ico_file_xml.png);
+	background-repeat: no-repeat;
 }
 
 span.pdf {
 	background-image: url(../images/ico_file_pdf.png);
+	background-repeat: no-repeat;
 }
 
 span.rtf {
 	background-image: url(../images/ico_file_rtf.png);
+	background-repeat: no-repeat;
 }
 
 span.pagebanner {

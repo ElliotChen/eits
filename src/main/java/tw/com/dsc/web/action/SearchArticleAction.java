@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import tw.com.dsc.to.ArticleTO;
+import tw.com.dsc.to.User;
+import tw.com.dsc.util.ThreadLocalHolder;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
@@ -26,6 +28,8 @@ public class SearchArticleAction extends ActionSupport implements Preparable, Re
 	private String articleId;
 	private String oid;
 	private ArticleTO article;
+
+	private String message;
 
 	@Override
 	public void prepare() throws Exception {
@@ -138,5 +142,18 @@ public class SearchArticleAction extends ActionSupport implements Preparable, Re
 
 	public void setArticle(ArticleTO article) {
 		this.article = article;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	
+	public User getCurrentUser() {
+		return ThreadLocalHolder.getUser();
 	}
 }

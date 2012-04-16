@@ -20,6 +20,11 @@ public class ArticleTO {
 	private String firmware;
 	private String state;
 	private String entryUser;
+	private String series;
+	private String model;
+	private String expireType;
+	private String source;
+	private String news;
 	public String getOid() {
 		return oid;
 	}
@@ -122,4 +127,35 @@ public class ArticleTO {
 	public void setEntryUser(String entryUser) {
 		this.entryUser = entryUser;
 	}
+	public String getSeries() {
+		return series;
+	}
+	public void setSeries(String series) {
+		this.series = series;
+	}
+	public String getModel() {
+		return model;
+	}
+	public void setModel(String model) {
+		this.model = model;
+	}
+	public String getExpireType() {
+		return expireType;
+	}
+	public void setExpireType(String expireType) {
+		this.expireType = expireType;
+	}
+	public String getSource() {
+		return source;
+	}
+	public void setSource(String source) {
+		this.source = source;
+	}
+	public String getNews() {
+		return news;
+	}
+	public void setNews(String news) {
+		this.news = news;
+	}
+	
 }

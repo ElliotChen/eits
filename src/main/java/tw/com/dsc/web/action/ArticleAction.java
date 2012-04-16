@@ -1,6 +1,5 @@
 package tw.com.dsc.web.action;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
@@ -13,45 +12,51 @@ import org.springframework.stereotype.Component;
 
 import tw.com.dsc.to.ArticleTO;
 import tw.com.dsc.to.JsonMsg;
+import tw.com.dsc.to.User;
 import tw.com.dsc.util.ThreadLocalHolder;
 
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 
 @Component("articleAction")
 @Scope("prototype")
-public class ArticleAction extends ActionSupport implements Preparable, RequestAware {
+public class ArticleAction extends ActionSupport implements Preparable, ModelDriven<ArticleTO> {
 
 	private static final long serialVersionUID = -1334862612883735089L;
 
 	private static final Logger logger = LoggerFactory.getLogger(ArticleAction.class);
-	private Map<String, Object> request;
 	private ArticleTO example;
 	private String articleId;
 	private String ratingNumber;
+	private String suggestion;
 	private JsonMsg jsonMsg;
 	private String oid;
 	private ArticleTO article;
-	private ArticleTO copy;
+	private ArticleTO sarticle;
+	
+	private String message;
 	@Override
 	public void prepare() throws Exception {
 		example = new ArticleTO();
 		article = new ArticleTO();
-		copy = new ArticleTO();
+		sarticle = new ArticleTO();
 		
 		if (StringUtils.isNotEmpty(oid)) {
-			article.setOid(oid);
-			article.setId("artId01");
-			article.setSummary("Summary XYZ");
-			article.setType("General");
-			article.setPublishDate(new Date());
-			article.setLanguage("English");
-			article.setHitCount(120);
-			article.setEntryDate(new Date());
-			article.setKeywords("keyword123");
-			article.setQuestion("How to restore and clear rom-d on P-663 in English");
-			article.setAnswer("The tag provides metadata about the HTML document. Metadata will not be displayed on the page, but will be machine parsable. Meta elements are typically used to specify page description, keywords, author of the document, last modified, and other metadata. The tag always goes inside the element.");
+			sarticle.setOid(oid);
+			sarticle.setId("19765");
+			sarticle.setSummary("Summary XYZ");
+			sarticle.setType("General");
+			sarticle.setPublishDate(new Date());
+			sarticle.setLanguage("English");
+			sarticle.setHitCount(120);
+			sarticle.setEntryDate(new Date());
+			sarticle.setKeywords("keyword123");
+			sarticle.setQuestion("How to restore and clear rom-d on P-663 in English");
+			sarticle.setAnswer("The tag provides metadata about the HTML document. Metadata will not be displayed on the page, but will be machine parsable. Meta elements are typically used to specify page description, keywords, author of the document, last modified, and other metadata. The tag always goes inside the element.");
+			sarticle.setState("Final");
 		}
+		
 	}
 
 	@Override
@@ -60,11 +65,17 @@ public class ArticleAction extends ActionSupport implements Preparable, RequestA
 	}
 
 	public String rating() {
-		this.jsonMsg = new JsonMsg("Thanks for your rating for articleId - "+articleId+"");
+		this.jsonMsg = new JsonMsg("Thanks for your rating for articleId");
 		return "rating";
 	}
 	
-	public String precopy() {
+	public String suggest() {
+		this.jsonMsg = new JsonMsg("Thanks for your suggestion, ["+this.suggestion+"]");
+		return "rating";
+	}
+	
+	public String preCopy() {
+		this.article = new ArticleTO();
 		return "copy";
 	}
 	
@@ -73,18 +84,14 @@ public class ArticleAction extends ActionSupport implements Preparable, RequestA
 	}
 	
 	public String previewCopy() {
-		this.copy.setEntryUser(ThreadLocalHolder.getUser().getName());
-		this.article = this.copy;
+		this.article.setEntryUser(ThreadLocalHolder.getUser().getAccount());
+
 		return "preview";
 	}
 	
 	public String copy() {
 		this.oid = article.getOid();
 		return "detail";
-	}
-	@Override
-	public void setRequest(Map<String, Object> request) {
-		this.request = request;
 	}
 
 	public ArticleTO getExample() {
@@ -111,10 +118,6 @@ public class ArticleAction extends ActionSupport implements Preparable, RequestA
 		this.ratingNumber = ratingNumber;
 	}
 
-	public Map<String, Object> getRequest() {
-		return request;
-	}
-
 	public JsonMsg getJsonMsg() {
 		return jsonMsg;
 	}
@@ -139,12 +142,36 @@ public class ArticleAction extends ActionSupport implements Preparable, RequestA
 		this.article = article;
 	}
 
-	public ArticleTO getCopy() {
-		return copy;
+	public String getMessage() {
+		return message;
 	}
 
-	public void setCopy(ArticleTO copy) {
-		this.copy = copy;
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	public User getCurrentUser() {
+		return ThreadLocalHolder.getUser();
+	}
+
+	@Override
+	public ArticleTO getModel() {
+		return this.article;
+	}
+
+	public String getSuggestion() {
+		return suggestion;
+	}
+
+	public void setSuggestion(String suggestion) {
+		this.suggestion = suggestion;
+	}
+
+	public ArticleTO getSarticle() {
+		return sarticle;
+	}
+
+	public void setSarticle(ArticleTO source) {
+		this.sarticle = source;
 	}
 	
 }

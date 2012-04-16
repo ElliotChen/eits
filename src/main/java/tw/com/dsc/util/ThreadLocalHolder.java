@@ -13,4 +13,7 @@ public abstract class ThreadLocalHolder {
 		USER_HOLDER.set(user);
 	}
 	
+	public static void removeUser() {
+		USER_HOLDER.remove();
+	}
 }
