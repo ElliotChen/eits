@@ -7,19 +7,29 @@
 </s:if>
 
 <div id="faqArticleBlock">
-<display:table name="faqArticles">
+<display:table name="faqArticles" id="article">
 	<display:caption>FAQ</display:caption>
 	<display:column property="id" title="ID" />
 	<display:column property="summary" title="Summary" />
+	<display:column title="Publish Date">
+		<fmt:formatDate value="${article.publishDate}" pattern="yyyy/MM/dd"/>
+	</display:column>
+	<display:column property="hitCount" title="Hit Count" />
+	<display:column title="Function" >
+      <a href="javascript:viewArticle('${article.oid}');">View Article</a>
+    </display:column>
 </display:table>
 </div>
 
 <div id="latestArticleBlock">
 <display:table name="latestArticles" partialList="true" pagesize="5" size="20" form="displaytagform" sort="external" id="article">
 	<display:caption>Latest Articles</display:caption>
-	<display:setProperty name="pagination.pagenumber.param" value="pageNO" />
-	<display:column property="id" title="ID" sortable="true" sortName="id" sortProperty="id" />
-	<display:column property="summary" title="Summary" sortable="true" sortName="summary" sortProperty="summary"/>
+	<display:column property="id" title="ID"/>
+	<display:column property="summary" title="Summary"/>
+	<display:column title="Publish Date">
+		<fmt:formatDate value="${article.publishDate}" pattern="yyyy/MM/dd"/>
+	</display:column>
+	<display:column property="hitCount" title="Hit Count" />
 	<display:column title="Function" >
       <a href="javascript:viewArticle('${article.oid}');">View Article</a>
     </display:column>

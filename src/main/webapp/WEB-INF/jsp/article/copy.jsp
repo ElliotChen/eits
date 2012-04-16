@@ -20,6 +20,11 @@
 			    return $('#copyEditForm').valid();
 			  }
     	});
+		
+		delete CKEDITOR.instances['question'];
+		delete CKEDITOR.instances['answer'];
+		$('#question').ckeditor();
+		$('#answer').ckeditor();
 	});
 	function previewCopy() {
 		cloneForm('#copyEditForm', '#previewForm');
@@ -50,7 +55,7 @@
 <s:form id="copyEditForm" namespace="/" action="article!copy" theme="simple">
 	<table>
 		<tr>
-			<td colspan="4" align="center"><input type="button" value="Copy All" onclick="copyAll();" /></td>
+			<td colspan="4" style="text-align: center;"><input type="button" value="Copy All" onclick="copyAll();" /></td>
 		</tr>
 		<tr>
 			<td>ArticleID:</td>
@@ -88,13 +93,13 @@
 			<td>Question:</td>
 			<td><s:textarea name="sarticle.question" readonly="true" cols="40" rows="4" /></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('question')" /></td>
-			<td><s:textarea name="question" cols="40" rows="4" /></td>
+			<td><s:textarea id="question" name="question" cols="40" rows="4" /></td>
 		</tr>
 		<tr>
 			<td>Answer:</td>
 			<td><s:textarea name="sarticle.answer" readonly="true" cols="40" rows="8" /></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('answer')"/></td>
-			<td><s:textarea name="answer" cols="40" rows="8" /></td>
+			<td><s:textarea id="answer" name="answer" cols="40" rows="8" /></td>
 		</tr>
 		<tr>
 			<td>Technology:</td>

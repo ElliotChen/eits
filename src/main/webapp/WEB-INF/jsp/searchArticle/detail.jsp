@@ -41,7 +41,7 @@
 </table>
 </s:form>
 </s:if>
-<table>
+<table style="border: none">
 	<tr>
 		<th>Article ID</th>
 		<td>${article.id}</td>
@@ -49,19 +49,23 @@
 		<td>General Type</td>
 		<th>Language</th>
 		<td><s:select name="oid" list="#{'1':'English','5':'Chinese'}"
-				value="oid" onchange="viewArticle(this.value);" /></td>
+				value="oid" onchange="viewArticle(this.value);" theme="simple"/></td>
 	</tr>
 	<tr>
 		<th>Level</th>
 		<td>CSO</td>
 		<th>Firmware</th>
 		<td>n/a</td>
+		<th>&nbsp;</th>
+		<td>&nbsp;</td>
 	</tr>
 	<tr>
 		<th>View</th>
 		<td>5</td>
 		<th>Rating</th>
 		<td>1</td>
+		<th>&nbsp;</th>
+		<td>&nbsp;</td>
 	</tr>
 </table>
 <fieldset>

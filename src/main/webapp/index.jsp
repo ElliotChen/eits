@@ -22,6 +22,8 @@
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/hoverIntent.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/superfish.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/select-chain.js" />"></script>
+<script language="JavaScript" type="text/javascript" src="<c:url value="/ckeditor/ckeditor.js" />"></script>
+<script language="JavaScript" type="text/javascript" src="<c:url value="/ckeditor/adapters/jquery.js" />"></script>
 <script>
 	$(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
 	$('.cancel').live('click', function() {return confirm('Cancel?');});
@@ -172,6 +174,9 @@ return false;
 				</ul>
 			</li>
 			</s:if>
+			<li><a class="sf-with-ul" href="#">&nbsp;</a></li>
+			<li><a class="sf-with-ul" href="#">&nbsp;</a></li>
+			<li><a class="sf-with-ul" href="#">&nbsp;</a></li>
 			<li><a class="sf-with-ul" href="#">&nbsp;</a></li>
 			<li><a class="sf-with-ul" href="#">&nbsp;</a></li>
 			<li><a class="sf-with-ul" href="#">&nbsp;</a></li>

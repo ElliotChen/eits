@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/commons/base.jsp"%>
+
 <script type="text/javascript">
 <!--
 	$().ready(function() {
@@ -19,7 +20,10 @@
 			    return $('#editForm').valid();
 			  }
 			});
-
+		delete CKEDITOR.instances['question'];
+		delete CKEDITOR.instances['answer'];
+		$('#question').ckeditor();
+		$('#answer').ckeditor();
 	});
 	function previewSave() {
 		cloneForm('#editForm', '#previewForm');
@@ -42,22 +46,25 @@
 	<table>
 		<tr>
 			<td>ArticleID:</td>
-			<td><s:textfield name="id"/></td>
+			<td><s:textfield name="id" /></td>
 		</tr>
 		<tr>
 			<td>Language:</td>
-			<td><s:select list="{'English', 'Chinese'}" value="article.language" /></td>
+			<td><s:select list="{'English', 'Chinese'}"
+					value="article.language" /></td>
 		</tr>
 		<tr>
 			<td>Source:</td>
-			<td><s:radio name="source" list="#{'1':'OBM','2':'Project'}" onchange="" /> </td>
+			<td><s:radio name="source" list="#{'1':'OBM','2':'Project'}"
+					onchange="" /></td>
 		</tr>
-		
+
 		<tr>
 			<td>News:</td>
-			<td><s:radio name="news" list="#{'true':'Yes','false':'No'}" /> </td>
+			<td><s:radio name="news" list="#{'true':'Yes','false':'No'}" />
+			</td>
 		</tr>
-		
+
 		<tr>
 			<td>Type:</td>
 			<td><s:select list="{'General', 'FAQ'}" value="type" /></td>
@@ -68,7 +75,9 @@
 		</tr>
 		<tr>
 			<td>Expire after:</td>
-			<td><s:select list="#{'0':'One Month','1':'One Season','2':'One Year' }" name="expireType" /></td>
+			<td><s:select
+					list="#{'0':'One Month','1':'One Season','2':'One Year' }"
+					name="expireType" /></td>
 		</tr>
 		<tr>
 			<td>EntryDate:</td>
@@ -76,15 +85,15 @@
 		</tr>
 		<tr>
 			<td>Keywords:</td>
-			<td><s:textfield name="keywords" maxlength="50"/></td>
+			<td><s:textfield name="keywords" maxlength="50" /></td>
 		</tr>
 		<tr>
 			<td>Question:</td>
-			<td><s:textarea name="question" cols="40" rows="4" /></td>
+			<td><s:textarea id="question" name="question" cols="40" rows="4" cssClass="ckeditor"/></td>
 		</tr>
 		<tr>
 			<td>Answer:</td>
-			<td><s:textarea name="answer" cols="40" rows="8" /></td>
+			<td><s:textarea id="answer" name="answer" cols="40" rows="8" /></td>
 		</tr>
 		<tr>
 			<td>View Level:</td>
@@ -100,21 +109,21 @@
 		</tr>
 		<tr>
 			<td>Firmware:</td>
-			<td><s:textfield name="firmware"/></td>
+			<td><s:textfield name="firmware" /></td>
 		</tr>
-		
+
 		<tr>
 			<td>Save As:</td>
-			<td><s:radio list="{'Final & Publish', 'Final', 'Draft'}" name="state" /></td>
+			<td><s:radio list="{'Final & Publish', 'Final', 'Draft'}"
+					name="state" /></td>
 		</tr>
 		<tr>
 			<td></td>
 			<td></td>
 			<td></td>
-			<td>
-				<s:submit action="edit!list" value="Cancel" cssClass="cancel" />
-				<input type="button" value="Preview" onclick="previewSave()" /> 
-				<s:submit value="Submit" cssClass="save"/>
+			<td><s:submit action="edit!list" value="Cancel"
+					cssClass="cancel" /> <input type="button" value="Preview"
+				onclick="previewSave()" /> <s:submit value="Submit" cssClass="save" />
 			</td>
 		</tr>
 	</table>
