@@ -24,6 +24,12 @@
 		delete CKEDITOR.instances['answer'];
 		$('#question').ckeditor();
 		$('#answer').ckeditor();
+		$('#techSelect').multiselect({beforeclose: function(){
+			$('#technology').val($('#techSelect').val());
+		   }}).multiselectfilter();
+		$('#productSelect').multiselect({beforeclose: function(){
+			$('#product').val($('#productSelect').val());
+		   }}).multiselectfilter();
 	});
 	function previewSave() {
 		cloneForm('#editForm', '#previewForm');
@@ -101,11 +107,29 @@
 		</tr>
 		<tr>
 			<td>Technology:</td>
-			<td><s:textarea name="technology" cols="40" rows="4" /></td>
+			<td><s:textarea id="technology" name="technology" cols="40" rows="4" />
+				<select id="techSelect" name="techSelect" multiple="multiple">
+						<option value="Tech1">Tech1</option>
+						<option value="Tech2">Tech2</option>
+						<option value="Tech3">Tech3</option>
+						<option value="Tech4">Tech4</option>
+				</select>
+			</td>
 		</tr>
 		<tr>
 			<td>Product:</td>
-			<td><s:textarea name="product" cols="40" rows="4" /></td>
+			<td><s:textarea id="product" name="product" cols="40" rows="4" />
+				<select id="productSelect" name="productSelect" multiple="multiple">
+					<optgroup label="ProductA">
+						<option value="Model1">Model1</option>
+						<option value="Model2">Model2</option>
+					</optgroup>
+					<optgroup label="ProductB">
+						<option value="Model3">Model3</option>
+						<option value="Model4">Model4</option>
+					</optgroup>
+				</select>
+			</td>
 		</tr>
 		<tr>
 			<td>Firmware:</td>
@@ -121,8 +145,8 @@
 			<td></td>
 			<td></td>
 			<td></td>
-			<td><s:submit action="edit!list" value="Cancel"
-					cssClass="cancel" /> <input type="button" value="Preview"
+			<td><input type="button" value="Cancle" onclick="switchMenu('m3', 'edit!list.action');" />
+			<input type="button" value="Preview"
 				onclick="previewSave()" /> <s:submit value="Submit" cssClass="save" />
 			</td>
 		</tr>
