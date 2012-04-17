@@ -18,7 +18,7 @@
 		<action name="index">
 			<result>/index.jsp</result>
 		</action>
-		<action name="system" method="{1}" class="systemAction">
+		<action name="system!*" method="{1}" class="systemAction">
 			<result name="index">/index.jsp</result>
 		</action>
 		
@@ -32,7 +32,7 @@
 			<result name="reload" type="redirect">/employee.action</result>
 		</action>
 
-		<action name="article" method="{1}" class="articleAction">
+		<action name="article!*" method="{1}" class="articleAction">
 			<result name="rating" type="json">
 				<param name="root">jsonMsg</param>
 			</result>
@@ -47,7 +47,7 @@
 			</result>
 		</action>
 		
-		<action name="edit" method="{1}" class="editAction">
+		<action name="edit!*" method="{1}" class="editAction">
 			<result name="list">/WEB-INF/jsp/edit/list.jsp</result>
 			<result name="unpublished">/WEB-INF/jsp/edit/unpublished.jsp</result>
 			<result name="draft">/WEB-INF/jsp/edit/draft.jsp</result>
@@ -56,15 +56,20 @@
 			<result name="preview">/WEB-INF/jsp/article/preview.jsp</result>
 		</action>
 		
-		<action name="language" method="{1}" class="languageAction">
+		<action name="language!*" method="{1}" class="languageAction">
 			<result name="list">/WEB-INF/jsp/language/list.jsp</result>
 			<result name="language">/WEB-INF/jsp/language/language.jsp</result>
 		</action>
 		
-		<action name="ajaxFunction" method="{1}" class="ajaxAction">
+		<action name="ajaxFunction!*" method="{1}" class="ajaxAction">
 			<result name="jsonModels" type="json">
 				<param name="root">options</param>
 			</result>
+		</action>
+		
+		<action name="ckEditor!*" method="{1}" class="ckEditorAction">
+			<result name="successImg">/WEB-INF/jsp/ckeditor/successImg.jsp</result>
+			<result name="failImg">/WEB-INF/jsp/ckeditor/failImg.jsp</result>
 		</action>
 	</package>
 
