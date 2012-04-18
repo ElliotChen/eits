@@ -13,7 +13,7 @@ public class Page<T> implements Serializable {
 	/**
 	 * 預設單頁顯示資料筆數, 5
 	 */
-	public static final int DEFAULT_PAGE_SIZE = 5;
+	public static final int DEFAULT_PAGE_SIZE = 10;
 	
 	/**
 	 * 預設顯示頁面數, 10
@@ -33,7 +33,7 @@ public class Page<T> implements Serializable {
 	/**
 	 * 資料總筆數
 	 */
-	private Long totalCount;
+	private Integer totalCount;
 
 	/**
 	 * 查詢結果
@@ -59,7 +59,7 @@ public class Page<T> implements Serializable {
 	/**
 	 * 是否使用Like，NONE代表不使用，ANYWHERE代表前後
 	 */
-	private LikeMode likeMode = LikeMode.NONE;
+	private LikeMode likeMode = LikeMode.ANYWHERE;
 	
 	public Page() {
 		this(null);
@@ -101,11 +101,11 @@ public class Page<T> implements Serializable {
 		this.pageSize = pageSize;
 	}
 
-	public Long getTotalCount() {
+	public Integer getTotalCount() {
 		return totalCount;
 	}
 
-	public void setTotalCount(Long totalCount) {
+	public void setTotalCount(Integer totalCount) {
 		this.totalCount = totalCount;
 	}
 	

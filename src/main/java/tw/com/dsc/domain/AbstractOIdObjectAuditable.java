@@ -6,13 +6,12 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Version;
 
 @MappedSuperclass
-public abstract class AbstractStrOidAuditable extends AbstracStrOIdObject implements Auditable {
+public abstract class AbstractOIdObjectAuditable extends AbstractOIdObject implements Auditable {
 
-	private static final long serialVersionUID = -3490361723232389466L;
-
+	private static final long serialVersionUID = 1L;
+	
 	@Column(name = "CREATE_ACCOUNT", length = 50)
 	protected String createdAccount;
 	@Temporal(TemporalType.TIMESTAMP)
@@ -57,5 +56,4 @@ public abstract class AbstractStrOidAuditable extends AbstracStrOIdObject implem
 	public void setCreatedAccount(String createdAccount) {
 		this.createdAccount = createdAccount;
 	}
-
 }

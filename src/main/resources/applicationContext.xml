@@ -18,7 +18,6 @@
 	</bean> -->
 	<!-- BoneCP -->
 	<!--  -->
-	<!-- 
 	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
 		<property name="driverClass" value="${jdbc.driverClass}" />
 		<property name="jdbcUrl" value="${jdbc.url}" />
@@ -38,10 +37,10 @@
 				<prop key="hibernate.generate_statistics">${hibernate.generate_statistics}</prop>
 				<prop key="hibernate.cache.provider_class">${hibernate.cache.provider_class}</prop>
 				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
-				
+				<!-- 
 				<prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.use_second_level_cache}</prop>
 				<prop key="hibernate.cache.use_query_cache">${hibernate.cache.use_second_level_cache}</prop>
-				
+				-->
 			</props>
 		</property>
 		<property name="packagesToScan" value="tw.com.dsc.domain" />
@@ -52,7 +51,7 @@
 	</bean>
 
 	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
-	 -->
+	
 	<context:annotation-config />
 	<context:component-scan base-package="tw.com.dsc" />
 </beans>

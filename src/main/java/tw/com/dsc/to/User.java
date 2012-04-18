@@ -7,6 +7,16 @@ public class User {
 	private String password;
 	private String name;
 	private String group;
+	public User() {
+		super();
+	}
+	
+	public User(String account, String passowrd, String name, String group) {
+		this.account = account;
+		this.password = passowrd;
+		this.name = name;
+		this.group = group;
+	}
 	public String getAccount() {
 		return account;
 	}

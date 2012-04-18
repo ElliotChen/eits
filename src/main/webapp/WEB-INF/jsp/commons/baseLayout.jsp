@@ -7,26 +7,82 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title><tiles:getAsString name="title" /></title>
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/smoothness/jquery-ui-1.8.18.custom.css" />" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/superfish.css" />" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/superfish-navbar.css" />" />
-<link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.dataTables.css" />" />
+<!-- <link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.dataTables.css" />" />-->
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.datepick.css" />" />
-<!--<link rel="stylesheet" type="text/css" href="<c:url value="/css/displaytag.css" />" />-->
-<script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery-1.7.2.min.js" />"></script>
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/displaytag.css" />" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/login.css" />" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.multiselect.css" />" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.multiselect.filter.css" />" />
+<script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery-1.7.2.js" />"></script>
+<script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery-ui-1.8.18.custom.min.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.form.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.validate.min.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.blockUI.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.datepick.min.js" />"></script>
-<script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.dataTables.min.js" />"></script>
+<!-- <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.dataTables.min.js" />"></script>-->
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/hoverIntent.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/superfish.js" />"></script>
+<script language="JavaScript" type="text/javascript" src="<c:url value="/js/select-chain.js" />"></script>
+<script language="JavaScript" type="text/javascript" src="<c:url value="/ckeditor/ckeditor.js" />"></script>
+<script language="JavaScript" type="text/javascript" src="<c:url value="/ckeditor/adapters/jquery.js" />"></script>
+<script language="JavaScript" type="text/javascript" src="<c:url value="/ckeditor/config.js" />"></script>
+<script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.multiselect.min.js" />"></script>
+<script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.multiselect.filter.min.js" />"></script>
 
 <script>
+	$(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
+	$('.cancel').live('click', function() {return confirm('Cancel?');});
+	$('.save').live('click', function() {return confirm('Save?');});
 	$().ready(function() {
 		$("#menu ul.sf-menu").superfish({
 			pathClass : 'current'
 		});
-	});
+		
+		$('#articleForm').ajaxForm({
+            target: '#main',
+            success : $.unblockUI
+        });
+		
+		$('#editArticleForm').ajaxForm({
+            target: '#main',
+            success : $.unblockUI
+        });
+		
+		$('a.login-window').click(function() {
+			
+            //Getting the variable's value from a link 
+			var loginBox = $(this).attr('href');
+
+			//Fade in the Popup
+			$(loginBox).fadeIn(300);
+	
+			//Set the center alignment padding + border see css style
+			var popMargTop = ($(loginBox).height() + 24) / 2; 
+			var popMargLeft = ($(loginBox).width() + 24) / 2; 
+	
+			$(loginBox).css({ 
+				'margin-top' : -popMargTop,
+				'margin-left' : -popMargLeft
+			});
+	
+			// Add the mask to body
+			$('body').append('<div id="mask"></div>');
+			$('#mask').fadeIn(300);
+	
+			return false;
+		});
+
+		// When clicking on the button close or the mask layer the popup closed
+		$('a.close, #mask').live('click', function() { 
+  				$('#mask , .login-popup').fadeOut(300 , function() {
+				$('#mask').remove();  
+			}); 
+			return false;
+		});
+	}); // end of ready
 	
 	function switchMenu(menuId, action) {
 		$('#menu li.current').removeClass('current');
@@ -38,18 +94,48 @@
 		
 		$.ajax({
 			url: action,
+			type: 'POST',
 			success: function(data) {
 				$('#main').html(data);
+			},
+			error : function() {
+				alert('Loading failed');
 			}
 		});
-		
-		
+	}
+	
+	function viewArticle(oid) {
+		$('#oid').val(oid);
+		$('#articleForm').submit();
+	}
+	
+	function quickViewArticle() {
+		viewArticle($('#quickOid').val());
+	}
+	
+	function editArticle(oid) {
+		$('#edit.oid').val(oid);
+		$('#editArticleForm').submit();
+	}
+	
+	function displaytagform(formname, fields) {
+		$('#'+formname+' .distagArea').children().remove();
+		for (j=fields.length-1;j>=0;j--) {
+			$('#'+formname+' .distagArea').append('<input type=\"hidden\" name=\"'+fields[j].f+'\" value=\"'+fields[j].v+'\"/>');
+		}
+		$('#' + formname).submit();
 	}
 </script>
 </head>
 <body>
 	<form id="menuForm" >
 	</form>
+	<s:form id="articleForm" namespace="/" action="searchArticle!detail" theme="simple">
+		<input id="oid" type="hidden" name="oid" />
+	</s:form>
+	<s:form id="editArticleForm" namespace="/" action="edit!load" theme="simple">
+		<input id="edit.oid" type="hidden" name="oid" />
+	</s:form>
 	<div id="header" style="height:90px; width: 90%; position: relative;">
 		<tiles:insertAttribute name="header" />
 	</div>

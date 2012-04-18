@@ -4,36 +4,49 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import tw.com.dsc.dao.LanguageDao;
+import tw.com.dsc.domain.Language;
+import tw.com.dsc.domain.support.Page;
 import tw.com.dsc.to.LanguageTO;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.ThreadLocalHolder;
 
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 
 @Component("languageAction")
 @Scope("prototype")
-public class LanguageAction extends ActionSupport implements Preparable {
-
+public class LanguageAction extends ActionSupport implements Preparable, ModelDriven<Language> {
+	
 	private static final long serialVersionUID = -8698958337744082698L;
+	
+	private static final Logger logger = LoggerFactory.getLogger(LanguageAction.class);
+	
 	private String oid;
-	private LanguageTO model;
-	private LanguageTO example;
+	private Language model;
+	private Language example;
+	private Page<Language> page;
 
-	private List<LanguageTO> languages;
-
+	private Integer pageNo;
+	@Autowired
+	private LanguageDao languageDao;
 	@Override
 	public void prepare() throws Exception {
+		
 		if (StringUtils.isNotEmpty(oid)) {
-			model = new LanguageTO(oid, "EN", "English");
+			model = this.languageDao.findByOid(oid);
 		} else {
-			model = new LanguageTO();
-			example = new LanguageTO();
-			languages = new ArrayList<LanguageTO>();
+			model = new Language();
 		}
+		example = new Language();
+		page = new Page<Language>(example);
 	}
 
 	public String index() {
@@ -41,12 +54,18 @@ public class LanguageAction extends ActionSupport implements Preparable {
 	}
 	
 	public String search() {
-		this.list();
+		logger.debug("Search for Example[{}] and PageNo[{}]", this.example, this.pageNo);
+		if (null != pageNo) {
+			page.setPageNo(pageNo);
+		} else {
+			page.setPageNo(1);
+		}
+		this.page = this.languageDao.listByPage(page);
 		return "language";
 	}
 	
 	public String list() {
-		this.mockList(this.languages);
+		this.page = this.languageDao.listByPage(page);
 		return "list";
 	}
 	
@@ -68,28 +87,20 @@ public class LanguageAction extends ActionSupport implements Preparable {
 		this.oid = oid;
 	}
 
-	public LanguageTO getModel() {
+	public Language getModel() {
 		return model;
 	}
 
-	public void setModel(LanguageTO model) {
+	public void setModel(Language model) {
 		this.model = model;
 	}
 
-	public LanguageTO getExample() {
+	public Language getExample() {
 		return example;
 	}
 
-	public void setExample(LanguageTO example) {
+	public void setExample(Language example) {
 		this.example = example;
-	}
-
-	public List<LanguageTO> getLanguages() {
-		return languages;
-	}
-
-	public void setLanguages(List<LanguageTO> languages) {
-		this.languages = languages;
 	}
 	
 	private void mockList(List<LanguageTO> list) {
@@ -98,5 +109,29 @@ public class LanguageAction extends ActionSupport implements Preparable {
 	}
 	public User getCurrentUser() {
 		return ThreadLocalHolder.getUser();
+	}
+
+	public Page<Language> getPage() {
+		return page;
+	}
+
+	public void setPage(Page<Language> page) {
+		this.page = page;
+	}
+
+	public LanguageDao getLanguageDao() {
+		return languageDao;
+	}
+
+	public void setLanguageDao(LanguageDao languageDao) {
+		this.languageDao = languageDao;
+	}
+
+	public Integer getPageNo() {
+		return pageNo;
+	}
+
+	public void setPageNo(Integer pageNo) {
+		this.pageNo = pageNo;
 	}
 }

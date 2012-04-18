@@ -28,10 +28,16 @@
 		
 		$('#techSelect').multiselect({beforeclose: function(){
 			$('#technology').val($('#techSelect').val());
-		   }}).multiselectfilter();
+		   },position: {
+			      my: 'left bottom',
+			      at: 'left top'
+			   }}).multiselectfilter();
 		$('#productSelect').multiselect({beforeclose: function(){
 			$('#product').val($('#productSelect').val());
-		   }}).multiselectfilter();
+		   },position: {
+			      my: 'left bottom',
+			      at: 'left top'
+			   }}).multiselectfilter();
 	});
 	function previewCopy() {
 		cloneForm('#copyEditForm', '#previewForm');

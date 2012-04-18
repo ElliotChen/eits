@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import tw.com.dsc.to.User;
-import tw.com.dsc.util.SystemConstants;
 import tw.com.dsc.util.ThreadLocalHolder;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -21,7 +20,9 @@ public class SystemAction extends ActionSupport implements Serializable, Prepara
 	public void prepare() throws Exception {
 		user = new User();
 	}
-	
+	public String index() {
+		return "index";
+	}
 	public String login() {
 		if (user.isL2User() || user.isL3User()) {
 			ThreadLocalHolder.setUser(user);

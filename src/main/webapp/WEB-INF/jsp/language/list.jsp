@@ -16,9 +16,8 @@
 		$('#languageEditDiv').hide();
 	});
 	
-	function editLanguage(oid, id, name) {
+	function editLanguage(oid, name) {
 		$('#moid').val(oid);
-		$('#mid').val(id);
 		$('#mname').val(name);
 		$('#languageEditDiv').show();
 	};
@@ -38,23 +37,8 @@
       <s:actionmessage/>
    </div>
 </s:if>
-
-<s:form id="searchLanguageForm" namespace="/" action="language!search" theme="simple">
-	　　　　
-	<input type="text" name="example.id" size="32"/>
-	<input type="text" name="example.name" size="26"/>
-	<s:submit value="Search" />
-</s:form>
-
-<s:form id="languageDisForm" namespace="/" action="language!search" theme="simple">
-	<div id="distagArea" class="distagArea"></div>
-</s:form>
-<div id="languageDiv">
-	<jsp:include page="language.jsp" />
-</div>
 <div id="languageEditDiv">
 	<s:form id="languageForm" namespace="/" action="language!save" theme="simple">
-		<s:hidden id="moid" name="model.oid" />
 		<table>
 			<thead>
 				<tr>
@@ -65,11 +49,25 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td><input type="text" id="mid" name="model.id" /></td>
+					<td><input type="text" id="moid" name="model.oid" /></td>
 					<td><input type="text" id="mname" name="model.name" /></td>
 					<td><s:submit value="Save" cssClass="save" /> </td>
 				</tr>
 			</tbody>
 		</table>
 	</s:form>
+</div>
+
+<s:form id="searchLanguageForm" namespace="/" action="language!search" theme="simple">
+	<input type="text" name="example.oid" size="32"/>
+	<input type="text" name="example.name" size="26"/>
+	<s:submit value="Search" />
+</s:form>
+
+<s:form id="languageDisForm" namespace="/" action="language!search" theme="simple">
+	<div id="distagArea" class="distagArea"></div>
+</s:form>
+
+<div id="languageDiv">
+	<jsp:include page="language.jsp" />
 </div>

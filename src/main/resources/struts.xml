@@ -19,7 +19,7 @@
 			<result>/index.jsp</result>
 		</action>
 		<action name="system!*" method="{1}" class="systemAction">
-			<result name="index">/index.jsp</result>
+			<result type="tiles" name="index">index</result>
 		</action>
 		
 		<action name="searchArticle!*" method="{1}" class="searchArticleAction">

@@ -4,24 +4,25 @@
 	<li><a class="sf-with-ul" href="#">Article<span class="sf-sub-indicator"> &#187;</span></a>
 		<ul>
 			<li><a id="m1" href="javascript:switchMenu('m1', 'searchArticle!index.action');">Search</a></li>
+			<s:if test="!@tw.com.dsc.util.ThreadLocalHolder@getUser().guest">
+				<li><a id="m2" href="javascript:switchMenu('m2', 'edit!empty.action');">Create New Article</a></li>
+				<li><a id="m3" href="javascript:switchMenu('m3', 'edit!list.action');">Unpublished Articles</a></li>
+			</s:if>
 		</ul></li>
-	<li class="current"><a class="sf-with-ul" href="#">menu item<span class="sf-sub-indicator"> &#187;</span></a>
-		<ul>
-			<li class="current"><a class="sf-with-ul" href="#">path to current<span class="sf-sub-indicator">
-						&#187;</span></a>
-				<ul>
-					<li><a href="#">menu item</a></li>
-					<li><a href="#aba">menu item</a></li>
-					<li><a href="#abb">menu item</a></li>
-					<li class="current"><a href="#abc">current page</a></li>
-					<li><a href="#abd">menu item</a></li>
-				</ul></li>
-		</ul></li>
+	<s:if test="!@tw.com.dsc.util.ThreadLocalHolder@getUser().guest">
+		<li><a class="sf-with-ul" href="#">System<span class="sf-sub-indicator"> &#187;</span></a>
+			<ul>
+				<li><a id="m4" href="javascript:switchMenu('m4', 'language!index.action');">Language</a></li>
+			</ul></li>
+	</s:if>
 	<li><a class="sf-with-ul" href="#">&nbsp;</a></li>
 	<li><a class="sf-with-ul" href="#">&nbsp;</a></li>
 	<li><a class="sf-with-ul" href="#">&nbsp;</a></li>
 	<li><a class="sf-with-ul" href="#">&nbsp;</a></li>
 	<li><a class="sf-with-ul" href="#">&nbsp;</a></li>
 	<li><a class="sf-with-ul" href="#">&nbsp;</a></li>
-	<li><a class="sf-with-ul" id="login" href="javascript:switchMenu('login');">Login</a></li>
+	<li><a class="sf-with-ul" href="#">&nbsp;</a></li>
+	<li><a class="sf-with-ul" href="#">&nbsp;</a></li>
+	<li><a class="sf-with-ul" href="#">&nbsp;</a></li>
+	<li><a class="sf-with-ul" href="#">&nbsp;</a></li>
 </ul>

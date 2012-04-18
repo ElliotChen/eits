@@ -23,7 +23,7 @@ import tw.com.dsc.domain.support.Condition;
 import tw.com.dsc.domain.support.LikeMode;
 import tw.com.dsc.domain.support.Page;
 
-public abstract class AbstractBaseDao<T extends Identifiable<Serializable>, Oid extends Serializable> {
+public abstract class AbstractBaseDao<T extends Identifiable<Oid>, Oid extends Serializable> {
 	protected Class<T> domainClass;
 	
 	@Autowired
@@ -115,7 +115,7 @@ public abstract class AbstractBaseDao<T extends Identifiable<Serializable>, Oid 
 		}
 	}
 
-	protected Long countByCriteria(Criteria criteria) {
+	protected Integer countByCriteria(Criteria criteria) {
 		Projection projection = ((CriteriaImpl) criteria).getProjection();
 		Long totalCount = (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 		criteria.setProjection(projection);
@@ -124,7 +124,7 @@ public abstract class AbstractBaseDao<T extends Identifiable<Serializable>, Oid 
 			criteria.setResultTransformer(CriteriaSpecification.ROOT_ENTITY);
 		}
 
-		return totalCount;
+		return new Integer(totalCount.intValue());
 	}
 
 	public List<T> listByExample(final T example) {
@@ -143,7 +143,7 @@ public abstract class AbstractBaseDao<T extends Identifiable<Serializable>, Oid 
 
 		Criteria criteria = this.createCriteria(page.getExample(), page.getConditions(), page.getLikeMode());
 
-		Long totalCount = this.countByCriteria(criteria);
+		Integer totalCount = this.countByCriteria(criteria);
 		page.setTotalCount(totalCount);
 
 		if (1 > totalCount) {

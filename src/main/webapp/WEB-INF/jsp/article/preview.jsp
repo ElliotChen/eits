@@ -56,19 +56,19 @@
 	</tr>
 	<tr>
 		<th>Entry Date</th>
-		<td><fmt:formatDate value="${article.entryDate}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
+		<td><fmt:formatDate value="${article.entryDate}" pattern="yyyy/MM/dd HH:mm:ss" /></td>
 		<th>&nbsp;</th>
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
 		<th>Last Update</th>
-		<td><fmt:formatDate value="${article.entryDate}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
+		<td><fmt:formatDate value="${article.entryDate}" pattern="yyyy/MM/dd HH:mm:ss" /></td>
 		<th>&nbsp;</th>
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
 		<th>Publish Date</th>
-		<td><fmt:formatDate value="${article.publishDate}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
+		<td><fmt:formatDate value="${article.publishDate}" pattern="yyyy/MM/dd HH:mm:ss" /></td>
 		<th>&nbsp;</th>
 		<td>&nbsp;</td>
 	</tr>
@@ -81,31 +81,34 @@
 	<tr>
 		<td colspan="4">
 			<fieldset>
-	<legend>Question:</legend>
-	${article.question}
-</fieldset>
+				<legend>Question:</legend>
+				${article.question}
+			</fieldset>
 		</td>
 	</tr>
 	<tr>
 		<td colspan="4">
 			<fieldset>
-	<legend>Answer:</legend>
-	${article.answer}
-</fieldset>
+				<legend>Answer:</legend>
+				${article.answer}
+			</fieldset>
 		</td>
 	</tr>
 	<tr>
-			<td>Technology:</td>
-			<td><s:textarea name="article.technology" cols="40" rows="4" /></td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td>Product:</td>
-			<td><s:textarea name="article.product"cols="40" rows="4" /></td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-		</tr>
+		<td>Technology:</td>
+		<td><s:textarea name="article.technology" cols="40" rows="4" /></td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>Product:</td>
+		<td><s:textarea name="article.product" cols="40" rows="4" /></td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="4" align="right"><input type="button" value="close" onclick="window.close()"/></td>
+	</tr>
 </table>
 
 </body>

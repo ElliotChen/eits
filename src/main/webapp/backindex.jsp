@@ -127,6 +127,8 @@ return false;
 </script>
 </head>
 <body>
+	<form id="menuForm" >
+	</form>
 	<s:form id="articleForm" namespace="/" action="searchArticle!detail" theme="simple">
 		<input id="oid" type="hidden" name="oid" />
 	</s:form>

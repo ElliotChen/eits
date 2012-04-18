@@ -28,13 +28,13 @@ public class CkEditorAction extends ActionSupport implements ServletContextAware
 	public String uploadImage() {
 		
 		try {
-			String path = this.context.getRealPath("/")+"upload/img/";
+			String path = this.context.getRealPath("/")+"upload/image/";
 			File pt = new File(path);
 			if (!pt.exists()) {
 				pt.mkdirs();
 			}
 			FileUtils.copyFile(upload, new File(path,uploadFileName));
-			this.fileUrl = "/eits/upload/img/"+uploadFileName;
+			this.fileUrl = "/eits/upload/image/"+uploadFileName;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -50,7 +50,7 @@ public class CkEditorAction extends ActionSupport implements ServletContextAware
 				pt.mkdirs();
 			}
 			FileUtils.copyFile(upload, new File(path,uploadFileName));
-			this.fileUrl = "/eits/upload/img/"+uploadFileName;
+			this.fileUrl = "/eits/upload/file/"+uploadFileName;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
