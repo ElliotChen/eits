@@ -2,6 +2,7 @@ package tw.com.dsc.dao.impl;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -16,12 +17,15 @@ import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.internal.CriteriaImpl;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import tw.com.dsc.domain.Auditable;
 import tw.com.dsc.domain.Identifiable;
 import tw.com.dsc.domain.support.Condition;
 import tw.com.dsc.domain.support.LikeMode;
 import tw.com.dsc.domain.support.Page;
+import tw.com.dsc.util.ThreadLocalHolder;
 
 public abstract class AbstractBaseDao<T extends Identifiable<Oid>, Oid extends Serializable> {
 	protected Class<T> domainClass;
@@ -55,18 +59,22 @@ public abstract class AbstractBaseDao<T extends Identifiable<Oid>, Oid extends S
 	}
 
 	public void create(T entity) {
+		this.preCreate(entity);
 		this.sessionFactory.getCurrentSession().save(entity);
 	}
 
 	public void update(T entity) {
+		this.preUpdate(entity);
 		this.sessionFactory.getCurrentSession().saveOrUpdate(entity);
 	}
 
 	public void delete(T entity) {
+		this.preDelete(entity);
 		this.sessionFactory.getCurrentSession().delete(entity);
 	}
 	
 	public void merge(T entity) {
+		this.preUpdate(entity);
 		this.sessionFactory.getCurrentSession().merge(entity);
 	}
 	
@@ -200,5 +208,27 @@ public abstract class AbstractBaseDao<T extends Identifiable<Oid>, Oid extends S
 			result = MatchMode.EXACT;
 		}
 		return result;
+	}
+	
+	public abstract Logger getLogger();
+	
+	protected void preCreate(T entity) {
+		if (entity instanceof Auditable) {
+			Auditable audit = (Auditable) entity;
+			audit.setCreatedAccount(ThreadLocalHolder.getOperator().getAccount());
+			audit.setCreatedDate(new Date());
+		}
+	}
+
+	protected void preUpdate(T entity) {
+		if (entity instanceof Auditable) {
+			Auditable audit = (Auditable) entity;
+			audit.setModifiedAccount(ThreadLocalHolder.getOperator().getAccount());
+			audit.setModifiedDate(new Date());
+		}
+	}
+	
+	protected void preDelete(T entity) {
+		this.getLogger().info("Delete Entity[{}]", entity);
 	}
 }

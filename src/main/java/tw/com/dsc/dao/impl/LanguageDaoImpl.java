@@ -1,9 +1,9 @@
 package tw.com.dsc.dao.impl;
 
-import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import tw.com.dsc.dao.LanguageDao;
@@ -11,7 +11,8 @@ import tw.com.dsc.domain.Language;
 
 @Repository("languageDao")
 public class LanguageDaoImpl extends AbstractBaseDao<Language, String> implements LanguageDao {
-
+	private static final Logger logger = LoggerFactory.getLogger(LanguageDaoImpl.class);
+	
 	@Override
 	protected void postCreateCriteria(Criteria criteria, Language example, MatchMode matchMode) {
 		/*
@@ -19,6 +20,11 @@ public class LanguageDaoImpl extends AbstractBaseDao<Language, String> implement
 			criteria.add(Restrictions.eq("oid", example.getOid()));
 		}
 		*/
+	}
+
+	@Override
+	public Logger getLogger() {
+		return logger;
 	}
 
 

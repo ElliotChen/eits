@@ -6,10 +6,9 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Version;
 
 @MappedSuperclass
-public abstract class AbstractStrOidAuditable extends AbstracStrOIdObject implements Auditable {
+public abstract class AbstractStrOidAuditable extends AbstractStrOIdObject implements Auditable {
 
 	private static final long serialVersionUID = -3490361723232389466L;
 
@@ -24,7 +23,7 @@ public abstract class AbstractStrOidAuditable extends AbstracStrOIdObject implem
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "MODIFY_DATE")
 	protected Date modifiedDate;
-
+	
 	@Override
 	public String getCreatedAccount() {
 		return this.createdAccount;
@@ -57,5 +56,5 @@ public abstract class AbstractStrOidAuditable extends AbstracStrOIdObject implem
 	public void setCreatedAccount(String createdAccount) {
 		this.createdAccount = createdAccount;
 	}
-
+	
 }

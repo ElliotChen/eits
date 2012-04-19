@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "T_LANGUAGE")
+@Table(name = "T_EITS_LANGUAGE")
 public class Language extends AbstractOIdObjectAuditable {
 
 	private static final long serialVersionUID = 4815255597802616325L;
@@ -23,7 +23,6 @@ public class Language extends AbstractOIdObjectAuditable {
 
 	@Override
 	public String toString() {
-		return "Language [name=" + name + ", oid=" + getOid() + "]";
+		return "Language [name=" + name + ", oid=" + oid + "]";
 	}
-	
 }

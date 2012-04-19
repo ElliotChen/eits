@@ -11,7 +11,7 @@ public class Page<T> implements Serializable {
 	private static final long serialVersionUID = -7227111290162020181L;
 
 	/**
-	 * 預設單頁顯示資料筆數, 5
+	 * 預設單頁顯示資料筆數, 10
 	 */
 	public static final int DEFAULT_PAGE_SIZE = 10;
 	

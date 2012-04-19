@@ -3,6 +3,7 @@ package tw.com.dsc.service;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ public class LanguageServiceTest {
 	private LanguageService service;
 	
 	@Test
+	@Rollback(false)
 	public void testCreate() {
 		Language lan = new Language();
 		lan.setOid("DE");

@@ -1,19 +1,20 @@
 package tw.com.dsc.domain;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-/**
- * Assigned Oid
- * @author elliot
- *
- */
+
+import org.hibernate.annotations.GenericGenerator;
+
 @MappedSuperclass
-public abstract class AbstractOIdObject implements Identifiable<String> {
+public abstract class AbstractStrOIdObject implements Identifiable<String> {
 
 	private static final long serialVersionUID = -1702181490872061369L;
 
 	@Id
+	@GeneratedValue(generator = "system-uuid")
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 	@Column(name = "OID", length = 32)
 	protected String oid;
 	

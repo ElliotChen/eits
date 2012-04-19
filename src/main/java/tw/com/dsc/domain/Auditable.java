@@ -65,4 +65,10 @@ public interface Auditable {
 	 * @param lastModifiedDate the date of the last modification to set
 	 */
 	void setModifiedDate(final Date modifiedDate);
+	
+	/*
+	Integer getVersion();
+	
+	void setVersion(Integer version);
+	*/
 }

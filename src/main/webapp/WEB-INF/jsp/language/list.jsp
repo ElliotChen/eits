@@ -2,15 +2,36 @@
 <%@ include file="/WEB-INF/jsp/commons/base.jsp"%>
 <script>
 	$().ready(function() {
-		$('#searchLanguageForm').ajaxForm({
+		$('#searchForm').ajaxForm({
             target: '#languageDiv'
         });
-		$('#languageDisForm').ajaxForm({
+		$('#displayForm').ajaxForm({
             target: '#languageDiv'
         });
 		
-		$('#languageForm').ajaxForm({
-            target: '#main'
+		$('#updateForm').ajaxForm({
+            target: '#main',
+            beforeSubmit: function() {
+			    $('#updateForm').validate(
+			    	{ rules : {
+						name : {required:true} 
+			    		} 
+			    	});
+			    return $('#updateForm').valid();
+			  }
+        });
+		
+		$('#createForm').ajaxForm({
+            target: '#main',
+            beforeSubmit: function() {
+			    $('#createForm').validate(
+			    	{ rules : {
+			    		oid : {required:true},
+						name : {required:true} 
+			    		} 
+			    	});
+			    return $('#createForm').valid();
+			  }
         });
 		
 		$('#languageEditDiv').hide();
@@ -24,9 +45,9 @@
 	
 	function deleteLanguage(oid) {
 		if (confirm('Delete ?')) {
-			$('#oid').val(oid);
-			$('#languageForm').attr('action', '${ctx}/language!delete.action');
-			$('#languageForm').submit();
+			$('#moid').val(oid);
+			$('#updateForm').attr('action', '${ctx}/language!delete.action');
+			$('#updateForm').submit();
 		} else {
 			//return false;
 		}
@@ -38,7 +59,7 @@
    </div>
 </s:if>
 <div id="languageEditDiv">
-	<s:form id="languageForm" namespace="/" action="language!save" theme="simple">
+	<s:form id="updateForm" namespace="/" action="language!update" theme="simple">
 		<table>
 			<thead>
 				<tr>
@@ -49,22 +70,22 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td><input type="text" id="moid" name="model.oid" /></td>
-					<td><input type="text" id="mname" name="model.name" /></td>
-					<td><s:submit value="Save" cssClass="save" /> </td>
+					<td><input type="text" id="moid" readonly="readonly" name="oid" /></td>
+					<td><input type="text" id="mname" name="name" /></td>
+					<td><s:submit value="Save" cssClass="save" /><input type="button" value="Cancel" onclick="$('#languageEditDiv').hide();"/></td>
 				</tr>
 			</tbody>
 		</table>
 	</s:form>
 </div>
 
-<s:form id="searchLanguageForm" namespace="/" action="language!search" theme="simple">
+<s:form id="searchForm" namespace="/" action="language!search" theme="simple">
 	<input type="text" name="example.oid" size="32"/>
 	<input type="text" name="example.name" size="26"/>
 	<s:submit value="Search" />
 </s:form>
 
-<s:form id="languageDisForm" namespace="/" action="language!search" theme="simple">
+<s:form id="displayForm" namespace="/" action="language!search" theme="simple">
 	<div id="distagArea" class="distagArea"></div>
 </s:form>
 

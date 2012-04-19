@@ -7,11 +7,16 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+/**
+ * Sequence ID
+ * @author elliot
+ *
+ */
 @MappedSuperclass
-public abstract class AbstractOIdObjectAuditable extends AbstractOIdObject implements Auditable {
+public abstract class AbstractSeqIdObjectAuditable extends AbstractSeqIdObject implements Auditable {
 
-	private static final long serialVersionUID = 1L;
-	
+	private static final long serialVersionUID = 4422728477936925427L;
+
 	@Column(name = "CREATE_ACCOUNT", length = 50)
 	protected String createdAccount;
 	@Temporal(TemporalType.TIMESTAMP)
@@ -56,5 +61,5 @@ public abstract class AbstractOIdObjectAuditable extends AbstractOIdObject imple
 	public void setCreatedAccount(String createdAccount) {
 		this.createdAccount = createdAccount;
 	}
-
 }
+

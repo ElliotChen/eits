@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import tw.com.dsc.dao.BaseDao;
@@ -25,34 +27,33 @@ public abstract class AbstractDomainService<Dao extends BaseDao<T, Oid>, T, Oid 
 	}
 
 	@Override
-	@Transactional(readOnly = false)
+	@Transactional(readOnly=false)
 	public void create(T entity) {
-		this.preCreate(entity);
 		this.getDao().create(entity);
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void delete(T entity) {
-		this.preDelete(entity);
 		this.getDao().delete(entity);
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void update(T entity) {
-		this.preUpdage(entity);
 		this.getDao().update(entity);
 
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void saveOrUpdate(T entity) {
-		this.preUpdage(entity);
 		this.getDao().saveOrUpdate(entity);
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void merge(T entity) {
-		this.preUpdage(entity);
 		this.getDao().merge(entity);
 	}
 
@@ -81,23 +82,5 @@ public abstract class AbstractDomainService<Dao extends BaseDao<T, Oid>, T, Oid 
 	public abstract Dao getDao();
 
 	public abstract Logger getLogger();
-	protected void preCreate(T entity) {
-		if (entity instanceof Auditable) {
-			Auditable audit = (Auditable) entity;
-			audit.setCreatedAccount(ThreadLocalHolder.getOperator().getAccount());
-			audit.setCreatedDate(new Date());
-		}
-	}
-
-	protected void preUpdage(T entity) {
-		if (entity instanceof Auditable) {
-			Auditable audit = (Auditable) entity;
-			audit.setModifiedAccount(ThreadLocalHolder.getOperator().getAccount());
-			audit.setModifiedDate(new Date());
-		}
-	}
 	
-	protected void preDelete(T entity) {
-		this.getLogger().info("Delete Entity[{}]", entity);
-	}
 }

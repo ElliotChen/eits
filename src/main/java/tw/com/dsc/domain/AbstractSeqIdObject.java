@@ -6,6 +6,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+/**
+ * Sequence ID
+ * @author elliot
+ *
+ */
 @MappedSuperclass
 public abstract class AbstractSeqIdObject implements Identifiable<Long> {
 
@@ -14,7 +19,7 @@ public abstract class AbstractSeqIdObject implements Identifiable<Long> {
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ENTITY_SEQ")
 	@Column(name = "OID")
-	private Long oid;
+	protected Long oid;
 	
 	@Override
 	public Long getOid() {

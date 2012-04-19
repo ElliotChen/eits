@@ -2,20 +2,26 @@ package tw.com.dsc.web.action;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
 
 import javax.servlet.ServletContext;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.struts2.interceptor.ApplicationAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import tw.com.dsc.domain.Attachment;
+import tw.com.dsc.service.AttachmentService;
 
 import com.opensymphony.xwork2.ActionSupport;
 @Component("ckEditorAction")
 @Scope("prototype")
 public class CkEditorAction extends ActionSupport implements ServletContextAware {
+	private static final Logger logger = LoggerFactory.getLogger(CkEditorAction.class);
+	private static final String DEFAULT_PATH = "upload/";
 	private static final long serialVersionUID = 8521892056510784666L;
 	private File upload;
 	private String uploadFileName;
@@ -25,36 +31,32 @@ public class CkEditorAction extends ActionSupport implements ServletContextAware
 	private String CKEditorFuncNum;
 	
 	private ServletContext context;
+	
+	private String path = DEFAULT_PATH;
+	@Autowired
+	private AttachmentService attachmentService;
 	public String uploadImage() {
-		
+		String ctx = this.context.getContextPath();
 		try {
-			String path = this.context.getRealPath("/")+"upload/image/";
-			File pt = new File(path);
+			Attachment attachment = this.attachmentService.saveAttchment(ctx+"/"+path, uploadFileName, uploadContentType);
+			
+			this.fileUrl = attachment.getUri();
+			
+			String folder = this.context.getRealPath("/")+path;
+			File pt = new File(folder);
 			if (!pt.exists()) {
 				pt.mkdirs();
 			}
-			FileUtils.copyFile(upload, new File(path,uploadFileName));
-			this.fileUrl = "/eits/upload/image/"+uploadFileName;
+			FileUtils.copyFile(upload, new File(folder,attachment.getFullName()));
+			
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("File Upload Failed", e);
 		}
 		return "successImg";
 	}
 	
 	public String uploadFile() {
-		
-		try {
-			String path = this.context.getRealPath("/")+"upload/file/";
-			File pt = new File(path);
-			if (!pt.exists()) {
-				pt.mkdirs();
-			}
-			FileUtils.copyFile(upload, new File(path,uploadFileName));
-			this.fileUrl = "/eits/upload/file/"+uploadFileName;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return "successImg";
+		return this.uploadImage();
 	}
 
 	public File getUpload() {
@@ -100,6 +102,14 @@ public class CkEditorAction extends ActionSupport implements ServletContextAware
 	@Override
 	public void setServletContext(ServletContext context) {
 		this.context = context;
+	}
+
+	public AttachmentService getAttachmentService() {
+		return attachmentService;
+	}
+
+	public void setAttachmentService(AttachmentService attachmentService) {
+		this.attachmentService = attachmentService;
 	}
 	
 }

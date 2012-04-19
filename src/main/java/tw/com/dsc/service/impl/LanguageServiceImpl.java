@@ -11,7 +11,7 @@ import tw.com.dsc.domain.Language;
 import tw.com.dsc.service.LanguageService;
 
 @Service("languageService")
-@Transactional(readOnly = true)
+@Transactional(readOnly=true)
 public class LanguageServiceImpl extends AbstractDomainService<LanguageDao, Language, String> implements LanguageService {
 	private static final Logger logger = LoggerFactory.getLogger(LanguageServiceImpl.class);
 	@Autowired

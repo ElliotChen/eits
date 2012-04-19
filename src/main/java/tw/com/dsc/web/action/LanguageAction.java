@@ -1,8 +1,5 @@
 package tw.com.dsc.web.action;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,10 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import tw.com.dsc.dao.LanguageDao;
 import tw.com.dsc.domain.Language;
 import tw.com.dsc.domain.support.Page;
-import tw.com.dsc.to.LanguageTO;
+import tw.com.dsc.service.LanguageService;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.ThreadLocalHolder;
 
@@ -36,13 +32,14 @@ public class LanguageAction extends ActionSupport implements Preparable, ModelDr
 
 	private Integer pageNo;
 	@Autowired
-	private LanguageDao languageDao;
+	private LanguageService languageService;
 	@Override
 	public void prepare() throws Exception {
 		
 		if (StringUtils.isNotEmpty(oid)) {
-			model = this.languageDao.findByOid(oid);
-		} else {
+			model = this.languageService.findByOid(oid);
+		}
+		if (null == this.model) {
 			model = new Language();
 		}
 		example = new Language();
@@ -60,21 +57,29 @@ public class LanguageAction extends ActionSupport implements Preparable, ModelDr
 		} else {
 			page.setPageNo(1);
 		}
-		this.page = this.languageDao.listByPage(page);
+		this.page = this.languageService.listByPage(page);
 		return "language";
 	}
 	
 	public String list() {
-		this.page = this.languageDao.listByPage(page);
+		this.page = this.languageService.listByPage(page);
 		return "list";
 	}
 	
-	public String save() {
+	public String update() {
+		this.languageService.merge(model);
 		this.addActionMessage("Modify Success");
 		return this.list();
 	}
 	
+	public String create() {
+		this.languageService.create(model);
+		this.addActionMessage("Create Success");
+		return this.list();
+	}
+	
 	public String delete() {
+		this.languageService.delete(model);
 		this.addActionMessage("Delete Success");
 		return this.list();
 	}
@@ -87,6 +92,7 @@ public class LanguageAction extends ActionSupport implements Preparable, ModelDr
 		this.oid = oid;
 	}
 
+	@Override
 	public Language getModel() {
 		return model;
 	}
@@ -102,11 +108,7 @@ public class LanguageAction extends ActionSupport implements Preparable, ModelDr
 	public void setExample(Language example) {
 		this.example = example;
 	}
-	
-	private void mockList(List<LanguageTO> list) {
-		list.add(new LanguageTO("1", "EN", "English"));
-		list.add(new LanguageTO("2", "CN", "Chinses"));
-	}
+
 	public User getCurrentUser() {
 		return ThreadLocalHolder.getUser();
 	}
@@ -119,19 +121,19 @@ public class LanguageAction extends ActionSupport implements Preparable, ModelDr
 		this.page = page;
 	}
 
-	public LanguageDao getLanguageDao() {
-		return languageDao;
-	}
-
-	public void setLanguageDao(LanguageDao languageDao) {
-		this.languageDao = languageDao;
-	}
-
 	public Integer getPageNo() {
 		return pageNo;
 	}
 
 	public void setPageNo(Integer pageNo) {
 		this.pageNo = pageNo;
+	}
+
+	public LanguageService getLanguageService() {
+		return languageService;
+	}
+
+	public void setLanguageService(LanguageService languageService) {
+		this.languageService = languageService;
 	}
 }
