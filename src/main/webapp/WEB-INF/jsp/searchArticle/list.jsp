@@ -9,7 +9,7 @@
 <div id="faqArticleBlock">
 <display:table name="faqArticles" id="article">
 	<display:caption>FAQ</display:caption>
-	<display:column property="id" title="ID" />
+	<display:column property="articleId.oid" title="ID" />
 	<display:column property="summary" title="Summary" />
 	<display:column title="Publish Date">
 		<fmt:formatDate value="${article.publishDate}" pattern="yyyy/MM/dd"/>
@@ -24,7 +24,7 @@
 <div id="latestArticleBlock">
 <display:table name="latestArticles" partialList="true" pagesize="5" size="20" form="displaytagform" sort="external" id="article">
 	<display:caption>Latest Articles</display:caption>
-	<display:column property="id" title="ID"/>
+	<display:column property="articleId.oid" title="ID"/>
 	<display:column property="summary" title="Summary"/>
 	<display:column title="Publish Date">
 		<fmt:formatDate value="${article.publishDate}" pattern="yyyy/MM/dd"/>

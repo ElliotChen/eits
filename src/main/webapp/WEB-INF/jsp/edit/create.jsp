@@ -24,6 +24,7 @@
 		delete CKEDITOR.instances['answer'];
 		$('#question').ckeditor();
 		$('#answer').ckeditor();
+		switchType();
 		$('#techSelect').multiselect({beforeclose: function(){
 			$('#technology').val($('#techSelect').val());
 		   }, position: {
@@ -52,6 +53,11 @@
 		$('#editForm').val('action', '${ctx}/edit!list.action');
 		$('#editForm').submit();
 	}
+	
+	function switchType() {
+		$('.ArticleType').hide();
+		$('.'+$('#type').val()).show();
+	}
 //-->
 </script>
 <s:form id="editForm" namespace="/" action="edit!save" theme="simple">
@@ -79,7 +85,7 @@
 
 		<tr>
 			<td>Type:</td>
-			<td><s:select list="{'General', 'FAQ'}" value="type" /></td>
+			<td><s:select id="type" name="type" list="@tw.com.dsc.domain.ArticleType@values()" listValue="%{getText('enum.ArticleType.'+toString())}" onchange="switchType();" /></td>
 		</tr>
 		<tr>
 			<td>Summary:</td>
@@ -87,9 +93,7 @@
 		</tr>
 		<tr>
 			<td>Expire after:</td>
-			<td><s:select
-					list="#{'0':'One Month','1':'One Season','2':'One Year' }"
-					name="expireType" /></td>
+			<td><s:select list="@tw.com.dsc.domain.ExpireType@values()" listValue="%{getText('enum.ExpireType.'+toString())}" name="expireType" /></td>
 		</tr>
 		<tr>
 			<td>EntryDate:</td>
@@ -99,13 +103,25 @@
 			<td>Keywords:</td>
 			<td><s:textfield name="keywords" maxlength="50" /></td>
 		</tr>
-		<tr>
+		<tr class="ArticleType GeneralInfo">
 			<td>Question:</td>
-			<td><s:textarea id="question" name="question" cols="40" rows="4" cssClass="ckeditor"/></td>
+			<td><s:textarea id="question" name="question" cols="40" rows="4" /></td>
 		</tr>
-		<tr>
+		<tr class="ArticleType GeneralInfo">
 			<td>Answer:</td>
 			<td><s:textarea id="answer" name="answer" cols="40" rows="8" /></td>
+		</tr>
+		<tr class="ArticleType Application TroubleShooting">
+			<td>Scenario Description:</td>
+			<td><s:textfield name="scenario"/></td>
+		</tr>
+		<tr class="ArticleType Application TroubleShooting">
+			<td>Setup/Step By Step Procedure:</td>
+			<td><s:textfield name="step"/></td>
+		</tr>
+		<tr class="ArticleType Application TroubleShooting">
+			<td>Verification:</td>
+			<td><s:textfield name="verification"/></td>
 		</tr>
 		<tr>
 			<td>View Level:</td>

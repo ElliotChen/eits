@@ -11,7 +11,13 @@ import org.slf4j.LoggerFactory;
 public class ArticleId extends AbstractOIdObject {
 	private static final Logger logger = LoggerFactory.getLogger(ArticleId.class);
 	private static final long serialVersionUID = -5703587994225011088L;
-
+	public ArticleId() {
+		
+	}
+	
+	public ArticleId(String oid) {
+		this.oid = oid;
+	}
 	@Override
 	public String toString() {
 		return "ArticleId [oid=" + oid + "]";

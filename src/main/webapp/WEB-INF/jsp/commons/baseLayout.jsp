@@ -143,7 +143,7 @@
 		<tiles:insertAttribute name="menu" />
 	</div>
 	
-	<div id="main" style="height:300px; width: 90%; position: relative;">
+	<div id="main" style="width: 90%; position: relative;">
 		<tiles:insertAttribute name="main" />
 	</div>
 	<div id="footer">

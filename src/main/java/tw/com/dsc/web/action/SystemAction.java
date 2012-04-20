@@ -24,9 +24,19 @@ public class SystemAction extends ActionSupport implements Serializable, Prepara
 		return "index";
 	}
 	public String login() {
-		if (user.isL2User() || user.isL3User()) {
-			ThreadLocalHolder.setUser(user);
+		if (user.getAccount().startsWith("l2")) {
+			user.setL2leader(true);
+			user.setL2user(true);
+			user.setGuest(false);
+		} else if (user.getAccount().startsWith("l3")) {
+			user.setL3leader(true);
+			user.setL3user(true);
+			user.setAdmin(true);
+			user.setGuest(false);
+		} else {
+			this.addActionError("Login Failed! Please check account/password then login again.");
 		}
+		ThreadLocalHolder.setUser(user);
 		return "index";
 	}
 

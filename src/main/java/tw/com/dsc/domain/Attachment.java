@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.apache.commons.lang.StringUtils;
+
 @Entity
 @Table(name = "T_EITS_ATTACHMENT")
 @SequenceGenerator(name="ENTITY_SEQ", sequenceName="SEQ_EITS_ATTACHMENT", allocationSize=1)
@@ -62,6 +64,9 @@ public class Attachment extends AbstractSeqIdObject {
 	}
 	
 	public String getFullName() {
-		return this.oid+this.extension;
+		if (StringUtils.isEmpty(extension)) {
+			return this.oid.toString();
+		}
+		return this.oid+"."+this.extension;
 	}
 }

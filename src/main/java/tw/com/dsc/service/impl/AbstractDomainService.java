@@ -1,21 +1,16 @@
 package tw.com.dsc.service.impl;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import tw.com.dsc.dao.BaseDao;
-import tw.com.dsc.domain.Auditable;
 import tw.com.dsc.domain.support.Condition;
 import tw.com.dsc.domain.support.LikeMode;
 import tw.com.dsc.domain.support.Page;
 import tw.com.dsc.service.BaseDomainService;
-import tw.com.dsc.util.ThreadLocalHolder;
 
 @Transactional(readOnly = true)
 public abstract class AbstractDomainService<Dao extends BaseDao<T, Oid>, T, Oid extends Serializable> implements

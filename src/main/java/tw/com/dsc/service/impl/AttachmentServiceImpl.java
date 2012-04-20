@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tw.com.dsc.dao.AttachmentDao;
 import tw.com.dsc.domain.Attachment;
 import tw.com.dsc.service.AttachmentService;
+import tw.com.dsc.util.FileUtils;
 
 @Service("attachmentService")
 @Transactional(readOnly=true)
@@ -32,15 +33,14 @@ public class AttachmentServiceImpl extends AbstractDomainService<AttachmentDao, 
 		Attachment attachment = new Attachment();
 		attachment.setContentType(contentType);
 		attachment.setName(fileName);
-		if (0 < fileName.lastIndexOf(".")) {
-			attachment.setExtension(fileName.substring(fileName.lastIndexOf(".")));
-		}
+		attachment.setExtension(FileUtils.getExtension(fileName));
 		this.dao.create(attachment);
+		
 		String uri = contextPath;
 		if (!uri.endsWith("/")) {
 			uri += "/";
 		}
-		uri += attachment.getOid()+attachment.getExtension();
+		uri += attachment.getFullName();
 		
 		attachment.setUri(uri);
 		

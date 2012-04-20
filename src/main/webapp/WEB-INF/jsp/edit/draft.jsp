@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/jsp/commons/base.jsp"%>
 <display:table name="draftArticles" partialList="true" pagesize="5" size="20" form="draftForm" sort="external" id="article" export="true" requestURI="edit!searchDraft.action">
 	<display:caption>Draft Articles</display:caption>
-	<display:column property="id" title="ID" />
+	<display:column property="articleId.oid" title="ID" />
 	<display:column property="summary" title="Summary" />
 	<display:column property="entryUser" title="Agent"/>
 	<display:column title="Entry Date">

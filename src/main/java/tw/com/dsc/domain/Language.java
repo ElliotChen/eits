@@ -10,6 +10,15 @@ public class Language extends AbstractOIdObjectAuditable {
 
 	private static final long serialVersionUID = 4815255597802616325L;
 
+	public Language() {
+		super();
+	}
+	
+	public Language(String oid, String name) {
+		this.oid = oid;
+		this.name = name;
+	}
+	
 	@Column(name="NAME", length=50 , unique=true)
 	private String name;
 

@@ -10,6 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import tw.com.dsc.domain.Article;
+import tw.com.dsc.domain.ArticleId;
+import tw.com.dsc.domain.Language;
 import tw.com.dsc.to.ArticleTO;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.ThreadLocalHolder;
@@ -24,16 +27,16 @@ public class SearchArticleAction extends ActionSupport implements Preparable, Re
 	private static final long serialVersionUID = -2112640721474475257L;
 	private static final Logger logger = LoggerFactory.getLogger(SearchArticleAction.class);
 	private Map<String, Object> request;
-	private ArticleTO example;
+	private Article example;
 	private String articleId;
 	private String oid;
-	private ArticleTO article;
+	private Article article;
 
 	private String message;
 
 	@Override
 	public void prepare() throws Exception {
-		example = new ArticleTO();
+		example = new Article();
 	}
 
 	@Override
@@ -47,9 +50,9 @@ public class SearchArticleAction extends ActionSupport implements Preparable, Re
 
 	public String search() {
 		logger.error("Do Search");
-		ArrayList<ArticleTO> faqArticles = new ArrayList<ArticleTO>();
+		ArrayList<Article> faqArticles = new ArrayList<Article>();
 
-		ArrayList<ArticleTO> latestArticles = new ArrayList<ArticleTO>();
+		ArrayList<Article> latestArticles = new ArrayList<Article>();
 
 		this.mockArticles(faqArticles);
 		this.mockArticles(latestArticles);
@@ -61,23 +64,23 @@ public class SearchArticleAction extends ActionSupport implements Preparable, Re
 	}
 
 	public String detail() {
-		article = new ArticleTO();
+		article = new Article();
 		if ("1".equals(this.oid) || "2".equals(this.oid)) {
-			article.setOid(oid);
-			article.setId("artId01");
+			article.setOid(1L);
+			article.setArticleId(new ArticleId("123456"));
 			article.setSummary("Summary XYZ");
 			article.setPublishDate(new Date());
-			article.setLanguage("English");
+			article.setLanguage(new Language("EN", "English"));
 			article.setHitCount(120);
 
 			article.setQuestion("How to restore and clear rom-d on P-663 in English");
 			article.setAnswer("The tag provides metadata about the HTML document. Metadata will not be displayed on the page, but will be machine parsable. Meta elements are typically used to specify page description, keywords, author of the document, last modified, and other metadata. The tag always goes inside the element.");
 		} else {
-			article.setOid(oid);
-			article.setId("artId01");
+			article.setOid(5L);
+			article.setArticleId(new ArticleId("765432"));
 			article.setSummary("Summary XYZ");
 			article.setPublishDate(new Date());
-			article.setLanguage("Chinese");
+			article.setLanguage(new Language("EN", "English"));
 			article.setHitCount(120);
 
 			article.setQuestion("如何回復與清除P-663的ROM ? Chinese");
@@ -86,22 +89,22 @@ public class SearchArticleAction extends ActionSupport implements Preparable, Re
 		return "detail";
 	}
 
-	private void mockArticles(final ArrayList<ArticleTO> list) {
-		ArticleTO a1 = new ArticleTO();
-		a1.setOid("1");
-		a1.setId("19230");
+	private void mockArticles(final ArrayList<Article> list) {
+		Article a1 = new Article();
+		a1.setOid(1L);
+		a1.setArticleId(new ArticleId("123456"));
 		a1.setSummary("All in!");
 		a1.setPublishDate(new Date());
 		a1.setHitCount(271);
-		a1.setLanguage("EN");
+		a1.setLanguage(new Language("EN", "English"));
 
-		ArticleTO a2 = new ArticleTO();
-		a2.setOid("2");
-		a2.setId("15490");
+		Article a2 = new Article();
+		a2.setOid(2L);
+		a2.setArticleId(new ArticleId("765432"));
 		a2.setSummary("Don't do this!");
 		a2.setPublishDate(new Date());
 		a2.setHitCount(157);
-		a1.setLanguage("EN");
+		a2.setLanguage(new Language("EN", "English"));
 
 		list.add(a1);
 		list.add(a2);
@@ -112,11 +115,11 @@ public class SearchArticleAction extends ActionSupport implements Preparable, Re
 		this.request = request;
 	}
 
-	public ArticleTO getExample() {
+	public Article getExample() {
 		return example;
 	}
 
-	public void setExample(ArticleTO example) {
+	public void setExample(Article example) {
 		this.example = example;
 	}
 
@@ -136,11 +139,11 @@ public class SearchArticleAction extends ActionSupport implements Preparable, Re
 		this.oid = oid;
 	}
 
-	public ArticleTO getArticle() {
+	public Article getArticle() {
 		return article;
 	}
 
-	public void setArticle(ArticleTO article) {
+	public void setArticle(Article article) {
 		this.article = article;
 	}
 

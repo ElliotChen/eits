@@ -5,7 +5,7 @@
 		<ul>
 			<li><a id="m1" href="javascript:switchMenu('m1', 'searchArticle!index.action');">Search</a></li>
 			<s:if test="!@tw.com.dsc.util.ThreadLocalHolder@getUser().guest">
-				<li><a id="m2" href="javascript:switchMenu('m2', 'edit!empty.action');">Create New Article</a></li>
+				<li><a id="m2" href="javascript:switchMenu('m2', 'edit!preCreate.action');">Create New Article</a></li>
 				<li><a id="m3" href="javascript:switchMenu('m3', 'edit!list.action');">Unpublished Articles</a></li>
 			</s:if>
 		</ul></li>

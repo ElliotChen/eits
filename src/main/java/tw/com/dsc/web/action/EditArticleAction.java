@@ -7,6 +7,12 @@ import java.util.List;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import tw.com.dsc.domain.Article;
+import tw.com.dsc.domain.ArticleId;
+import tw.com.dsc.domain.ArticleType;
+import tw.com.dsc.domain.Language;
+import tw.com.dsc.domain.Source;
+import tw.com.dsc.domain.Status;
 import tw.com.dsc.to.ArticleTO;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.ThreadLocalHolder;
@@ -17,80 +23,77 @@ import com.opensymphony.xwork2.Preparable;
 
 @Component("editAction")
 @Scope("prototype")
-public class EditArticleAction extends ActionSupport implements Preparable, ModelDriven<ArticleTO> {
+public class EditArticleAction extends ActionSupport implements Preparable, ModelDriven<Article> {
 	
 	private static final long serialVersionUID = 626334753779135892L;
 
 	private String oid;
-	private ArticleTO article;
-	private ArticleTO example;
-	private List<ArticleTO> unpublishedArticles;
-	private List<ArticleTO> draftArticles;
-	private List<ArticleTO> expiredArticles;
+	private Article article;
+	private Article example;
+	private List<Article> unpublishedArticles;
+	private List<Article> draftArticles;
+	private List<Article> expiredArticles;
 	
 	private String message;
 	public String list() {
-		this.unpublishedArticles = new ArrayList<ArticleTO>();
+		this.unpublishedArticles = new ArrayList<Article>();
 		this.mockArticles(unpublishedArticles);
 		
-		this.draftArticles = new ArrayList<ArticleTO>();
+		this.draftArticles = new ArrayList<Article>();
 		this.mockArticles(draftArticles);
 		
-		this.expiredArticles = new ArrayList<ArticleTO>();
+		this.expiredArticles = new ArrayList<Article>();
 		this.mockArticles(expiredArticles);
 		
 		return "list";
 	}
 	
 	public String searchUnpublished() {
-		this.unpublishedArticles = new ArrayList<ArticleTO>();
+		this.unpublishedArticles = new ArrayList<Article>();
 		this.mockArticles(unpublishedArticles);
 		return "unpublished";
 	}
 	
 	public String searchDraft() {
-		this.draftArticles = new ArrayList<ArticleTO>();
+		this.draftArticles = new ArrayList<Article>();
 		this.mockArticles(draftArticles);
 		return "draft";
 	}
 	
 	public String searchExpired() {
-		this.expiredArticles = new ArrayList<ArticleTO>();
+		this.expiredArticles = new ArrayList<Article>();
 		this.mockArticles(expiredArticles);
 		return "expired";
 	}
 	
 	public String load() {
-		article.setOid(oid);
-		article.setId("19765");
+		article.setOid(new Long(oid));
+		article.setArticleId(new ArticleId("123456"));
 		article.setSummary("Summary XYZ");
-		article.setType("General");
+		article.setType(ArticleType.GeneralInfo);
 		article.setPublishDate(new Date());
-		article.setLanguage("English");
+		article.setLanguage(new Language("EN", "English"));
 		article.setHitCount(120);
 		article.setEntryDate(new Date());
 		article.setKeywords("keyword123");
 		article.setQuestion("How to restore and clear rom-d on P-663 in English");
 		article.setAnswer("The tag provides metadata about the HTML document. Metadata will not be displayed on the page, but will be machine parsable. Meta elements are typically used to specify page description, keywords, author of the document, last modified, and other metadata. The tag always goes inside the element.");
-		article.setNews("false");
-		article.setSource("1");
-		article.setState("Final");
+		article.setStatus(Status.Draft);
+		article.setNews(Boolean.FALSE);
+		article.setSource(Source.OBM);
 		return "edit";
 	}
 	
-	public String empty() {
-		article.setOid("");
-		article.setId("");
-		article.setSummary("");
-		article.setType("General");
-		article.setLanguage("English");
-		article.setKeywords("");
-		article.setQuestion("");
-		article.setAnswer("");
-		article.setNews("false");
-		article.setSource("1");
-		article.setState("Final");
-		return "edit";
+	public String preCreate() {
+		article.setArticleId(new ArticleId("123456"));
+		article.setType(ArticleType.GeneralInfo);
+		article.setLanguage(new Language("EN", "English"));
+		article.setHitCount(0);
+		article.setEntryDate(new Date());
+		article.setStatus(Status.Draft);
+		article.setNews(Boolean.FALSE);
+		article.setSource(Source.OBM);
+		return "create";
 	}
 	
 	public String previewSave() {
@@ -107,63 +110,63 @@ public class EditArticleAction extends ActionSupport implements Preparable, Mode
 	public void setOid(String oid) {
 		this.oid = oid;
 	}
-	public ArticleTO getArticle() {
+	public Article getArticle() {
 		return article;
 	}
-	public void setArticle(ArticleTO article) {
+	public void setArticle(Article article) {
 		this.article = article;
 	}
-	public List<ArticleTO> getUnpublishedArticles() {
+	public List<Article> getUnpublishedArticles() {
 		return unpublishedArticles;
 	}
-	public void setUnpublishedArticles(List<ArticleTO> unpublishedArticles) {
+	public void setUnpublishedArticles(List<Article> unpublishedArticles) {
 		this.unpublishedArticles = unpublishedArticles;
 	}
-	public List<ArticleTO> getDraftArticles() {
+	public List<Article> getDraftArticles() {
 		return draftArticles;
 	}
-	public void setDraftArticles(List<ArticleTO> draftArticles) {
+	public void setDraftArticles(List<Article> draftArticles) {
 		this.draftArticles = draftArticles;
 	}
-	public List<ArticleTO> getExpiredArticles() {
+	public List<Article> getExpiredArticles() {
 		return expiredArticles;
 	}
-	public void setExpiredArticles(List<ArticleTO> expiredArticles) {
+	public void setExpiredArticles(List<Article> expiredArticles) {
 		this.expiredArticles = expiredArticles;
 	}
 
-	public ArticleTO getExample() {
+	public Article getExample() {
 		return example;
 	}
 
-	public void setExample(ArticleTO example) {
+	public void setExample(Article example) {
 		this.example = example;
 	}
 
 	@Override
 	public void prepare() throws Exception {
-		this.example = new ArticleTO();
-		this.article = new ArticleTO();
+		this.example = new Article();
+		this.article = new Article();
 	}
 	
-	private void mockArticles(final List<ArticleTO> list) {
-		ArticleTO a1 = new ArticleTO();
-		a1.setOid("1");
-		a1.setId("19230");
+	private void mockArticles(final List<Article> list) {
+		Article a1 = new Article();
+		a1.setOid(1L);
+		a1.setArticleId(new ArticleId("123456"));
 		a1.setSummary("All in!");
 		a1.setPublishDate(new Date());
 		a1.setHitCount(271);
-		a1.setLanguage("EN");
+		a1.setLanguage(new Language("EN", "English"));
 		a1.setEntryUser("Adam");
 		a1.setEntryDate(new Date());
 
-		ArticleTO a2 = new ArticleTO();
-		a2.setOid("2");
-		a2.setId("15490");
+		Article a2 = new Article();
+		a2.setOid(2L);
+		a1.setArticleId(new ArticleId("234567"));
 		a2.setSummary("Don't do this!");
 		a2.setPublishDate(new Date());
 		a2.setHitCount(157);
-		a2.setLanguage("EN");
+		a1.setLanguage(new Language("EN", "English"));
 		a2.setEntryUser("Bob");
 		a2.setEntryDate(new Date());
 		
@@ -183,7 +186,7 @@ public class EditArticleAction extends ActionSupport implements Preparable, Mode
 	}
 
 	@Override
-	public ArticleTO getModel() {
+	public Article getModel() {
 		return this.article;
 	}
 	

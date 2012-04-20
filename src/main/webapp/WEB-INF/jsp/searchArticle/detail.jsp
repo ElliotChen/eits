@@ -44,11 +44,11 @@
 <table style="border: none">
 	<tr>
 		<th>Article ID</th>
-		<td>${article.id}</td>
+		<td>${articleId.oid}</td>
 		<th>Type</th>
 		<td>General Type</td>
 		<th>Language</th>
-		<td><s:select name="oid" list="#{'1':'English','5':'Chinese'}"
+		<td><s:select list="#{'1':'English','5':'Chinese'}"
 				value="oid" onchange="viewArticle(this.value);" theme="simple"/></td>
 	</tr>
 	<tr>

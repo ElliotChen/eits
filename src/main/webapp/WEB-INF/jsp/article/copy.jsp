@@ -72,9 +72,9 @@
 		</tr>
 		<tr>
 			<td>ArticleID:</td>
-			<td><s:textfield name="sarticle.id" readonly="true" /></td>
+			<td><s:textfield name="sarticle.articleId.oid" readonly="true" size="6"/></td>
 			<td></td>
-			<td>${sarticle.id}</td>
+			<td>${sarticle.articleId.oid}</td>
 		</tr>
 		<tr>
 			<td>Language:</td>
