@@ -87,7 +87,7 @@ public abstract class AbstractBaseDao<T extends Identifiable<Oid>, Oid extends S
 		this.sessionFactory.getCurrentSession().saveOrUpdate(entity);
 	}
 
-	protected Criteria createCriteria(T example, Condition[] conditions, LikeMode likeMode) {
+	protected Criteria createCriteria(T example, List<Condition> conditions, LikeMode likeMode) {
 		Session session = this.sessionFactory.getCurrentSession();
 		Criteria criteria = session.createCriteria(domainClass);
 		if (null != example) {
@@ -139,7 +139,7 @@ public abstract class AbstractBaseDao<T extends Identifiable<Oid>, Oid extends S
 		return this.listByExample(example, null, null, null, null);
 	}
 
-	public List<T> listByExample(final T example, Condition[] conditions, LikeMode mode, String[] ascOrders,
+	public List<T> listByExample(final T example, List<Condition> conditions, LikeMode mode, String[] ascOrders,
 			String[] descOrders) {
 		Criteria criteria = this.createCriteria(example, conditions, mode);
 		this.setOrderToCriteria(criteria, ascOrders, descOrders);
@@ -176,8 +176,8 @@ public abstract class AbstractBaseDao<T extends Identifiable<Oid>, Oid extends S
 		// does nothing.
 	}
 
-	protected void addConditions(Criteria criteria, Condition[] conditions) {
-		if (null == criteria || null == conditions || 0 == conditions.length) {
+	protected void addConditions(Criteria criteria, List<Condition> conditions) {
+		if (null == criteria || null == conditions || conditions.isEmpty()) {
 			return;
 		}
 

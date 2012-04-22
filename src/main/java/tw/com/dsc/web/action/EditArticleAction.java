@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import tw.com.dsc.domain.ArticleType;
 import tw.com.dsc.domain.Language;
 import tw.com.dsc.domain.Source;
 import tw.com.dsc.domain.Status;
+import tw.com.dsc.service.LanguageService;
 import tw.com.dsc.to.ArticleTO;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.ThreadLocalHolder;
@@ -34,7 +36,20 @@ public class EditArticleAction extends ActionSupport implements Preparable, Mode
 	private List<Article> draftArticles;
 	private List<Article> expiredArticles;
 	
+	private List<Language> languages;
+	
+	@Autowired
+	private LanguageService languageService;
+	
 	private String message;
+	
+	@Override
+	public void prepare() throws Exception {
+		
+		this.example = new Article();
+		this.article = new Article();
+	}
+	
 	public String list() {
 		this.unpublishedArticles = new ArrayList<Article>();
 		this.mockArticles(unpublishedArticles);
@@ -143,12 +158,6 @@ public class EditArticleAction extends ActionSupport implements Preparable, Mode
 		this.example = example;
 	}
 
-	@Override
-	public void prepare() throws Exception {
-		this.example = new Article();
-		this.article = new Article();
-	}
-	
 	private void mockArticles(final List<Article> list) {
 		Article a1 = new Article();
 		a1.setOid(1L);
@@ -189,5 +198,22 @@ public class EditArticleAction extends ActionSupport implements Preparable, Mode
 	public Article getModel() {
 		return this.article;
 	}
+
+	public List<Language> getLanguages() {
+		return languages;
+	}
+
+	public void setLanguages(List<Language> languages) {
+		this.languages = languages;
+	}
+
+	public LanguageService getLanguageService() {
+		return languageService;
+	}
+
+	public void setLanguageService(LanguageService languageService) {
+		this.languageService = languageService;
+	}
+	
 	
 }

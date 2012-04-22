@@ -58,7 +58,7 @@ public class CkEditorAction extends ActionSupport implements ServletContextAware
 	public String uploadFile() {
 		return this.uploadImage();
 	}
-
+	
 	public File getUpload() {
 		return upload;
 	}

@@ -68,8 +68,7 @@
 		</tr>
 		<tr>
 			<td>Language:</td>
-			<td><s:select list="{'English', 'Chinese'}"
-					value="article.language" /></td>
+			<td><s:select list="languages" listKey="oid" listValue="name" name="article.language.oid"/></td>
 		</tr>
 		<tr>
 			<td>Source:</td>

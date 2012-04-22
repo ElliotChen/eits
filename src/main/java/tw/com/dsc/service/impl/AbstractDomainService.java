@@ -63,7 +63,7 @@ public abstract class AbstractDomainService<Dao extends BaseDao<T, Oid>, T, Oid 
 	}
 
 	@Override
-	public List<T> listByExample(T example, Condition[] conditions, LikeMode mode, String[] ascOrders,
+	public List<T> listByExample(T example, List<Condition> conditions, LikeMode mode, String[] ascOrders,
 			String[] descOrders) {
 		return this.getDao().listByExample(example, conditions, mode, ascOrders, descOrders);
 	}

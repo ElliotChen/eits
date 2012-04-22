@@ -55,7 +55,7 @@ public class Page<T> implements Serializable {
 	 */
 	private String[] descOrders = null;
 	
-	private Condition[] conditions = null;
+	private List<Condition> conditions = new ArrayList<Condition>();
 	/**
 	 * 是否使用Like，NONE代表不使用，ANYWHERE代表前後
 	 */
@@ -133,11 +133,11 @@ public class Page<T> implements Serializable {
 		this.example = example;
 	}
 
-	public Condition[] getConditions() {
+	public List<Condition> getConditions() {
 		return conditions;
 	}
 
-	public void setConditions(Condition[] conditions) {
+	public void setConditions(List<Condition> conditions) {
 		this.conditions = conditions;
 	}
 	

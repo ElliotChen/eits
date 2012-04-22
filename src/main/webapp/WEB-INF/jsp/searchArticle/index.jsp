@@ -19,8 +19,7 @@
 	});
 
 </script>
-Knowledge Base Language:
-<select name="language"><option value="en">EN</option></select>
+Knowledge Base Language:<s:select list="languages" listKey="oid" listValue="name" name="example.language.oid"/>
 <br />
 <div id="search">
 	<s:form id="searchForm" namespace="/" action="searchArticle!search" theme="simple">

@@ -123,7 +123,7 @@
 		<!-- Hibernate Dependency -->
 		<dependency>
 			<groupId>cglib</groupId>
-			<artifactId>cglib-nodep</artifactId>
+			<artifactId>cglib</artifactId>
 			<version>2.2.2</version>
 		</dependency>
 

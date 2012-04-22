@@ -2,18 +2,20 @@ package tw.com.dsc.web.action;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.struts2.interceptor.RequestAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import tw.com.dsc.domain.Article;
 import tw.com.dsc.domain.ArticleId;
 import tw.com.dsc.domain.Language;
-import tw.com.dsc.to.ArticleTO;
+import tw.com.dsc.service.LanguageService;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.ThreadLocalHolder;
 
@@ -34,9 +36,16 @@ public class SearchArticleAction extends ActionSupport implements Preparable, Re
 
 	private String message;
 
+	private List<Language> languages;
+	private ArrayList<Article> faqArticles;
+	private ArrayList<Article> latestArticles;
+	
+	@Autowired
+	private LanguageService languageService;
 	@Override
 	public void prepare() throws Exception {
 		example = new Article();
+		
 	}
 
 	@Override
@@ -45,20 +54,18 @@ public class SearchArticleAction extends ActionSupport implements Preparable, Re
 	}
 
 	public String index() {
+		this.languages = this.languageService.listAll();
 		return "index";
 	}
 
 	public String search() {
 		logger.error("Do Search");
-		ArrayList<Article> faqArticles = new ArrayList<Article>();
+		faqArticles = new ArrayList<Article>();
 
-		ArrayList<Article> latestArticles = new ArrayList<Article>();
+		latestArticles = new ArrayList<Article>();
 
 		this.mockArticles(faqArticles);
 		this.mockArticles(latestArticles);
-
-		request.put("faqArticles", faqArticles);
-		request.put("latestArticles", latestArticles);
 
 		return "list";
 	}
@@ -159,4 +166,37 @@ public class SearchArticleAction extends ActionSupport implements Preparable, Re
 	public User getCurrentUser() {
 		return ThreadLocalHolder.getUser();
 	}
+
+	public List<Language> getLanguages() {
+		return languages;
+	}
+
+	public void setLanguages(List<Language> languages) {
+		this.languages = languages;
+	}
+
+	public LanguageService getLanguageService() {
+		return languageService;
+	}
+
+	public void setLanguageService(LanguageService languageService) {
+		this.languageService = languageService;
+	}
+
+	public ArrayList<Article> getFaqArticles() {
+		return faqArticles;
+	}
+
+	public void setFaqArticles(ArrayList<Article> faqArticles) {
+		this.faqArticles = faqArticles;
+	}
+
+	public ArrayList<Article> getLatestArticles() {
+		return latestArticles;
+	}
+
+	public void setLatestArticles(ArrayList<Article> latestArticles) {
+		this.latestArticles = latestArticles;
+	}
+	
 }

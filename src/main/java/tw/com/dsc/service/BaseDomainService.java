@@ -24,7 +24,7 @@ public interface BaseDomainService<T, Oid extends Serializable> {
 
 	List<T> listByExample(final T example);
 
-	List<T> listByExample(final T example, Condition[] conditions,
+	List<T> listByExample(final T example, List<Condition> conditions,
 			LikeMode mode, String[] ascOrders, String[] descOrders);
 	
 	Page<T> listByPage(final Page<T> page);
