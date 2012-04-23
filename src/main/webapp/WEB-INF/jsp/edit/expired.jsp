@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/commons/base.jsp"%>
-<display:table name="expiredArticles" partialList="true" pagesize="5" size="20" form="expiredForm" sort="external" id="article" export="true" requestURI="edit!searchExpired.action">
+<display:table name="${expiredArticles.result}" partialList="true" pagesize="5" size="20" form="expiredForm" sort="external" id="article" export="true" requestURI="edit!searchExpired.action">
 	<display:caption>Expired Articles</display:caption>
 	<display:column property="articleId.oid"/>
 	<display:column property="summary" title="Summary" />

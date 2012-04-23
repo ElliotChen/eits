@@ -37,7 +37,7 @@
 	<input type="text" name="example.entryUser" size="7"/>
 	<input type="text" name="example.entryDate" size="14"/>
 	<input type="text" name="example.product" size="15"/>
-	<input type="text" name="example.state" size="5"/>
+	<input type="text" name="example.status" size="5"/>
 	<s:submit value="Search" />
 </s:form>
 

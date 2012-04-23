@@ -1,9 +1,17 @@
 package tw.com.dsc.web.action;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.ServletContext;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.struts2.util.ServletContextAware;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -11,91 +19,90 @@ import org.springframework.stereotype.Component;
 import tw.com.dsc.domain.Article;
 import tw.com.dsc.domain.ArticleId;
 import tw.com.dsc.domain.ArticleType;
+import tw.com.dsc.domain.Attachment;
 import tw.com.dsc.domain.Language;
 import tw.com.dsc.domain.Source;
 import tw.com.dsc.domain.Status;
+import tw.com.dsc.domain.support.Page;
+import tw.com.dsc.service.ArticleService;
+import tw.com.dsc.service.AttachmentService;
 import tw.com.dsc.service.LanguageService;
-import tw.com.dsc.to.ArticleTO;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.ThreadLocalHolder;
 
-import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 
 @Component("editAction")
 @Scope("prototype")
-public class EditArticleAction extends ActionSupport implements Preparable, ModelDriven<Article> {
-	
+public class EditArticleAction extends BaseAction implements Preparable, ModelDriven<Article>, ServletContextAware {
+	private static final Logger logger = LoggerFactory.getLogger(EditArticleAction.class);
 	private static final long serialVersionUID = 626334753779135892L;
 
-	private String oid;
+	private Long oid;
 	private Article article;
 	private Article example;
-	private List<Article> unpublishedArticles;
-	private List<Article> draftArticles;
-	private List<Article> expiredArticles;
+	private Page<Article> page;
+	private Page<Article> unpublishedArticles;
+	private Page<Article> draftArticles;
+	private Page<Article> expiredArticles;
+	
+	
+	private File upload;
+	private String uploadFileName;
+	private String uploadContentType;
 	
 	private List<Language> languages;
 	
 	@Autowired
 	private LanguageService languageService;
 	
+	@Autowired
+	private ArticleService articleService;
+	@Autowired
+	private AttachmentService attachmentService;
+	private ServletContext context;
 	private String message;
 	
 	@Override
 	public void prepare() throws Exception {
-		
+		if (null != this.oid) {
+			this.article = this.articleService.findByOid(oid);
+		}
 		this.example = new Article();
-		this.article = new Article();
+		if (null == this.article) {
+			this.article = new Article();
+			this.article.setLanguage(new Language());
+			this.article.setNews(Boolean.FALSE);
+		}
+		page = new Page<Article>(example);
+		this.languages = this.languageService.listAll();
 	}
 	
 	public String list() {
-		this.unpublishedArticles = new ArrayList<Article>();
-		this.mockArticles(unpublishedArticles);
-		
-		this.draftArticles = new ArrayList<Article>();
-		this.mockArticles(draftArticles);
-		
-		this.expiredArticles = new ArrayList<Article>();
-		this.mockArticles(expiredArticles);
+		this.unpublishedArticles = this.articleService.searchUnpublishedPage(new Page<Article>(example));
+		this.draftArticles = this.articleService.searchDraftPage(new Page<Article>(example));
+		this.expiredArticles = this.articleService.searchExpiredPage(new Page<Article>(example));
 		
 		return "list";
 	}
 	
 	public String searchUnpublished() {
-		this.unpublishedArticles = new ArrayList<Article>();
-		this.mockArticles(unpublishedArticles);
+		this.unpublishedArticles = this.articleService.searchUnpublishedPage(page);
 		return "unpublished";
 	}
 	
 	public String searchDraft() {
-		this.draftArticles = new ArrayList<Article>();
-		this.mockArticles(draftArticles);
+		this.draftArticles = this.articleService.searchDraftPage(page);
 		return "draft";
 	}
 	
 	public String searchExpired() {
-		this.expiredArticles = new ArrayList<Article>();
-		this.mockArticles(expiredArticles);
+		this.expiredArticles = this.articleService.searchExpiredPage(page);
 		return "expired";
 	}
 	
 	public String load() {
-		article.setOid(new Long(oid));
-		article.setArticleId(new ArticleId("123456"));
-		article.setSummary("Summary XYZ");
-		article.setType(ArticleType.GeneralInfo);
-		article.setPublishDate(new Date());
-		article.setLanguage(new Language("EN", "English"));
-		article.setHitCount(120);
-		article.setEntryDate(new Date());
-		article.setKeywords("keyword123");
-		article.setQuestion("How to restore and clear rom-d on P-663 in English");
-		article.setAnswer("The tag provides metadata about the HTML document. Metadata will not be displayed on the page, but will be machine parsable. Meta elements are typically used to specify page description, keywords, author of the document, last modified, and other metadata. The tag always goes inside the element.");
-		article.setStatus(Status.Draft);
-		article.setNews(Boolean.FALSE);
-		article.setSource(Source.OBM);
 		return "edit";
 	}
 	
@@ -111,6 +118,33 @@ public class EditArticleAction extends ActionSupport implements Preparable, Mode
 		return "create";
 	}
 	
+	public String create() {
+		Attachment attachment = null;
+		if (null != this.upload) {
+			String path = "upload/";
+			String ctx = this.context.getContextPath();
+			try {
+				attachment = this.attachmentService.saveAttchment(ctx+"/"+path, uploadFileName, uploadContentType);
+				
+				String folder = this.context.getRealPath("/")+path;
+				File pt = new File(folder);
+				if (!pt.exists()) {
+					pt.mkdirs();
+				}
+				FileUtils.copyFile(upload, new File(folder,attachment.getFullName()));
+				
+			} catch (IOException e) {
+				logger.error("File Upload Failed", e);
+			}
+			
+			this.article.setFirmware(attachment);
+		}
+		
+		this.articleService.createArticle(article);
+		
+		return this.list();
+	}
+	
 	public String previewSave() {
 		return "preview";
 	}
@@ -119,10 +153,10 @@ public class EditArticleAction extends ActionSupport implements Preparable, Mode
 		this.addActionMessage("Save Success!");
 		return this.list();
 	}
-	public String getOid() {
+	public Long getOid() {
 		return oid;
 	}
-	public void setOid(String oid) {
+	public void setOid(Long oid) {
 		this.oid = oid;
 	}
 	public Article getArticle() {
@@ -131,23 +165,53 @@ public class EditArticleAction extends ActionSupport implements Preparable, Mode
 	public void setArticle(Article article) {
 		this.article = article;
 	}
-	public List<Article> getUnpublishedArticles() {
+
+	public Page<Article> getPage() {
+		return page;
+	}
+
+	public void setPage(Page<Article> page) {
+		this.page = page;
+	}
+
+	public Page<Article> getUnpublishedArticles() {
 		return unpublishedArticles;
 	}
-	public void setUnpublishedArticles(List<Article> unpublishedArticles) {
+
+	public void setUnpublishedArticles(Page<Article> unpublishedArticles) {
 		this.unpublishedArticles = unpublishedArticles;
 	}
-	public List<Article> getDraftArticles() {
+
+	public Page<Article> getDraftArticles() {
 		return draftArticles;
 	}
-	public void setDraftArticles(List<Article> draftArticles) {
+
+	public void setDraftArticles(Page<Article> draftArticles) {
 		this.draftArticles = draftArticles;
 	}
-	public List<Article> getExpiredArticles() {
+
+	public Page<Article> getExpiredArticles() {
 		return expiredArticles;
 	}
-	public void setExpiredArticles(List<Article> expiredArticles) {
+
+	public void setExpiredArticles(Page<Article> expiredArticles) {
 		this.expiredArticles = expiredArticles;
+	}
+
+	public AttachmentService getAttachmentService() {
+		return attachmentService;
+	}
+
+	public void setAttachmentService(AttachmentService attachmentService) {
+		this.attachmentService = attachmentService;
+	}
+
+	public ServletContext getContext() {
+		return context;
+	}
+
+	public void setContext(ServletContext context) {
+		this.context = context;
 	}
 
 	public Article getExample() {
@@ -214,6 +278,42 @@ public class EditArticleAction extends ActionSupport implements Preparable, Mode
 	public void setLanguageService(LanguageService languageService) {
 		this.languageService = languageService;
 	}
-	
+
+	public File getUpload() {
+		return upload;
+	}
+
+	public void setUpload(File upload) {
+		this.upload = upload;
+	}
+
+	public String getUploadFileName() {
+		return uploadFileName;
+	}
+
+	public void setUploadFileName(String uploadFileName) {
+		this.uploadFileName = uploadFileName;
+	}
+
+	public String getUploadContentType() {
+		return uploadContentType;
+	}
+
+	public void setUploadContentType(String uploadContentType) {
+		this.uploadContentType = uploadContentType;
+	}
+
+	public ArticleService getArticleService() {
+		return articleService;
+	}
+
+	public void setArticleService(ArticleService articleService) {
+		this.articleService = articleService;
+	}
+
+	@Override
+	public void setServletContext(ServletContext context) {
+		this.context = context;
+	}
 	
 }

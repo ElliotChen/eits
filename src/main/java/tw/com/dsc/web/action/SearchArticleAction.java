@@ -24,7 +24,7 @@ import com.opensymphony.xwork2.Preparable;
 
 @Component("searchArticleAction")
 @Scope("prototype")
-public class SearchArticleAction extends ActionSupport implements Preparable, RequestAware {
+public class SearchArticleAction extends BaseAction implements Preparable, RequestAware {
 
 	private static final long serialVersionUID = -2112640721474475257L;
 	private static final Logger logger = LoggerFactory.getLogger(SearchArticleAction.class);

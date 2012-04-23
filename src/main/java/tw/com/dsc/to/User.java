@@ -7,6 +7,8 @@ public class User {
 	private String name;
 	private String group;
 	
+	private String ip;
+	
 	private boolean admin;
 	private boolean guest;
 	private boolean l3leader;
@@ -19,16 +21,18 @@ public class User {
 	}
 	
 	public User(String account, String passowrd, String name, String group) {
-		this(account, passowrd, name, group, false, true, false, false, false, false);
+		this(account, passowrd, name, group, "localhost", false, true, false, false, false, false);
 	}
 	
-	public User(String account, String passowrd, String name, String group, 
+	public User(String account, String passowrd, String name, String group, String ip,
 			boolean admin, boolean guest, boolean l3leader, boolean l3user, 
 			boolean l2leader, boolean l2user) {
 		this.account = account;
 		this.password = passowrd;
 		this.name = name;
 		this.group = group;
+		
+		this.ip = ip;
 		
 		this.admin = admin;
 		this.guest = guest;
@@ -111,4 +115,11 @@ public class User {
 		this.l2user = l2user;
 	}
 	
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
 }

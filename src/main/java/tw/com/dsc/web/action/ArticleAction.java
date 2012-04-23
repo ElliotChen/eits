@@ -23,7 +23,7 @@ import com.opensymphony.xwork2.Preparable;
 
 @Component("articleAction")
 @Scope("prototype")
-public class ArticleAction extends ActionSupport implements Preparable, ModelDriven<Article> {
+public class ArticleAction extends BaseAction implements Preparable, ModelDriven<Article> {
 
 	private static final long serialVersionUID = -1334862612883735089L;
 

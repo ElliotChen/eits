@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/commons/base.jsp"%>
-<display:table name="draftArticles" partialList="true" pagesize="5" size="20" form="draftForm" sort="external" id="article" export="true" requestURI="edit!searchDraft.action">
+<display:table name="${draftArticles.result}" partialList="true" pagesize="${draftArticles.pageSize}" size="${draftArticles.totalCount}" form="draftForm" sort="external" id="article" export="true" requestURI="edit!searchDraft.action">
 	<display:caption>Draft Articles</display:caption>
 	<display:column property="articleId.oid" title="ID" />
 	<display:column property="summary" title="Summary" />

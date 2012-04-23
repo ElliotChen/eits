@@ -27,6 +27,7 @@
 	</appender>
 	<logger name="tw.com.dsc" level="DEBUG" />
 	<logger name="org.hibernate.sql" level="DEBUG" />
+	<logger name="org.hibernate.type" level="TRACE" />
 	<logger name="org.springframework.orm" level="DEBUG" />
 	<root level="INFO">
 		<appender-ref ref="stdout" />

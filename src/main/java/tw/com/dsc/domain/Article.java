@@ -102,6 +102,27 @@ public class Article extends AbstractSeqIdObjectAuditable {
 	@Type(type = "yes_no")
 	@Column(name = "ACTIVE", length = 3)
 	private Boolean active;
+	
+	/**Type = SpecInfo**/
+	@Column(name = "TICKET_ID", length = 50)
+	private String ticketId;
+	
+	/** Application and TroubleShooting **/
+	@Column(name = "SCENARIO", length = 100)
+	private String scenario;
+	@Column(name = "STEP", length = 100)
+	private String step;
+	@Column(name = "vERIFICATION", length = 100)
+	private String verification;
+	
+	/**Type = Issue**/
+	@Column(name = "PROBLEM", length = 100)
+	private String problem;
+	@Column(name = "SOLUTION", length = 100)
+	private String solution;
+	@Column(name = "PROCEDURE", length = 100)
+	private String procedure;
+	
 	public ArticleId getArticleId() {
 		return articleId;
 	}
@@ -276,6 +297,62 @@ public class Article extends AbstractSeqIdObjectAuditable {
 
 	public void setActive(Boolean active) {
 		this.active = active;
+	}
+
+	public String getTicketId() {
+		return ticketId;
+	}
+
+	public void setTicketId(String ticketId) {
+		this.ticketId = ticketId;
+	}
+
+	public String getScenario() {
+		return scenario;
+	}
+
+	public void setScenario(String scenario) {
+		this.scenario = scenario;
+	}
+
+	public String getStep() {
+		return step;
+	}
+
+	public void setStep(String step) {
+		this.step = step;
+	}
+
+	public String getVerification() {
+		return verification;
+	}
+
+	public void setVerification(String verification) {
+		this.verification = verification;
+	}
+
+	public String getProblem() {
+		return problem;
+	}
+
+	public void setProblem(String problem) {
+		this.problem = problem;
+	}
+
+	public String getSolution() {
+		return solution;
+	}
+
+	public void setSolution(String solution) {
+		this.solution = solution;
+	}
+
+	public String getProcedure() {
+		return procedure;
+	}
+
+	public void setProcedure(String procedure) {
+		this.procedure = procedure;
 	}
 	
 }

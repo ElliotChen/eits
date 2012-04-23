@@ -105,7 +105,7 @@
 	}
 	
 	function viewArticle(oid) {
-		$('#oid').val(oid);
+		$('#detailOid').val(oid);
 		$('#articleForm').submit();
 	}
 	
@@ -114,7 +114,8 @@
 	}
 	
 	function editArticle(oid) {
-		$('#edit.oid').val(oid);
+		alert(oid);
+		$('#editOid').val(oid);
 		$('#editArticleForm').submit();
 	}
 	
@@ -131,10 +132,10 @@
 	<form id="menuForm" >
 	</form>
 	<s:form id="articleForm" namespace="/" action="searchArticle!detail" theme="simple">
-		<input id="oid" type="hidden" name="oid" />
+		<input id="detailOid" type="hidden" name="oid" />
 	</s:form>
 	<s:form id="editArticleForm" namespace="/" action="edit!load" theme="simple">
-		<input id="edit.oid" type="hidden" name="oid" />
+		<input id="editOid" type="hidden" name="oid" />
 	</s:form>
 	<div id="header" style="height:90px; width: 90%; position: relative;">
 		<tiles:insertAttribute name="header" />

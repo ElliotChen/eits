@@ -17,11 +17,15 @@ public class ArticleLog extends AbstractSeqIdObject {
 		
 	}
 	
-	public ArticleLog(ActionType action, String account, String message) {
+	public ArticleLog(Long articleOid, ActionType action, String account, String message, String ip) {
+		this.articleOid = articleOid;
 		this.action = action;
 		this.account = account;
 		this.message = message;
 	}
+	
+	@Column(name = "ARTICLE_OID")
+	private Long articleOid;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "ACTION", length = 10)
@@ -32,7 +36,9 @@ public class ArticleLog extends AbstractSeqIdObject {
 	
 	@Column(name = "MESSAGE", length = 200)
 	private String message;
-
+	
+	@Column(name = "MESSAGE", length = 40)
+	private String ip;
 	public ActionType getAction() {
 		return action;
 	}
@@ -56,4 +62,21 @@ public class ArticleLog extends AbstractSeqIdObject {
 	public void setMessage(String message) {
 		this.message = message;
 	}
+
+	public Long getArticleOid() {
+		return articleOid;
+	}
+
+	public void setArticleOid(Long articleOid) {
+		this.articleOid = articleOid;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+	
 }

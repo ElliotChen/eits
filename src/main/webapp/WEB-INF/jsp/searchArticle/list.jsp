@@ -7,31 +7,9 @@
 </s:if>
 
 <div id="faqArticleBlock">
-<display:table name="faqArticles" id="article">
-	<display:caption>FAQ</display:caption>
-	<display:column property="articleId.oid" title="ID" />
-	<display:column property="summary" title="Summary" />
-	<display:column title="Publish Date">
-		<fmt:formatDate value="${article.publishDate}" pattern="yyyy/MM/dd"/>
-	</display:column>
-	<display:column property="hitCount" title="Hit Count" />
-	<display:column title="Function" >
-      <a href="javascript:viewArticle('${article.oid}');">View Article</a>
-    </display:column>
-</display:table>
+	<jsp:include page="faq.jsp"></jsp:include>
 </div>
 
 <div id="latestArticleBlock">
-<display:table name="latestArticles" partialList="true" pagesize="5" size="20" form="displaytagform" sort="external" id="article">
-	<display:caption>Latest Articles</display:caption>
-	<display:column property="articleId.oid" title="ID"/>
-	<display:column property="summary" title="Summary"/>
-	<display:column title="Publish Date">
-		<fmt:formatDate value="${article.publishDate}" pattern="yyyy/MM/dd"/>
-	</display:column>
-	<display:column property="hitCount" title="Hit Count" />
-	<display:column title="Function" >
-      <a href="javascript:viewArticle('${article.oid}');">View Article</a>
-    </display:column>
-</display:table>
+	<jsp:include page="latest.jsp"></jsp:include>
 </div>

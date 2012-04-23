@@ -19,7 +19,7 @@ import com.opensymphony.xwork2.Preparable;
 
 @Component("languageAction")
 @Scope("prototype")
-public class LanguageAction extends ActionSupport implements Preparable, ModelDriven<Language> {
+public class LanguageAction extends BaseAction implements Preparable, ModelDriven<Language> {
 	
 	private static final long serialVersionUID = -8698958337744082698L;
 	

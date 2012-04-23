@@ -14,8 +14,7 @@
 					question : {required:true},
 					answer : {required:true},
 					product : {required:true},
-					technology : {required:true},
-					firmware : {required:true}
+					technology : {required:true}
 				} });
 			    return $('#editForm').valid();
 			  }
@@ -24,6 +23,7 @@
 		delete CKEDITOR.instances['answer'];
 		$('#question').ckeditor();
 		$('#answer').ckeditor();
+		switchType();
 		$('#techSelect').multiselect({beforeclose: function(){
 			$('#technology').val($('#techSelect').val());
 		   }, position: {
@@ -44,7 +44,7 @@
 
 	function cloneForm(sourceForm, targetForm) {
 	    $(':input[name]', sourceForm).each(function() {
-	        $('[name=\'' + $(this).attr('name') +'\']', targetForm).val($(this).val())
+	        $('[name=\'' + $(this).attr('name') +'\']', targetForm).val($(this).val());
 	    });
 	}
 	
@@ -52,9 +52,34 @@
 		$('#editForm').val('action', '${ctx}/edit!list.action');
 		$('#editForm').submit();
 	}
+	
+	function switchType() {
+		$('.ArticleType').hide();
+		$('.'+$('#type').val()).show();
+	}
+	
+	function switchSource() {
+		if ('OBM' == $('input:[name="source"]:checked').val()) {
+			$('#projectCode').attr('disabled', 'disabled');
+			$('#level').children('option').each(function() {
+				if('L3CSO' != $(this).val()) {
+					$(this).removeAttr('disabled');
+				}
+			});
+		} else {
+			$('#projectCode').removeAttr('disabled');
+			$('#level').children('option').each(function() {
+				if('L3CSO' != $(this).val()) {
+					$(this).attr('disabled', 'disabled');
+				} else {
+					$(this).attr('selected', 'selected');
+				}
+			});
+		}
+	}
 //-->
 </script>
-<s:form id="editForm" namespace="/" action="edit!save" theme="simple">
+<s:form id="editForm" namespace="/" action="edit!save" theme="simple" method="POST" enctype ="multipart/form-data">
 	<table>
 		<tr>
 			<td>ArticleID:</td>
@@ -62,24 +87,32 @@
 		</tr>
 		<tr>
 			<td>Language:</td>
-			<td><s:select list="{'English', 'Chinese'}"
-					value="article.language" /></td>
+			<td><s:select list="languages" listKey="oid" listValue="name" name="article.language.oid"/></td>
 		</tr>
 		<tr>
 			<td>Source:</td>
 			<td><s:radio name="source" list="@tw.com.dsc.domain.Source@values()"
-					onchange="" /></td>
+					onchange="switchSource()" />
+					<select id="projectCode" name="projectCode" disabled="disabled">
+						<option value="proA">ProjectA</option>
+						<option value="proB">ProjectB</option>
+					</select>
+			</td>
 		</tr>
-
+		<s:if test="user.l3user">
 		<tr>
 			<td>News:</td>
 			<td><s:radio name="news" list="#{'true':'Yes','false':'No'}" />
 			</td>
 		</tr>
-
+		</s:if>
+		<s:else>
+			<input type="hidden" name="news" value="false"/>
+		</s:else>
+		
 		<tr>
 			<td>Type:</td>
-			<td><s:select list="{'General', 'FAQ'}" value="type" /></td>
+			<td><s:select id="type" name="type" list="@tw.com.dsc.domain.ArticleType@values()" listValue="%{getText('enum.ArticleType.'+toString())}" onchange="switchType();" /></td>
 		</tr>
 		<tr>
 			<td>Summary:</td>
@@ -87,9 +120,7 @@
 		</tr>
 		<tr>
 			<td>Expire after:</td>
-			<td><s:select
-					list="#{'0':'One Month','1':'One Season','2':'One Year' }"
-					name="expireType" /></td>
+			<td><s:select list="@tw.com.dsc.domain.ExpireType@values()" listValue="%{getText('enum.ExpireType.'+toString())}" name="expireType" /></td>
 		</tr>
 		<tr>
 			<td>EntryDate:</td>
@@ -99,17 +130,46 @@
 			<td>Keywords:</td>
 			<td><s:textfield name="keywords" maxlength="50" /></td>
 		</tr>
-		<tr>
-			<td>Question:</td>
-			<td><s:textarea id="question" name="question" cols="40" rows="4" cssClass="ckeditor"/></td>
+		<tr class="ArticleType SpecInfo">
+			<td>Ticket ID:</td>
+			<td><s:textfield name="ticketId"/></td>
 		</tr>
-		<tr>
+		<tr class="ArticleType GeneralInfo SpecInfo">
+			<td>Question:</td>
+			<td><s:textarea id="question" name="question" cols="40" rows="4" /></td>
+		</tr>
+		<tr class="ArticleType GeneralInfo SpecInfo">
 			<td>Answer:</td>
 			<td><s:textarea id="answer" name="answer" cols="40" rows="8" /></td>
 		</tr>
+		<tr class="ArticleType Application TroubleShooting">
+			<td>Scenario Description:</td>
+			<td><s:textfield name="scenario"/></td>
+		</tr>
+		<tr class="ArticleType Application TroubleShooting">
+			<td>Setup/Step By Step Procedure:</td>
+			<td><s:textfield name="step"/></td>
+		</tr>
+		<tr class="ArticleType Application TroubleShooting">
+			<td>Verification:</td>
+			<td><s:textfield name="verification"/></td>
+		</tr>
+		
+		<tr class="ArticleType Issue">
+			<td>Problem Description:</td>
+			<td><s:textfield name="problem"/></td>
+		</tr>
+		<tr class="ArticleType Issue">
+			<td>Solution:</td>
+			<td><s:textfield name="solution"/></td>
+		</tr>
+		<tr class="ArticleType Issue">
+			<td>Procedure:</td>
+			<td><s:textfield name="procedure"/></td>
+		</tr>
 		<tr>
 			<td>View Level:</td>
-			<td><s:select list="@tw.com.dsc.domain.Level@values()" listValue="%{getText('enum.Level.'+toString())}" name="level" /></td>
+			<td><s:select id="level" name="level" list="@tw.com.dsc.domain.Level@values()" listValue="%{getText('enum.Level.'+toString())}" /></td>
 		</tr>
 		<tr>
 			<td>Technology:</td>
@@ -139,13 +199,13 @@
 		</tr>
 		<tr>
 			<td>Firmware:</td>
-			<td><s:textfield name="firmware" /></td>
+			<td><s:file name="upload" /> </td>
 		</tr>
 
 		<tr>
 			<td>Save As:</td>
 			<td><s:radio list="{'Final & Publish', 'Final', 'Draft'}"
-					name="state" /></td>
+					name="status" /></td>
 		</tr>
 		<tr>
 			<td></td>

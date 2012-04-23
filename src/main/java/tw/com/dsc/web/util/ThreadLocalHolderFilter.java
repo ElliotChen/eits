@@ -43,6 +43,8 @@ public class ThreadLocalHolderFilter implements Filter {
 			user = new User();
 			user.setAccount("Guest");
 			user.setName("Guest");
+			user.setIp(request.getRemoteHost());
+			
 			session.setAttribute(I18nInterceptor.DEFAULT_SESSION_ATTRIBUTE, java.util.Locale.US);
 		}
 		String rl = (String) httpRequest.getParameter(I18nInterceptor.DEFAULT_PARAMETER);
