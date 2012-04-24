@@ -34,9 +34,15 @@ public class Article extends AbstractSeqIdObjectAuditable {
 	@Column(name = "SOURCE", length = 10)
 	private Source source;
 	
-	@Enumerated(EnumType.STRING)
 	@Column(name = "PROJECT_CODE", length = 20)
 	private String projectCode;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "AGENT_TYPE", length = 10)
+	private AgentType agnetType;
+	
+	@Column(name = "USER_GROUP", length = 20)
+	private String userGroup;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "TYPE", length = 20)
@@ -69,6 +75,10 @@ public class Article extends AbstractSeqIdObjectAuditable {
 	@Column(name = "PUBLISH_DATE")
 	private Date publishDate;
 	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "EXPIRE_DATE")
+	private Date expireDate;
+	
 	@Column(name="KEYWORDS", length=100)
 	private String keywords;
 	
@@ -98,11 +108,11 @@ public class Article extends AbstractSeqIdObjectAuditable {
 	
 	@ManyToOne
 	private Attachment firmware;
-	
+	/*
 	@Type(type = "yes_no")
 	@Column(name = "ACTIVE", length = 3)
 	private Boolean active;
-	
+	*/
 	/**Type = SpecInfo**/
 	@Column(name = "TICKET_ID", length = 50)
 	private String ticketId;
@@ -290,7 +300,7 @@ public class Article extends AbstractSeqIdObjectAuditable {
 	public void setFirmware(Attachment firmware) {
 		this.firmware = firmware;
 	}
-
+	/*
 	public Boolean getActive() {
 		return active;
 	}
@@ -298,7 +308,7 @@ public class Article extends AbstractSeqIdObjectAuditable {
 	public void setActive(Boolean active) {
 		this.active = active;
 	}
-
+	*/
 	public String getTicketId() {
 		return ticketId;
 	}
@@ -354,5 +364,28 @@ public class Article extends AbstractSeqIdObjectAuditable {
 	public void setProcedure(String procedure) {
 		this.procedure = procedure;
 	}
-	
+
+	public Date getExpireDate() {
+		return expireDate;
+	}
+
+	public void setExpireDate(Date expireDate) {
+		this.expireDate = expireDate;
+	}
+
+	public AgentType getAgnetType() {
+		return agnetType;
+	}
+
+	public void setAgnetType(AgentType agnetType) {
+		this.agnetType = agnetType;
+	}
+
+	public String getUserGroup() {
+		return userGroup;
+	}
+
+	public void setUserGroup(String userGroup) {
+		this.userGroup = userGroup;
+	}
 }

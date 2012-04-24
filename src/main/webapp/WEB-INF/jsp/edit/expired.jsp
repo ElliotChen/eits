@@ -10,6 +10,6 @@
 	</display:column>
 	<display:column property="product" title="Prod. Series" />
 	<display:column title="Function">
-      <a href="javascript:editArticle('${article.oid}');">Edit Article</a>
+      <a href="javascript:previewArticle('${article.oid}');">View</a>
     </display:column>
 </display:table>

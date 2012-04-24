@@ -54,7 +54,8 @@
 			<result name="draft">/WEB-INF/jsp/edit/draft.jsp</result>
 			<result name="expired">/WEB-INF/jsp/edit/expired.jsp</result>
 			<result name="edit">/WEB-INF/jsp/edit/edit.jsp</result>
-			<result name="preview">/WEB-INF/jsp/article/preview.jsp</result>
+			<!--<result name="preview">/WEB-INF/jsp/edit/preview.jsp</result>-->
+			<result type="tiles" name="preview">preview</result>
 		</action>
 		
 		<action name="language!*" method="{1}" class="languageAction">

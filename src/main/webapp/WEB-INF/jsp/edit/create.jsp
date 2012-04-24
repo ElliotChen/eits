@@ -6,7 +6,7 @@
 	$().ready(function() {
 		$('#editForm').ajaxForm({
 			target: '#main',
-			  beforeSubmit: function() {
+			beforeSubmit: function() {
 			    $('#editForm').validate({ rules : {
 					id : {required:true, number:true},
 					summary : {required:true},
@@ -38,8 +38,8 @@
 			   }}).multiselectfilter();
 	});
 	function previewSave() {
-		cloneForm('#editForm', '#previewForm');
-		$("#previewForm").submit();
+		cloneForm('#editForm', '#editPreviewForm');
+		$("#editPreviewForm").submit();
 	}
 
 	function cloneForm(sourceForm, targetForm) {
@@ -83,7 +83,7 @@
 	<table>
 		<tr>
 			<td>ArticleID:</td>
-			<td><s:textfield name="articleId.oid" /> ${article.status}</td>
+			<td><s:textfield name="articleId.oid" maxlength="6" size="6"/>(${article.status})</td>
 		</tr>
 		<tr>
 			<td>Language:</td>
@@ -116,7 +116,7 @@
 		</tr>
 		<tr>
 			<td>Summary:</td>
-			<td><s:textfield name="summary" /></td>
+			<td><s:textfield name="summary" size="40" maxlength="50"/></td>
 		</tr>
 		<tr>
 			<td>Expire after:</td>
@@ -128,7 +128,7 @@
 		</tr>
 		<tr>
 			<td>Keywords:</td>
-			<td><s:textfield name="keywords" maxlength="50" /></td>
+			<td><s:textfield name="keywords" size="40" maxlength="50"/></td>
 		</tr>
 		<tr class="ArticleType SpecInfo">
 			<td>Ticket ID:</td>
@@ -144,28 +144,28 @@
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
 			<td>Scenario Description:</td>
-			<td><s:textfield name="scenario"/></td>
+			<td><s:textfield name="scenario" size="40" maxlength="50"/></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
 			<td>Setup/Step By Step Procedure:</td>
-			<td><s:textfield name="step"/></td>
+			<td><s:textfield name="step" size="40" maxlength="50"/></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
 			<td>Verification:</td>
-			<td><s:textfield name="verification"/></td>
+			<td><s:textfield name="verification" size="40" maxlength="50"/></td>
 		</tr>
 		
 		<tr class="ArticleType Issue">
 			<td>Problem Description:</td>
-			<td><s:textfield name="problem"/></td>
+			<td><s:textfield name="problem" size="40" maxlength="50"/></td>
 		</tr>
 		<tr class="ArticleType Issue">
 			<td>Solution:</td>
-			<td><s:textfield name="solution"/></td>
+			<td><s:textfield name="solution" size="40" maxlength="50"/></td>
 		</tr>
 		<tr class="ArticleType Issue">
 			<td>Procedure:</td>
-			<td><s:textfield name="procedure"/></td>
+			<td><s:textfield name="procedure" size="40" maxlength="50"/></td>
 		</tr>
 		<tr>
 			<td>View Level:</td>
@@ -204,8 +204,13 @@
 
 		<tr>
 			<td>Save As:</td>
-			<td><s:radio list="{'Final & Publish', 'Final', 'Draft'}"
-					name="status" /></td>
+			<td>
+				<s:if test="user.leader">
+				<input type="radio" name="statusAction" value="publish" />Final and Publish
+				</s:if>
+				<input type="radio" name="statusAction" value="final" />Final
+				<input type="radio" name="statusAction" value="draft" checked="checked"/>Draft
+			</td>
 		</tr>
 		<tr>
 			<td></td>
@@ -219,7 +224,7 @@
 	</table>
 </s:form>
 
-<s:form id="previewForm" namespace="/" action="edit!previewSave" theme="simple" target="_blank">
+<s:form id="editPreviewForm" namespace="/" action="edit!previewSave" theme="simple" target="_blank">
 	<input type="hidden" name="language" />
 	<input type="hidden" name="type" />
 	<input type="hidden" name="summary" />

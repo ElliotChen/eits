@@ -1,11 +1,15 @@
 package tw.com.dsc.domain;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "T_EITS_ARTICLELOG")
@@ -22,6 +26,7 @@ public class ArticleLog extends AbstractSeqIdObject {
 		this.action = action;
 		this.account = account;
 		this.message = message;
+		this.createdDate = new Date();
 	}
 	
 	@Column(name = "ARTICLE_OID")
@@ -37,8 +42,13 @@ public class ArticleLog extends AbstractSeqIdObject {
 	@Column(name = "MESSAGE", length = 200)
 	private String message;
 	
-	@Column(name = "MESSAGE", length = 40)
+	@Column(name = "IP", length = 40)
 	private String ip;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "CREATE_DATE")
+	private Date createdDate;
+	
 	public ActionType getAction() {
 		return action;
 	}
@@ -77,6 +87,14 @@ public class ArticleLog extends AbstractSeqIdObject {
 
 	public void setIp(String ip) {
 		this.ip = ip;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
 	
 }

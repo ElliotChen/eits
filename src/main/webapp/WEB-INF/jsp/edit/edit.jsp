@@ -14,7 +14,8 @@
 					question : {required:true},
 					answer : {required:true},
 					product : {required:true},
-					technology : {required:true}
+					technology : {required:true},
+					rejectReason : {required:'#rejectOption:selected'}
 				} });
 			    return $('#editForm').valid();
 			  }
@@ -38,8 +39,8 @@
 			   }}).multiselectfilter();
 	});
 	function previewSave() {
-		cloneForm('#editForm', '#previewForm');
-		$("#previewForm").submit();
+		cloneForm('#editForm', '#editPreviewForm');
+		$("#editPreviewForm").submit();
 	}
 
 	function cloneForm(sourceForm, targetForm) {
@@ -80,10 +81,11 @@
 //-->
 </script>
 <s:form id="editForm" namespace="/" action="edit!save" theme="simple" method="POST" enctype ="multipart/form-data">
+	<s:hidden name="oid" />
 	<table>
 		<tr>
 			<td>ArticleID:</td>
-			<td><s:textfield name="articleId.oid" /> ${article.status}</td>
+			<td><s:textfield name="articleId.oid" readonly="readonly" maxlength="6" size="6"/> (${article.status})</td>
 		</tr>
 		<tr>
 			<td>Language:</td>
@@ -116,23 +118,31 @@
 		</tr>
 		<tr>
 			<td>Summary:</td>
-			<td><s:textfield name="summary" /></td>
+			<td><s:textfield name="summary" size="40" maxlength="50"/></td>
 		</tr>
 		<tr>
 			<td>Expire after:</td>
 			<td><s:select list="@tw.com.dsc.domain.ExpireType@values()" listValue="%{getText('enum.ExpireType.'+toString())}" name="expireType" /></td>
 		</tr>
 		<tr>
-			<td>EntryDate:</td>
+			<td>Entry Date:</td>
 			<td><s:date name="entryDate" format="yyyy/MM/dd HH:mm:ss" /></td>
+			<td>Entry User:</td>
+			<td><s:property value="entryUser"/> </td>
+		</tr>
+		<tr>
+			<td>LAST UPDATE:</td>
+			<td><s:date name="updateDate" format="yyyy/MM/dd HH:mm:ss" /></td>
+			<td>Publish DATE:</td>
+			<td><s:date name="publishDate" format="yyyy/MM/dd HH:mm:ss" /></td>
 		</tr>
 		<tr>
 			<td>Keywords:</td>
-			<td><s:textfield name="keywords" maxlength="50" /></td>
+			<td><s:textfield name="keywords" size="40" maxlength="50" /></td>
 		</tr>
 		<tr class="ArticleType SpecInfo">
 			<td>Ticket ID:</td>
-			<td><s:textfield name="ticketId"/></td>
+			<td><s:textfield name="ticketId" maxlength="10"/></td>
 		</tr>
 		<tr class="ArticleType GeneralInfo SpecInfo">
 			<td>Question:</td>
@@ -144,28 +154,28 @@
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
 			<td>Scenario Description:</td>
-			<td><s:textfield name="scenario"/></td>
+			<td><s:textfield name="scenario" size="40" maxlength="50"/></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
 			<td>Setup/Step By Step Procedure:</td>
-			<td><s:textfield name="step"/></td>
+			<td><s:textfield name="step" size="40" maxlength="50"/></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
 			<td>Verification:</td>
-			<td><s:textfield name="verification"/></td>
+			<td><s:textfield name="verification" size="40" maxlength="50"/></td>
 		</tr>
 		
 		<tr class="ArticleType Issue">
 			<td>Problem Description:</td>
-			<td><s:textfield name="problem"/></td>
+			<td><s:textfield name="problem" size="40" maxlength="50"/></td>
 		</tr>
 		<tr class="ArticleType Issue">
 			<td>Solution:</td>
-			<td><s:textfield name="solution"/></td>
+			<td><s:textfield name="solution" size="40" maxlength="50"/></td>
 		</tr>
 		<tr class="ArticleType Issue">
 			<td>Procedure:</td>
-			<td><s:textfield name="procedure"/></td>
+			<td><s:textfield name="procedure" size="40" maxlength="50"/></td>
 		</tr>
 		<tr>
 			<td>View Level:</td>
@@ -203,10 +213,26 @@
 		</tr>
 
 		<tr>
-			<td>Save As:</td>
-			<td><s:radio list="{'Final & Publish', 'Final', 'Draft'}"
-					name="status" /></td>
+			<td>Status Action:</td>
+			<td>
+				<select name="statusAction">
+					<option value="">-------</option>
+					<s:if test="user.leader">
+						<option value="approve">Approve</option>
+						<option id="rejectOption" value="reject">Reject</option>
+					</s:if>
+					<option value="publish">Publish</option>
+				</select>
+			</td>
 		</tr>
+		<s:if test="user.leader">
+		<tr>
+			<td>Reject Reason:</td>
+			<td>
+				<s:textarea name="rejectReason" cols="40" rows="4" />
+			</td>
+		</tr>
+		</s:if>
 		<tr>
 			<td></td>
 			<td></td>
@@ -219,7 +245,7 @@
 	</table>
 </s:form>
 
-<s:form id="previewForm" namespace="/" action="edit!previewSave" theme="simple" target="_blank">
+<s:form id="editPreviewForm" namespace="/" action="edit!previewSave" theme="simple" target="_blank">
 	<input type="hidden" name="language" />
 	<input type="hidden" name="type" />
 	<input type="hidden" name="summary" />

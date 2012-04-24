@@ -9,6 +9,7 @@ import java.util.List;
 import javax.servlet.ServletContext;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.util.ServletContextAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +48,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	private Page<Article> draftArticles;
 	private Page<Article> expiredArticles;
 	
+	private String statusAction;
 	
 	private File upload;
 	private String uploadFileName;
@@ -107,7 +109,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	}
 	
 	public String preCreate() {
-		article.setArticleId(new ArticleId("123456"));
+		article.setArticleId(new ArticleId(""));
 		article.setType(ArticleType.GeneralInfo);
 		article.setLanguage(new Language("EN", "English"));
 		article.setHitCount(0);
@@ -140,7 +142,13 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 			this.article.setFirmware(attachment);
 		}
 		
-		this.articleService.createArticle(article);
+		if ("draft".equals(statusAction)) {
+			this.articleService.draftNewArticle(article);
+		} else if ("final".equals(statusAction)) {
+			this.articleService.finalNewArticle(article);
+		} else if ("publish".equals(statusAction)) {
+			this.articleService.publishNewArticle(article);
+		} 
 		
 		return this.list();
 	}
@@ -149,7 +157,41 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		return "preview";
 	}
 	
+	public String preview() {
+		return "preview";
+	}
+	
 	public String save() {
+		Attachment attachment = null;
+		if (null != this.upload) {
+			String path = "upload/";
+			String ctx = this.context.getContextPath();
+			try {
+				attachment = this.attachmentService.saveAttchment(ctx+"/"+path, uploadFileName, uploadContentType);
+				
+				String folder = this.context.getRealPath("/")+path;
+				File pt = new File(folder);
+				if (!pt.exists()) {
+					pt.mkdirs();
+				}
+				FileUtils.copyFile(upload, new File(folder,attachment.getFullName()));
+				
+			} catch (IOException e) {
+				logger.error("File Upload Failed", e);
+			}
+			
+			this.article.setFirmware(attachment);
+		}
+		
+		this.article.setUpdateDate(new Date());
+		if (StringUtils.isEmpty(this.statusAction)) {
+			this.articleService.saveOrUpdate(article);
+		} else if ("approve".equals(this.statusAction)) {
+		} else if ("reject".equals(this.statusAction)) {
+			
+		} else if ("publish".equals(this.statusAction)) {
+			
+		}
 		this.addActionMessage("Save Success!");
 		return this.list();
 	}
@@ -309,6 +351,14 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 
 	public void setArticleService(ArticleService articleService) {
 		this.articleService = articleService;
+	}
+	
+	public String getStatusAction() {
+		return statusAction;
+	}
+
+	public void setStatusAction(String statusAction) {
+		this.statusAction = statusAction;
 	}
 
 	@Override

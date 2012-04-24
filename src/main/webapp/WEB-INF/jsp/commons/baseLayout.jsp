@@ -50,6 +50,12 @@
             target: '#main',
             success : $.unblockUI
         });
+		/*
+		$('#previewArticleForm').ajaxForm({
+            target: '#main',
+            success : $.unblockUI
+        });
+		*/
 		
 		$('a.login-window').click(function() {
 			
@@ -114,9 +120,13 @@
 	}
 	
 	function editArticle(oid) {
-		alert(oid);
 		$('#editOid').val(oid);
 		$('#editArticleForm').submit();
+	}
+	
+	function previewArticle(oid) {
+		$('#previewOid').val(oid);
+		$('#previewArticleForm').submit();
 	}
 	
 	function displaytagform(formname, fields) {
@@ -136,6 +146,9 @@
 	</s:form>
 	<s:form id="editArticleForm" namespace="/" action="edit!load" theme="simple">
 		<input id="editOid" type="hidden" name="oid" />
+	</s:form>
+	<s:form id="previewArticleForm" namespace="/" target="_blank" action="edit!preview" theme="simple">
+		<input id="previewOid" type="hidden" name="oid" />
 	</s:form>
 	<div id="header" style="height:90px; width: 90%; position: relative;">
 		<tiles:insertAttribute name="header" />

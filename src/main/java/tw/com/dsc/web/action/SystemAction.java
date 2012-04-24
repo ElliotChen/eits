@@ -5,6 +5,7 @@ import java.io.Serializable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import tw.com.dsc.domain.AgentType;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.ThreadLocalHolder;
 
@@ -28,11 +29,13 @@ public class SystemAction extends ActionSupport implements Serializable, Prepara
 			user.setL2leader(true);
 			user.setL2user(true);
 			user.setGuest(false);
+			user.setAgentType(AgentType.L2);
 		} else if (user.getAccount().startsWith("l3")) {
 			user.setL3leader(true);
 			user.setL3user(true);
 			user.setAdmin(true);
 			user.setGuest(false);
+			user.setAgentType(AgentType.L3);
 		} else {
 			this.addActionError("Login Failed! Please check account/password then login again.");
 		}
@@ -44,6 +47,9 @@ public class SystemAction extends ActionSupport implements Serializable, Prepara
 		user = new User();
 		user.setAccount("Guest");
 		user.setName("Guest");
+		user.setAdmin(false);
+		user.setGuest(true);
+		user.setAgentType(AgentType.Guest);
 		ThreadLocalHolder.setUser(user);
 		return "index";
 	}

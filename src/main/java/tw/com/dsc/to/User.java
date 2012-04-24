@@ -1,5 +1,7 @@
 package tw.com.dsc.to;
 
+import tw.com.dsc.domain.AgentType;
+
 
 public class User {
 	private String account;
@@ -9,6 +11,7 @@ public class User {
 	
 	private String ip;
 	
+	private AgentType agentType;
 	private boolean admin;
 	private boolean guest;
 	private boolean l3leader;
@@ -17,14 +20,14 @@ public class User {
 	private boolean l2user;
 	
 	public User() {
-		this("","","","");
+		this("","","","", AgentType.Guest);
 	}
 	
-	public User(String account, String passowrd, String name, String group) {
-		this(account, passowrd, name, group, "localhost", false, true, false, false, false, false);
+	public User(String account, String passowrd, String name, String group, AgentType agentType) {
+		this(account, passowrd, name, group, "localhost", agentType, false, true, false, false, false, false);
 	}
 	
-	public User(String account, String passowrd, String name, String group, String ip,
+	public User(String account, String passowrd, String name, String group, String ip, AgentType agentType,
 			boolean admin, boolean guest, boolean l3leader, boolean l3user, 
 			boolean l2leader, boolean l2user) {
 		this.account = account;
@@ -33,6 +36,8 @@ public class User {
 		this.group = group;
 		
 		this.ip = ip;
+		
+		this.agentType = agentType;
 		
 		this.admin = admin;
 		this.guest = guest;
@@ -114,12 +119,22 @@ public class User {
 	public void setL2user(boolean l2user) {
 		this.l2user = l2user;
 	}
-	
+	public boolean isLeader() {
+		return this.l3leader || this.l2leader;
+	}
 	public String getIp() {
 		return ip;
 	}
 
 	public void setIp(String ip) {
 		this.ip = ip;
+	}
+
+	public AgentType getAgentType() {
+		return agentType;
+	}
+
+	public void setAgentType(AgentType agentType) {
+		this.agentType = agentType;
 	}
 }

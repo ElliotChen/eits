@@ -10,5 +10,15 @@ package tw.com.dsc.domain;
  *
  */
 public enum ExpireType {
-	M1, M2, M3, M6, M12, M24
+	M1(1), M2(2), M3(3), M6(6), M12(12), M24(24);
+	
+	private int month;
+	
+	ExpireType(int month) {
+		this.month = month;
+	}
+	
+	public int getMonth() {
+		return this.month;
+	}
 }

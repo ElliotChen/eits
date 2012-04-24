@@ -14,4 +14,7 @@
     <definition name="searchArticle" extends=".baseLayout">
         <put-attribute name="body" value="/WEB-INF/jsp/commons/blank.jsp" />
     </definition>
+    <definition name="preview" extends=".baseLayout">
+        <put-attribute name="main" value="/WEB-INF/jsp/edit/preview.jsp" />
+    </definition>
 </tiles-definitions>
