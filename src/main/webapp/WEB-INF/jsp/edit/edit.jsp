@@ -85,7 +85,7 @@
 	<table>
 		<tr>
 			<td>ArticleID:</td>
-			<td><s:textfield name="articleId.oid" readonly="readonly" maxlength="6" size="6"/> (${article.status})</td>
+			<td><s:textfield name="articleId.oid" readonly="readonly" maxlength="6" size="6"/> (${article.status} - ${article.agentType})</td>
 		</tr>
 		<tr>
 			<td>Language:</td>
@@ -215,6 +215,7 @@
 		<tr>
 			<td>Status Action:</td>
 			<td>
+				<s:select list="availableStatus" headerKey="" headerValue="-----" name="tx"></s:select>
 				<select name="statusAction">
 					<option value="">-------</option>
 					<s:if test="user.leader">

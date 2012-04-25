@@ -116,7 +116,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		article.setLanguage(new Language("EN", "English"));
 		article.setHitCount(0);
 		article.setEntryDate(new Date());
-		article.setStatus(Status.Draft);
+//		article.setStatus(Status.Draft);
 		article.setNews(Boolean.FALSE);
 		article.setSource(Source.OBM);
 		return "create";
@@ -146,12 +146,14 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		
 		this.article.setArticleId(new ArticleId(articleIdOid));
 		
-		if ("draft".equals(statusAction)) {
+		if ("Draft".equals(statusAction)) {
 			this.articleService.draftNewArticle(article);
-		} else if ("final".equals(statusAction)) {
+		} else if ("WaitForApproving".equals(statusAction)) {
 			this.articleService.finalNewArticle(article);
-		} else if ("publish".equals(statusAction)) {
-			this.articleService.publishNewArticle(article);
+		} else if ("Published".equals(statusAction) ) {
+			this.articleService.publishNewL2Article(article);
+		} else if ("WaitForProofRead".equals(statusAction)) {
+			this.articleService.publishNewL3Article(article);
 		} 
 		
 		return this.list();

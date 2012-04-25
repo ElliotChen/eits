@@ -70,6 +70,7 @@ public class SystemAction extends ActionSupport implements Serializable, Prepara
 			op.setL2user(false);
 			op.setL3leader(true);
 			op.setL3user(true);
+			op.setAgentType(AgentType.L3);
 		} else if ("l3user".equals(this.userRole)) {
 			op.setAdmin(false);
 			op.setGuest(false);
@@ -77,6 +78,7 @@ public class SystemAction extends ActionSupport implements Serializable, Prepara
 			op.setL2user(false);
 			op.setL3leader(false);
 			op.setL3user(true);
+			op.setAgentType(AgentType.L3);
 		} else if ("l2leader".equals(this.userRole)) {
 			op.setAdmin(false);
 			op.setGuest(false);
@@ -84,6 +86,7 @@ public class SystemAction extends ActionSupport implements Serializable, Prepara
 			op.setL2user(true);
 			op.setL3leader(false);
 			op.setL3user(false);
+			op.setAgentType(AgentType.L2);
 		} else if ("l2user".equals(this.userRole)) {
 			op.setAdmin(false);
 			op.setGuest(false);
@@ -91,6 +94,7 @@ public class SystemAction extends ActionSupport implements Serializable, Prepara
 			op.setL2user(true);
 			op.setL3leader(false);
 			op.setL3user(false);
+			op.setAgentType(AgentType.L2);
 		} else {
 			logger.warn("Switch User[{}] to Guest!", op.getAccount());
 			op.setAdmin(false);
@@ -99,6 +103,7 @@ public class SystemAction extends ActionSupport implements Serializable, Prepara
 			op.setL2user(false);
 			op.setL3leader(false);
 			op.setL3user(false);
+			op.setAgentType(AgentType.Guest);
 		}
 		
 		

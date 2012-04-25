@@ -6,7 +6,8 @@ import tw.com.dsc.domain.support.Page;
 public interface ArticleService extends BaseDomainService<Article, Long> {
 	void draftNewArticle(Article article);
 	void finalNewArticle(Article article);
-	void publishNewArticle(Article article);
+	void publishNewL2Article(Article article);
+	void publishNewL3Article(Article article);
 	
 	void finalArticle(Article article);
 	void approve(Article article);

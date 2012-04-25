@@ -205,11 +205,7 @@
 		<tr>
 			<td>Save As:</td>
 			<td>
-				<s:if test="user.leader">
-				<input type="radio" name="statusAction" value="publish" />Final and Publish
-				</s:if>
-				<input type="radio" name="statusAction" value="final" />Final
-				<input type="radio" name="statusAction" value="draft" checked="checked"/>Draft
+				<s:radio name="statusAction" list="availableStatus" listValue="%{getText('create.statuAction.'+toString())}" value="'WaitForApproving'" />
 			</td>
 		</tr>
 		<tr>

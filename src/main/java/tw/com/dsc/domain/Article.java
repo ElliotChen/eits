@@ -1,6 +1,8 @@
 package tw.com.dsc.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +18,9 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import tw.com.dsc.to.User;
+import tw.com.dsc.util.ThreadLocalHolder;
 
 @Entity
 @Table(name = "T_EITS_ARTICLE")
@@ -389,7 +394,63 @@ public class Article extends AbstractSeqIdObjectAuditable {
 		this.userGroup = userGroup;
 	}
 	
-	public Status[] getAvailableStatus() {
-		return new Status[] {Status.Draft};
+	public List<Status> getAvailableStatus() {
+		User op = ThreadLocalHolder.getOperator();
+		ArrayList<Status> result = new ArrayList<Status>();
+		
+		if (null == this.status) {
+			if (AgentType.L2 == op.getAgentType() && op.isL2leader()) {
+				result.add(Status.Published);
+			} else if(AgentType.L3 == op.getAgentType() && op.isL3leader()) {
+				result.add(Status.WaitForProofRead);
+			} else {
+				logger.error("Please check AgentType for Article[{}]", this.oid);
+			}
+			result.add(Status.WaitForApproving);
+			result.add(Status.Draft);
+			return result;
+		}
+		
+		switch (this.status) {
+			case Draft:
+				result.add(Status.WaitForApproving);
+				break;
+			case WaitForApproving:
+				if (AgentType.L2 == this.agentType && op.isL2leader()) {
+					result.add(Status.Published);
+				} else if(AgentType.L3 == this.agentType && op.isL3leader()) {
+					result.add(Status.WaitForProofRead);
+				}
+				break;
+			case WaitForProofRead:
+				if(AgentType.L3 == this.agentType && op.isL3leader()) {
+					result.add(Status.ReadyToUpdate);
+				}
+				break;
+			case ReadyToUpdate:
+				if(AgentType.L3 == this.agentType && op.isL3leader()) {
+					result.add(Status.ReadyToPublish);
+				}
+				break;
+			case ReadyToPublish:
+				if(AgentType.L3 == this.agentType && op.isL3leader()) {
+					result.add(Status.Published);
+				}
+				break;
+			case Published:
+				result.add(Status.WaitForRepublish);
+				break;
+			case WaitForRepublish:
+				if(op.isL2leader() || op.isL3leader()) {
+					result.add(Status.Published);
+				}
+				result.add(Status.Archived);
+				break;
+			case Archived:
+				break;
+			default:
+				break;
+		}
+		return result;
 	}
 }

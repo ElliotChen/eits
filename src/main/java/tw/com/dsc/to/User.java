@@ -141,7 +141,7 @@ public class User {
 	public void setAgentType(AgentType agentType) {
 		this.agentType = agentType;
 	}
-	
+
 	public List<Level> getAvailableLevels() {
 		ArrayList<Level> results = new ArrayList<Level>();
 		if (AgentType.L2 == this.agentType) {
@@ -150,7 +150,6 @@ public class User {
 		} else if (AgentType.L3 == this.agentType) {
 			results.add(Level.Public);
 			results.add(Level.Partner);
-			results.add(Level.Public);
 			results.add(Level.L3CSO);
 		}
 		return results;

@@ -79,6 +79,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	
 	@Transactional(readOnly=false)
 	public void draftNewArticle(Article article) {
+		//TODO Check Status
 		this.newArticle(article, Status.Draft);
 	}
 	
@@ -88,8 +89,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	}
 	
 	@Transactional(readOnly=false)
-	public void publishNewArticle(Article article) {
-		User op = ThreadLocalHolder.getOperator();
+	public void publishNewL2Article(Article article) {
 		Calendar cal = Calendar.getInstance();
 		article.setPublishDate(new Date());
 		if (null == article.getExpireType()) {
@@ -98,13 +98,12 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		}
 		cal.add(Calendar.MONTH, article.getExpireType().getMonth());
 		article.setExpireDate(cal.getTime());
-		if (AgentType.L2 == op.getAgentType()) {
-			this.newArticle(article, Status.Published);
-		} else if (AgentType.L3 == op.getAgentType()) {
-			this.newArticle(article, Status.WaitForProofRead);
-		} else {
-			logger.error("Article's Agent Type could not be empty when Save.");
-		}
+		this.newArticle(article, Status.Published);
+	}
+	
+	@Transactional(readOnly=false)
+	public void publishNewL3Article(Article article) {
+		this.newArticle(article, Status.WaitForProofRead);
 	}
 	
 	protected void newArticle(Article article, Status status) {
@@ -256,7 +255,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		} else if (op.isL2leader() || op.isL2user()) {
 			conds.add(new InCondition("level", new Object[] {Level.Public, Level.Partner}));
 		} else if (op.isL3leader() || op.isL3user()) {
-			conds.add(new InCondition("level", new Object[] {Level.Public, Level.L3CSO}));
+			conds.add(new InCondition("level", new Object[] {Level.Public, Level.Partner, Level.L3CSO}));
 		}
 		
 		return this.dao.listByPage(page);
@@ -290,7 +289,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		} else if (op.isL2leader() || op.isL2user()) {
 			conds.add(new InCondition("level", new Object[] {Level.Public, Level.Partner}));
 		} else if (op.isL3leader() || op.isL3user()) {
-			conds.add(new InCondition("level", new Object[] {Level.Public, Level.L3CSO}));
+			conds.add(new InCondition("level", new Object[] {Level.Public, Level.Partner, Level.L3CSO}));
 		}
 		
 		return this.dao.listByPage(page);
@@ -324,13 +323,22 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		} else if (op.isL2leader() || op.isL2user()) {
 			conds.add(new InCondition("level", new Object[] {Level.Public, Level.Partner}));
 		} else if (op.isL3leader() || op.isL3user()) {
-			conds.add(new InCondition("level", new Object[] {Level.Public, Level.L3CSO}));
+			conds.add(new InCondition("level", new Object[] {Level.Public, Level.Partner, Level.L3CSO}));
+		}
+		
+		if (!op.isLeader()) {
+			conds.add(new SimpleCondition("entryUser", op.getAccount(), OperationEnum.EQ));
 		}
 		
 		return this.dao.listByPage(page);
 	}
 	
 	public Page<Article> searchExpiredPage(Page<Article> page) {
+		User op = ThreadLocalHolder.getOperator();
+		if (!op.isLeader()) {
+			return page;
+		}
+		
 		Article example = page.getExample();
 		
 		if (null == example) {
@@ -350,15 +358,13 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		}
 		*/
 		conds.add(new SimpleCondition("status", Status.WaitForRepublish, OperationEnum.EQ));
-//		conds.add(new InCondition("status", new Object[] {Status.ReadyPublished}));
 		
-		User op = ThreadLocalHolder.getOperator();
 		if (op.isGuest()) {
 			conds.add(new SimpleCondition("level", Level.Public, OperationEnum.EQ));
 		} else if (op.isL2leader() || op.isL2user()) {
 			conds.add(new InCondition("level", new Object[] {Level.Public, Level.Partner}));
 		} else if (op.isL3leader() || op.isL3user()) {
-			conds.add(new InCondition("level", new Object[] {Level.Public, Level.L3CSO}));
+			conds.add(new InCondition("level", new Object[] {Level.Public, Level.Partner, Level.L3CSO}));
 		}
 		
 		
