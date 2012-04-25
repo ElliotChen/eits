@@ -3,6 +3,8 @@ package tw.com.dsc.web.action;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import tw.com.dsc.to.SelectOption;
@@ -11,7 +13,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 @Component("ajaxAction")
 public class AjaxAction extends ActionSupport {
-
+	private static final Logger logger = LoggerFactory.getLogger(AjaxAction.class);
 	private static final long serialVersionUID = 8897370674931995489L;
 	private List<SelectOption> options;
 	

@@ -2,6 +2,8 @@ package tw.com.dsc.web.action;
 
 import java.io.Serializable;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -15,8 +17,11 @@ import com.opensymphony.xwork2.Preparable;
 @Component("systemAction")
 @Scope("prototype")
 public class SystemAction extends ActionSupport implements Serializable, Preparable {
+	private static final Logger logger = LoggerFactory.getLogger(SystemAction.class);
 	private static final long serialVersionUID = -2499466800597200018L;
 	private User user;
+	
+	private String userRole;
 	@Override
 	public void prepare() throws Exception {
 		user = new User();
@@ -54,6 +59,51 @@ public class SystemAction extends ActionSupport implements Serializable, Prepara
 		return "index";
 	}
 
+	public String switchRole() {
+		User op = ThreadLocalHolder.getUser();
+		logger.debug("User[{}] try to switch role to [{}]", op.getAccount(), this.userRole);
+		
+		if ("l3leader".equals(this.userRole)) {
+			op.setAdmin(true);
+			op.setGuest(false);
+			op.setL2leader(false);
+			op.setL2user(false);
+			op.setL3leader(true);
+			op.setL3user(true);
+		} else if ("l3user".equals(this.userRole)) {
+			op.setAdmin(false);
+			op.setGuest(false);
+			op.setL2leader(false);
+			op.setL2user(false);
+			op.setL3leader(false);
+			op.setL3user(true);
+		} else if ("l2leader".equals(this.userRole)) {
+			op.setAdmin(false);
+			op.setGuest(false);
+			op.setL2leader(true);
+			op.setL2user(true);
+			op.setL3leader(false);
+			op.setL3user(false);
+		} else if ("l2user".equals(this.userRole)) {
+			op.setAdmin(false);
+			op.setGuest(false);
+			op.setL2leader(false);
+			op.setL2user(true);
+			op.setL3leader(false);
+			op.setL3user(false);
+		} else {
+			logger.warn("Switch User[{}] to Guest!", op.getAccount());
+			op.setAdmin(false);
+			op.setGuest(true);
+			op.setL2leader(false);
+			op.setL2user(false);
+			op.setL3leader(false);
+			op.setL3user(false);
+		}
+		
+		
+		return null;
+	}
 	public User getUser() {
 		return user;
 	}
@@ -61,6 +111,11 @@ public class SystemAction extends ActionSupport implements Serializable, Prepara
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+	public String getUserRole() {
+		return userRole;
+	}
+	public void setUserRole(String userRole) {
+		this.userRole = userRole;
+	}
 	
 }

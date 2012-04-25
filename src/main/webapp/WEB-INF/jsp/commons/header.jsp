@@ -26,9 +26,12 @@
 			Article#:<input type="text" id="quickOid" name="quickOid" size="6" maxlength="6" />
 		<input type="button" onclick="quickViewArticle();" value="Go" />
 		<br />
-			Role:<select name="role">
-			<option value="L3Admin">L3Admin</option>
-			<option value="L2Admin">L2Admin</option>
+			Role:<select id="userRole" name="userRole" onchange="switchRole()">
+			<option value="">-----</option>
+			<option value="l3leader">L3Admin</option>
+			<option value="l3user">L3User</option>
+			<option value="l2leader">L2Admin</option>
+			<option value="l2user">L2User</option>
 		</select>
 	</s:elseif>
 </div>

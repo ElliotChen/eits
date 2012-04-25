@@ -1,6 +1,10 @@
 package tw.com.dsc.to;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import tw.com.dsc.domain.AgentType;
+import tw.com.dsc.domain.Level;
 
 
 public class User {
@@ -137,4 +141,19 @@ public class User {
 	public void setAgentType(AgentType agentType) {
 		this.agentType = agentType;
 	}
+	
+	public List<Level> getAvailableLevels() {
+		ArrayList<Level> results = new ArrayList<Level>();
+		if (AgentType.L2 == this.agentType) {
+			results.add(Level.Public);
+			results.add(Level.Partner);
+		} else if (AgentType.L3 == this.agentType) {
+			results.add(Level.Public);
+			results.add(Level.Partner);
+			results.add(Level.Public);
+			results.add(Level.L3CSO);
+		}
+		return results;
+	}
+	
 }

@@ -110,6 +110,19 @@
 		});
 	}
 	
+	function switchRole(userRole) {
+		$.ajax({
+			url: '${ctx}/system!switchRole!.action?userRole='+$('#userRole').val(),
+			type: 'POST',
+			success: function(data) {
+				//alert('Switch Role Success!')
+			},
+			error : function() {
+				alert('Loading failed');
+			}
+		});
+	}
+	
 	function viewArticle(oid) {
 		$('#detailOid').val(oid);
 		$('#articleForm').submit();

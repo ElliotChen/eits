@@ -121,7 +121,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		article.setEntryUser(op.getAccount());
 		article.setEntryDate(new Date());
 		article.setHitCount(0);
-		article.setAgnetType(op.getAgentType());
+		article.setAgentType(op.getAgentType());
 		article.setStatus(status);
 		
 		//3.Create Article
@@ -178,6 +178,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	@Transactional(readOnly=false)
 	public void publish(Article article) {
 		User op = ThreadLocalHolder.getOperator();
+		AgentType at = article.getAgentType();
 		
 		Calendar cal = Calendar.getInstance();
 		article.setPublishDate(new Date());
@@ -186,13 +187,30 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			article.setExpireType(ExpireType.M1);
 		}
 		cal.add(Calendar.MONTH, article.getExpireType().getMonth());
-		article.setExpireDate(cal.getTime());
 		article.setUpdateDate(new Date());
-		article.setStatus(Status.Published);
 		
+		if (AgentType.L2 == at) {
+			article.setExpireDate(cal.getTime());
+			article.setStatus(Status.Published);
+		} else if (AgentType.L3 == at) {
+			if (Status.WaitForApproving == article.getStatus()) {
+				article.setStatus(Status.WaitForProofRead);
+			} else if (Status.ReadyToPublish == article.getStatus()) {
+				article.setStatus(Status.Published);
+			} else {
+				logger.error("Incorrect Status[{}] for Publish", article.getStatus());
+			}
+		} else {
+			logger.error("Incorrect AgentType[{}] for Publish!", article.getAgentType());
+		}
 		this.dao.saveOrUpdate(article);
 		
 		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Publish, op.getAccount(), "Publish", op.getIp()));
+	}
+	
+	@Transactional(readOnly=false)
+	public void ready(Article article) {
+		
 	}
 	
 	public void rate(Article article, int point) {

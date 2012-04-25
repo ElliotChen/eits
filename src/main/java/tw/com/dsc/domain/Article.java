@@ -39,7 +39,7 @@ public class Article extends AbstractSeqIdObjectAuditable {
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "AGENT_TYPE", length = 10)
-	private AgentType agnetType;
+	private AgentType agentType;
 	
 	@Column(name = "USER_GROUP", length = 20)
 	private String userGroup;
@@ -373,12 +373,12 @@ public class Article extends AbstractSeqIdObjectAuditable {
 		this.expireDate = expireDate;
 	}
 
-	public AgentType getAgnetType() {
-		return agnetType;
+	public AgentType getAgentType() {
+		return agentType;
 	}
 
-	public void setAgnetType(AgentType agnetType) {
-		this.agnetType = agnetType;
+	public void setAgentType(AgentType agentType) {
+		this.agentType = agentType;
 	}
 
 	public String getUserGroup() {

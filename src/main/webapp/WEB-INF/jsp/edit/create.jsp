@@ -169,7 +169,7 @@
 		</tr>
 		<tr>
 			<td>View Level:</td>
-			<td><s:select id="level" name="level" list="@tw.com.dsc.domain.Level@values()" listValue="%{getText('enum.Level.'+toString())}" /></td>
+			<td><s:select id="level" name="level" list="user.availableLevels" listValue="%{getText('enum.Level.'+toString())}" /></td>
 		</tr>
 		<tr>
 			<td>Technology:</td>
