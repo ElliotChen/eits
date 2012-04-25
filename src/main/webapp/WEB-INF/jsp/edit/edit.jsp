@@ -221,6 +221,7 @@
 						<option value="approve">Approve</option>
 						<option id="rejectOption" value="reject">Reject</option>
 					</s:if>
+					<option value="final">Final</option>
 					<option value="publish">Publish</option>
 				</select>
 			</td>

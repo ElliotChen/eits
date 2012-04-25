@@ -8,7 +8,7 @@
 			target: '#main',
 			beforeSubmit: function() {
 			    $('#editForm').validate({ rules : {
-					id : {required:true, number:true},
+			    	articleIdOid : {required:true, number:true},
 					summary : {required:true},
 					keywords : {required:true},
 					question : {required:true},
@@ -83,7 +83,7 @@
 	<table>
 		<tr>
 			<td>ArticleID:</td>
-			<td><s:textfield name="articleId.oid" maxlength="6" size="6"/>(${article.status})</td>
+			<td><s:textfield name="articleIdOid" maxlength="6" size="6"/>(${article.status})</td>
 		</tr>
 		<tr>
 			<td>Language:</td>

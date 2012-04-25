@@ -12,5 +12,6 @@
 	<display:column property="status" title="Status" />
 	<display:column title="Function">
       <a href="javascript:previewArticle('${article.oid}');">View</a>
+      <a href="javascript:editArticle('${article.oid}');">Edit</a>
     </display:column>
 </display:table>

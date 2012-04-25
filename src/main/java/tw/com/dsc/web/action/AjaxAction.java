@@ -23,10 +23,12 @@ public class AjaxAction extends ActionSupport {
 			options.add(new SelectOption("ma", "ModelA"));
 			options.add(new SelectOption("mb", "ModelB"));
 			options.add(new SelectOption("mc", "ModelC"));
-		} else {
+		} else if ("pb".equals(series)){
 			options.add(new SelectOption("md", "ModelD"));
 			options.add(new SelectOption("me", "ModelE"));
 			options.add(new SelectOption("mf", "ModelF"));
+		} else {
+			options.add(new SelectOption("", "-----"));
 		}
 		
 		return "jsonModels";

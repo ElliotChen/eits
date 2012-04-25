@@ -15,6 +15,7 @@ import tw.com.dsc.dao.ArticleDao;
 import tw.com.dsc.dao.ArticleIdDao;
 import tw.com.dsc.dao.ArticleLogDao;
 import tw.com.dsc.domain.ActionType;
+import tw.com.dsc.domain.AgentType;
 import tw.com.dsc.domain.Article;
 import tw.com.dsc.domain.ArticleId;
 import tw.com.dsc.domain.ArticleLog;
@@ -88,6 +89,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	
 	@Transactional(readOnly=false)
 	public void publishNewArticle(Article article) {
+		User op = ThreadLocalHolder.getOperator();
 		Calendar cal = Calendar.getInstance();
 		article.setPublishDate(new Date());
 		if (null == article.getExpireType()) {
@@ -96,8 +98,13 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		}
 		cal.add(Calendar.MONTH, article.getExpireType().getMonth());
 		article.setExpireDate(cal.getTime());
-		
-		this.newArticle(article, Status.Published);
+		if (AgentType.L2 == op.getAgentType()) {
+			this.newArticle(article, Status.Published);
+		} else if (AgentType.L3 == op.getAgentType()) {
+			this.newArticle(article, Status.WaitForProofRead);
+		} else {
+			logger.error("Article's Agent Type could not be empty when Save.");
+		}
 	}
 	
 	protected void newArticle(Article article, Status status) {
@@ -114,6 +121,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		article.setEntryUser(op.getAccount());
 		article.setEntryDate(new Date());
 		article.setHitCount(0);
+		article.setAgnetType(op.getAgentType());
 		article.setStatus(status);
 		
 		//3.Create Article
@@ -126,7 +134,21 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Create, op.getAccount(), "Create Draft and Final as new", op.getIp()));
 		} else if (Status.Published == status) {
 			this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Create, op.getAccount(), "Create Draft and Publish as public", op.getIp()));
+		} else if (Status.WaitForProofRead == status) {
+			this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Create, op.getAccount(), "Create Draft and Waiting for Proof Read", op.getIp()));
 		}
+	}
+	
+	@Transactional(readOnly=false)
+	public void finalArticle(Article article) {
+		User op = ThreadLocalHolder.getOperator();
+		
+		article.setUpdateDate(new Date());
+		article.setStatus(Status.WaitForApproving);
+		
+		this.dao.saveOrUpdate(article);
+		
+		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Final, op.getAccount(), "Update Status to Waiting for Approving", op.getIp()));
 	}
 	
 	@Transactional(readOnly=false)
@@ -241,8 +263,8 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			}
 		}
 		*/
-		conds.add(new SimpleCondition("status", Status.Published, OperationEnum.EQ));
-//		conds.add(new InCondition("status", new Object[] {Status.ReadyPublished}));
+//		conds.add(new SimpleCondition("status", Status.WaitForApproving, OperationEnum.EQ));
+		conds.add(new InCondition("status", new Object[] {Status.WaitForApproving, Status.WaitForProofRead, Status.ReadyToPublish}));
 		
 		User op = ThreadLocalHolder.getOperator();
 		if (op.isGuest()) {

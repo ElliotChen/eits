@@ -11,5 +11,6 @@
 	<display:column property="product" title="Prod. Series" />
 	<display:column title="Function">
       <a href="javascript:previewArticle('${article.oid}');">View</a>
+      <a href="javascript:editArticle('${article.oid}');">Edit</a>
     </display:column>
 </display:table>

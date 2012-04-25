@@ -388,4 +388,8 @@ public class Article extends AbstractSeqIdObjectAuditable {
 	public void setUserGroup(String userGroup) {
 		this.userGroup = userGroup;
 	}
+	
+	public Status[] getAvailableStatus() {
+		return new Status[] {Status.Draft};
+	}
 }

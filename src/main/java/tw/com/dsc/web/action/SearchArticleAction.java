@@ -15,11 +15,12 @@ import org.springframework.stereotype.Component;
 import tw.com.dsc.domain.Article;
 import tw.com.dsc.domain.ArticleId;
 import tw.com.dsc.domain.Language;
+import tw.com.dsc.domain.support.Page;
+import tw.com.dsc.service.ArticleService;
 import tw.com.dsc.service.LanguageService;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.ThreadLocalHolder;
 
-import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 
 @Component("searchArticleAction")
@@ -31,21 +32,27 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	private Map<String, Object> request;
 	private Article example;
 	private String articleId;
-	private String oid;
+	private Long oid;
 	private Article article;
 
 	private String message;
 
 	private List<Language> languages;
 	private ArrayList<Article> faqArticles;
-	private ArrayList<Article> latestArticles;
+	private Page<Article> latestArticles;
 	
 	@Autowired
 	private LanguageService languageService;
+	@Autowired
+	private ArticleService articleService;
 	@Override
 	public void prepare() throws Exception {
-		example = new Article();
+		if (null != oid) {
+			this.article = this.articleService.findByOid(oid);
+		}
 		
+		example = new Article();
+		latestArticles= new Page<Article>(example);
 	}
 
 	@Override
@@ -62,10 +69,10 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 		logger.error("Do Search");
 		faqArticles = new ArrayList<Article>();
 
-		latestArticles = new ArrayList<Article>();
+		latestArticles = this.articleService.listByPage(latestArticles);
 
 		this.mockArticles(faqArticles);
-		this.mockArticles(latestArticles);
+//		this.mockArticles(latestArticles);
 
 		return "list";
 	}
@@ -137,15 +144,7 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	public void setArticleId(String articleId) {
 		this.articleId = articleId;
 	}
-
-	public String getOid() {
-		return oid;
-	}
-
-	public void setOid(String oid) {
-		this.oid = oid;
-	}
-
+	
 	public Article getArticle() {
 		return article;
 	}
@@ -191,12 +190,28 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 		this.faqArticles = faqArticles;
 	}
 
-	public ArrayList<Article> getLatestArticles() {
+	public Page<Article> getLatestArticles() {
 		return latestArticles;
 	}
 
-	public void setLatestArticles(ArrayList<Article> latestArticles) {
+	public void setLatestArticles(Page<Article> latestArticles) {
 		this.latestArticles = latestArticles;
+	}
+
+	public Long getOid() {
+		return oid;
+	}
+
+	public void setOid(Long oid) {
+		this.oid = oid;
+	}
+
+	public ArticleService getArticleService() {
+		return articleService;
+	}
+
+	public void setArticleService(ArticleService articleService) {
+		this.articleService = articleService;
 	}
 	
 }

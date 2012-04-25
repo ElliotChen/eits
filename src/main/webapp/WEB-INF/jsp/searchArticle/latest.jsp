@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/commons/base.jsp"%>
-<display:table name="latestArticles" partialList="true" pagesize="5" size="20" form="displaytagform" sort="external" id="article">
+<display:table name="${latestArticles.result}" partialList="true" pagesize="${latestArticles.pageSize}" size="${latestArticles.totalCount}" form="displaytagform" sort="external" id="article">
 	<display:caption>Latest Articles</display:caption>
 	<display:column property="articleId.oid" title="ID"/>
 	<display:column property="summary" title="Summary"/>

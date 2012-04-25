@@ -65,7 +65,8 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	private AttachmentService attachmentService;
 	private ServletContext context;
 	private String message;
-	
+	private String rejectReason;
+	private String articleIdOid;
 	@Override
 	public void prepare() throws Exception {
 		if (null != this.oid) {
@@ -74,6 +75,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		this.example = new Article();
 		if (null == this.article) {
 			this.article = new Article();
+			this.article.setArticleId(new ArticleId());
 			this.article.setLanguage(new Language());
 			this.article.setNews(Boolean.FALSE);
 		}
@@ -142,6 +144,8 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 			this.article.setFirmware(attachment);
 		}
 		
+		this.article.setArticleId(new ArticleId(articleIdOid));
+		
 		if ("draft".equals(statusAction)) {
 			this.articleService.draftNewArticle(article);
 		} else if ("final".equals(statusAction)) {
@@ -187,10 +191,13 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		if (StringUtils.isEmpty(this.statusAction)) {
 			this.articleService.saveOrUpdate(article);
 		} else if ("approve".equals(this.statusAction)) {
+			this.articleService.approve(article);
 		} else if ("reject".equals(this.statusAction)) {
-			
+			this.articleService.reject(article, this.rejectReason);
 		} else if ("publish".equals(this.statusAction)) {
-			
+			this.articleService.publish(article);
+		} else if ("final".equals(this.statusAction)) {
+			this.articleService.finalArticle(article);
 		}
 		this.addActionMessage("Save Success!");
 		return this.list();
@@ -359,6 +366,23 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 
 	public void setStatusAction(String statusAction) {
 		this.statusAction = statusAction;
+	}
+	
+	public String getRejectReason() {
+		return rejectReason;
+	}
+
+	public void setRejectReason(String rejectReason) {
+		this.rejectReason = rejectReason;
+	}
+
+	
+	public String getArticleIdOid() {
+		return articleIdOid;
+	}
+
+	public void setArticleIdOid(String articleIdOid) {
+		this.articleIdOid = articleIdOid;
 	}
 
 	@Override

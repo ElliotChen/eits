@@ -7,6 +7,8 @@ public interface ArticleService extends BaseDomainService<Article, Long> {
 	void draftNewArticle(Article article);
 	void finalNewArticle(Article article);
 	void publishNewArticle(Article article);
+	
+	void finalArticle(Article article);
 	void approve(Article article);
 	void reject(Article article, String reason);
 	void publish(Article article);

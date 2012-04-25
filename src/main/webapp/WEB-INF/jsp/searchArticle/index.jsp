@@ -24,7 +24,9 @@ Knowledge Base Language:<s:select list="languages" listKey="oid" listValue="name
 <div id="search">
 	<s:form id="searchForm" namespace="/" action="searchArticle!search" theme="simple">
 Keyword:<input type="text" name="keyword" maxlength="40" />
-Product Series:<select id="exSeries" name="series"><option value="pa">PS1</option>
+Product Series:<select id="exSeries" name="series">
+			<option value="" selected="selected">----</option>
+			<option value="pa">PS1</option>
 			<option value="pb">PS2</option></select>
 Product Model:<select id="exModel" name="model"><option value="">----</option></select>
 		<s:submit value="Search" />
