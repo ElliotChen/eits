@@ -50,7 +50,7 @@
 		<th>Type</th>
 		<td>${article.type}</td>
 		<th>Language</th>
-		<td><s:select list="sameArticles" listKey="oid" listValue="language.name" onchange="viewArticle(this.value)"></s:select></td>
+		<td><s:select list="sameArticles" listKey="oid" listValue="language.name" onchange="viewArticle(this.value)" value="oid"></s:select></td>
 	</tr>
 	<tr>
 		<th>Level</th>

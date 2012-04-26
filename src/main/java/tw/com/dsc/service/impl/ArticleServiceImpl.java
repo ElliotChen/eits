@@ -175,6 +175,42 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	}
 	
 	@Transactional(readOnly=false)
+	public void disable(Article article) {
+		User op = ThreadLocalHolder.getOperator();
+		
+		article.setUpdateDate(new Date());
+		article.setStatus(Status.Deleted);
+		
+		this.dao.saveOrUpdate(article);
+		
+		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Delete, op.getAccount(), "Delete", op.getIp()));
+	}
+	
+	@Transactional(readOnly=false)
+	public void readyUpdate(Article article) {
+		User op = ThreadLocalHolder.getOperator();
+		
+		article.setUpdateDate(new Date());
+		article.setStatus(Status.ReadyToUpdate);
+		
+		this.dao.saveOrUpdate(article);
+		
+		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Approve, op.getAccount(), "Ready to Updated", op.getIp()));
+	}
+	
+	@Transactional(readOnly=false)
+	public void readyPublish(Article article) {
+		User op = ThreadLocalHolder.getOperator();
+		
+		article.setUpdateDate(new Date());
+		article.setStatus(Status.ReadyToPublish);
+		
+		this.dao.saveOrUpdate(article);
+		
+		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Final, op.getAccount(), "Ready to Published", op.getIp()));
+	}
+	
+	@Transactional(readOnly=false)
 	public void publish(Article article) {
 		User op = ThreadLocalHolder.getOperator();
 		AgentType at = article.getAgentType();
@@ -262,6 +298,12 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	}
 	
 	public Page<Article> searchUnpublishedPage(Page<Article> page) {
+		User op = ThreadLocalHolder.getOperator();
+		if (!op.isLeader()) {
+			page.setTotalCount(0);
+			return page;
+		}
+		
 		Article example = page.getExample();
 		
 		if (null == example) {
@@ -283,7 +325,6 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 //		conds.add(new SimpleCondition("status", Status.WaitForApproving, OperationEnum.EQ));
 		conds.add(new InCondition("status", new Object[] {Status.WaitForApproving, Status.WaitForProofRead, Status.ReadyToPublish}));
 		
-		User op = ThreadLocalHolder.getOperator();
 		if (op.isGuest()) {
 			conds.add(new SimpleCondition("level", Level.Public, OperationEnum.EQ));
 		} else if (op.isL2leader() || op.isL2user()) {
@@ -314,8 +355,8 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			}
 		}
 		*/
-		conds.add(new SimpleCondition("status", Status.Draft, OperationEnum.EQ));
-//		conds.add(new InCondition("status", new Object[] {Status.ReadyPublished}));
+//		conds.add(new SimpleCondition("status", Status.Draft, OperationEnum.EQ));
+		conds.add(new InCondition("status", new Object[] {Status.Draft, Status.ReadyToUpdate}));
 		
 		User op = ThreadLocalHolder.getOperator();
 		if (op.isGuest()) {
@@ -336,6 +377,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	public Page<Article> searchExpiredPage(Page<Article> page) {
 		User op = ThreadLocalHolder.getOperator();
 		if (!op.isLeader()) {
+			page.setTotalCount(0);
 			return page;
 		}
 		
@@ -366,7 +408,6 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		} else if (op.isL3leader() || op.isL3user()) {
 			conds.add(new InCondition("level", new Object[] {Level.Public, Level.Partner, Level.L3CSO}));
 		}
-		
 		
 		return this.dao.listByPage(page);
 	}

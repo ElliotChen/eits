@@ -416,6 +416,7 @@ public class Article extends AbstractSeqIdObjectAuditable {
 				result.add(Status.WaitForApproving);
 				break;
 			case WaitForApproving:
+				result.add(Status.Draft);
 				if (AgentType.L2 == this.agentType && op.isL2leader()) {
 					result.add(Status.Published);
 				} else if(AgentType.L3 == this.agentType && op.isL3leader()) {
@@ -428,7 +429,7 @@ public class Article extends AbstractSeqIdObjectAuditable {
 				}
 				break;
 			case ReadyToUpdate:
-				if(AgentType.L3 == this.agentType && op.isL3leader()) {
+				if(AgentType.L3 == this.agentType) {
 					result.add(Status.ReadyToPublish);
 				}
 				break;

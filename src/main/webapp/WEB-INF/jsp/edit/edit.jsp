@@ -219,16 +219,7 @@
 		<tr>
 			<td>Status Action:</td>
 			<td>
-				<s:select list="availableStatus" headerKey="" headerValue="-----" name="tx"></s:select>
-				<select name="statusAction">
-					<option value="">-------</option>
-					<s:if test="user.leader">
-						<option value="approve">Approve</option>
-						<option id="rejectOption" value="reject">Reject</option>
-					</s:if>
-					<option value="final">Final</option>
-					<option value="publish">Publish</option>
-				</select>
+				<s:select name="statusAction" list="availableStatus" listValue="%{getText('edit.statuAction.'+toString())}" headerKey="" headerValue="-----"></s:select>
 			</td>
 		</tr>
 		<s:if test="user.leader">
@@ -245,7 +236,7 @@
 			<td></td>
 			<td><input type="button" value="Cancle" onclick="switchMenu('m3', 'edit!list.action');" />
 			<input type="button" value="Preview"
-				onclick="previewSave()" /> <s:submit value="Submit" cssClass="save" />
+				onclick="previewSave()" /> <s:submit value="Submit" cssClass="save" /> <s:submit value="Delete" cssClass="save" action="edit!disable"/>
 			</td>
 		</tr>
 	</table>

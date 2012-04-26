@@ -196,21 +196,38 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		}
 		
 		this.article.setUpdateDate(new Date());
+		
+/*
+edit.statuAction.Draft = Reject
+edit.statuAction.WaitForApproving = Final
+edit.statuAction.WaitForProofRead = Approve
+edit.statuAction.ReadyToUpdate = ReadyToUpdate
+edit.statuAction.ReadyToPublish = ReadytoPublish
+edit.statuAction.Published = Publish
+ */
+				
 		if (StringUtils.isEmpty(this.statusAction)) {
 			this.articleService.saveOrUpdate(article);
-		} else if ("approve".equals(this.statusAction)) {
+		} else if ("WaitForProofRead".equals(this.statusAction)) {
 			this.articleService.approve(article);
-		} else if ("reject".equals(this.statusAction)) {
+		} else if ("Draft".equals(this.statusAction)) {
 			this.articleService.reject(article, this.rejectReason);
-		} else if ("publish".equals(this.statusAction)) {
+		} else if ("Published".equals(this.statusAction)) {
 			this.articleService.publish(article);
-		} else if ("final".equals(this.statusAction)) {
+		} else if ("WaitForApproving".equals(this.statusAction)) {
 			this.articleService.finalArticle(article);
+		} else if ("ReadyToUpdate".equals(this.statusAction)) {
+			this.articleService.readyUpdate(article);
+		} else if ("ReadyToPublish".equals(this.statusAction)) {
+			this.articleService.readyPublish(article);
 		}
 		this.addActionMessage("Save Success!");
 		return this.list();
 	}
-	
+	public String disable() {
+		this.articleService.disable(article);
+		return this.list();
+	}
 	public String viewLogs() {
 		ArticleLog exam = new ArticleLog();
 		exam.setArticleOid(oid);
