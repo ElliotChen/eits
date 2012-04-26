@@ -38,9 +38,9 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	private String message;
 
 	private List<Language> languages;
-	private ArrayList<Article> faqArticles;
+	private List<Article> faqArticles;
 	private Page<Article> latestArticles;
-	
+	private List<Article> sameArticles;
 	@Autowired
 	private LanguageService languageService;
 	@Autowired
@@ -51,7 +51,12 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 			this.article = this.articleService.findByOid(oid);
 		}
 		
+		if (null == this.article) {
+			article = new Article();
+		}
 		example = new Article();
+		example.setArticleId(new ArticleId());
+		example.setLanguage(new Language());
 		latestArticles= new Page<Article>(example);
 	}
 
@@ -66,7 +71,7 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	}
 
 	public String search() {
-		logger.error("Do Search");
+		logger.debug("Search Condition : ");
 		faqArticles = new ArrayList<Article>();
 
 		latestArticles = this.articleService.listByPage(latestArticles);
@@ -78,32 +83,15 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	}
 
 	public String detail() {
-		article = new Article();
-		if ("1".equals(this.oid) || "2".equals(this.oid)) {
-			article.setOid(1L);
-			article.setArticleId(new ArticleId("123456"));
-			article.setSummary("Summary XYZ");
-			article.setPublishDate(new Date());
-			article.setLanguage(new Language("EN", "English"));
-			article.setHitCount(120);
-
-			article.setQuestion("How to restore and clear rom-d on P-663 in English");
-			article.setAnswer("The tag provides metadata about the HTML document. Metadata will not be displayed on the page, but will be machine parsable. Meta elements are typically used to specify page description, keywords, author of the document, last modified, and other metadata. The tag always goes inside the element.");
-		} else {
-			article.setOid(5L);
-			article.setArticleId(new ArticleId("765432"));
-			article.setSummary("Summary XYZ");
-			article.setPublishDate(new Date());
-			article.setLanguage(new Language("EN", "English"));
-			article.setHitCount(120);
-
-			article.setQuestion("如何回復與清除P-663的ROM ? Chinese");
-			article.setAnswer("你知道這是中文就好！");
-		}
+		example.setArticleId(this.article.getArticleId());
+		
+		sameArticles = this.articleService.listByExample(example);
+		
+		this.articleService.addHitCount(article);
 		return "detail";
 	}
 
-	private void mockArticles(final ArrayList<Article> list) {
+	private void mockArticles(final List<Article> list) {
 		Article a1 = new Article();
 		a1.setOid(1L);
 		a1.setArticleId(new ArticleId("123456"));
@@ -182,11 +170,11 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 		this.languageService = languageService;
 	}
 
-	public ArrayList<Article> getFaqArticles() {
+	public List<Article> getFaqArticles() {
 		return faqArticles;
 	}
 
-	public void setFaqArticles(ArrayList<Article> faqArticles) {
+	public void setFaqArticles(List<Article> faqArticles) {
 		this.faqArticles = faqArticles;
 	}
 
@@ -213,5 +201,12 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	public void setArticleService(ArticleService articleService) {
 		this.articleService = articleService;
 	}
-	
+
+	public List<Article> getSameArticles() {
+		return sameArticles;
+	}
+
+	public void setSameArticles(List<Article> sameArticles) {
+		this.sameArticles = sameArticles;
+	}
 }

@@ -19,16 +19,17 @@
 	});
 
 </script>
-Knowledge Base Language:<s:select list="languages" listKey="oid" listValue="name" name="example.language.oid"/>
+
 <br />
 <div id="search">
 	<s:form id="searchForm" namespace="/" action="searchArticle!search" theme="simple">
-Keyword:<input type="text" name="keyword" maxlength="40" />
+Knowledge Base Language:<s:select list="languages" listKey="oid" listValue="name" name="example.language.oid"/>
+Keyword:<s:textfield name="example.keywords" maxlength="40"/>
 Product Series:<select id="exSeries" name="series">
 			<option value="" selected="selected">----</option>
 			<option value="pa">PS1</option>
 			<option value="pb">PS2</option></select>
-Product Model:<select id="exModel" name="model"><option value="">----</option></select>
+Product Model:<select id="exModel" name="example.product"><option value="">----</option></select>
 		<s:submit value="Search" />
 	</s:form>
 	

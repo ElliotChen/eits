@@ -37,31 +37,32 @@
 <s:form id="transform" action="article!preCopy" theme="simple">
 	<input type="hidden" name="oid" value="${article.oid}" />
 <table>
-	<tr><td><input type="submit" value="Translate"/></td></tr>
+	<tr><td><input type="submit" value="Translate"/><input type="button" value="View Log" onclick="viewArticleLog('${oid}')"/></td></tr>
 </table>
 </s:form>
 </s:if>
+
+<s:form id="detailform" action="article!preCopy" theme="simple">
 <table style="border: none">
 	<tr>
 		<th>Article ID</th>
-		<td>${articleId.oid}</td>
+		<td>${article.articleId.oid}</td>
 		<th>Type</th>
-		<td>General Type</td>
+		<td>${article.type}</td>
 		<th>Language</th>
-		<td><s:select list="#{'1':'English','5':'Chinese'}"
-				value="oid" onchange="viewArticle(this.value);" theme="simple"/></td>
+		<td><s:select list="sameArticles" listKey="oid" listValue="language.name" onchange="viewArticle(this.value)"></s:select></td>
 	</tr>
 	<tr>
 		<th>Level</th>
-		<td>CSO</td>
+		<td>${article.level}</td>
 		<th>Firmware</th>
-		<td>n/a</td>
+		<td><c:if test="${null != article.firmware}"><a href="${article.firmware.uri}" target="_blank">${article.firmware.name}</a></c:if></td>
 		<th>&nbsp;</th>
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
 		<th>View</th>
-		<td>5</td>
+		<td>${article.hitCount}</td>
 		<th>Rating</th>
 		<td>1</td>
 		<th>&nbsp;</th>
@@ -102,3 +103,4 @@
 	</fieldset>
 	
 </div>
+</s:form>

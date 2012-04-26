@@ -8,7 +8,9 @@
 	<display:column property="name" title="Language" />
 	<display:column title="Function">
 		<a href="javascript:editLanguage('${language.oid}','${language.name}');">Edit</a>
-		<a href="javascript:deleteLanguage('${language.oid}');">Delete</a>
+		<c:if test="${!language.system}">
+			<a href="javascript:deleteLanguage('${language.oid}');">Delete</a>
+		</c:if>
 	</display:column>
 	<display:footer>
 		<tr>

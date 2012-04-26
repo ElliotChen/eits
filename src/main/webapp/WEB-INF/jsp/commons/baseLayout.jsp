@@ -142,6 +142,11 @@
 		$('#previewArticleForm').submit();
 	}
 	
+	function viewArticleLog(oid) {
+		$('#viewLogOid').val(oid);
+		$('#viewLogForm').submit();
+	}
+	
 	function displaytagform(formname, fields) {
 		$('#'+formname+' .distagArea').children().remove();
 		for (j=fields.length-1;j>=0;j--) {
@@ -162,6 +167,9 @@
 	</s:form>
 	<s:form id="previewArticleForm" namespace="/" target="_blank" action="edit!preview" theme="simple">
 		<input id="previewOid" type="hidden" name="oid" />
+	</s:form>
+	<s:form id="viewLogForm" namespace="/" target="_blank" action="edit!viewLogs" theme="simple">
+		<input id="viewLogOid" type="hidden" name="oid" />
 	</s:form>
 	<div id="header" style="height:90px; width: 90%; position: relative;">
 		<tiles:insertAttribute name="header" />

@@ -5,13 +5,17 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import tw.com.dsc.dao.ArticleLogDao;
 import tw.com.dsc.domain.ArticleLog;
 import tw.com.dsc.service.ArticleLogService;
 
+@Service("e")
+@Transactional(readOnly=true)
 public class ArticleLogServiceImpl extends AbstractDomainService<ArticleLogDao, ArticleLog, Long> implements ArticleLogService {
-private static final Logger logger = LoggerFactory.getLogger(ArticleLogServiceImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(ArticleLogServiceImpl.class);
 	
 	@Autowired
 	private ArticleLogDao dao;

@@ -370,5 +370,11 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		
 		return this.dao.listByPage(page);
 	}
+	
+	@Transactional(readOnly=false)
+	public void addHitCount(Article article) {
+		article.setHitCount(article.getHitCount()+1);
+		this.dao.saveOrUpdate(article);
+	}
 
 }

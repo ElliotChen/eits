@@ -13,7 +13,6 @@ import tw.com.dsc.service.LanguageService;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.ThreadLocalHolder;
 
-import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 
@@ -84,6 +83,11 @@ public class LanguageAction extends BaseAction implements Preparable, ModelDrive
 		return this.list();
 	}
 
+	public String ajaxCheckDuplicate() {
+		Boolean result = this.languageService.checkDuplicate(example);
+		this.renderText(result.toString());
+		return null;
+	}
 	public String getOid() {
 		return oid;
 	}

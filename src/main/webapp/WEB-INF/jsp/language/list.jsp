@@ -14,7 +14,20 @@
             beforeSubmit: function() {
 			    $('#updateForm').validate(
 			    	{ rules : {
-						name : {required:true} 
+						name : {
+							required:true,
+							remote:{
+								url:'${ctx}/language!ajaxCheckDuplicate.action',
+								data:{
+									oid:function() { 
+										return $("#moid").val(); 
+									},
+									name: function() { 
+										return $("#mname").val(); 
+										}
+									}
+								}
+			    			}
 			    		} 
 			    	});
 			    return $('#updateForm').valid();
@@ -27,7 +40,20 @@
 			    $('#createForm').validate(
 			    	{ rules : {
 			    		oid : {required:true},
-						name : {required:true} 
+			    		name : {
+							required:true,
+							remote:{
+								url:'${ctx}/language!ajaxCheckDuplicate.action',
+								data:{
+									oid:function() { 
+										return $("#cmoid").val(); 
+									},
+									name: function() { 
+										return $("#cmname").val(); 
+										}
+									}
+								}
+			    			}
 			    		} 
 			    	});
 			    return $('#createForm').valid();

@@ -24,94 +24,16 @@
 
 </head>
 <body>
-<table>
-	<tr>
-		<th>Article ID</th>
-		<td>${oid}</td>
-		<td>Language</td>
-		<td>${language.name}</td>
-	</tr>
-	<tr>
-		<th>Type</th>
-		<td>${type}</td>
-		<th>&nbsp;</th>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<th>Summary</th>
-		<td>${summary}</td>
-		<th>&nbsp;</th>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<th>Keywords</th>
-		<td>${keywords}</td>
-		<th>&nbsp;</th>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<th>Entry User</th>
-		<td>${entryUser}</td>
-		<th>&nbsp;</th>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<th>Entry Date</th>
-		<td><fmt:formatDate value="${entryDate}" pattern="yyyy/MM/dd HH:mm:ss" /></td>
-		<th>&nbsp;</th>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<th>Last Update</th>
-		<td><fmt:formatDate value="${updateDate}" pattern="yyyy/MM/dd HH:mm:ss" /></td>
-		<th>&nbsp;</th>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<th>Publish Date</th>
-		<td><fmt:formatDate value="${publishDate}" pattern="yyyy/MM/dd HH:mm:ss" /></td>
-		<th>&nbsp;</th>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<th>View Level</th>
-		<td>${level}</td>
-		<th>&nbsp;</th>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td colspan="4">
-			<fieldset>
-				<legend>Question:</legend>
-				${question}
-			</fieldset>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="4">
-			<fieldset>
-				<legend>Answer:</legend>
-				${answer}
-			</fieldset>
-		</td>
-	</tr>
-	<tr>
-		<td>Technology:</td>
-		<td><s:textarea name="technology" cols="40" rows="4" readonly="readonly"/></td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>Product:</td>
-		<td><s:textarea name="product" cols="40" rows="4" readonly="readonly"/></td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td colspan="4" align="right"><input type="button" value="close" onclick="window.close()"/></td>
-	</tr>
-</table>
-
+<display:table name="${articleLogs}" id="log">
+	<display:caption>Article Logs</display:caption>
+	<display:column title="Create Date">
+		<fmt:formatDate value="${log.createdDate}" pattern="yyyy/MM/dd"/>
+	</display:column>
+	<display:column property="action" title="Action" />
+	<display:column property="account" title="User" />
+	<display:column property="message" title="Message" />
+	<display:column property="ip" title="IP" />
+</display:table>
 </body>
 </html>
 

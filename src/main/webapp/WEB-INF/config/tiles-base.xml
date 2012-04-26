@@ -15,6 +15,8 @@
         <put-attribute name="body" value="/WEB-INF/jsp/commons/blank.jsp" />
     </definition>
     <definition name="preview" extends=".baseLayout">
+    	<put-attribute name="header" value="/WEB-INF/jsp/commons/blank.jsp" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/commons/blank.jsp" />
         <put-attribute name="main" value="/WEB-INF/jsp/edit/preview.jsp" />
     </definition>
 </tiles-definitions>

@@ -83,7 +83,7 @@
 	<table>
 		<tr>
 			<td>ArticleID:</td>
-			<td><s:textfield name="articleIdOid" maxlength="6" size="6"/>(${article.status})</td>
+			<td><s:textfield name="articleIdOid" maxlength="6" size="6"/>(Draft)</td>
 		</tr>
 		<tr>
 			<td>Language:</td>

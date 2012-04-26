@@ -17,14 +17,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import tw.com.dsc.domain.ActionType;
 import tw.com.dsc.domain.Article;
 import tw.com.dsc.domain.ArticleId;
+import tw.com.dsc.domain.ArticleLog;
 import tw.com.dsc.domain.ArticleType;
 import tw.com.dsc.domain.Attachment;
 import tw.com.dsc.domain.Language;
 import tw.com.dsc.domain.Source;
 import tw.com.dsc.domain.Status;
 import tw.com.dsc.domain.support.Page;
+import tw.com.dsc.service.ArticleLogService;
 import tw.com.dsc.service.ArticleService;
 import tw.com.dsc.service.AttachmentService;
 import tw.com.dsc.service.LanguageService;
@@ -55,7 +58,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	private String uploadContentType;
 	
 	private List<Language> languages;
-	
+	private List<ArticleLog> articleLogs;
 	@Autowired
 	private LanguageService languageService;
 	
@@ -63,6 +66,9 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	private ArticleService articleService;
 	@Autowired
 	private AttachmentService attachmentService;
+	
+	@Autowired
+	private ArticleLogService articleLogService;
 	private ServletContext context;
 	private String message;
 	private String rejectReason;
@@ -204,6 +210,22 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		this.addActionMessage("Save Success!");
 		return this.list();
 	}
+	
+	public String viewLogs() {
+		ArticleLog exam = new ArticleLog();
+		exam.setArticleOid(oid);
+		this.articleLogs = this.articleLogService.listByExample(exam);
+		return "log";
+	}
+	
+	public String viewRejectLogs() {
+		ArticleLog exam = new ArticleLog();
+		exam.setArticleOid(oid);
+		exam.setAction(ActionType.Reject);
+		this.articleLogs = this.articleLogService.listByExample(exam);
+		return "log";
+	}
+	
 	public Long getOid() {
 		return oid;
 	}
@@ -330,6 +352,14 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		this.languageService = languageService;
 	}
 
+	public ArticleLogService getArticleLogService() {
+		return articleLogService;
+	}
+
+	public void setArticleLogService(ArticleLogService articleLogService) {
+		this.articleLogService = articleLogService;
+	}
+
 	public File getUpload() {
 		return upload;
 	}
@@ -385,6 +415,14 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 
 	public void setArticleIdOid(String articleIdOid) {
 		this.articleIdOid = articleIdOid;
+	}
+
+	public List<ArticleLog> getArticleLogs() {
+		return articleLogs;
+	}
+
+	public void setArticleLogs(List<ArticleLog> articleLogs) {
+		this.articleLogs = articleLogs;
 	}
 
 	@Override

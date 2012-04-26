@@ -80,6 +80,7 @@
 	}
 //-->
 </script>
+<input type="button" value="View Log" onclick="viewArticleLog('${oid}')"/>
 <s:form id="editForm" namespace="/" action="edit!save" theme="simple" method="POST" enctype ="multipart/form-data">
 	<s:hidden name="oid" />
 	<table>
@@ -209,7 +210,10 @@
 		</tr>
 		<tr>
 			<td>Firmware:</td>
-			<td><s:file name="upload" /> </td>
+			<td><s:file name="upload"/>
+			
+			<c:if test="${null != firmware}"><a href="${firmware.uri}" target="_blank">${firmware.name}</a></c:if>
+			</td>
 		</tr>
 
 		<tr>
