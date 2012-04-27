@@ -34,8 +34,8 @@
 //-->
 </script>
 <s:if test="!@tw.com.dsc.util.ThreadLocalHolder@getUser().guest">
-<s:form id="transform" action="article!preCopy" theme="simple">
-	<input type="hidden" name="oid" value="${article.oid}" />
+<s:form id="transform" action="edit!preCopy" theme="simple">
+	<input type="hidden" name="sourceOid" value="${article.oid}" />
 <table>
 	<tr><td><input type="submit" value="Translate"/><input type="button" value="View Log" onclick="viewArticleLog('${oid}')"/></td></tr>
 </table>

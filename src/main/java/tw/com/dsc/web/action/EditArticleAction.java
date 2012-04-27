@@ -44,7 +44,9 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	private static final long serialVersionUID = 626334753779135892L;
 
 	private Long oid;
+	private Long sourceOid; //Copy Source Article Oid
 	private Article article;
+	private Article sarticle; //Copy Source
 	private Article example;
 	private Page<Article> page;
 	private Page<Article> unpublishedArticles;
@@ -85,6 +87,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 			this.article.setLanguage(new Language());
 			this.article.setNews(Boolean.FALSE);
 		}
+		
 		page = new Page<Article>(example);
 		this.languages = this.languageService.listAll();
 	}
@@ -171,6 +174,13 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	
 	public String preview() {
 		return "preview";
+	}
+	
+	public String preCopy() {
+		if(null != this.sourceOid) {
+			this.sarticle = this.articleService.findByOid(sourceOid);
+		}
+		return "copy";
 	}
 	
 	public String save() {
@@ -440,6 +450,22 @@ edit.statuAction.Published = Publish
 
 	public void setArticleLogs(List<ArticleLog> articleLogs) {
 		this.articleLogs = articleLogs;
+	}
+
+	public Long getSourceOid() {
+		return sourceOid;
+	}
+
+	public void setSourceOid(Long sourceOid) {
+		this.sourceOid = sourceOid;
+	}
+
+	public Article getSarticle() {
+		return sarticle;
+	}
+
+	public void setSarticle(Article sarticle) {
+		this.sarticle = sarticle;
 	}
 
 	@Override

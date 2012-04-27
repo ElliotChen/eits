@@ -54,6 +54,7 @@
 			<result name="draft">/WEB-INF/jsp/edit/draft.jsp</result>
 			<result name="expired">/WEB-INF/jsp/edit/expired.jsp</result>
 			<result name="edit">/WEB-INF/jsp/edit/edit.jsp</result>
+			<result name="copy">/WEB-INF/jsp/edit/copy.jsp</result>
 			<result name="log">/WEB-INF/jsp/edit/log.jsp</result>
 			<!--<result name="preview">/WEB-INF/jsp/edit/preview.jsp</result>-->
 			<result type="tiles" name="preview">preview</result>
