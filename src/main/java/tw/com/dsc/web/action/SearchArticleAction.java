@@ -74,7 +74,7 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 		logger.debug("Search Condition : ");
 		faqArticles = new ArrayList<Article>();
 
-		latestArticles = this.articleService.listByPage(latestArticles);
+		latestArticles = this.articleService.searchPublicArticlesPage(latestArticles);
 
 		this.mockArticles(faqArticles);
 //		this.mockArticles(latestArticles);
