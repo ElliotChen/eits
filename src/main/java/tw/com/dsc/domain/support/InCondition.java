@@ -1,5 +1,7 @@
 package tw.com.dsc.domain.support;
 
+import java.util.Arrays;
+
 public class InCondition implements Condition {
 	private String fieldName;
 	private Object[] values;
@@ -41,4 +43,9 @@ public class InCondition implements Condition {
 		return ConditionEnum.In;
 	}
 
+	@Override
+	public String toString() {
+		return "InCondition [fieldName=" + fieldName + ", values=" + Arrays.toString(values) + "]";
+	}
+	
 }

@@ -31,6 +31,7 @@ import tw.com.dsc.service.ArticleLogService;
 import tw.com.dsc.service.ArticleService;
 import tw.com.dsc.service.AttachmentService;
 import tw.com.dsc.service.LanguageService;
+import tw.com.dsc.to.JsonMsg;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.ThreadLocalHolder;
 
@@ -75,6 +76,10 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	private String message;
 	private String rejectReason;
 	private String articleIdOid;
+	
+	private Integer ratingNumber;
+	private String suggestion;
+	private JsonMsg jsonMsg;
 	@Override
 	public void prepare() throws Exception {
 		if (null != this.oid) {
@@ -251,6 +256,18 @@ edit.statuAction.Published = Publish
 		exam.setAction(ActionType.Reject);
 		this.articleLogs = this.articleLogService.listByExample(exam);
 		return "log";
+	}
+	
+	public String rating() {
+		this.articleService.rate(article, ratingNumber);
+		this.jsonMsg = new JsonMsg("Thanks for your rating for articleId");
+		return "rating";
+	}
+	
+	public String suggest() {
+		this.articleService.comment(article, suggestion);
+		this.jsonMsg = new JsonMsg("Thanks for your suggestion, ["+this.suggestion+"]");
+		return "rating";
 	}
 	
 	public Long getOid() {
@@ -466,6 +483,30 @@ edit.statuAction.Published = Publish
 
 	public void setSarticle(Article sarticle) {
 		this.sarticle = sarticle;
+	}
+	
+	public Integer getRatingNumber() {
+		return ratingNumber;
+	}
+
+	public void setRatingNumber(Integer ratingNumber) {
+		this.ratingNumber = ratingNumber;
+	}
+
+	public String getSuggestion() {
+		return suggestion;
+	}
+
+	public void setSuggestion(String suggestion) {
+		this.suggestion = suggestion;
+	}
+
+	public JsonMsg getJsonMsg() {
+		return jsonMsg;
+	}
+
+	public void setJsonMsg(JsonMsg jsonMsg) {
+		this.jsonMsg = jsonMsg;
 	}
 
 	@Override

@@ -12,7 +12,7 @@
 		$('#exSeries').selectChain({
 		    target: $('#exModel'),
 		    type:'POST',
-		    data:$('#exSeries').val(),
+		    data:{series : $('#exSeries').val()},
 		    url: '${ctx}/ajaxFunction!ajaxModels.action'
 		}).trigger('change');
 		

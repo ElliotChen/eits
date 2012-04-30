@@ -16,6 +16,7 @@ import tw.com.dsc.domain.support.LikeMode;
 import tw.com.dsc.domain.support.OperationEnum;
 import tw.com.dsc.domain.support.SimpleCondition;
 import tw.com.dsc.service.LanguageService;
+import tw.com.dsc.util.ThreadLocalHolder;
 
 @Service("languageService")
 @Transactional(readOnly=true)
@@ -41,6 +42,7 @@ public class LanguageServiceImpl extends AbstractDomainService<LanguageDao, Lang
 	@Override
 	@Transactional(readOnly=false)
 	public void delete(Language language) {
+		logger.info("User[{}] try to delete Lanaguage[{}]", ThreadLocalHolder.getOperator().getAccount(), language);
 		if (language.getSystem()) {
 			logger.warn("System Default Language can't not be deleted.");
 			return;

@@ -50,4 +50,10 @@ public class SimpleCondition implements Condition {
 		return ConditionEnum.Simple;
 	}
 
+	@Override
+	public String toString() {
+		return "SimpleCondition [fieldName=" + fieldName + ", value=" + value + ", operation=" + operation + "]";
+	}
+
+	
 }

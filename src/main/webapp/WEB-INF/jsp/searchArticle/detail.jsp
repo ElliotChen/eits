@@ -8,7 +8,7 @@
 		});
 	});
 	function rating() {
-		$.post('/eits/article!rating.action', {
+		$.post('/eits/edit!rating.action', {
 			oid : '${article.oid}',
 			ratingNumber : $('input[name=ratingNumber]:checked').val()
 		}, function(data) {
@@ -22,7 +22,7 @@
 			alert('Suggestion could not be empty!');
 			return false;
 		}
-		$.post('/eits/article!suggest.action', {
+		$.post('/eits/edit!suggest.action', {
 			oid : '${article.oid}',
 			suggestion : $('#suggestion').val()
 		}, function(data) {
@@ -64,7 +64,7 @@
 		<th>View</th>
 		<td>${article.hitCount}</td>
 		<th>Rating</th>
-		<td>1</td>
+		<td>${article.ratingInfo}</td>
 		<th>&nbsp;</th>
 		<td>&nbsp;</td>
 	</tr>

@@ -1,13 +1,16 @@
 package tw.com.dsc.to;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import tw.com.dsc.domain.AgentType;
 import tw.com.dsc.domain.Level;
 
 
 public class User {
+	private static final Logger logger = LoggerFactory.getLogger(User.class);
 	private String account;
 	private String password;
 	private String name;
@@ -18,8 +21,10 @@ public class User {
 	private AgentType agentType;
 	private boolean admin;
 	private boolean guest;
+	private boolean l3admin;
 	private boolean l3leader;
 	private boolean l3user;
+	private boolean l2admin;
 	private boolean l2leader;
 	private boolean l2user;
 	
@@ -28,12 +33,12 @@ public class User {
 	}
 	
 	public User(String account, String passowrd, String name, String group, AgentType agentType) {
-		this(account, passowrd, name, group, "localhost", agentType, false, true, false, false, false, false);
+		this(account, passowrd, name, group, "localhost", agentType, false, true, false, false, false, false, false, false);
 	}
 	
 	public User(String account, String passowrd, String name, String group, String ip, AgentType agentType,
-			boolean admin, boolean guest, boolean l3leader, boolean l3user, 
-			boolean l2leader, boolean l2user) {
+			boolean admin, boolean guest, boolean l3admin, boolean l3leader, boolean l3user, 
+			boolean l2admin, boolean l2leader, boolean l2user) {
 		this.account = account;
 		this.password = passowrd;
 		this.name = name;
@@ -45,8 +50,10 @@ public class User {
 		
 		this.admin = admin;
 		this.guest = guest;
+		this.l3admin = l3admin;
 		this.l3leader = l3leader;
 		this.l3user = l3user;
+		this.l2admin = l2admin;
 		this.l2leader = l2leader;
 		this.l2user = l2user;
 	}
@@ -141,18 +148,45 @@ public class User {
 	public void setAgentType(AgentType agentType) {
 		this.agentType = agentType;
 	}
+	
+	public boolean isL3admin() {
+		return l3admin;
+	}
 
-	public List<Level> getAvailableLevels() {
+	public void setL3admin(boolean l3admin) {
+		this.l3admin = l3admin;
+	}
+
+	public boolean isL2admin() {
+		return l2admin;
+	}
+
+	public void setL2admin(boolean l2admin) {
+		this.l2admin = l2admin;
+	}
+
+	public Level[] getAvailableLevels() {
 		ArrayList<Level> results = new ArrayList<Level>();
+		results.add(Level.Public);
 		if (AgentType.L2 == this.agentType) {
-			results.add(Level.Public);
 			results.add(Level.Partner);
 		} else if (AgentType.L3 == this.agentType) {
-			results.add(Level.Public);
 			results.add(Level.Partner);
 			results.add(Level.L3CSO);
+		} else {
+			
 		}
-		return results;
+		
+		Level[] ls = new Level[results.size()];
+		ls = results.toArray(ls);
+		logger.debug("Get Available Levels[{}] for User[{}]", ls, this);
+		return ls;
 	}
+
+	@Override
+	public String toString() {
+		return "User [account=" + account + ", agentType=" + agentType + "]";
+	}
+	
 	
 }

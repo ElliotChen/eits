@@ -14,6 +14,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 import org.slf4j.Logger;
@@ -137,6 +138,17 @@ public class Article extends AbstractSeqIdObjectAuditable {
 	private String solution;
 	@Column(name = "PROCEDURE", length = 100)
 	private String procedure;
+	
+	@Column(name = "RATE_1")
+	private Integer rate1;
+	@Column(name = "RATE_2")
+	private Integer rate2;
+	@Column(name = "RATE_3")
+	private Integer rate3;
+	@Column(name = "RATE_4")
+	private Integer rate4;
+	@Column(name = "RATE_5")
+	private Integer rate5;
 	
 	public ArticleId getArticleId() {
 		return articleId;
@@ -394,32 +406,85 @@ public class Article extends AbstractSeqIdObjectAuditable {
 		this.userGroup = userGroup;
 	}
 	
+	public Integer getRate1() {
+		return rate1;
+	}
+
+	public void setRate1(Integer rate1) {
+		this.rate1 = rate1;
+	}
+
+	public Integer getRate2() {
+		return rate2;
+	}
+
+	public void setRate2(Integer rate2) {
+		this.rate2 = rate2;
+	}
+
+	public Integer getRate3() {
+		return rate3;
+	}
+
+	public void setRate3(Integer rate3) {
+		this.rate3 = rate3;
+	}
+
+	public Integer getRate4() {
+		return rate4;
+	}
+
+	public void setRate4(Integer rate4) {
+		this.rate4 = rate4;
+	}
+
+	public Integer getRate5() {
+		return rate5;
+	}
+
+	public void setRate5(Integer rate5) {
+		this.rate5 = rate5;
+	}
+
 	public List<Status> getAvailableStatus() {
 		User op = ThreadLocalHolder.getOperator();
 		ArrayList<Status> result = new ArrayList<Status>();
 		
 		if (null == this.status) {
+			
 			if (AgentType.L2 == op.getAgentType() && op.isL2leader()) {
 				result.add(Status.Published);
 			} else if(AgentType.L3 == op.getAgentType() && op.isL3leader()) {
 				result.add(Status.WaitForProofRead);
 			} else {
-				logger.error("Please check AgentType for Article[{}]", this.oid);
+				//logger.error("Please check AgentType[{}] for User[{}]", op.getAgentType(), op.getAccount());
 			}
-			result.add(Status.WaitForApproving);
-			result.add(Status.Draft);
+			
+			if (!op.isGuest()) {
+				result.add(Status.WaitForApproving);
+				result.add(Status.Draft);
+			} else {
+				logger.warn("Guest can't get any available status!");
+			}
+			
+			logger.debug("No status in this Article[{}] for Agent[{}], available status are [{}].", new Object[] {oid,op.getAgentType(), result});
 			return result;
 		}
 		
 		switch (this.status) {
 			case Draft:
 				result.add(Status.WaitForApproving);
-				break;
-			case WaitForApproving:
-				result.add(Status.Draft);
 				if (AgentType.L2 == this.agentType && op.isL2leader()) {
 					result.add(Status.Published);
+				}
+				break;
+			case WaitForApproving:
+				
+				if (AgentType.L2 == this.agentType && op.isL2leader()) {
+					result.add(Status.Draft);
+					result.add(Status.Published);
 				} else if(AgentType.L3 == this.agentType && op.isL3leader()) {
+					result.add(Status.Draft);
 					result.add(Status.WaitForProofRead);
 				}
 				break;
@@ -439,12 +504,12 @@ public class Article extends AbstractSeqIdObjectAuditable {
 				}
 				break;
 			case Published:
-				result.add(Status.WaitForRepublish);
+				if (op.isLeader()) {
+					result.add(Status.WaitForRepublish);
+				}
 				break;
 			case WaitForRepublish:
-				if(op.isL2leader() || op.isL3leader()) {
-					result.add(Status.Published);
-				}
+				result.add(Status.Published);
 				result.add(Status.Archived);
 				break;
 			case Archived:
@@ -452,6 +517,22 @@ public class Article extends AbstractSeqIdObjectAuditable {
 			default:
 				break;
 		}
+		
+		logger.debug("Current status in Article[{}] is [{}] and available status are [{}]", new Object[] {this, this.status, result});
 		return result;
 	}
+
+	public String getRatingInfo() {
+		Integer total = this.rate1 + this.rate2 + this.rate3 + this.rate4 + this.rate5;
+		Float totalPoints = 1f*this.rate1 + 2f*this.rate2 + 3f*this.rate3 + 4f*this.rate4 + 5f*this.rate5;
+		
+		return (totalPoints/total)+" ("+total+" votes)";
+	}
+	
+	@Override
+	public String toString() {
+		return "Article [articleId=" + articleId + ", language=" + language + ", userGroup=" + userGroup + ", type="
+				+ type + ", status=" + status + ", level=" + level + ", oid=" + oid + "]";
+	}
+	
 }

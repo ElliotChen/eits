@@ -84,6 +84,7 @@ public abstract class AbstractBaseDao<T extends Identifiable<Oid>, Oid extends S
 	}
 
 	public void saveOrUpdate(T entity) {
+		this.preUpdate(entity);
 		this.sessionFactory.getCurrentSession().saveOrUpdate(entity);
 	}
 
@@ -103,7 +104,7 @@ public abstract class AbstractBaseDao<T extends Identifiable<Oid>, Oid extends S
 	}
 
 	protected Example createExample(T example, MatchMode matchMode) {
-		Example criteriaExample = Example.create(example);
+		Example criteriaExample = Example.create(example).ignoreCase();
 		if (null != matchMode) {
 			criteriaExample.enableLike(matchMode);
 		}

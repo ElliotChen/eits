@@ -64,7 +64,7 @@
 		copyField('technology');
 		copyField('product');
 		copyField('firmware');
-		copyField('level');
+		//copyField('level');
 	}
 	function copyField(fname) {
 		$('[name =\''+fname+'\']', $("#copyEditForm")).val($('[name =\'sarticle.'+fname+'\']', $("#copyEditForm")).val());
@@ -101,6 +101,7 @@
 	<input type="hidden" name="projectCode" value="${sarticle.projectCode}" />
 	<input type="hidden" name="expireType" value="${sarticle.expireType}" />
 	<input type="hidden" name="keywords" value="${sarticle.keywords}" />
+	<input type="hidden" name="level" value="Public" />
 	<table>
 		<tr>
 			<td colspan="4" style="text-align: center;"><input type="button" value="Copy All" onclick="copyAll();" /></td>
@@ -225,12 +226,14 @@
 			<td><input type="button" value="Copy >>" onclick="copyField('firmware')"/></td>
 			<td><s:textfield name="firmware" /></td>
 		</tr>
+		<!-- 
 		<tr>
 			<td>View Level:</td>
 			<td><s:select id="slevel" name="sarticle.level" list="user.availableLevels" listValue="%{getText('enum.Level.'+toString())}" value="sarticle.level" disabled="true"/></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('level')"/></td>
 			<td><s:select id="level" name="level" list="user.availableLevels" listValue="%{getText('enum.Level.'+toString())}" value="sarticle.level"/></td>
 		</tr>
+		 -->
 		<tr>
 			<td>Save As:</td>
 			<td></td>

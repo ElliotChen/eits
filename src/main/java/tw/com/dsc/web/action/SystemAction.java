@@ -1,7 +1,5 @@
 package tw.com.dsc.web.action;
 
-import java.io.Serializable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -11,12 +9,11 @@ import tw.com.dsc.domain.AgentType;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.ThreadLocalHolder;
 
-import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 
 @Component("systemAction")
 @Scope("prototype")
-public class SystemAction extends ActionSupport implements Serializable, Preparable {
+public class SystemAction extends BaseAction implements Preparable {
 	private static final Logger logger = LoggerFactory.getLogger(SystemAction.class);
 	private static final long serialVersionUID = -2499466800597200018L;
 	private User user;

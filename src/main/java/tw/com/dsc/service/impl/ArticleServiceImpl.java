@@ -79,17 +79,32 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	
 	@Transactional(readOnly=false)
 	public void draftNewArticle(Article article) {
-		//TODO Check Status
+		User op = ThreadLocalHolder.getOperator();
+		if (!article.getAvailableStatus().contains(Status.Draft)) {
+			logger.warn("Article[{}] can't be drafted for User[{}]", article, op.getAccount());
+			return;
+		}
 		this.newArticle(article, Status.Draft);
 	}
 	
 	@Transactional(readOnly=false)
 	public void finalNewArticle(Article article) {
+		User op = ThreadLocalHolder.getOperator();
+		if (!article.getAvailableStatus().contains(Status.WaitForApproving)) {
+			logger.warn("Article[{}] can't be approved for User[{}]", article, op.getAccount());
+			return;
+		}
 		this.newArticle(article, Status.WaitForApproving);
 	}
 	
 	@Transactional(readOnly=false)
 	public void publishNewL2Article(Article article) {
+		User op = ThreadLocalHolder.getOperator();
+		if (!article.getAvailableStatus().contains(Status.Published)) {
+			logger.warn("Article[{}] can't be published for User[{}]", article, op.getAccount());
+			return;
+		}
+		
 		Calendar cal = Calendar.getInstance();
 		article.setPublishDate(new Date());
 		if (null == article.getExpireType()) {
@@ -103,6 +118,11 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	
 	@Transactional(readOnly=false)
 	public void publishNewL3Article(Article article) {
+		User op = ThreadLocalHolder.getOperator();
+		if (!article.getAvailableStatus().contains(Status.WaitForProofRead)) {
+			logger.warn("Article[{}] can't be proof read for User[{}]", article, op.getAccount());
+			return;
+		}
 		this.newArticle(article, Status.WaitForProofRead);
 	}
 	
@@ -123,6 +143,13 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		article.setAgentType(op.getAgentType());
 		article.setStatus(status);
 		
+		//Rate
+		article.setRate1(0);
+		article.setRate2(0);
+		article.setRate3(0);
+		article.setRate4(0);
+		article.setRate5(0);
+		
 		//3.Create Article
 		this.dao.create(article);
 		
@@ -141,7 +168,10 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	@Transactional(readOnly=false)
 	public void finalArticle(Article article) {
 		User op = ThreadLocalHolder.getOperator();
-		
+		if (!article.getAvailableStatus().contains(Status.WaitForProofRead)) {
+			logger.warn("Article[{}] can't be finalized for User[{}]", article, op.getAccount());
+			return;
+		}
 		article.setUpdateDate(new Date());
 		article.setStatus(Status.WaitForApproving);
 		
@@ -153,7 +183,10 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	@Transactional(readOnly=false)
 	public void approve(Article article) {
 		User op = ThreadLocalHolder.getOperator();
-		
+		if (!article.getAvailableStatus().contains(Status.WaitForProofRead)) {
+			logger.warn("Article[{}] can't be approved for User[{}]", article, op.getAccount());
+			return;
+		}
 		article.setUpdateDate(new Date());
 		article.setStatus(Status.WaitForProofRead);
 		
@@ -165,7 +198,10 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	@Transactional(readOnly=false)
 	public void reject(Article article, String reason) {
 		User op = ThreadLocalHolder.getOperator();
-		
+		if (!article.getAvailableStatus().contains(Status.Draft)) {
+			logger.warn("Article[{}] can't be rejected for User[{}]", article, op.getAccount());
+			return;
+		}
 		article.setUpdateDate(new Date());
 		article.setStatus(Status.Draft);
 		
@@ -189,7 +225,10 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	@Transactional(readOnly=false)
 	public void readyUpdate(Article article) {
 		User op = ThreadLocalHolder.getOperator();
-		
+		if (!article.getAvailableStatus().contains(Status.ReadyToUpdate)) {
+			logger.warn("Article[{}] can't be ReadyToUpdate for User[{}]", article, op.getAccount());
+			return;
+		}
 		article.setUpdateDate(new Date());
 		article.setStatus(Status.ReadyToUpdate);
 		
@@ -201,7 +240,10 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	@Transactional(readOnly=false)
 	public void readyPublish(Article article) {
 		User op = ThreadLocalHolder.getOperator();
-		
+		if (!article.getAvailableStatus().contains(Status.ReadyToPublish)) {
+			logger.warn("Article[{}] can't be ReadyToPublish for User[{}]", article, op.getAccount());
+			return;
+		}
 		article.setUpdateDate(new Date());
 		article.setStatus(Status.ReadyToPublish);
 		
@@ -212,9 +254,10 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	
 	@Transactional(readOnly=false)
 	public void publish(Article article) {
+		
 		User op = ThreadLocalHolder.getOperator();
 		AgentType at = article.getAgentType();
-		
+		logger.info("User[{}] try to publish a Article[{}]", op.getAccount(), article);
 		Calendar cal = Calendar.getInstance();
 		article.setPublishDate(new Date());
 		if (null == article.getExpireType()) {
@@ -247,10 +290,33 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	public void ready(Article article) {
 		
 	}
-	
+	@Transactional(readOnly=false)
 	public void rate(Article article, int point) {
-		
+		User op = ThreadLocalHolder.getOperator();
+		logger.debug("User[{}] rate [{}] to Article[{}]", new Object[] {op.getAccount(), point, article.getOid()});
+		switch(point) {
+		case 1:
+			article.setRate1(article.getRate1()+1);
+			break;
+		case 2:
+			article.setRate2(article.getRate2()+1);
+			break;
+		case 3:
+			article.setRate3(article.getRate3()+1);
+			break;
+		case 4:
+			article.setRate4(article.getRate4()+1);
+			break;
+		case 5:
+			article.setRate5(article.getRate5()+1);
+			break;
+		default:
+			logger.error("Unknow rate number[{}] for Article[{}]", point, article.getOid());
+		}
+		this.dao.saveOrUpdate(article);
+		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Rating, op.getAccount(), String.valueOf(point), op.getIp()));
 	}
+	@Transactional(readOnly=false)
 	public void comment(Article article, String comment) {
 		User op = ThreadLocalHolder.getOperator();
 		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Comment, op.getAccount(), "Comment:"+comment, op.getIp()));
@@ -284,15 +350,9 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		}
 		
 		example.setStatus(Status.Published);
-		
+		page.setDescOrders(new String[] {"publishDate"});
 		User op = ThreadLocalHolder.getOperator();
-		if (op.isGuest()) {
-			conds.add(new SimpleCondition("level", Level.Public, OperationEnum.EQ));
-		} else if (op.isL2leader() || op.isL2user()) {
-			conds.add(new InCondition("level", new Object[] {Level.Public, Level.Partner}));
-		} else if (op.isL3leader() || op.isL3user()) {
-			conds.add(new InCondition("level", new Object[] {Level.Public, Level.Partner, Level.L3CSO}));
-		}
+		conds.add(new InCondition("level", new Object[] {op.getAvailableLevels()}));
 		
 		return this.dao.listByPage(page);
 	}
@@ -324,15 +384,14 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		*/
 //		conds.add(new SimpleCondition("status", Status.WaitForApproving, OperationEnum.EQ));
 		conds.add(new InCondition("status", new Object[] {Status.WaitForApproving, Status.WaitForProofRead, Status.ReadyToPublish}));
-		
-		if (op.isGuest()) {
-			conds.add(new SimpleCondition("level", Level.Public, OperationEnum.EQ));
-		} else if (op.isL2leader() || op.isL2user()) {
-			conds.add(new InCondition("level", new Object[] {Level.Public, Level.Partner}));
-		} else if (op.isL3leader() || op.isL3user()) {
-			conds.add(new InCondition("level", new Object[] {Level.Public, Level.Partner, Level.L3CSO}));
+		conds.add(new InCondition("level", op.getAvailableLevels()));
+		if (op.isAdmin()) {
+			
+		} else if (op.isLeader()) {
+			conds.add(new SimpleCondition("group", op.getGroup(), OperationEnum.EQ));
+		} else {
+			conds.add(new SimpleCondition("entryUser", op.getAccount(), OperationEnum.EQ));
 		}
-		
 		return this.dao.listByPage(page);
 	}
 	
@@ -359,15 +418,12 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		conds.add(new InCondition("status", new Object[] {Status.Draft, Status.ReadyToUpdate}));
 		
 		User op = ThreadLocalHolder.getOperator();
-		if (op.isGuest()) {
-			conds.add(new SimpleCondition("level", Level.Public, OperationEnum.EQ));
-		} else if (op.isL2leader() || op.isL2user()) {
-			conds.add(new InCondition("level", new Object[] {Level.Public, Level.Partner}));
-		} else if (op.isL3leader() || op.isL3user()) {
-			conds.add(new InCondition("level", new Object[] {Level.Public, Level.Partner, Level.L3CSO}));
-		}
-		
-		if (!op.isLeader()) {
+		conds.add(new InCondition("level", op.getAvailableLevels()));
+		if (op.isAdmin()) {
+			
+		} else if (op.isLeader()) {
+			conds.add(new SimpleCondition("group", op.getGroup(), OperationEnum.EQ));
+		} else {
 			conds.add(new SimpleCondition("entryUser", op.getAccount(), OperationEnum.EQ));
 		}
 		
@@ -376,10 +432,6 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	
 	public Page<Article> searchExpiredPage(Page<Article> page) {
 		User op = ThreadLocalHolder.getOperator();
-		if (!op.isLeader()) {
-			page.setTotalCount(0);
-			return page;
-		}
 		
 		Article example = page.getExample();
 		
@@ -392,30 +444,22 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		}
 		
 		List<Condition> conds = page.getConditions();
-		/*
-		if (null != page.getConditions()) {
-			for (Condition cond : page.getConditions()) {
-				conds.add(cond);
-			}
+		// 4/26 Glavine : 1. 當 KB expired 後 , 要出現在此 KB creater 的 Unpublished Article List 中
+		if (!op.isLeader()) {
+			conds.add(new SimpleCondition("entryUser", op.getAccount(), OperationEnum.EQ));
 		}
-		*/
 		conds.add(new SimpleCondition("status", Status.WaitForRepublish, OperationEnum.EQ));
-		
-		if (op.isGuest()) {
-			conds.add(new SimpleCondition("level", Level.Public, OperationEnum.EQ));
-		} else if (op.isL2leader() || op.isL2user()) {
-			conds.add(new InCondition("level", new Object[] {Level.Public, Level.Partner}));
-		} else if (op.isL3leader() || op.isL3user()) {
-			conds.add(new InCondition("level", new Object[] {Level.Public, Level.Partner, Level.L3CSO}));
-		}
+		conds.add(new InCondition("level", op.getAvailableLevels()));
 		
 		return this.dao.listByPage(page);
 	}
 	
 	@Transactional(readOnly=false)
 	public void addHitCount(Article article) {
+		User op = ThreadLocalHolder.getOperator();
 		article.setHitCount(article.getHitCount()+1);
 		this.dao.saveOrUpdate(article);
+		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.View,  op.getAccount(), "View Detail.", op.getIp()));
 	}
 
 }

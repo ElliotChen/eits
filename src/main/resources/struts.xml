@@ -31,7 +31,7 @@
 			<result name="update">/WEB-INF/jsp/searchArticle/update.jsp</result>
 			<result name="reload" type="redirect">/employee.action</result>
 		</action>
-
+		<!-- 
 		<action name="article!*" method="{1}" class="articleAction">
 			<result name="rating" type="json">
 				<param name="root">jsonMsg</param>
@@ -46,7 +46,7 @@
 				<param name="oid">${oid}</param>
 			</result>
 		</action>
-		
+		 -->
 		<action name="edit!*" method="{1}" class="editAction">
 			<result name="list">/WEB-INF/jsp/edit/list.jsp</result>
 			<result name="create">/WEB-INF/jsp/edit/create.jsp</result>
@@ -58,6 +58,9 @@
 			<result name="log">/WEB-INF/jsp/edit/log.jsp</result>
 			<!--<result name="preview">/WEB-INF/jsp/edit/preview.jsp</result>-->
 			<result type="tiles" name="preview">preview</result>
+			<result name="rating" type="json">
+				<param name="root">jsonMsg</param>
+			</result>
 		</action>
 		
 		<action name="language!*" method="{1}" class="languageAction">
