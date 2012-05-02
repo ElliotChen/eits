@@ -1,7 +1,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/commons/base.jsp"%>
-<div id="loginDiv" style="margin-left: 500px;">
-	<s:if test="@tw.com.dsc.util.ThreadLocalHolder@getUser().guest">
+<div class="logo_zyxel">
+	<a href="/"><img src="${ctx}/images/logo_zyxel.jpg" alt="ZyXEL Logo"></a>
+</div>
+<div id="loginDiv" style="margin-left: 600px;">
+	<s:if test="user.guest">
 			Hi! <s:property value="@tw.com.dsc.util.ThreadLocalHolder@getUser().name" />
 		<a href="#login-box" class="login-window">Login</a>
 		<div id="login-box" class="login-popup">
@@ -17,7 +20,7 @@
 			</form>
 		</div>
 	</s:if>
-	<s:elseif test="!@tw.com.dsc.util.ThreadLocalHolder@getUser().guest">
+	<s:elseif test="!user.guest">
 		<a href="#" onclick="switchMenu('m3', 'edit!list.action');">Home</a>
 		<a href="${ctx}/system!logout.action">Logout</a>
 		<br />

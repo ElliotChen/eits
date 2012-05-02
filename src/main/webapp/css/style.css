@@ -1,0 +1,162 @@
+/**
+ * 樣式表
+ * @date      : 2011-04-12
+ * @author    : JasonWu
+ * @version   : 2.1
+ * @memo      : 1. CSS 名稱統一小寫，除 ZyXEL 規定之名稱除外。
+ *              2. 名稱 _ 後面接特殊性英文。
+ */
+ 
+@CHARSET "utf-8";
+
+/* Reset */
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,caption,tbody,tfoot,thead,th{border:0;outline:0;vertical-align:baseline;background:transparent;margin:0;padding:0;}
+
+/* Fix */
+.fix{clear:both;width:100%;}
+.fix:after {content: ".";display:block;height: 0;clear: both;visibility: hidden;}
+.clear{clear:both;}
+
+/* Common & HTML */
+body {font-family:vedana,arial;}
+a {text-decoration:none;}
+a:hover {text-decoration:underline}
+input[type=button] {color:#fff; background-color:#367fb0; border: 1px solid; border-color: #767d9a; height:24px;
+	filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#367fb0',EndColorStr='#125c8c');}
+input[type=submit] {color:#fff; background-color:#367fb0; border: 1px solid; border-color: #767d9a; height:24px;
+	filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#367fb0',EndColorStr='#125c8c');}
+h1{ font-family:Verdana, Geneva, sans-serif; font-size:30px; font-weight:bold; color: #069;}
+h2{ font-family:Verdana, Geneva, sans-serif; font-size:24px; font-weight:bold; color: #069;}
+h3{ font-family:Verdana, Geneva, sans-serif; font-size:18px; font-weight:bold; color: #069;}
+h4{ font-family:Verdana, Geneva, sans-serif; font-size:12px; color: #333;}
+
+/* Layout */
+.page {width:970px; margin:0 auto; background-color:#fff;}
+.fixedpage {width:910px; margin:0 auto; background-color:#fff;}
+.banner {height:100px;}
+.login {height:445px; margin-bottom:10px;}
+.contents {min-height:300px;}
+.leftcontent{float:left; background:#fff url('../images/leftcontentbg.jpg') repeat-y; min-height:300px; width:150px;}
+.rightcontent{margin-left:160px; background:#f4f5f4; min-height:300px; margin-top:40px; }
+.footer {margin-top:10px;}
+
+/* Logo (ZyXEL) */
+.logo_zyxel {float:left;}
+
+/* Logo (e-shop) */
+.logo_eshop {float:right; margin-top:10px; font-family:Verdana, Geneva, sans-serif;	font-size:36px;	font-weight:bolder;	font-style:italic;	color:#00579e;}
+.logo_eshop a {color:#00579e;}
+.logo_eshop a:hover {text-decoration:none;}
+
+/* Login (Flash) */
+.loginflash {float:left;}
+
+/* Login (Table) */
+.mainLogin {float:left; height:445px; width:240px; background:#fff url('../images/login_formbg.jpg') no-repeat;}
+.mainLogin a {color:#333;}
+.mainLogin a:hover {color:#666;}
+.loginTable {margin:325px 0 0 10px; font-size:12px;}
+.loginTableRow td{line-height:28px;}
+.loginbutton {padding-left:84px;}
+.forgetpwd {padding-left:64px;}
+
+/* Login (Table) Flash */
+.flashmainLogin {float:left; height:445px; width:240px; background:#fff url('../images/login_formbg_flash.jpg') no-repeat;}
+.flashmainLogin a {color:#333;}
+.flashmainLogin a:hover {color:#666;}
+
+/* Top Menu */
+.topmenu {float:left;}
+.mainmenu {float:left; margin:50px 0 3px 10px; list-style:none;}
+.mainmenu li {float:left; font-size:13px; font-weight:bold;}
+.mainmenu li a {color:#333; margin:0 10px;}
+.mainmenu li a:hover {color:#666;}
+.mainmenu li span {font-size:12px;}
+/* Logout CSS (ppt page.7) */
+.logout {color:#333;}
+
+/* Menu Bar */
+/* 1 st */
+.menuList {float:left; list-style:none; width:100%; position:relative; margin-bottom:10px;}
+.menuList li {float:left; font-size:12px; height:21px; padding-top:8px; text-align:center; border-right:1px solid #a4b6c5;}
+.menuList li a {color:#fff; margin:0 10px;}
+.menuList li a:hover {color:#fff;}
+.menubar {background:#fff url('../images/menubarbg.jpg') repeat-x;}
+.menubarsplit {width:1px; height:37px; background:#fff url('../images/menubarsplit.jpg') no-repeat;}
+.menubarselect {background:#fff url('../images/menubarbg_select.jpg') repeat-x;}
+
+/* 2 nd */
+.menu {list-style:none; position: relative; padding:8px 0 8px 0px; display:none; z-index:1;}
+.menu li {float:left; width:190px; height:26px; background:#fff url('../images/menuitembg.jpg') repeat-y; text-align:left; 
+				padding:10px 0 0 10px; border-bottom:1px solid #d6d6d6;}
+.menu li a {color:#00569d;}
+
+/* 3 rd */
+.submenu {list-style:none; position: relative; padding-left:190px; display:none; margin-top:-24px;height:26px;  z-index:1;}
+.submenu li {float:left; width:190px; height:26px; background:#fff url('../images/menuitembg.jpg') repeat-y; text-align:left; 
+				padding:10px 0 0 10px; border-bottom:1px solid #d6d6d6;}
+.submenu li a {color:#00569d;}
+
+/* DataGrid */
+.datagrid {padding:10px; font-size:12px;}
+.displayTagGrid {width:100%;}
+.displayTagGrid tr td {line-height:20px; text-align:center; vertical-align:middle;}
+.displayTagGrid tr td img {position:relative; top:2px;}
+.tablehead {background:#cbd0cc;}
+.odd {background:#c1ced9;}
+.even {background:#d2dde4;}
+.oddselect {background:#a2b6c7;}
+.evenselect {background:#a2b6c7;}
+
+/* Login Info */
+.logininfo {font-size:12px; padding:10px;}
+
+/* Forget Password */
+.forgetpassword {background:#f4f5f4; font-size:13px; height:300px; width:100%; vertical-align:middle; text-align:center; line-height:30px; padding-top:150px;}
+.forgetpassword span {font-weight:bold;}
+.forgetpassword img {position: relative; top:5px;}
+
+/* Upload File */
+.uploadfile {margin-top:40px; padding:10px; background:#f4f5f4; font-size:12px; line-height:23px;}
+.uploadfile ul {margin-left:20px;}
+
+/* Order Information (Right Content) */
+.conditionborder {border:2px solid #ccc; width:100%;}
+.condition {padding:10px; margin-bottom:5px; font-size:12px;}
+.condition table tr td {line-height:28px; padding:0 7px; vertical-align:middle;}
+.condition table tr td img{position:relative; top:4px; z-index:0;}
+
+.pagefunc {height:20px; font-size:12px; text-align:center;}
+.pagefunc a {color:#333;}
+
+.addtocart {height:50px; text-align:right;}
+
+.skillfunc {padding-left:10px;}
+
+/* View My Cart */
+.viewmycart {background:#f4f5f4; /*min-height:300px;*/}
+
+/* Checkout Step */
+.orderstep {font-size:12px; background:#f4f5f4; padding:5px;}
+.orderstep table tr td{line-height:20px; padding:2px 10px;}
+.orderstepitem {font-size:12px; background:#CCC; color:#666;}
+.orderstepitemselect {font-size:12px; background:#999; color:#000; font-weight:bold;}
+.steptitle {font-family:Verdana, Geneva, sans-serif; font-size:20px; color:#00579e; background:#f4f5f4;  padding:5px;}
+.enterorderinfo {background:#f4f5f4; padding:5px; font-size:12px; line-height:25px;}
+.enterorderinfo table tr td {vertical-align:top;}
+.checkoutresult {background:#f4f5f4; margin-left:5px; font-size:30px; height:300px; width:900px; display:table-cell; vertical-align:middle; text-align:center; line-height:30px;}
+.notetext {color:#069; font-size:11px; padding:3px 0 5px 10px;}
+
+/* About Us */
+.overviewtext {font-family:Verdana, Geneva, sans-serif; padding-left:5px; font-size:12px;}
+
+/* Sitemap */
+.sitemap {padding:0 10px;}
+.sitemaptext {font-family:Verdana, Geneva, sans-serif; font-size:28px; color:#00579e;}
+.sitemaplist {float:left; width:100%; margin-bottom:20px;}
+.sitemaptitle {font-size:16px; font-weight:bold; border-bottom:1px solid #b2b2b2; line-height:30px;}
+.sitemapitem {background:#fff url('../images/square.jpg') no-repeat; width:130px; padding-left:15px; font-size:12px; float:left; margin-left:20px; line-height:25px;}
+
+/* Footer */
+.footerline {background:#709ec8 url('../images/footer_line.jpg') no-repeat left top; height:6px;}
+.footertext {text-align:right; color:#829c9e; font-size:12px; margin-top:5px;}

@@ -10,9 +10,10 @@
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/smoothness/jquery-ui-1.8.18.custom.css" />" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/superfish.css" />" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/superfish-navbar.css" />" />
-<!-- <link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.dataTables.css" />" />-->
+<!-- <link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.dataTables.css" />" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/displaytag.css" />" />-->
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.datepick.css" />" />
-<link rel="stylesheet" type="text/css" href="<c:url value="/css/displaytag.css" />" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/style.css" />" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/login.css" />" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.multiselect.css" />" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.multiselect.filter.css" />" />
@@ -36,6 +37,31 @@
 	$(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
 	$('.cancel').live('click', function() {return confirm('Cancel?');});
 	$('.save').live('click', function() {return confirm('Save?');});
+	//控制 DataGrid
+	$('.odd').live({
+		mouseenter:
+            function()
+            {
+			$(this).addClass("oddselect");
+            },
+         mouseleave:
+            function()
+            {
+        	 $(this).removeClass("oddselect");
+            }
+        });
+	$('.even').live({
+		mouseenter:
+            function()
+            {
+			$(this).addClass("evenselect");
+            },
+         mouseleave:
+            function()
+            {
+        	 $(this).removeClass("evenselect");
+            }
+        });
 	$().ready(function() {
 		$("#menu ul.sf-menu").superfish({
 			pathClass : 'current'
@@ -171,6 +197,7 @@
 	<s:form id="viewLogForm" namespace="/" target="_blank" action="edit!viewLogs" theme="simple">
 		<input id="viewLogOid" type="hidden" name="oid" />
 	</s:form>
+<div class="page">
 	<div id="header" style="height:90px; width: 90%; position: relative;">
 		<tiles:insertAttribute name="header" />
 	</div>
@@ -178,11 +205,12 @@
 		<tiles:insertAttribute name="menu" />
 	</div>
 	
-	<div id="main" style="width: 90%; position: relative;">
+	<div id="main" class="contents viewmycart">
 		<tiles:insertAttribute name="main" />
 	</div>
-	<div id="footer">
+	<div id="footer" class="footer fix">
 		<tiles:insertAttribute name="footer" />
 	</div>
+</div>
 </body>
 </html>

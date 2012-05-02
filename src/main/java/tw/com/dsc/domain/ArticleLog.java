@@ -27,6 +27,7 @@ public class ArticleLog extends AbstractSeqIdObject {
 		this.account = account;
 		this.message = message;
 		this.createdDate = new Date();
+		this.ip = ip;
 	}
 	
 	@Column(name = "ARTICLE_OID")

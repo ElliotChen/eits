@@ -8,7 +8,7 @@
 		});
 	});
 	function rating() {
-		$.post('/eits/edit!rating.action', {
+		$.post('${ctx}/searchArticle!rating.action', {
 			oid : '${article.oid}',
 			ratingNumber : $('input[name=ratingNumber]:checked').val()
 		}, function(data) {
@@ -22,7 +22,7 @@
 			alert('Suggestion could not be empty!');
 			return false;
 		}
-		$.post('/eits/edit!suggest.action', {
+		$.post('${ctx}/searchArticle!suggest.action', {
 			oid : '${article.oid}',
 			suggestion : $('#suggestion').val()
 		}, function(data) {

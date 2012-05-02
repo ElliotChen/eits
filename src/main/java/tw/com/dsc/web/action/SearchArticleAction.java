@@ -18,6 +18,7 @@ import tw.com.dsc.domain.Language;
 import tw.com.dsc.domain.support.Page;
 import tw.com.dsc.service.ArticleService;
 import tw.com.dsc.service.LanguageService;
+import tw.com.dsc.to.JsonMsg;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.ThreadLocalHolder;
 
@@ -36,7 +37,11 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	private Article article;
 
 	private String message;
-
+	
+	private Integer ratingNumber;
+	private String suggestion;
+	private JsonMsg jsonMsg;
+	
 	private List<Language> languages;
 	private List<Article> faqArticles;
 	private Page<Article> latestArticles;
@@ -112,6 +117,18 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 		list.add(a2);
 	}
 
+	public String rating() {
+		this.articleService.rate(article, ratingNumber);
+		this.jsonMsg = new JsonMsg("Thanks for your rating for articleId");
+		return "rating";
+	}
+	
+	public String suggest() {
+		this.articleService.comment(article, suggestion);
+		this.jsonMsg = new JsonMsg("Thanks for your suggestion, ["+this.suggestion+"]");
+		return "rating";
+	}
+	
 	@Override
 	public void setRequest(Map<String, Object> request) {
 		this.request = request;
@@ -209,4 +226,29 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	public void setSameArticles(List<Article> sameArticles) {
 		this.sameArticles = sameArticles;
 	}
+
+	public Integer getRatingNumber() {
+		return ratingNumber;
+	}
+
+	public void setRatingNumber(Integer ratingNumber) {
+		this.ratingNumber = ratingNumber;
+	}
+
+	public String getSuggestion() {
+		return suggestion;
+	}
+
+	public void setSuggestion(String suggestion) {
+		this.suggestion = suggestion;
+	}
+
+	public JsonMsg getJsonMsg() {
+		return jsonMsg;
+	}
+
+	public void setJsonMsg(JsonMsg jsonMsg) {
+		this.jsonMsg = jsonMsg;
+	}
+	
 }

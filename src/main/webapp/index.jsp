@@ -1,2 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:forward page="system!index.action"></jsp:forward>
+<script type="text/javascript">
+<!--
+location.href="system!index.action";
+//-->
+</script>

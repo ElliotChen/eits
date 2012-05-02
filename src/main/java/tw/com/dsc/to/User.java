@@ -185,8 +185,8 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [account=" + account + ", agentType=" + agentType + "]";
+		return "User [account=" + account + ", group=" + group + ", ip=" + ip + ", agentType=" + agentType + "]";
 	}
-	
+
 	
 }

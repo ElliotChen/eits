@@ -30,6 +30,9 @@
 			<result name="create">/WEB-INF/jsp/searchArticle/create.jsp</result>
 			<result name="update">/WEB-INF/jsp/searchArticle/update.jsp</result>
 			<result name="reload" type="redirect">/employee.action</result>
+			<result name="rating" type="json">
+				<param name="root">jsonMsg</param>
+			</result>
 		</action>
 		<!-- 
 		<action name="article!*" method="{1}" class="articleAction">
@@ -68,7 +71,7 @@
 			<result name="language">/WEB-INF/jsp/language/language.jsp</result>
 		</action>
 		
-		<action name="ajaxFunction!*" method="{1}" class="ajaxAction">
+		<action name="ajax!*" method="{1}" class="ajaxAction">
 			<result name="jsonModels" type="json">
 				<param name="root">options</param>
 			</result>

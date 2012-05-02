@@ -89,6 +89,7 @@
 			<td>Language:</td>
 			<td><s:select list="languages" listKey="oid" listValue="name" name="article.language.oid"/></td>
 		</tr>
+		<s:if test="user.l3user">
 		<tr>
 			<td>Source:</td>
 			<td><s:radio name="source" list="@tw.com.dsc.domain.Source@values()"
@@ -99,6 +100,12 @@
 					</select>
 			</td>
 		</tr>
+		</s:if>
+		<s:else>
+			<input type="hidden" name="source" value="OBM"/>
+		</s:else>
+		
+		
 		<s:if test="user.l3user">
 		<tr>
 			<td>News:</td>

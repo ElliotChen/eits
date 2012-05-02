@@ -1,7 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/commons/base.jsp"%>
+<div class="viewmycart">
 <s:form id="createForm" namespace="/" action="language!create" theme="simple">
-<display:table name="page.result" partialList="true" pagesize="${page.pageSize}" size="${page.totalCount}" form="displayForm" sort="external" id="language" export="true" requestURI="language!search.action">
+<display:table name="page.result" partialList="true" pagesize="${page.pageSize}" size="${page.totalCount}" form="displayForm" sort="external" id="language" export="true" requestURI="language!search.action" class="displayTagGrid">
 	<display:caption>Language</display:caption>
 	<display:column title="">${language_rowNum}</display:column>
 	<display:column property="oid" title="Language ID" />
@@ -22,3 +23,4 @@
 	</display:footer>
 </display:table>
 </s:form>
+</div>

@@ -293,7 +293,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	@Transactional(readOnly=false)
 	public void rate(Article article, int point) {
 		User op = ThreadLocalHolder.getOperator();
-		logger.debug("User[{}] rate [{}] to Article[{}]", new Object[] {op.getAccount(), point, article.getOid()});
+		logger.debug("User[{}] rate [{}] to Article[{}]", new Object[] {op, point, article.getOid()});
 		switch(point) {
 		case 1:
 			article.setRate1(article.getRate1()+1);

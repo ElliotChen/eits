@@ -115,6 +115,6 @@
 	<div id="distagArea" class="distagArea"></div>
 </s:form>
 
-<div id="languageDiv">
+<div id="languageDiv" class="datagrid">
 	<jsp:include page="language.jsp" />
 </div>

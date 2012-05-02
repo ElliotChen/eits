@@ -6,10 +6,10 @@
    </div>
 </s:if>
 
-<div id="faqArticleBlock">
+<div id="faqArticleBlock" class="datagrid">
 	<jsp:include page="faq.jsp"></jsp:include>
 </div>
 
-<div id="latestArticleBlock">
+<div id="latestArticleBlock" class="datagrid">
 	<jsp:include page="latest.jsp"></jsp:include>
 </div>

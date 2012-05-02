@@ -13,7 +13,7 @@
 		    target: $('#exModel'),
 		    type:'POST',
 		    data:{series : $('#exSeries').val()},
-		    url: '${ctx}/ajaxFunction!ajaxModels.action'
+		    url: '${ctx}/ajax!ajaxModels.action'
 		}).trigger('change');
 		
 	});
@@ -21,23 +21,25 @@
 </script>
 
 <br />
-<div id="search">
+<div id="search" class="condition">
 	<s:form id="searchForm" namespace="/" action="searchArticle!search" theme="simple">
-Knowledge Base Language:<s:select list="languages" listKey="oid" listValue="name" name="example.language.oid"/>
+		<table class="conditionborder">
+<tr><td>Knowledge Base</td> <td>Language:<s:select list="languages" listKey="oid" listValue="name" name="example.language.oid"/></td></tr>
+<tr><td>
 Keyword:<s:textfield name="example.keywords" maxlength="40"/>
 Product Series:<select id="exSeries" name="series">
 			<option value="" selected="selected">----</option>
 			<option value="pa">PS1</option>
 			<option value="pb">PS2</option></select>
 Product Model:<select id="exModel" name="example.product"><option value="">----</option></select>
-		<s:submit value="Search" />
+		<s:submit value="Search" /></td></tr>
 	</s:form>
-	
+	</table>
 	<s:form id="displaytagform" namespace="/" action="searchArticle!search" theme="simple">
 		<div id="distagArea" class="distagArea">
 		</div>
 	</s:form>
 </div>
-
+<div class="clear"></div>
 <div id="articles">
 </div>
