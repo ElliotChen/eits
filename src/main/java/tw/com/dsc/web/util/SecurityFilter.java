@@ -44,12 +44,8 @@ public class SecurityFilter implements Filter {
 			action = matcher.group(1);
 		}
 		
-		if (op.isGuest()) {
-			
-		}
-		
 		if (op.isGuest() && (StringUtils.isEmpty(action) || !("system".equals(action) || "ajax".equals(action) || "searchArticle".equals(action)))) {
-			((HttpServletResponse) response).sendRedirect("/eits/index.jsp");
+			((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath()+"/index.jsp");
 		} else {
 			chain.doFilter(request, response);
 		}

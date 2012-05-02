@@ -16,71 +16,71 @@ import com.opensymphony.xwork2.Preparable;
 public class SystemAction extends BaseAction implements Preparable {
 	private static final Logger logger = LoggerFactory.getLogger(SystemAction.class);
 	private static final long serialVersionUID = -2499466800597200018L;
-	private User user;
+	private User loginUser;
 	
 	private String userRole;
 	@Override
 	public void prepare() throws Exception {
-		user = new User();
+		loginUser = ThreadLocalHolder.getOperator();
 	}
 	public String index() {
 		return "index";
 	}
 	public String login() {
-		if ("l3leader".equals(user.getAccount())) {
-			user.setAdmin(true);
-			user.setGuest(false);
-			user.setL2leader(false);
-			user.setL2user(false);
-			user.setL3leader(true);
-			user.setL3user(true);
-			user.setAgentType(AgentType.L3);
-		} else if ("l3user".equals(user.getAccount())) {
-			user.setAdmin(false);
-			user.setGuest(false);
-			user.setL2leader(false);
-			user.setL2user(false);
-			user.setL3leader(false);
-			user.setL3user(true);
-			user.setAgentType(AgentType.L3);
-		} else if ("l2leader".equals(user.getAccount())) {
-			user.setAdmin(false);
-			user.setGuest(false);
-			user.setL2leader(true);
-			user.setL2user(true);
-			user.setL3leader(false);
-			user.setL3user(false);
-			user.setAgentType(AgentType.L2);
-		} else if ("l2user".equals(user.getAccount())) {
-			user.setAdmin(false);
-			user.setGuest(false);
-			user.setL2leader(false);
-			user.setL2user(true);
-			user.setL3leader(false);
-			user.setL3user(false);
-			user.setAgentType(AgentType.L2);
+		if ("l3leader".equals(loginUser.getAccount())) {
+			loginUser.setAdmin(true);
+			loginUser.setGuest(false);
+			loginUser.setL2leader(false);
+			loginUser.setL2user(false);
+			loginUser.setL3leader(true);
+			loginUser.setL3user(true);
+			loginUser.setAgentType(AgentType.L3);
+		} else if ("l3user".equals(loginUser.getAccount())) {
+			loginUser.setAdmin(false);
+			loginUser.setGuest(false);
+			loginUser.setL2leader(false);
+			loginUser.setL2user(false);
+			loginUser.setL3leader(false);
+			loginUser.setL3user(true);
+			loginUser.setAgentType(AgentType.L3);
+		} else if ("l2leader".equals(loginUser.getAccount())) {
+			loginUser.setAdmin(false);
+			loginUser.setGuest(false);
+			loginUser.setL2leader(true);
+			loginUser.setL2user(true);
+			loginUser.setL3leader(false);
+			loginUser.setL3user(false);
+			loginUser.setAgentType(AgentType.L2);
+		} else if ("l2user".equals(loginUser.getAccount())) {
+			loginUser.setAdmin(false);
+			loginUser.setGuest(false);
+			loginUser.setL2leader(false);
+			loginUser.setL2user(true);
+			loginUser.setL3leader(false);
+			loginUser.setL3user(false);
+			loginUser.setAgentType(AgentType.L2);
 		} else {
-			logger.warn("Switch User[{}] to Guest!", user.getAccount());
-			user.setAdmin(false);
-			user.setGuest(true);
-			user.setL2leader(false);
-			user.setL2user(false);
-			user.setL3leader(false);
-			user.setL3user(false);
-			user.setAgentType(AgentType.Guest);
+			logger.warn("Switch User[{}] to Guest!", loginUser.getAccount());
+			loginUser.setAdmin(false);
+			loginUser.setGuest(true);
+			loginUser.setL2leader(false);
+			loginUser.setL2user(false);
+			loginUser.setL3leader(false);
+			loginUser.setL3user(false);
+			loginUser.setAgentType(AgentType.Guest);
 		}
-		ThreadLocalHolder.setUser(user);
+		ThreadLocalHolder.setUser(loginUser);
 		return "index";
 	}
 
 	public String logout() {
-		user = new User();
-		user.setAccount("Guest");
-		user.setName("Guest");
-		user.setAdmin(false);
-		user.setGuest(true);
-		user.setAgentType(AgentType.Guest);
-		ThreadLocalHolder.setUser(user);
+		loginUser = new User();
+		loginUser.setAccount("Guest");
+		loginUser.setName("Guest");
+		loginUser.setAdmin(false);
+		loginUser.setGuest(true);
+		loginUser.setAgentType(AgentType.Guest);
+		ThreadLocalHolder.setUser(loginUser);
 		return "index";
 	}
 
@@ -132,14 +132,14 @@ public class SystemAction extends BaseAction implements Preparable {
 		}
 		
 		
-		return null;
+		return "index";
 	}
-	public User getUser() {
-		return user;
+	
+	public User getLoginUser() {
+		return loginUser;
 	}
-
-	public void setUser(User user) {
-		this.user = user;
+	public void setLoginUser(User loginUser) {
+		this.loginUser = loginUser;
 	}
 	public String getUserRole() {
 		return userRole;

@@ -138,6 +138,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		
 		//2.Update Entry User and Date
 		article.setEntryUser(op.getAccount());
+		article.setUserGroup(op.getGroup());
 		article.setEntryDate(new Date());
 		article.setHitCount(0);
 		article.setAgentType(op.getAgentType());
@@ -388,7 +389,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		if (op.isAdmin()) {
 			
 		} else if (op.isLeader()) {
-			conds.add(new SimpleCondition("group", op.getGroup(), OperationEnum.EQ));
+			conds.add(new SimpleCondition("userGroup", op.getGroup(), OperationEnum.EQ));
 		} else {
 			conds.add(new SimpleCondition("entryUser", op.getAccount(), OperationEnum.EQ));
 		}
@@ -422,7 +423,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		if (op.isAdmin()) {
 			
 		} else if (op.isLeader()) {
-			conds.add(new SimpleCondition("group", op.getGroup(), OperationEnum.EQ));
+			conds.add(new SimpleCondition("userGroup", op.getGroup(), OperationEnum.EQ));
 		} else {
 			conds.add(new SimpleCondition("entryUser", op.getAccount(), OperationEnum.EQ));
 		}

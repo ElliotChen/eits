@@ -11,9 +11,9 @@
 			<a href="#" class="close"><img src="images/close_pop.png" class="btn_close" title="Close Window" alt="Close" /></a>
 			<form method="post" class="signin" action="${ctx}/system!login.action">
 				<fieldset class="textbox">
-					<label class="username"> <span>Username or email</span> <input id="username" name="user.account" value=""
+					<label class="username"> <span>Account</span> <input id="username" name="loginUser.account" value=""
 						type="text" autocomplete="on" placeholder="Username">
-					</label> <label class="password"> <span>Password</span> <input id="password" name="user.password" value=""
+					</label> <label class="password"> <span>Password</span> <input id="password" name="loginUser.password" value=""
 						type="password" placeholder="Password">
 					</label> <input class="submit button" type="submit" value="Login" />
 				</fieldset>

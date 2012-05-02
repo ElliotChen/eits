@@ -24,9 +24,10 @@
 <div id="search" class="condition">
 	<s:form id="searchForm" namespace="/" action="searchArticle!search" theme="simple">
 		<table class="conditionborder">
-<tr><td>Knowledge Base</td> <td>Language:<s:select list="languages" listKey="oid" listValue="name" name="example.language.oid"/></td></tr>
+<tr><td>Knowledge Base</td> <td align="right">Language:<s:select list="languages" listKey="oid" listValue="name" name="example.language.oid" value="EN"/></td></tr>
 <tr><td>
-Keyword:<s:textfield name="example.keywords" maxlength="40"/>
+Keyword:<s:textfield name="example.keywords" maxlength="60" size="60" /></td>
+<td align="right">
 Product Series:<select id="exSeries" name="series">
 			<option value="" selected="selected">----</option>
 			<option value="pa">PS1</option>

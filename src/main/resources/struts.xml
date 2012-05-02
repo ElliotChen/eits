@@ -34,22 +34,6 @@
 				<param name="root">jsonMsg</param>
 			</result>
 		</action>
-		<!-- 
-		<action name="article!*" method="{1}" class="articleAction">
-			<result name="rating" type="json">
-				<param name="root">jsonMsg</param>
-			</result>
-			<result name="copy">/WEB-INF/jsp/article/copy.jsp</result>
-			<result name="preview">/WEB-INF/jsp/article/preview.jsp</result>
-			
-			<result name="detail">/WEB-INF/jsp/searchArticle/detail.jsp</result>
-			<result name="afterCopy" type="redirectAction">
-				<param name="actionName">searchArticle!detail</param>
-				<param name="namespace">/</param>
-				<param name="oid">${oid}</param>
-			</result>
-		</action>
-		 -->
 		<action name="edit!*" method="{1}" class="editAction">
 			<result name="list">/WEB-INF/jsp/edit/list.jsp</result>
 			<result name="create">/WEB-INF/jsp/edit/create.jsp</result>

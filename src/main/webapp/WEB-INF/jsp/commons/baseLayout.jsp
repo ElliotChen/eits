@@ -137,8 +137,11 @@
 	}
 	
 	function switchRole(userRole) {
+		$('#switchRoleName').val($('#userRole').val());
+		$('#switchRoleForm').submit();
+		/*
 		$.ajax({
-			url: '${ctx}/system!switchRole!.action?userRole='+$('#userRole').val(),
+			url: '${ctx}/system!switchRole.action?userRole='+$('#userRole').val(),
 			type: 'POST',
 			success: function(data) {
 				//alert('Switch Role Success!')
@@ -147,6 +150,7 @@
 				alert('Loading failed');
 			}
 		});
+		*/
 	}
 	
 	function viewArticle(oid) {
@@ -196,6 +200,9 @@
 	</s:form>
 	<s:form id="viewLogForm" namespace="/" target="_blank" action="edit!viewLogs" theme="simple">
 		<input id="viewLogOid" type="hidden" name="oid" />
+	</s:form>
+	<s:form id="switchRoleForm" namespace="/" action="system!switchRole" theme="simple">
+		<input id="switchRoleName" type="hidden" name="userRole" />
 	</s:form>
 <div class="page">
 	<div id="header" style="height:90px; width: 90%; position: relative;">
