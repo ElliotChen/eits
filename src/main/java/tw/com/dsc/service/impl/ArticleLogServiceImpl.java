@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import tw.com.dsc.dao.ArticleLogDao;
 import tw.com.dsc.domain.ArticleLog;
+import tw.com.dsc.domain.support.LikeMode;
 import tw.com.dsc.service.ArticleLogService;
 
 @Service("e")
@@ -35,6 +36,16 @@ public class ArticleLogServiceImpl extends AbstractDomainService<ArticleLogDao, 
 		return logger;
 	}
 
-	
-
+	@Override
+	public ArticleLog getLatestRejectReason(Long articleOid) {
+		ArticleLog example = new ArticleLog();
+		example.setArticleOid(articleOid);
+		
+		List<ArticleLog> list = this.dao.listByExample(example, null, LikeMode.NONE, new String[] {}, new String[] {"createdDate"});
+		if (list.isEmpty()) {
+			logger.warn("Can't find any reject reason for Article[{}]", articleOid);
+		}
+		
+		return list.isEmpty()?null:list.get(0);
+	}
 }

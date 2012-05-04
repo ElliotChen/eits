@@ -15,7 +15,7 @@ public class User {
 	private String password;
 	private String name;
 	private String group;
-	
+	private String mail;
 	private String ip;
 	
 	private AgentType agentType;
@@ -163,6 +163,14 @@ public class User {
 
 	public void setL2admin(boolean l2admin) {
 		this.l2admin = l2admin;
+	}
+
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
 	}
 
 	public Level[] getAvailableLevels() {
