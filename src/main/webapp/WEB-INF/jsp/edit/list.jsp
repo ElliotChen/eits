@@ -32,12 +32,12 @@
 </s:if>
 
 <s:form id="searchUnpublishedForm" namespace="/" action="edit!searchUnpublished" theme="simple">
-	<input type="text" name="example.id" size="8"/>
-	<input type="text" name="example.summary" size="16"/>
-	<input type="text" name="example.entryUser" size="7"/>
-	<input type="text" name="example.entryDate" size="14"/>
-	<input type="text" name="example.product" size="15"/>
-	<input type="text" name="example.status" size="5"/>
+	<input type="text" name="example1.id" size="6"/>
+	<input type="text" name="example1.summary" size="40"/>
+	<input type="text" name="example1.entryUser" size="6"/>
+	<input type="text" name="example1.entryDate" size="10"/>
+	<input type="text" name="example1.product" size="26"/>
+	<input type="text" name="example1.status" size="15"/>
 	<s:submit value="Search" />
 </s:form>
 
@@ -49,11 +49,11 @@
 </div>
 
 <s:form id="searchDraftForm" namespace="/" action="edit!searchDraft" theme="simple">
-	<input type="text" name="example.id" size="9"/>
-	<input type="text" name="example.summary" size="18"/>
-	<input type="text" name="example.entryUser" size="8"/>
-	<input type="text" name="example.entryDate" size="16"/>
-	<input type="text" name="example.product" size="17"/>
+	<input type="text" name="example2.id" size="9"/>
+	<input type="text" name="example2.summary" size="18"/>
+	<input type="text" name="example2.entryUser" size="8"/>
+	<input type="text" name="example2.entryDate" size="16"/>
+	<input type="text" name="example2.product" size="17"/>
 	<s:submit value="Search" />
 </s:form>
 
@@ -65,11 +65,11 @@
 </div>
 
 <s:form id="searchExpiredForm" namespace="/" action="edit!searchExpired" theme="simple">
-	<input type="text" name="example.id" size="9"/>
-	<input type="text" name="example.summary" size="18"/>
-	<input type="text" name="example.entryUser" size="8"/>
-	<input type="text" name="example.entryDate" size="16"/>
-	<input type="text" name="example.product" size="17"/>
+	<input type="text" name="example3.id" size="9"/>
+	<input type="text" name="example3.summary" size="18"/>
+	<input type="text" name="example3.entryUser" size="8"/>
+	<input type="text" name="example3.entryDate" size="16"/>
+	<input type="text" name="example3.product" size="17"/>
 	<s:submit value="Search" />
 </s:form>
 

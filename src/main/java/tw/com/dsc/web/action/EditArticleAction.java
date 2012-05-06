@@ -49,6 +49,9 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	private Article article;
 	private Article sarticle; //Copy Source
 	private Article example;
+	private Article example1;
+	private Article example2;
+	private Article example3;
 	private Page<Article> page;
 	private Page<Article> unpublishedArticles;
 	private Page<Article> draftArticles;
@@ -86,6 +89,9 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 			this.article = this.articleService.findByOid(oid);
 		}
 		this.example = new Article();
+		this.example1 = new Article();
+		this.example2 = new Article();
+		this.example3 = new Article();
 		if (null == this.article) {
 			this.article = new Article();
 			this.article.setArticleId(new ArticleId());
@@ -106,16 +112,19 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	}
 	
 	public String searchUnpublished() {
+		page = new Page<Article>(example1);
 		this.unpublishedArticles = this.articleService.searchUnpublishedPage(page);
 		return "unpublished";
 	}
 	
 	public String searchDraft() {
+		page = new Page<Article>(example2);
 		this.draftArticles = this.articleService.searchDraftPage(page);
 		return "draft";
 	}
 	
 	public String searchExpired() {
+		page = new Page<Article>(example3);
 		this.expiredArticles = this.articleService.searchExpiredPage(page);
 		return "expired";
 	}
@@ -268,6 +277,10 @@ edit.statuAction.Published = Publish
 		this.articleService.comment(article, suggestion);
 		this.jsonMsg = new JsonMsg("Thanks for your suggestion, ["+this.suggestion+"]");
 		return "rating";
+	}
+	
+	public String quickEdit() {
+		return "quickEdit";
 	}
 	
 	public Long getOid() {

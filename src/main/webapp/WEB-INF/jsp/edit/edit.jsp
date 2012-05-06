@@ -78,6 +78,7 @@
 			});
 		}
 	}
+	
 //-->
 </script>
 <input type="button" value="View Log" onclick="viewArticleLog('${oid}')"/>

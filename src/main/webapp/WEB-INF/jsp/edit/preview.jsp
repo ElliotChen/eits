@@ -8,11 +8,16 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>EITS</title>
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/smoothness/jquery-ui-1.8.18.custom.css" />" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/superfish.css" />" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/superfish-navbar.css" />" />
-<!-- <link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.dataTables.css" />" />-->
+<!-- <link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.dataTables.css" />" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/displaytag.css" />" />-->
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.datepick.css" />" />
-<link rel="stylesheet" type="text/css" href="<c:url value="/css/displaytag.css" />" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/style.css" />" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/login.css" />" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.multiselect.css" />" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.multiselect.filter.css" />" />
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery-1.7.2.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.form.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.validate.min.js" />"></script>

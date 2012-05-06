@@ -36,6 +36,7 @@
 <script>
 	$(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
 	$('.cancel').live('click', function() {return confirm('Cancel?');});
+	$('.delete').live('click', function() {return confirm('Delete?');});
 	$('.save').live('click', function() {return confirm('Save?');});
 	//控制 DataGrid
 	$('.odd').live({

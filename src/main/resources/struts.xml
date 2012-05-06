@@ -48,6 +48,7 @@
 			<result name="rating" type="json">
 				<param name="root">jsonMsg</param>
 			</result>
+			<result type="tiles" name="quickEdit">quickEdit</result>
 		</action>
 		
 		<action name="language!*" method="{1}" class="languageAction">

@@ -24,6 +24,7 @@ import tw.com.dsc.domain.Level;
 import tw.com.dsc.domain.Status;
 import tw.com.dsc.domain.support.Condition;
 import tw.com.dsc.domain.support.InCondition;
+import tw.com.dsc.domain.support.LikeMode;
 import tw.com.dsc.domain.support.OperationEnum;
 import tw.com.dsc.domain.support.Page;
 import tw.com.dsc.domain.support.SimpleCondition;
@@ -463,4 +464,21 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.View,  op.getAccount(), "View Detail.", op.getIp()));
 	}
 
+	@Transactional(readOnly=false)
+	public void expire() {
+		User op = ThreadLocalHolder.getOperator();
+		Article example = new Article();
+		example.setStatus(Status.Published);
+		List<Condition> conds = new ArrayList<Condition>();
+		conds.add(new SimpleCondition("expireDate", new Date(), OperationEnum.LE));
+		
+		List<Article> list = this.dao.listByExample(example, conds, LikeMode.NONE, new String[0], new String[0]);
+		
+		for (Article art : list) {
+			art.setStatus(Status.WaitForRepublish);
+			art.setExpireDate(null);
+			this.dao.saveOrUpdate(art);
+			this.articleLogDao.create(new ArticleLog(art.getOid(), ActionType.Unpublish, op.getAccount(), "Wait For Republish", op.getIp()));
+		}
+	}
 }
