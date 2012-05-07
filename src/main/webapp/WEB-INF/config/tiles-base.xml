@@ -9,7 +9,7 @@
 		<put-attribute name="main" value="/WEB-INF/jsp/commons/blank.jsp" />
 	</definition>
 	<definition name="index" extends=".baseLayout">
-        <put-attribute name="body" value="/WEB-INF/jsp/commons/blank.jsp" />
+        <put-attribute name="main" value="/WEB-INF/jsp/commons/blank.jsp" />
     </definition>
     <definition name="searchArticle" extends=".baseLayout">
         <put-attribute name="body" value="/WEB-INF/jsp/commons/blank.jsp" />
@@ -20,6 +20,6 @@
         <put-attribute name="main" value="/WEB-INF/jsp/edit/preview.jsp" />
     </definition>
     <definition name="quickEdit" extends=".baseLayout">
-        <put-attribute name="body" value="/WEB-INF/jsp/edit/edit.jsp" />
+        <put-attribute name="main" value="/WEB-INF/jsp/edit/edit.jsp" />
     </definition>
 </tiles-definitions>

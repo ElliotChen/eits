@@ -30,9 +30,10 @@
       <s:actionmessage/>
    </div>
 </s:if>
-
+<div>
+Unpublished
 <s:form id="searchUnpublishedForm" namespace="/" action="edit!searchUnpublished" theme="simple">
-	<input type="text" name="example1.id" size="6"/>
+	<input type="text" name="example1.articleId.oid" size="6"/>
 	<input type="text" name="example1.summary" size="40"/>
 	<input type="text" name="example1.entryUser" size="6"/>
 	<input type="text" name="example1.entryDate" size="10"/>
@@ -47,9 +48,11 @@
 <div id="unpublishedDiv">
 	<jsp:include page="unpublished.jsp" />
 </div>
-
+</div>
+<div>
+Draft
 <s:form id="searchDraftForm" namespace="/" action="edit!searchDraft" theme="simple">
-	<input type="text" name="example2.id" size="9"/>
+	<input type="text" name="example2.articleId.oid" size="9"/>
 	<input type="text" name="example2.summary" size="18"/>
 	<input type="text" name="example2.entryUser" size="8"/>
 	<input type="text" name="example2.entryDate" size="16"/>
@@ -63,9 +66,11 @@
 <div id="draftDiv">
 	<jsp:include page="draft.jsp" />
 </div>
+</div>
 
+<div>Expired
 <s:form id="searchExpiredForm" namespace="/" action="edit!searchExpired" theme="simple">
-	<input type="text" name="example3.id" size="9"/>
+	<input type="text" name="example3.articleId.oid" size="9"/>
 	<input type="text" name="example3.summary" size="18"/>
 	<input type="text" name="example3.entryUser" size="8"/>
 	<input type="text" name="example3.entryDate" size="16"/>
@@ -78,4 +83,5 @@
 </s:form>
 <div id="expiredDiv">
 	<jsp:include page="expired.jsp" />
+</div>
 </div>

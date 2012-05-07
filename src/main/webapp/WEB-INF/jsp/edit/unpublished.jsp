@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/commons/base.jsp"%>
 <display:table name="${unpublishedArticles.result}" partialList="true" pagesize="${unpublishedArticles.pageSize}" size="${unpublishedArticles.totalCount}" form="unpublishedForm" sort="external" id="article" export="true" requestURI="edit!searchUnpublished.action">
-	<display:caption>Unpublished Articles</display:caption>
+	<!--<display:caption>Unpublished Articles</display:caption>-->
 	<display:column property="articleId.oid" title="ID" style="width:50px"/>
 	<display:column property="summary" title="Summary" style="width:300px"/>
 	<display:column property="entryUser" title="Agent" style="width:50px"/>

@@ -31,7 +31,9 @@ import tw.com.dsc.service.ArticleLogService;
 import tw.com.dsc.service.ArticleService;
 import tw.com.dsc.service.AttachmentService;
 import tw.com.dsc.service.LanguageService;
+import tw.com.dsc.service.SystemService;
 import tw.com.dsc.to.JsonMsg;
+import tw.com.dsc.to.Series;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.ThreadLocalHolder;
 
@@ -72,7 +74,8 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	private ArticleService articleService;
 	@Autowired
 	private AttachmentService attachmentService;
-	
+	@Autowired
+	private SystemService systemService;
 	@Autowired
 	private ArticleLogService articleLogService;
 	private ServletContext context;
@@ -92,6 +95,12 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		this.example1 = new Article();
 		this.example2 = new Article();
 		this.example3 = new Article();
+		
+		this.example.setArticleId(new ArticleId());
+		this.example1.setArticleId(new ArticleId());
+		this.example2.setArticleId(new ArticleId());
+		this.example3.setArticleId(new ArticleId());
+		
 		if (null == this.article) {
 			this.article = new Article();
 			this.article.setArticleId(new ArticleId());
@@ -283,6 +292,10 @@ edit.statuAction.Published = Publish
 		return "quickEdit";
 	}
 	
+	public List<Series> getSeries() {
+		return systemService.listAllSeries();
+	}
+	
 	public Long getOid() {
 		return oid;
 	}
@@ -350,6 +363,30 @@ edit.statuAction.Published = Publish
 
 	public void setExample(Article example) {
 		this.example = example;
+	}
+	
+	public Article getExample1() {
+		return example1;
+	}
+
+	public void setExample1(Article example1) {
+		this.example1 = example1;
+	}
+
+	public Article getExample2() {
+		return example2;
+	}
+
+	public void setExample2(Article example2) {
+		this.example2 = example2;
+	}
+
+	public Article getExample3() {
+		return example3;
+	}
+
+	public void setExample3(Article example3) {
+		this.example3 = example3;
 	}
 
 	private void mockArticles(final List<Article> list) {

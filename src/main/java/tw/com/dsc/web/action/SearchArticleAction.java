@@ -18,7 +18,9 @@ import tw.com.dsc.domain.Language;
 import tw.com.dsc.domain.support.Page;
 import tw.com.dsc.service.ArticleService;
 import tw.com.dsc.service.LanguageService;
+import tw.com.dsc.service.SystemService;
 import tw.com.dsc.to.JsonMsg;
+import tw.com.dsc.to.Series;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.ThreadLocalHolder;
 
@@ -50,6 +52,9 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	private LanguageService languageService;
 	@Autowired
 	private ArticleService articleService;
+	
+	@Autowired
+	private SystemService systemService;
 	@Override
 	public void prepare() throws Exception {
 		if (null != oid) {
@@ -94,6 +99,10 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 		
 		this.articleService.addHitCount(article);
 		return "detail";
+	}
+	
+	public List<Series> getSeries() {
+		return systemService.listAllSeries();
 	}
 
 	private void mockArticles(final List<Article> list) {
