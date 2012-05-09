@@ -3,9 +3,12 @@ package tw.com.dsc.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import tw.com.dsc.dao.AccountDao;
+import tw.com.dsc.dao.GroupDao;
 import tw.com.dsc.service.SystemService;
 import tw.com.dsc.to.Model;
 import tw.com.dsc.to.Series;
@@ -13,6 +16,10 @@ import tw.com.dsc.to.Series;
 @Service("systemService")
 @Transactional(readOnly=true)
 public class SystemServiceImpl implements SystemService {
+	@Autowired
+	private AccountDao accountDao;
+	@Autowired
+	private GroupDao groupDao;
 	private static List<Series> series;
 	static {
 		series = new ArrayList<Series>();
@@ -31,4 +38,5 @@ public class SystemServiceImpl implements SystemService {
 		return series;
 	}
 
+	
 }
