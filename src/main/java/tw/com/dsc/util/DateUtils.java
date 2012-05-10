@@ -14,6 +14,7 @@ public abstract class DateUtils {
 	
 	private static ThreadLocal<SimpleDateFormat> defaultDateTimeFormat = new ThreadLocal<SimpleDateFormat>();
 	
+	private static ThreadLocal<SimpleDateFormat> activeDateFormat = new ThreadLocal<SimpleDateFormat>();
 	public static final SimpleDateFormat getDefaultDateFormat() {
 		if (null == defaultDateFormat.get()) {
 			defaultDateFormat.set(new SimpleDateFormat("yyyy/MM/dd"));
@@ -43,5 +44,26 @@ public abstract class DateUtils {
 	
 	public static final String formatDate(Date date) {
 		return getDefaultDateFormat().format(date);
+	}
+	
+	public static final SimpleDateFormat getActiveDateFormat() {
+		if (null == activeDateFormat.get()) {
+			activeDateFormat.set(new SimpleDateFormat("yyyyMMdd"));
+		}
+		
+		return activeDateFormat.get();
+	}
+	public static final Date pareseActiveDate(String date) {
+		Date result = null;
+		try {
+			result = getActiveDateFormat().parse(date);
+		} catch (ParseException e) {
+			logger.error("Can't parse {} to Date", date);
+		}
+		
+		return result;
+	}
+	public static final String formatActiveDate(Date date) {
+		return getActiveDateFormat().format(date);
 	}
 }

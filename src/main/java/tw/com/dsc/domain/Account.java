@@ -33,6 +33,15 @@ public class Account implements Identifiable<String> {
 	@Column(name = "EMAIL", length = 255)
 	private String email;
 
+	@Column(name = "DEFAULT_ROLE_ID", length = 100)
+	private String defaultRoleId;
+	
+	@Column(name = "ACTIVE_END_DATE", length = 8)
+	private String endDate;
+	
+	@Column(name = "ACTIVE_START_DATE ", length = 8)
+	private String startDate;
+	
 	@ManyToMany
 	@JoinTable(name="DOTJ_ACM2_ACCOUNT_GROUP", 
 		joinColumns={@JoinColumn(name="ACCOUNT_ID")}, 
@@ -87,5 +96,34 @@ public class Account implements Identifiable<String> {
 	public void setOid(String oid) {
 		this.id = oid;
 	}
-	
+
+	public String getDefaultRoleId() {
+		return defaultRoleId;
+	}
+
+	public void setDefaultRoleId(String defaultRoleId) {
+		this.defaultRoleId = defaultRoleId;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	@Override
+	public String toString() {
+		return "Account [id=" + id + ", name=" + name + ", password=" + password + ", email=" + email
+				+ ", defaultRoleId=" + defaultRoleId + ", endDate=" + endDate + ", startDate=" + startDate + "]";
+	}
 }

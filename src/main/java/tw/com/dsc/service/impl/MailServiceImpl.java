@@ -12,7 +12,7 @@ import tw.com.dsc.task.ApprovalMailTask;
 import tw.com.dsc.task.MailTask;
 
 public class MailServiceImpl implements MailService {
-	private static final Logger logger = LoggerFactory.getLogger(VelocityEngine.class);
+	private static final Logger logger = LoggerFactory.getLogger(MailServiceImpl.class);
 	private MailSender mailSender;
 	private VelocityEngine velocityEngine;
 	private String sender;

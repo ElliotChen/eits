@@ -1,12 +1,16 @@
 package tw.com.dsc.to;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import tw.com.dsc.domain.AgentType;
 import tw.com.dsc.domain.Level;
+import tw.com.dsc.domain.Role;
 
 
 public class User {
@@ -28,6 +32,15 @@ public class User {
 	private boolean l2leader;
 	private boolean l2user;
 	
+	private Role currentRole;
+	
+	private Set<Role> roles = new TreeSet<Role>();
+	
+	private List<String> l3LeaderGroups = new ArrayList<String>();
+	private List<String> l3AgentGroups = new ArrayList<String>();
+	private List<String> l2AdminGroups = new ArrayList<String>();
+	private List<String> l2LeaderGroups = new ArrayList<String>();
+	private List<String> l2AgentGroups = new ArrayList<String>();
 	public User() {
 		this("","","","", AgentType.Guest);
 	}
@@ -196,5 +209,35 @@ public class User {
 		return "User [account=" + account + ", group=" + group + ", ip=" + ip + ", agentType=" + agentType + "]";
 	}
 
-	
+	public Role getCurrentRole() {
+		return currentRole;
+	}
+
+	public void setCurrentRole(Role currentRole) {
+		this.currentRole = currentRole;
+	}
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public List<String> getL3LeaderGroups() {
+		return l3LeaderGroups;
+	}
+
+	public List<String> getL3AgentGroups() {
+		return l3AgentGroups;
+	}
+
+	public List<String> getL2AdminGroups() {
+		return l2AdminGroups;
+	}
+
+	public List<String> getL2LeaderGroups() {
+		return l2LeaderGroups;
+	}
+
+	public List<String> getL2AgentGroups() {
+		return l2AgentGroups;
+	}
 }
