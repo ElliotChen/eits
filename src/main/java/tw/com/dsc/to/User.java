@@ -2,8 +2,6 @@ package tw.com.dsc.to;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,33 +23,36 @@ public class User {
 	private AgentType agentType;
 	private boolean admin;
 	private boolean guest;
-	private boolean l3admin;
-	private boolean l3leader;
-	private boolean l3user;
-	private boolean l2admin;
-	private boolean l2leader;
-	private boolean l2user;
+	private boolean l3Admin;
+	private boolean l3Leader;
+	private boolean l3Agent;
+	private boolean l2Admin;
+	private boolean l2Leader;
+	private boolean l2Agent;
+	private boolean partner;
 	
-	private Role currentRole;
+	private UserRole currentUserRole;
 	
-	private Set<Role> roles = new TreeSet<Role>();
+//	private List<Role> roles = new ArrayList<Role>();
 	
 	private List<String> l3LeaderGroups = new ArrayList<String>();
 	private List<String> l3AgentGroups = new ArrayList<String>();
 	private List<String> l2AdminGroups = new ArrayList<String>();
 	private List<String> l2LeaderGroups = new ArrayList<String>();
 	private List<String> l2AgentGroups = new ArrayList<String>();
+	
+	private List<UserRole> userRoles = new ArrayList<UserRole>();
 	public User() {
 		this("","","","", AgentType.Guest);
 	}
 	
 	public User(String account, String passowrd, String name, String group, AgentType agentType) {
-		this(account, passowrd, name, group, "localhost", agentType, false, true, false, false, false, false, false, false);
+		this(account, passowrd, name, group, "localhost", agentType, false, true, false, false, false, false, false, false, false);
 	}
 	
 	public User(String account, String passowrd, String name, String group, String ip, AgentType agentType,
-			boolean admin, boolean guest, boolean l3admin, boolean l3leader, boolean l3user, 
-			boolean l2admin, boolean l2leader, boolean l2user) {
+			boolean admin, boolean guest, boolean l3Admin, boolean l3Leader, boolean l3Agnet, 
+			boolean l2Admin, boolean l2Leader, boolean l2Agnet, boolean partner) {
 		this.account = account;
 		this.password = passowrd;
 		this.name = name;
@@ -63,12 +64,16 @@ public class User {
 		
 		this.admin = admin;
 		this.guest = guest;
-		this.l3admin = l3admin;
-		this.l3leader = l3leader;
-		this.l3user = l3user;
-		this.l2admin = l2admin;
-		this.l2leader = l2leader;
-		this.l2user = l2user;
+		
+		this.l3Admin = l3Admin;
+		this.l3Leader = l3Leader;
+		this.l3Agent = l3Agnet;
+		
+		this.l2Admin = l2Admin;
+		this.l2Leader = l2Leader;
+		this.l2Agent = l2Agnet;
+		
+		this.partner = partner;
 	}
 	public String getAccount() {
 		return account;
@@ -111,41 +116,6 @@ public class User {
 	public void setGuest(boolean guest) {
 		this.guest = guest;
 	}
-
-	public boolean isL3leader() {
-		return l3leader;
-	}
-
-	public void setL3leader(boolean l3leader) {
-		this.l3leader = l3leader;
-	}
-
-	public boolean isL3user() {
-		return l3user;
-	}
-
-	public void setL3user(boolean l3user) {
-		this.l3user = l3user;
-	}
-
-	public boolean isL2leader() {
-		return l2leader;
-	}
-
-	public void setL2leader(boolean l2leader) {
-		this.l2leader = l2leader;
-	}
-
-	public boolean isL2user() {
-		return l2user;
-	}
-
-	public void setL2user(boolean l2user) {
-		this.l2user = l2user;
-	}
-	public boolean isLeader() {
-		return this.l3leader || this.l2leader;
-	}
 	public String getIp() {
 		return ip;
 	}
@@ -160,22 +130,6 @@ public class User {
 
 	public void setAgentType(AgentType agentType) {
 		this.agentType = agentType;
-	}
-	
-	public boolean isL3admin() {
-		return l3admin;
-	}
-
-	public void setL3admin(boolean l3admin) {
-		this.l3admin = l3admin;
-	}
-
-	public boolean isL2admin() {
-		return l2admin;
-	}
-
-	public void setL2admin(boolean l2admin) {
-		this.l2admin = l2admin;
 	}
 
 	public String getMail() {
@@ -209,18 +163,6 @@ public class User {
 		return "User [account=" + account + ", group=" + group + ", ip=" + ip + ", agentType=" + agentType + "]";
 	}
 
-	public Role getCurrentRole() {
-		return currentRole;
-	}
-
-	public void setCurrentRole(Role currentRole) {
-		this.currentRole = currentRole;
-	}
-
-	public Set<Role> getRoles() {
-		return roles;
-	}
-
 	public List<String> getL3LeaderGroups() {
 		return l3LeaderGroups;
 	}
@@ -240,4 +182,85 @@ public class User {
 	public List<String> getL2AgentGroups() {
 		return l2AgentGroups;
 	}
+
+	public boolean isL3Admin() {
+		return l3Admin;
+	}
+
+	public void setL3Admin(boolean l3Admin) {
+		this.l3Admin = l3Admin;
+	}
+
+	public boolean isL3Leader() {
+		return l3Leader;
+	}
+
+	public void setL3Leader(boolean l3Leader) {
+		this.l3Leader = l3Leader;
+	}
+
+	public boolean isL3Agent() {
+		return l3Agent;
+	}
+
+	public void setL3Agent(boolean l3Agent) {
+		this.l3Agent = l3Agent;
+	}
+
+	public boolean isL2Admin() {
+		return l2Admin;
+	}
+
+	public void setL2Admin(boolean l2Admin) {
+		this.l2Admin = l2Admin;
+	}
+
+	public boolean isL2Leader() {
+		return l2Leader;
+	}
+
+	public void setL2Leader(boolean l2Leader) {
+		this.l2Leader = l2Leader;
+	}
+
+	public boolean isL2Agent() {
+		return l2Agent;
+	}
+
+	public void setL2Agent(boolean l2Agent) {
+		this.l2Agent = l2Agent;
+	}
+
+	public boolean isPartner() {
+		return partner;
+	}
+
+	public void setPartner(boolean partner) {
+		this.partner = partner;
+	}
+	
+	public boolean isLeader() {
+		return this.l3Admin || this.l2Admin || this.l3Leader || this.l2Leader;
+	}
+	
+	public boolean isL3Manager() {
+		return this.l3Admin || this.l3Leader;
+	}
+	
+	public boolean isL2Manager() {
+		return this.l2Admin || this.l2Leader;
+	}
+
+	public List<UserRole> getUserRoles() {
+		return userRoles;
+	}
+
+	public UserRole getCurrentUserRole() {
+		return currentUserRole;
+	}
+
+	public void setCurrentUserRole(UserRole currentUserRole) {
+		this.currentUserRole = currentUserRole;
+	}
+	
 }

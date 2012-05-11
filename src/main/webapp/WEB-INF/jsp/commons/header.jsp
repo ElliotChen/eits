@@ -5,14 +5,14 @@
 </div>
 <div id="loginDiv" style="margin-left: 600px;">
 	<s:if test="user.guest">
-			Hi! <s:property value="@tw.com.dsc.util.ThreadLocalHolder@getUser().name" />
+			Hi! Guest.
 		<a href="#login-box" class="login-window">Login</a>
 		<div id="login-box" class="login-popup">
 			<a href="#" class="close"><img src="images/close_pop.png" class="btn_close" title="Close Window" alt="Close" /></a>
 			<form method="post" class="signin" action="${ctx}/system!login.action">
 				<fieldset class="textbox">
 					<label class="username"> <span>Account</span> <input id="username" name="loginUser.account" value=""
-						type="text" autocomplete="on" placeholder="Username">
+						type="text" autocomplete="on" placeholder="Account">
 					</label> <label class="password"> <span>Password</span> <input id="password" name="loginUser.password" value=""
 						type="password" placeholder="Password">
 					</label> <input class="submit button" type="submit" value="Login" />
@@ -20,21 +20,15 @@
 			</form>
 		</div>
 	</s:if>
-	<s:elseif test="!user.guest">
+	<s:else>
 		<a href="#" onclick="switchMenu('m3', 'edit!list.action');">Home</a>
 		<a href="${ctx}/system!logout.action">Logout</a>
 		<br />
-			Welcome! <s:property value="@tw.com.dsc.util.ThreadLocalHolder@getUser().account" />
+			Welcome! <s:property value="user.account" />
 		<br />
 			Article#:<input type="text" id="quickOid" name="quickOid" size="6" maxlength="6" />
 		<input type="button" onclick="quickViewArticle();" value="Go" />
 		<br />
-			Role:<select id="userRole" name="userRole" onchange="switchRole()">
-			<option value="">-----</option>
-			<option value="l3leader">L3Admin</option>
-			<option value="l3user">L3User</option>
-			<option value="l2leader">L2Admin</option>
-			<option value="l2user">L2User</option>
-		</select>
-	</s:elseif>
+			Role:<s:select id="userRole" name="userRole" list="user.userRoles" listKey="role" listValue="role" onchange="switchRole()" value="currentUserRole.role"/>
+	</s:else>
 </div>

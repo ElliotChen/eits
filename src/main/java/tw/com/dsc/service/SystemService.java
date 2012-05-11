@@ -10,5 +10,4 @@ import tw.com.dsc.to.User;
 public interface SystemService {
 	List<Series> listAllSeries();
 	ErrorType login(final User user);
-	void parseGroup(List<Group> groups, User user);
 }

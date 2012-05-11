@@ -37,9 +37,6 @@
 <tr><td>
 Keyword:<s:textfield name="example.keywords" maxlength="60" size="60" /></td>
 <td align="right">
-<s:select list="{}">
-					<s:optgroup list="series"></s:optgroup>
-				</s:select>
 Product Series:<select id="exSeries" name="series">
 			<option value="" selected="selected">----</option>
 			<option value="pa">PS1</option>

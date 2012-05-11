@@ -451,9 +451,9 @@ public class Article extends AbstractSeqIdObjectAuditable {
 		
 		if (null == this.status) {
 			
-			if (AgentType.L2 == op.getAgentType() && op.isL2leader()) {
+			if (AgentType.L2 == op.getAgentType() && op.isL2Manager()) {
 				result.add(Status.Published);
-			} else if(AgentType.L3 == op.getAgentType() && op.isL3leader()) {
+			} else if(AgentType.L3 == op.getAgentType() && op.isL3Manager()) {
 				result.add(Status.WaitForProofRead);
 			} else {
 				//logger.error("Please check AgentType[{}] for User[{}]", op.getAgentType(), op.getAccount());
@@ -473,22 +473,22 @@ public class Article extends AbstractSeqIdObjectAuditable {
 		switch (this.status) {
 			case Draft:
 				result.add(Status.WaitForApproving);
-				if (AgentType.L2 == this.agentType && op.isL2leader()) {
+				if (AgentType.L2 == this.agentType && op.isL2Manager()) {
 					result.add(Status.Published);
 				}
 				break;
 			case WaitForApproving:
 				
-				if (AgentType.L2 == this.agentType && op.isL2leader()) {
+				if (AgentType.L2 == this.agentType && op.isL2Manager()) {
 					result.add(Status.Draft);
 					result.add(Status.Published);
-				} else if(AgentType.L3 == this.agentType && op.isL3leader()) {
+				} else if(AgentType.L3 == this.agentType && op.isL3Manager()) {
 					result.add(Status.Draft);
 					result.add(Status.WaitForProofRead);
 				}
 				break;
 			case WaitForProofRead:
-				if(AgentType.L3 == this.agentType && op.isL3leader()) {
+				if(AgentType.L3 == this.agentType && op.isL3Manager()) {
 					result.add(Status.ReadyToUpdate);
 				}
 				break;
@@ -498,7 +498,7 @@ public class Article extends AbstractSeqIdObjectAuditable {
 				}
 				break;
 			case ReadyToPublish:
-				if(AgentType.L3 == this.agentType && op.isL3leader()) {
+				if(AgentType.L3 == this.agentType && op.isL3Manager()) {
 					result.add(Status.Published);
 				}
 				break;

@@ -3,8 +3,6 @@ package tw.com.dsc.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -18,13 +16,12 @@ import tw.com.dsc.dao.AccountRoleDao;
 import tw.com.dsc.dao.GroupDao;
 import tw.com.dsc.domain.Account;
 import tw.com.dsc.domain.ErrorType;
-import tw.com.dsc.domain.Group;
-import tw.com.dsc.domain.Role;
 import tw.com.dsc.service.SystemService;
 import tw.com.dsc.to.Model;
 import tw.com.dsc.to.Series;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.DateUtils;
+import tw.com.dsc.util.SystemUtils;
 
 @Service("systemService")
 @Transactional(readOnly=true)
@@ -37,11 +34,7 @@ public class SystemServiceImpl implements SystemService {
 	@Autowired
 	private AccountRoleDao accountRoleDao;
 	
-	public static final Pattern L3_LEADER = Pattern.compile("^(L3_.*)_Leader$");
-	public static final Pattern L3_AGENT = Pattern.compile("^(L3_.*)_Team$");
-	public static final Pattern L2_ADMIN = Pattern.compile("^(L2_.*)_Admin$");
-	public static final Pattern L2_LEADER = Pattern.compile("^(L2_.*)_Leader$");
-	public static final Pattern L2_AGENT = Pattern.compile("^(L2_.*)_Team$");
+	
 	private static List<Series> series;
 	static {
 		series = new ArrayList<Series>();
@@ -80,75 +73,13 @@ public class SystemServiceImpl implements SystemService {
 			}
 		}
 		
-		parseGroup(u.getGroups(), user);
+		user.setName(u.getName());
+		user.setMail(u.getEmail());
+		
+		SystemUtils.parseRole(this.accountRoleDao.listByAccount(user.getAccount()), user);
+		SystemUtils.parseGroup(u.getGroups(), user);
 		return null;
 	}
 	
-	public void parseGroup(List<Group> groups, User user) {
-
-		String gid = "";
-		String gname = "";
-		for (Group group : groups) {
-			gid = group.getId();
-			logger.debug("Check Group[{}] for Role", gid);
-			if ("L3_Admin".equals(gid)) {
-				logger.debug("Group[{}] is a L3_Admin Group", gid);
-				user.setL3admin(true);
-				user.getRoles().add(Role.L3Admin);
-				continue;
-			} 
-			
-			Matcher matcher = L3_LEADER.matcher(gid);
-			if (matcher.matches()) {
-				gname = matcher.group(1);
-				logger.debug("Group[{}] is a L3_Leader for [{}]", gid, gname);
-				user.setL3leader(true);
-				user.getL3LeaderGroups().add(gname);
-				user.getRoles().add(Role.L3Leader);
-				continue;
-			}
-			
-			matcher = L3_AGENT.matcher(gid);
-			if (matcher.matches()) {
-				gname = matcher.group(1);
-				logger.debug("Group[{}] is a L3_Agent for [{}]", gid, gname);
-				user.setL3user(true);
-				user.getL3AgentGroups().add(gname);
-				user.getRoles().add(Role.L3Agent);
-				continue;
-			}
-			
-			matcher = L2_ADMIN.matcher(gid);
-			if (matcher.matches()) {
-				gname = matcher.group(1);
-				logger.debug("Group[{}] is a L2_Admin for [{}]", gid, gname);
-				user.setL2admin(true);
-				user.getL2AdminGroups().add(gname);
-				user.getRoles().add(Role.L2Admin);
-				continue;
-			}
-			
-			matcher = L2_LEADER.matcher(gid);
-			if (matcher.matches()) {
-				gname = matcher.group(1);
-				logger.debug("Group[{}] is a L2_Leader for [{}]", gid, gname);
-				user.setL2leader(true);
-				user.getL2LeaderGroups().add(gname);
-				user.getRoles().add(Role.L2Leader);
-				continue;
-			}
-			
-			matcher = L2_AGENT.matcher(gid);
-			if (matcher.matches()) {
-				gname = matcher.group(1);
-				logger.debug("Group[{}] is a L2_Agent for [{}]", gid, gname);
-				user.setL2user(true);
-				user.getL2AgentGroups().add(gname);
-				user.getRoles().add(Role.L2Agent);
-				continue;
-			}
-			
-			logger.debug("Group[{}] is not a valid Group for eITS", gid);
-		}
-	}
+	
 }
