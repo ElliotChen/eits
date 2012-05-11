@@ -89,7 +89,7 @@
 			<td>Language:</td>
 			<td><s:select list="languages" listKey="oid" listValue="name" name="article.language.oid"/></td>
 		</tr>
-		<s:if test="user.l3user">
+		<s:if test="{L3 == user.agentType}">
 		<tr>
 			<td>Source:</td>
 			<td><s:radio name="source" list="@tw.com.dsc.domain.Source@values()"
@@ -106,7 +106,7 @@
 		</s:else>
 		
 		
-		<s:if test="user.l3user">
+		<s:if test="L3 == user.agentType">
 		<tr>
 			<td>News:</td>
 			<td><s:radio name="news" list="#{'true':'Yes','false':'No'}" />

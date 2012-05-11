@@ -29,6 +29,6 @@
 			Article#:<input type="text" id="quickOid" name="quickOid" size="6" maxlength="6" />
 		<input type="button" onclick="quickViewArticle();" value="Go" />
 		<br />
-			Role:<s:select id="userRole" name="userRole" list="user.userRoles" listKey="role" listValue="role" onchange="switchRole()" value="currentUserRole.role"/>
+			Role:<s:select id="userRole" name="userRole" list="user.userRoles" listKey="role" listValue="role" onchange="switchRole()" value="user.currentUserRole.role"/>
 	</s:else>
 </div>

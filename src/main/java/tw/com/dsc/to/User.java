@@ -16,11 +16,11 @@ public class User {
 	private String account;
 	private String password;
 	private String name;
-	private String group;
+//	private String group;
 	private String mail;
 	private String ip;
 	
-	private AgentType agentType;
+//	private AgentType agentType;
 	private boolean admin;
 	private boolean guest;
 	private boolean l3Admin;
@@ -56,11 +56,11 @@ public class User {
 		this.account = account;
 		this.password = passowrd;
 		this.name = name;
-		this.group = group;
+//		this.group = group;
 		
 		this.ip = ip;
 		
-		this.agentType = agentType;
+//		this.agentType = agentType;
 		
 		this.admin = admin;
 		this.guest = guest;
@@ -88,12 +88,13 @@ public class User {
 		this.name = name;
 	}
 	public String getGroup() {
-		return group;
+		return null == this.currentUserRole?"":this.currentUserRole.getGroup();
 	}
+	/*
 	public void setGroup(String group) {
 		this.group = group;
 	}
-	
+	*/
 	public String getPassword() {
 		return password;
 	}
@@ -125,11 +126,7 @@ public class User {
 	}
 
 	public AgentType getAgentType() {
-		return agentType;
-	}
-
-	public void setAgentType(AgentType agentType) {
-		this.agentType = agentType;
+		return null == this.currentUserRole? AgentType.Guest:this.currentUserRole.getAgentType();
 	}
 
 	public String getMail() {
@@ -143,9 +140,9 @@ public class User {
 	public Level[] getAvailableLevels() {
 		ArrayList<Level> results = new ArrayList<Level>();
 		results.add(Level.Public);
-		if (AgentType.L2 == this.agentType) {
+		if (AgentType.L2 == this.getAgentType()) {
 			results.add(Level.Partner);
-		} else if (AgentType.L3 == this.agentType) {
+		} else if (AgentType.L3 == this.getAgentType()) {
 			results.add(Level.Partner);
 			results.add(Level.L3CSO);
 		} else {
@@ -157,10 +154,16 @@ public class User {
 		logger.debug("Get Available Levels[{}] for User[{}]", ls, this);
 		return ls;
 	}
-
+	
+	public void reset() {
+		this.admin = false;
+		this.account = "Guest";
+		this.currentUserRole = new UserRole(Role.Guest, "", AgentType.Guest);
+	}
+	
 	@Override
 	public String toString() {
-		return "User [account=" + account + ", group=" + group + ", ip=" + ip + ", agentType=" + agentType + "]";
+		return "User [account=" + account + ", ip=" + ip + ", currentUserRole=" + this.currentUserRole + "]";
 	}
 
 	public List<String> getL3LeaderGroups() {
@@ -263,4 +266,13 @@ public class User {
 		this.currentUserRole = currentUserRole;
 	}
 	
+	public void switchRole(Role role) {
+		for (UserRole ur : userRoles) {
+			if (ur.getRole() == role) {
+				logger.debug("User[{}] switch role as {} success!", this, role);
+				this.currentUserRole = ur;
+				break;
+			}
+		}
+	}
 }

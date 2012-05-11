@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import tw.com.dsc.domain.AgentType;
+import tw.com.dsc.domain.Role;
 import tw.com.dsc.service.SystemService;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.ThreadLocalHolder;
@@ -20,7 +20,7 @@ public class SystemAction extends BaseAction implements Preparable {
 	private static final long serialVersionUID = -2499466800597200018L;
 	private User loginUser;
 	
-	private String userRole;
+	private Role userRole;
 	
 	@Autowired
 	private SystemService systemService;
@@ -43,7 +43,6 @@ public class SystemAction extends BaseAction implements Preparable {
 		loginUser.setName("Guest");
 		loginUser.setAdmin(false);
 		loginUser.setGuest(true);
-		loginUser.setAgentType(AgentType.Guest);
 		ThreadLocalHolder.setUser(loginUser);
 		return "index";
 	}
@@ -51,7 +50,7 @@ public class SystemAction extends BaseAction implements Preparable {
 	public String switchRole() {
 		User op = ThreadLocalHolder.getUser();
 		logger.debug("User[{}] try to switch role to [{}]", op.getAccount(), this.userRole);
-		
+		op.switchRole(userRole);
 		return "index";
 	}
 	
@@ -61,10 +60,10 @@ public class SystemAction extends BaseAction implements Preparable {
 	public void setLoginUser(User loginUser) {
 		this.loginUser = loginUser;
 	}
-	public String getUserRole() {
+	public Role getUserRole() {
 		return userRole;
 	}
-	public void setUserRole(String userRole) {
+	public void setUserRole(Role userRole) {
 		this.userRole = userRole;
 	}
 	public SystemService getSystemService() {

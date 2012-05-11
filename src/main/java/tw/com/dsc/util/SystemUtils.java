@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import tw.com.dsc.domain.AccountRole;
+import tw.com.dsc.domain.AgentType;
 import tw.com.dsc.domain.Group;
 import tw.com.dsc.domain.Role;
 import tw.com.dsc.to.User;
@@ -27,35 +28,42 @@ public abstract class SystemUtils {
 			String roleValue = ar.getAccountRolePK().getRoleId();
 			logger.debug("Check AccountRole[{}]", roleValue);
 			Role role = findRoleByValue(roleValue);
-			
+			AgentType at = AgentType.Guest;
 			switch(role) {
 			case L3Admin:
 				user.setL3Admin(true);
+				at = AgentType.L3;
 				break;
 			case L3Leader:
 				user.setL3Leader(true);
+				at = AgentType.L3;
 				break;
 			case L3Agent:
 				user.setL3Agent(true);
+				at = AgentType.L3;
 				break;
 			case L2Admin:
 				user.setL2Admin(true);
+				at = AgentType.L2;
 				break;
 			case L2Leader:
 				user.setL2Leader(true);
+				at = AgentType.L2;
 				break;
 			case L2Agent:
 				user.setL2Agent(true);
+				at = AgentType.L2;
 				break;
 			case Partner:
 				user.setPartner(true);
+				at = AgentType.L2;
 				break;
 			default:
 				logger.debug("Unknow RoleId[{}]", roleValue);
 			}
 			logger.debug("Transfer RoleId[{}] as Role[{}]", roleValue, role);
 			if (Role.Guest != role) {
-				user.getUserRoles().add(new UserRole(role, ar.getDefaultGroupId()));
+				user.getUserRoles().add(new UserRole(role, ar.getDefaultGroupId(), at));
 			}
 		}
 
