@@ -60,7 +60,7 @@ public class ArticleTest extends BaseTest {
 	
 	@Test
 	public void testL3userAvailableStatus() {
-		ThreadLocalHolder.setUser(l3user);
+		ThreadLocalHolder.setUser(l3agnet);
 		Article article = new Article();
 		List<Status> availableStatus = article.getAvailableStatus();
 		Assert.assertTrue(availableStatus.contains(Status.WaitForApproving));
@@ -148,7 +148,7 @@ public class ArticleTest extends BaseTest {
 	
 	@Test
 	public void testL2userAvailableStatus() {
-		ThreadLocalHolder.setUser(l2user);
+		ThreadLocalHolder.setUser(l2agent);
 		Article article = new Article();
 		List<Status> availableStatus = article.getAvailableStatus();
 		Assert.assertTrue(availableStatus.contains(Status.WaitForApproving));

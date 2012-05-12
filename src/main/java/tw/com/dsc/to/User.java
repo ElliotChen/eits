@@ -20,7 +20,7 @@ public class User {
 	private String mail;
 	private String ip;
 	
-//	private AgentType agentType;
+	private AgentType agentType;
 	private boolean admin;
 	private boolean guest;
 	private boolean l3Admin;
@@ -43,24 +43,33 @@ public class User {
 	
 	private List<UserRole> userRoles = new ArrayList<UserRole>();
 	public User() {
-		this("","","","", AgentType.Guest);
+		this("","","","Localhost", new UserRole(Role.Guest, "Guest"));
 	}
 	
-	public User(String account, String passowrd, String name, String group, AgentType agentType) {
-		this(account, passowrd, name, group, "localhost", agentType, false, true, false, false, false, false, false, false, false);
+	public User(String account, String password, String name, String ip, UserRole userRole) {
+		this.account = account;
+		this.password = password;
+		this.name = name;
+		this.ip = ip;
+		this.currentUserRole = userRole;
+//		this.userRoles.add(userRole);
+		
+		this.checkAuthorization();
 	}
-	
-	public User(String account, String passowrd, String name, String group, String ip, AgentType agentType,
+	/*
+	public User(String account, String passowrd, String name, String ip, UserRole userRole,
 			boolean admin, boolean guest, boolean l3Admin, boolean l3Leader, boolean l3Agnet, 
 			boolean l2Admin, boolean l2Leader, boolean l2Agnet, boolean partner) {
 		this.account = account;
 		this.password = passowrd;
 		this.name = name;
-//		this.group = group;
 		
 		this.ip = ip;
 		
-//		this.agentType = agentType;
+		this.currentUserRole = userRole;
+		this.userRoles.add(userRole);
+		
+		
 		
 		this.admin = admin;
 		this.guest = guest;
@@ -75,6 +84,7 @@ public class User {
 		
 		this.partner = partner;
 	}
+	*/
 	public String getAccount() {
 		return account;
 	}
@@ -102,21 +112,7 @@ public class User {
 		this.password = password;
 	}
 
-	public boolean isAdmin() {
-		return admin;
-	}
-
-	public void setAdmin(boolean admin) {
-		this.admin = admin;
-	}
-
-	public boolean isGuest() {
-		return guest;
-	}
-
-	public void setGuest(boolean guest) {
-		this.guest = guest;
-	}
+	
 	public String getIp() {
 		return ip;
 	}
@@ -126,7 +122,7 @@ public class User {
 	}
 
 	public AgentType getAgentType() {
-		return null == this.currentUserRole? AgentType.Guest:this.currentUserRole.getAgentType();
+		return this.agentType;
 	}
 
 	public String getMail() {
@@ -158,7 +154,8 @@ public class User {
 	public void reset() {
 		this.admin = false;
 		this.account = "Guest";
-		this.currentUserRole = new UserRole(Role.Guest, "", AgentType.Guest);
+		this.currentUserRole = new UserRole(Role.Guest, "");
+		checkAuthorization();
 	}
 	
 	@Override
@@ -186,62 +183,42 @@ public class User {
 		return l2AgentGroups;
 	}
 
-	public boolean isL3Admin() {
-		return l3Admin;
+	public boolean isAdmin() {
+		return admin;
 	}
 
-	public void setL3Admin(boolean l3Admin) {
-		this.l3Admin = l3Admin;
+	public boolean isGuest() {
+		return guest;
+	}
+
+	public boolean isL3Admin() {
+		return l3Admin;
 	}
 
 	public boolean isL3Leader() {
 		return l3Leader;
 	}
 
-	public void setL3Leader(boolean l3Leader) {
-		this.l3Leader = l3Leader;
-	}
-
 	public boolean isL3Agent() {
 		return l3Agent;
-	}
-
-	public void setL3Agent(boolean l3Agent) {
-		this.l3Agent = l3Agent;
 	}
 
 	public boolean isL2Admin() {
 		return l2Admin;
 	}
 
-	public void setL2Admin(boolean l2Admin) {
-		this.l2Admin = l2Admin;
-	}
-
 	public boolean isL2Leader() {
 		return l2Leader;
-	}
-
-	public void setL2Leader(boolean l2Leader) {
-		this.l2Leader = l2Leader;
 	}
 
 	public boolean isL2Agent() {
 		return l2Agent;
 	}
 
-	public void setL2Agent(boolean l2Agent) {
-		this.l2Agent = l2Agent;
-	}
-
 	public boolean isPartner() {
 		return partner;
 	}
 
-	public void setPartner(boolean partner) {
-		this.partner = partner;
-	}
-	
 	public boolean isLeader() {
 		return this.l3Admin || this.l2Admin || this.l3Leader || this.l2Leader;
 	}
@@ -253,6 +230,14 @@ public class User {
 	public boolean isL2Manager() {
 		return this.l2Admin || this.l2Leader;
 	}
+	
+	public boolean isL3() {
+		return this.l3Admin || this.l3Leader || this.l3Agent;
+	}
+	
+	public boolean isL2() {
+		return this.l2Admin || this.l2Leader || this.l2Agent || this.partner;
+	}
 
 	public List<UserRole> getUserRoles() {
 		return userRoles;
@@ -261,18 +246,80 @@ public class User {
 	public UserRole getCurrentUserRole() {
 		return currentUserRole;
 	}
-
+	/*
 	public void setCurrentUserRole(UserRole currentUserRole) {
 		this.currentUserRole = currentUserRole;
 	}
+	*/
 	
 	public void switchRole(Role role) {
 		for (UserRole ur : userRoles) {
 			if (ur.getRole() == role) {
 				logger.debug("User[{}] switch role as {} success!", this, role);
 				this.currentUserRole = ur;
+				checkAuthorization();
 				break;
 			}
 		}
+	}
+	
+	public void checkAuthorization() {
+		Role role = null;
+		if (null == this.currentUserRole || null == this.currentUserRole.getRole()) {
+			logger.error("Please init CurrentUserRole for checkAuthorization");
+			role = Role.Guest;
+		} else {
+			role = this.currentUserRole.getRole();
+		}
+		
+		this.guest = false;
+		this.l2Admin = false;
+		this.l2Agent = false;
+		this.l2Leader = false;
+		this.l3Admin = false;
+		this.l3Agent = false;
+		this.l3Leader = false;
+		this.admin = false;
+		this.partner = false;
+		
+		
+		switch(role) {
+		case Guest:
+			this.guest = true;
+			this.agentType = AgentType.Guest;
+			break;
+		case Partner:
+			this.partner = true;
+			this.agentType = AgentType.L2;
+			break;
+		case L2Admin:
+			this.l2Admin = true;
+			this.admin = true;
+			this.agentType = AgentType.L2;
+			break;
+		case L2Leader:
+			this.l2Leader = true;
+			this.agentType = AgentType.L2;
+			break;
+		case L2Agent:
+			this.l2Agent = true;
+			this.agentType = AgentType.L2;
+			break;
+		case L3Admin:
+			this.l3Admin = true;
+			this.admin = true;
+			this.agentType = AgentType.L3;
+			break;
+		case L3Leader:
+			this.l3Leader = true;
+			this.agentType = AgentType.L3;
+			break;
+		case L3Agent:
+			this.l3Agent = true;
+			this.agentType = AgentType.L3;
+			break;
+		}
+		
+		
 	}
 }

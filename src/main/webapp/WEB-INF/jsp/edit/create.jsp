@@ -8,7 +8,7 @@
 			target: '#main',
 			beforeSubmit: function() {
 			    $('#editForm').validate({ rules : {
-			    	articleIdOid : {required:true, number:true},
+			    	'articleId.oid' : {required:true, number:true},
 					summary : {required:true},
 					keywords : {required:true},
 					question : {required:true},
@@ -83,13 +83,13 @@
 	<table>
 		<tr>
 			<td>ArticleID:</td>
-			<td><s:textfield name="articleIdOid" maxlength="6" size="6"/>(Draft)</td>
+			<td><s:textfield name="articleId.oid" maxlength="6" size="6"/>(Draft)</td>
 		</tr>
 		<tr>
 			<td>Language:</td>
 			<td><s:select list="languages" listKey="oid" listValue="name" name="article.language.oid"/></td>
 		</tr>
-		<s:if test="{L3 == user.agentType}">
+		<s:if test="user.l3">
 		<tr>
 			<td>Source:</td>
 			<td><s:radio name="source" list="@tw.com.dsc.domain.Source@values()"
@@ -106,7 +106,7 @@
 		</s:else>
 		
 		
-		<s:if test="L3 == user.agentType">
+		<s:if test="user.l3">
 		<tr>
 			<td>News:</td>
 			<td><s:radio name="news" list="#{'true':'Yes','false':'No'}" />
@@ -228,14 +228,25 @@
 </s:form>
 
 <s:form id="editPreviewForm" namespace="/" action="edit!previewSave" theme="simple" target="_blank">
-	<input type="hidden" name="language" />
+	<input type="hidden" name="articleId.oid" />
+	<input type="hidden" name="article.language.oid" />
+	<input type="hidden" name="source" />
+	<input type="hidden" name="news" />
 	<input type="hidden" name="type" />
 	<input type="hidden" name="summary" />
+	<input type="hidden" name="expireType" />
+	<input type="hidden" name="entryDate" />
+	<input type="hidden" name="keywords" />
+	<input type="hidden" name="ticketId" />
 	<input type="hidden" name="question" />
 	<input type="hidden" name="answer" />
+	<input type="hidden" name="scenario" />
+	<input type="hidden" name="step" />
+	<input type="hidden" name="verification" />
+	<input type="hidden" name="problem" />
+	<input type="hidden" name="solution" />
+	<input type="hidden" name="procedure" />
+	<input type="hidden" name="level" />
 	<input type="hidden" name="technology" />
 	<input type="hidden" name="product" />
-	<input type="hidden" name="firmware" />
-	<input type="hidden" name="level" />
-	<input type="hidden" name="state" />
 </s:form>

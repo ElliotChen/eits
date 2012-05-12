@@ -53,7 +53,7 @@ private static final Logger logger = LoggerFactory.getLogger(ArticleServiceImplT
 	
 	@Test
 	public void testDraftNewL2Article() {
-		ThreadLocalHolder.setUser(l3leader);
+		ThreadLocalHolder.setUser(l2agent);
 		
 		Article article = new Article();
 		article.setArticleId(new ArticleId("123456"));
@@ -63,7 +63,7 @@ private static final Logger logger = LoggerFactory.getLogger(ArticleServiceImplT
 	
 	@Test
 	public void testFinalNewL2Article() {
-		ThreadLocalHolder.setUser(l3leader);
+		ThreadLocalHolder.setUser(l2agent);
 		
 		Article article = new Article();
 		article.setArticleId(new ArticleId("123456"));
@@ -86,5 +86,10 @@ private static final Logger logger = LoggerFactory.getLogger(ArticleServiceImplT
 		article.setExpireType(ExpireType.M1);
 		service.publishNewL2Article(article);
 		Assert.assertNotNull(article.getExpireDate());
+	}
+	
+	@Test
+	public void testFinalL2Article() {
+		
 	}
 }

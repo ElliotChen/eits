@@ -39,10 +39,6 @@ public class SystemAction extends BaseAction implements Preparable {
 
 	public String logout() {
 		loginUser = new User();
-		loginUser.setAccount("Guest");
-		loginUser.setName("Guest");
-		loginUser.setAdmin(false);
-		loginUser.setGuest(true);
 		ThreadLocalHolder.setUser(loginUser);
 		return "index";
 	}

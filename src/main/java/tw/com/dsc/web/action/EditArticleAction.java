@@ -176,7 +176,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 			this.article.setFirmware(attachment);
 		}
 		
-		this.article.setArticleId(new ArticleId(articleIdOid));
+//		this.article.setArticleId(new ArticleId(articleIdOid));
 		
 		if ("Draft".equals(statusAction)) {
 			this.articleService.draftNewArticle(article);

@@ -6,14 +6,14 @@ import tw.com.dsc.domain.Role;
 public class UserRole {
 	private Role role;
 	private String group;
-	private AgentType agentType;
+//	private AgentType agentType;
 	public UserRole() {
 		super();
 	}
-	public UserRole(Role role, String group, AgentType agnetType) {
+	public UserRole(Role role, String group) {
 		this.role = role;
 		this.group = group;
-		this.agentType = agnetType;
+//		this.agentType = agnetType;
 	}
 	public Role getRole() {
 		return role;
@@ -27,14 +27,16 @@ public class UserRole {
 	public void setGroup(String group) {
 		this.group = group;
 	}
+	/*
 	public AgentType getAgentType() {
 		return agentType;
 	}
 	public void setAgentType(AgentType agentType) {
 		this.agentType = agentType;
 	}
+	*/
 	@Override
 	public String toString() {
-		return "UserRole [role=" + role + ", group=" + group + ", agentType=" + agentType + "]";
+		return "UserRole [role=" + role + ", group=" + group + "]";
 	}
 }

@@ -170,7 +170,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	@Transactional(readOnly=false)
 	public void finalArticle(Article article) {
 		User op = ThreadLocalHolder.getOperator();
-		if (!article.getAvailableStatus().contains(Status.WaitForProofRead)) {
+		if (!article.getAvailableStatus().contains(Status.WaitForApproving)) {
 			logger.warn("Article[{}] can't be finalized for User[{}]", article, op.getAccount());
 			return;
 		}

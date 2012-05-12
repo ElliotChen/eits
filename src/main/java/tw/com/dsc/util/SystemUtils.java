@@ -28,51 +28,55 @@ public abstract class SystemUtils {
 			String roleValue = ar.getAccountRolePK().getRoleId();
 			logger.debug("Check AccountRole[{}]", roleValue);
 			Role role = findRoleByValue(roleValue);
-			AgentType at = AgentType.Guest;
-			switch(role) {
-			case L3Admin:
-				user.setL3Admin(true);
-				at = AgentType.L3;
-				break;
-			case L3Leader:
-				user.setL3Leader(true);
-				at = AgentType.L3;
-				break;
-			case L3Agent:
-				user.setL3Agent(true);
-				at = AgentType.L3;
-				break;
-			case L2Admin:
-				user.setL2Admin(true);
-				at = AgentType.L2;
-				break;
-			case L2Leader:
-				user.setL2Leader(true);
-				at = AgentType.L2;
-				break;
-			case L2Agent:
-				user.setL2Agent(true);
-				at = AgentType.L2;
-				break;
-			case Partner:
-				user.setPartner(true);
-				at = AgentType.L2;
-				break;
-			default:
-				logger.debug("Unknow RoleId[{}]", roleValue);
-			}
+			
 			logger.debug("Transfer RoleId[{}] as Role[{}]", roleValue, role);
 			if (Role.Guest != role) {
-				user.getUserRoles().add(new UserRole(role, ar.getDefaultGroupId(), at));
+				user.getUserRoles().add(new UserRole(role, parseGroupId(ar.getDefaultGroupId())));
 			}
 		}
 
 		if (!user.getUserRoles().isEmpty()) {
-			user.setGuest(false);
-			user.setCurrentUserRole(user.getUserRoles().get(0));
+			user.switchRole(user.getUserRoles().get(0).getRole());
 		}
 	}
+	public static String parseGroupId(String gid) {
+		String gname = "";
+		if ("L3_Admin".equals(gid)) {
+			gname = gid;
+			return gname;
+		}
 
+		Matcher matcher = L3_LEADER.matcher(gid);
+		if (matcher.matches()) {
+			gname = matcher.group(1);
+			return gname;
+		}
+
+		matcher = L3_AGENT.matcher(gid);
+		if (matcher.matches()) {
+			gname = matcher.group(1);
+			return gname;
+		}
+
+		matcher = L2_ADMIN.matcher(gid);
+		if (matcher.matches()) {
+			gname = matcher.group(1);
+			return gname;
+		}
+
+		matcher = L2_LEADER.matcher(gid);
+		if (matcher.matches()) {
+			gname = matcher.group(1);
+			return gname;
+		}
+
+		matcher = L2_AGENT.matcher(gid);
+		if (matcher.matches()) {
+			gname = matcher.group(1);
+			return gname;
+		}
+		return gname;
+	}
 	public static void parseGroup(List<Group> groups, User user) {
 
 		String gid = "";

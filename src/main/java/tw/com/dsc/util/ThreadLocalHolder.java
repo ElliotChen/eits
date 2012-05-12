@@ -4,13 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import tw.com.dsc.domain.AgentType;
-import tw.com.dsc.service.impl.ArticleServiceImpl;
+import tw.com.dsc.domain.Role;
 import tw.com.dsc.to.User;
+import tw.com.dsc.to.UserRole;
 
 
 public abstract class ThreadLocalHolder {
 	private static final Logger logger = LoggerFactory.getLogger(ThreadLocalHolder.class);
-	private static final User DEFAULT_USER = new User("System", "NA", "System", "Guest", AgentType.Guest);
+	public static final User DEFAULT_USER = new User("System", "NA", "System", "Localhost", new UserRole(Role.Guest, "Guest"));
 	private static ThreadLocal<User> USER_HOLDER = new ThreadLocal<User>();
 	public static User getUser() {
 		return USER_HOLDER.get();
@@ -25,6 +26,6 @@ public abstract class ThreadLocalHolder {
 	}
 	
 	public static User getOperator() {
-		return null != USER_HOLDER.get()?USER_HOLDER.get():new User("Guest", "NA", "System", "Guest", AgentType.Guest);
+		return null != USER_HOLDER.get()?USER_HOLDER.get():DEFAULT_USER;
 	}
 }

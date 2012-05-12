@@ -87,13 +87,13 @@
 	<table>
 		<tr>
 			<td>ArticleID:</td>
-			<td><s:textfield name="articleId.oid" readonly="readonly" maxlength="6" size="6"/> (${article.status} - ${article.agentType})</td>
+			<td><s:textfield name="article.articleId.oid" readonly="readonly" maxlength="6" size="6" disabled="disabled"/> (${article.status} - ${article.agentType})</td>
 		</tr>
 		<tr>
 			<td>Language:</td>
 			<td><s:select list="languages" listKey="oid" listValue="name" name="article.language.oid"/></td>
 		</tr>
-		<s:if test="L3 == user.agentType">
+		<s:if test="user.l3">
 		<tr>
 			<td>Source:</td>
 			<td><s:radio name="source" list="@tw.com.dsc.domain.Source@values()"
@@ -109,7 +109,7 @@
 			<input type="hidden" name="source" value="OBM"/>
 		</s:else>
 		
-		<s:if test="L3 == user.agentType">
+		<s:if test="user.l3">
 		<tr>
 			<td>News:</td>
 			<td><s:radio name="news" list="#{'true':'Yes','false':'No'}" />
