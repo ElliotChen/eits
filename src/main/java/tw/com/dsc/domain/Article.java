@@ -528,15 +528,16 @@ public class Article extends AbstractSeqIdObjectAuditable {
 		return (totalPoints/total)+" ("+total+" votes)";
 	}
 	
-	public boolean isEditable() {
+	public boolean isReadonly() {
 		switch (this.status) {
 		case Archived:
 		case Published:
 		case WaitForRepublish:
+		case ReadyToPublish:
 		case Deleted:
-			return false;
-		default:
 			return true;
+		default:
+			return false;
 		}
 	}
 	

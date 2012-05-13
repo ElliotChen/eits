@@ -139,6 +139,9 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	}
 	
 	public String load() {
+		if (article.isReadonly()) {
+			return "readOnly";
+		}
 		return "edit";
 	}
 	
@@ -192,10 +195,23 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	}
 	
 	public String previewSave() {
-		return "preview";
+		
+		return preview();
 	}
 	
 	public String preview() {
+		if (null != this.article && null != this.article.getLanguage()) {
+			Language lan = this.article.getLanguage();
+			if (StringUtils.isNotEmpty(lan.getOid()) && StringUtils.isEmpty(lan.getName())) {
+				String loid = lan.getOid();
+				lan = this.languageService.findByOid(loid);
+				if (null != lan) {
+					this.article.setLanguage(lan);
+				} else {
+					logger.error("Please check Language options named[{}]", loid);
+				}
+			}
+		}
 		return "preview";
 	}
 	
@@ -229,15 +245,6 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		}
 		
 		this.article.setUpdateDate(new Date());
-		
-/*
-edit.statuAction.Draft = Reject
-edit.statuAction.WaitForApproving = Final
-edit.statuAction.WaitForProofRead = Approve
-edit.statuAction.ReadyToUpdate = ReadyToUpdate
-edit.statuAction.ReadyToPublish = ReadytoPublish
-edit.statuAction.Published = Publish
- */
 				
 		if (StringUtils.isEmpty(this.statusAction)) {
 			this.articleService.saveOrUpdate(article);
@@ -257,7 +264,28 @@ edit.statuAction.Published = Publish
 		this.addActionMessage("Save Success!");
 		return this.list();
 	}
+	
+	public String updateStatus() {
+		if (StringUtils.isEmpty(this.statusAction)) {
+			this.articleService.saveOrUpdate(article);
+		} else if ("WaitForProofRead".equals(this.statusAction)) {
+			this.articleService.approve(article);
+		} else if ("Draft".equals(this.statusAction)) {
+			this.articleService.reject(article, this.rejectReason);
+		} else if ("Published".equals(this.statusAction)) {
+			this.articleService.publish(article);
+		} else if ("WaitForApproving".equals(this.statusAction)) {
+			this.articleService.finalArticle(article);
+		} else if ("ReadyToUpdate".equals(this.statusAction)) {
+			this.articleService.readyUpdate(article);
+		} else if ("ReadyToPublish".equals(this.statusAction)) {
+			this.articleService.readyPublish(article);
+		}
+		this.addActionMessage("Update Status Success!");
+		return this.list();
+	}
 	public String disable() {
+		logger.debug("Disable has been invoked");
 		this.articleService.disable(article);
 		return this.list();
 	}
@@ -387,31 +415,6 @@ edit.statuAction.Published = Publish
 
 	public void setExample3(Article example3) {
 		this.example3 = example3;
-	}
-
-	private void mockArticles(final List<Article> list) {
-		Article a1 = new Article();
-		a1.setOid(1L);
-		a1.setArticleId(new ArticleId("123456"));
-		a1.setSummary("All in!");
-		a1.setPublishDate(new Date());
-		a1.setHitCount(271);
-		a1.setLanguage(new Language("EN", "English"));
-		a1.setEntryUser("Adam");
-		a1.setEntryDate(new Date());
-
-		Article a2 = new Article();
-		a2.setOid(2L);
-		a1.setArticleId(new ArticleId("234567"));
-		a2.setSummary("Don't do this!");
-		a2.setPublishDate(new Date());
-		a2.setHitCount(157);
-		a1.setLanguage(new Language("EN", "English"));
-		a2.setEntryUser("Bob");
-		a2.setEntryDate(new Date());
-		
-		list.add(a1);
-		list.add(a2);
 	}
 
 	public String getMessage() {

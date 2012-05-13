@@ -264,13 +264,7 @@ public class User {
 	}
 	
 	public void checkAuthorization() {
-		Role role = null;
-		if (null == this.currentUserRole || null == this.currentUserRole.getRole()) {
-			logger.error("Please init CurrentUserRole for checkAuthorization");
-			role = Role.Guest;
-		} else {
-			role = this.currentUserRole.getRole();
-		}
+		Role role = this.getCurrentRole();
 		
 		this.guest = false;
 		this.l2Admin = false;
@@ -319,7 +313,47 @@ public class User {
 			this.agentType = AgentType.L3;
 			break;
 		}
-		
-		
+	}
+	
+	public String[] getAvailableGroups() {
+		String[] result = null;
+		List<String> groups = null;
+		Role role = this.getCurrentRole();
+		switch(role) {
+		case L2Admin:
+			groups = this.l2AdminGroups;
+			break;
+		case L2Leader:
+			groups = this.l2LeaderGroups;
+			break;
+		case L2Agent:
+			groups = this.l2AgentGroups;
+			break;
+		case L3Leader:
+			groups = this.l3LeaderGroups;
+			break;
+		case L3Agent:
+			groups = this.l3AgentGroups;
+			break;
+		case L3Admin:
+		case Guest:
+		case Partner:
+		default:
+			groups = new ArrayList<String>();
+		}
+		logger.debug("Get Available Groups [{}] for User[{}]", groups, this);
+		result = new String[groups.size()];
+		return groups.toArray(result);
+	}
+	
+	public Role getCurrentRole() {
+		Role role = null;
+		if (null == this.currentUserRole || null == this.currentUserRole.getRole()) {
+			logger.error("Please init CurrentUserRole for checkAuthorization");
+			role = Role.Guest;
+		} else {
+			role = this.currentUserRole.getRole();
+		}
+		return role;
 	}
 }

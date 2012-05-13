@@ -32,37 +32,37 @@
 <table>
 	<tr>
 		<th>Article ID</th>
-		<td>${oid}</td>
+		<td>${article.articleId.oid}</td>
 		<td>Language</td>
-		<td>${language.name}</td>
+		<td>${article.language.name}</td>
 	</tr>
 	<tr>
 		<th>Type</th>
-		<td>${type}</td>
+		<td>${article.type}</td>
 		<th>&nbsp;</th>
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
 		<th>Summary</th>
-		<td>${summary}</td>
+		<td>${article.summary}</td>
 		<th>&nbsp;</th>
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
 		<th>Keywords</th>
-		<td>${keywords}</td>
+		<td>${article.keywords}</td>
 		<th>&nbsp;</th>
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
 		<th>Entry User</th>
-		<td>${entryUser}</td>
+		<td>${article.entryUser}</td>
 		<th>&nbsp;</th>
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
 		<th>Entry Date</th>
-		<td><fmt:formatDate value="${entryDate}" pattern="yyyy/MM/dd HH:mm:ss" /></td>
+		<td><fmt:formatDate value="${article.entryDate}" pattern="yyyy/MM/dd HH:mm:ss" /></td>
 		<th>&nbsp;</th>
 		<td>&nbsp;</td>
 	</tr>

@@ -175,6 +175,13 @@
 	
 	function viewArticleLog(oid) {
 		$('#viewLogOid').val(oid);
+		$('#viewLogForm').attr('action','${ctx}/edit!viewLogs.action');
+		$('#viewLogForm').submit();
+	}
+	
+	function viewRejectLogs(oid) {
+		$('#viewLogOid').val(oid);
+		$('#viewLogForm').attr('action','${ctx}/edit!viewRejectLogs.action');
 		$('#viewLogForm').submit();
 	}
 	
@@ -199,7 +206,7 @@
 	<s:form id="previewArticleForm" namespace="/" target="_blank" action="edit!preview" theme="simple">
 		<input id="previewOid" type="hidden" name="oid" />
 	</s:form>
-	<s:form id="viewLogForm" namespace="/" target="_blank" action="edit!viewLogs" theme="simple">
+	<s:form id="viewLogForm" namespace="/" target="_blank" action="edit" theme="simple">
 		<input id="viewLogOid" type="hidden" name="oid" />
 	</s:form>
 	<s:form id="switchRoleForm" namespace="/" action="system!switchRole" theme="simple">

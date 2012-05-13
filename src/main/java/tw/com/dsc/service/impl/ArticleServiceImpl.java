@@ -275,7 +275,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		} else if (AgentType.L3 == at) {
 			if (Status.WaitForApproving == article.getStatus()) {
 				article.setStatus(Status.WaitForProofRead);
-			} else if (Status.ReadyToPublish == article.getStatus()) {
+			} else if (Status.ReadyToPublish == article.getStatus() || Status.WaitForRepublish == article.getStatus()) {
 				article.setStatus(Status.Published);
 			} else {
 				logger.error("Incorrect Status[{}] for Publish", article.getStatus());
@@ -384,16 +384,14 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			}
 		}
 		*/
-//		conds.add(new SimpleCondition("status", Status.WaitForApproving, OperationEnum.EQ));
-		conds.add(new InCondition("status", new Object[] {Status.WaitForApproving, Status.WaitForProofRead, Status.ReadyToPublish}));
-		conds.add(new InCondition("level", op.getAvailableLevels()));
-		if (op.isAdmin()) {
-			
-		} else if (op.isLeader()) {
-			conds.add(new SimpleCondition("userGroup", op.getGroup(), OperationEnum.EQ));
-		} else {
-			conds.add(new SimpleCondition("entryUser", op.getAccount(), OperationEnum.EQ));
+		String[] groups = op.getAvailableGroups();
+		if (groups.length > 0) {
+			conds.add(new InCondition("userGroup", groups));
 		}
+		conds.add(new InCondition("status", new Object[] {Status.WaitForApproving, Status.WaitForProofRead, Status.ReadyToUpdate, Status.ReadyToPublish}));
+		conds.add(new InCondition("level", op.getAvailableLevels()));
+		conds.add(new SimpleCondition("agentType", op.getAgentType(), OperationEnum.EQ));
+		
 		return this.dao.listByPage(page);
 	}
 	
@@ -408,25 +406,19 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			page.setExample(example);
 		}
 		
-		List<Condition> conds = page.getConditions();
-		/*
-		if (null != page.getConditions()) {
-			for (Condition cond : page.getConditions()) {
-				conds.add(cond);
-			}
-		}
-		*/
-//		conds.add(new SimpleCondition("status", Status.Draft, OperationEnum.EQ));
-		conds.add(new InCondition("status", new Object[] {Status.Draft, Status.ReadyToUpdate}));
-		
 		User op = ThreadLocalHolder.getOperator();
+		List<Condition> conds = page.getConditions();
+		
+		conds.add(new InCondition("status", new Object[] {Status.Draft, Status.ReadyToUpdate}));
 		conds.add(new InCondition("level", op.getAvailableLevels()));
-		if (op.isAdmin()) {
-			
-		} else if (op.isLeader()) {
-			conds.add(new SimpleCondition("userGroup", op.getGroup(), OperationEnum.EQ));
-		} else {
+		conds.add(new SimpleCondition("agentType", op.getAgentType(), OperationEnum.EQ));
+		if (!op.isLeader()) {
 			conds.add(new SimpleCondition("entryUser", op.getAccount(), OperationEnum.EQ));
+		} else {
+			String[] groups = op.getAvailableGroups();
+			if (groups.length > 0) {
+				conds.add(new InCondition("userGroup", groups));
+			}
 		}
 		
 		return this.dao.listByPage(page);
@@ -449,9 +441,15 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		// 4/26 Glavine : 1. 當 KB expired 後 , 要出現在此 KB creater 的 Unpublished Article List 中
 		if (!op.isLeader()) {
 			conds.add(new SimpleCondition("entryUser", op.getAccount(), OperationEnum.EQ));
+		} else {
+			String[] groups = op.getAvailableGroups();
+			if (groups.length > 0) {
+				conds.add(new InCondition("userGroup", groups));
+			}
 		}
 		conds.add(new SimpleCondition("status", Status.WaitForRepublish, OperationEnum.EQ));
 		conds.add(new InCondition("level", op.getAvailableLevels()));
+		conds.add(new SimpleCondition("agentType", op.getAgentType(), OperationEnum.EQ));
 		
 		return this.dao.listByPage(page);
 	}

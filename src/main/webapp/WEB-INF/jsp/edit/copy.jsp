@@ -64,7 +64,6 @@
 		copyField('technology');
 		copyField('product');
 		copyField('firmware');
-		//copyField('level');
 	}
 	function copyField(fname) {
 		$('[name =\''+fname+'\']', $("#copyEditForm")).val($('[name =\'sarticle.'+fname+'\']', $("#copyEditForm")).val());
@@ -96,7 +95,7 @@
 </script>
 <s:form id="copyEditForm" namespace="/" action="edit!create" theme="simple" method="POST" enctype ="multipart/form-data">
 	<input type="hidden" name="sourceOid" value="${sarticle.oid}" />
-	<input type="hidden" name="articleIdOid" value="${sarticle.articleId.oid}" />
+	<input type="hidden" name="articleId.oid" value="${sarticle.articleId.oid}" />
 	<input type="hidden" name="source" value="${sarticle.source}" />
 	<input type="hidden" name="projectCode" value="${sarticle.projectCode}" />
 	<input type="hidden" name="expireType" value="${sarticle.expireType}" />
@@ -254,14 +253,25 @@
 </s:form>
 
 <s:form id="previewForm" namespace="/" action="article!previewCopy" theme="simple" target="_blank">
-	<input type="hidden" name="language" />
+	<input type="hidden" name="articleId.oid" />
+	<input type="hidden" name="language.oid" />
+	<input type="hidden" name="source" />
+	<input type="hidden" name="news" />
 	<input type="hidden" name="type" />
 	<input type="hidden" name="summary" />
+	<input type="hidden" name="expireType" />
+	<input type="hidden" name="entryDate" />
+	<input type="hidden" name="keywords" />
+	<input type="hidden" name="ticketId" />
 	<input type="hidden" name="question" />
 	<input type="hidden" name="answer" />
+	<input type="hidden" name="scenario" />
+	<input type="hidden" name="step" />
+	<input type="hidden" name="verification" />
+	<input type="hidden" name="problem" />
+	<input type="hidden" name="solution" />
+	<input type="hidden" name="procedure" />
+	<input type="hidden" name="level" />
 	<input type="hidden" name="technology" />
 	<input type="hidden" name="product" />
-	<input type="hidden" name="firmware" />
-	<input type="hidden" name="level" />
-	<input type="hidden" name="state" />
 </s:form>

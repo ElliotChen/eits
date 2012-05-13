@@ -44,7 +44,7 @@
 
 	function cloneForm(sourceForm, targetForm) {
 	    $(':input[name]', sourceForm).each(function() {
-	        $('[name=\'' + $(this).attr('name') +'\']', targetForm).val($(this).val())
+	        $('[name=\'' + $(this).attr('name') +'\']', targetForm).val($(this).val());
 	    });
 	}
 	
@@ -87,7 +87,7 @@
 		</tr>
 		<tr>
 			<td>Language:</td>
-			<td><s:select list="languages" listKey="oid" listValue="name" name="article.language.oid"/></td>
+			<td><s:select list="languages" listKey="oid" listValue="name" name="language.oid"/></td>
 		</tr>
 		<s:if test="user.l3">
 		<tr>
@@ -229,7 +229,7 @@
 
 <s:form id="editPreviewForm" namespace="/" action="edit!previewSave" theme="simple" target="_blank">
 	<input type="hidden" name="articleId.oid" />
-	<input type="hidden" name="article.language.oid" />
+	<input type="hidden" name="language.oid" />
 	<input type="hidden" name="source" />
 	<input type="hidden" name="news" />
 	<input type="hidden" name="type" />

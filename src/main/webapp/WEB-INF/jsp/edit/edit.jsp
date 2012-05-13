@@ -8,14 +8,15 @@
 			target: '#main',
 			  beforeSubmit: function() {
 			    $('#editForm').validate({ rules : {
-					id : {required:true, number:true},
 					summary : {required:true},
 					keywords : {required:true},
 					question : {required:true},
 					answer : {required:true},
 					product : {required:true},
 					technology : {required:true},
-					rejectReason : {required:'#rejectOption:selected'}
+					rejectReason : {required:function(element) {
+				        return $("#statusAction").val() == 'Draft';
+				      }}
 				} });
 			    return $('#editForm').valid();
 			  }
@@ -79,19 +80,29 @@
 		}
 	}
 	
+	function checkAction(op) {
+		if ('Draft' == op.value) {
+			$('.rejectArea').show();
+		} else {
+			$('.rejectArea').hide();
+		}
+	}
+	
+	
 //-->
 </script>
 <input type="button" value="View Log" onclick="viewArticleLog('${oid}')"/>
+<input type="button" value="View Reject Reason" onclick="viewRejectLogs('${oid}')"/>
 <s:form id="editForm" namespace="/" action="edit!save" theme="simple" method="POST" enctype ="multipart/form-data">
 	<s:hidden name="oid" />
 	<table>
 		<tr>
 			<td>ArticleID:</td>
-			<td><s:textfield name="article.articleId.oid" readonly="readonly" maxlength="6" size="6" disabled="disabled"/> (${article.status} - ${article.agentType})</td>
+			<td><s:textfield name="articleId.oid" readonly="true" maxlength="6" size="6"/> (${article.status} - ${article.agentType})</td>
 		</tr>
 		<tr>
 			<td>Language:</td>
-			<td><s:select list="languages" listKey="oid" listValue="name" name="article.language.oid"/></td>
+			<td><s:select list="languages" listKey="oid" listValue="name" name="language.oid"/></td>
 		</tr>
 		<s:if test="user.l3">
 		<tr>
@@ -226,11 +237,11 @@
 		<tr>
 			<td>Status Action:</td>
 			<td>
-				<s:select name="statusAction" list="availableStatus" listValue="%{getText('edit.statuAction.'+toString())}" headerKey="" headerValue="-----"></s:select>
+				<s:select id="statusAction" name="statusAction" list="availableStatus" listValue="%{getText('edit.statuAction.'+toString())}" headerKey="" headerValue="-----" onchange="checkAction(this)" />
 			</td>
 		</tr>
 		<s:if test="user.leader">
-		<tr>
+		<tr class="rejectArea" style="display: none;">
 			<td>Reject Reason:</td>
 			<td>
 				<s:textarea name="rejectReason" cols="40" rows="4" />
@@ -243,21 +254,32 @@
 			<td></td>
 			<td><input type="button" value="Cancle" onclick="switchMenu('m3', 'edit!list.action');" />
 			<input type="button" value="Preview"
-				onclick="previewSave()" /> <s:submit value="Submit" cssClass="save" /> <s:submit value="Delete" cssClass="save" action="edit!disable"/>
+				onclick="previewSave()" /> <s:submit value="Submit" cssClass="save" /> <s:submit value="Delete" cssClass="save" action="edit" method="disable"/>
 			</td>
 		</tr>
 	</table>
 </s:form>
 
 <s:form id="editPreviewForm" namespace="/" action="edit!previewSave" theme="simple" target="_blank">
-	<input type="hidden" name="language" />
+	<input type="hidden" name="articleId.oid" />
+	<input type="hidden" name="language.oid" />
+	<input type="hidden" name="source" />
+	<input type="hidden" name="news" />
 	<input type="hidden" name="type" />
 	<input type="hidden" name="summary" />
+	<input type="hidden" name="expireType" />
+	<input type="hidden" name="entryDate" />
+	<input type="hidden" name="keywords" />
+	<input type="hidden" name="ticketId" />
 	<input type="hidden" name="question" />
 	<input type="hidden" name="answer" />
+	<input type="hidden" name="scenario" />
+	<input type="hidden" name="step" />
+	<input type="hidden" name="verification" />
+	<input type="hidden" name="problem" />
+	<input type="hidden" name="solution" />
+	<input type="hidden" name="procedure" />
+	<input type="hidden" name="level" />
 	<input type="hidden" name="technology" />
 	<input type="hidden" name="product" />
-	<input type="hidden" name="firmware" />
-	<input type="hidden" name="level" />
-	<input type="hidden" name="state" />
 </s:form>
