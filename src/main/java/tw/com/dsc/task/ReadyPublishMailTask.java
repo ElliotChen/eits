@@ -7,28 +7,23 @@ import tw.com.dsc.service.ArticleService;
 import tw.com.dsc.service.SystemService;
 
 /**
- * Approval Notification – Notify agent leaders that there is a KB article waiting for approval.
+ * Ready to Publish Notification – Notify agent leaders that there is a KB article has been proof-read and updated by an agent. Only for L3.
  * 
  * Receiver : Leaders
  * @author elliot
  *
  */
-public class ApprovalMailTask extends MailTask {
-
+public class ReadyPublishMailTask extends MailTask {
 	
-	public ApprovalMailTask() {
+	public ReadyPublishMailTask() {
 		super();
 	}
-	
-	
 
-	public ApprovalMailTask(Long articleOid, MailSender mailSender,
+	public ReadyPublishMailTask(Long articleOid, MailSender mailSender,
 			SystemService systemService, ArticleService articleService,
 			ArticleLogService articleLogService) {
 		super(articleOid, mailSender, systemService, articleService, articleLogService);
 	}
-
-
 
 	@Override
 	public String[] getReceivers() {
@@ -42,12 +37,12 @@ public class ApprovalMailTask extends MailTask {
 
 	@Override
 	public String getTitle() {
-		return "Please Approval Article";
+		return "A KB article is ready to be published.";
 	}
 
 	@Override
 	public String getMessage() {
-		return "Article is .....";
+		return "There is a KB["+this.article.getArticleId().getOid()+"] article has been proof-read and updated by an agent["+agent.getOid()+"]";
 	}
 
 }

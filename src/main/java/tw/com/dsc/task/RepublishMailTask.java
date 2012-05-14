@@ -7,28 +7,22 @@ import tw.com.dsc.service.ArticleService;
 import tw.com.dsc.service.SystemService;
 
 /**
- * Approval Notification – Notify agent leaders that there is a KB article waiting for approval.
- * 
- * Receiver : Leaders
+ * Republished Notification – Notify agent leaders that there is a KB article has been republished.
  * @author elliot
  *
  */
-public class ApprovalMailTask extends MailTask {
+public class RepublishMailTask extends MailTask {
 
 	
-	public ApprovalMailTask() {
+	public RepublishMailTask() {
 		super();
 	}
-	
-	
 
-	public ApprovalMailTask(Long articleOid, MailSender mailSender,
+	public RepublishMailTask(Long articleOid, MailSender mailSender,
 			SystemService systemService, ArticleService articleService,
 			ArticleLogService articleLogService) {
 		super(articleOid, mailSender, systemService, articleService, articleLogService);
 	}
-
-
 
 	@Override
 	public String[] getReceivers() {
@@ -37,17 +31,17 @@ public class ApprovalMailTask extends MailTask {
 
 	@Override
 	public String[] getCcReceivers() {
-		return null;
+		return new String[] {this.agent.getEmail()};
 	}
 
 	@Override
 	public String getTitle() {
-		return "Please Approval Article";
+		return "KB article["+this.article.getArticleId().getOid()+"] has been republished";
 	}
 
 	@Override
 	public String getMessage() {
-		return "Article is .....";
+		return "KB article["+this.article.getArticleId().getOid()+"] has been republished";
 	}
 
 }

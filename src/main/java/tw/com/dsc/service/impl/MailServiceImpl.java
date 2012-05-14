@@ -6,15 +6,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 
-import tw.com.dsc.dao.AccountDao;
-import tw.com.dsc.domain.Account;
-import tw.com.dsc.domain.Article;
+import tw.com.dsc.service.ArticleLogService;
 import tw.com.dsc.service.ArticleService;
 import tw.com.dsc.service.MailService;
 import tw.com.dsc.service.SystemService;
 import tw.com.dsc.service.TaskManager;
 import tw.com.dsc.task.ApprovalMailTask;
-import tw.com.dsc.task.MailTask;
+import tw.com.dsc.task.ExpiredMailTask;
+import tw.com.dsc.task.ReadyPublishMailTask;
+import tw.com.dsc.task.RejectMailTask;
+import tw.com.dsc.task.RepublishMailTask;
 
 /**
  * 1. Approval Notification – Notify agent leaders that there is a KB article waiting for approval.
@@ -30,6 +31,7 @@ public class MailServiceImpl implements MailService {
 	private static final Logger logger = LoggerFactory.getLogger(MailServiceImpl.class);
 	private MailSender mailSender;
 	private VelocityEngine velocityEngine;
+	
 	private String sender;
 	
 	private String allAddress;
@@ -42,57 +44,37 @@ public class MailServiceImpl implements MailService {
 	private SystemService systemService;
 	
 	@Autowired
-	private AccountDao accountDao;
+	private ArticleLogService articleLogService;
+	
 	@Override
 	public void approval(Long articleOid) {
-		Article article = this.articleService.findByOid(articleOid);
-		this.approval(article);
-	}
-
-	@Override
-	public void approval(Article article) {
-		logger.info("Send approval for Article[{}]", article);
-		Account account = this.accountDao.findByOid(article.getEntryUser());
-		MailTask task = new ApprovalMailTask(mailSender, account, systemService.findGroupLeaders(article), article);
-		this.taskManager.arrangeMailTask(task);
+		this.taskManager.arrangeMailTask(new ApprovalMailTask(articleOid, mailSender, systemService, articleService, articleLogService));
 	}
 
 	@Override
 	public void reject(Long articleOid) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void reject(Article article) {
-		// TODO Auto-generated method stub
-
+		this.taskManager.arrangeMailTask(new RejectMailTask(articleOid, mailSender, systemService, articleService, articleLogService));
 	}
 
 	@Override
 	public void readyPublish(Long articleOid) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void readyPublish(Article article) {
-		// TODO Auto-generated method stub
-
+		this.taskManager.arrangeMailTask(new ReadyPublishMailTask(articleOid, mailSender, systemService, articleService, articleLogService));
 	}
 
 	@Override
 	public void expired(Long articleOid) {
-		// TODO Auto-generated method stub
-
+		this.taskManager.arrangeMailTask(new ExpiredMailTask(articleOid, mailSender, systemService, articleService, articleLogService));
 	}
 
 	@Override
-	public void expired(Article article) {
-		// TODO Auto-generated method stub
-
+	public void republish(Long articleOid) {
+		this.taskManager.arrangeMailTask(new RepublishMailTask(articleOid, mailSender, systemService, articleService, articleLogService));
 	}
-
+	
+	@Override
+	public void archived(Long articleOid) {
+		
+	}
 	public MailSender getMailSender() {
 		return mailSender;
 	}

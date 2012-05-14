@@ -7,47 +7,41 @@ import tw.com.dsc.service.ArticleService;
 import tw.com.dsc.service.SystemService;
 
 /**
- * Approval Notification – Notify agent leaders that there is a KB article waiting for approval.
- * 
- * Receiver : Leaders
+ * Reject Notification – Notify the agent that there is a KB article has been rejected.
  * @author elliot
  *
  */
-public class ApprovalMailTask extends MailTask {
+public class RejectMailTask extends MailTask {
 
 	
-	public ApprovalMailTask() {
+	public RejectMailTask() {
 		super();
 	}
-	
-	
 
-	public ApprovalMailTask(Long articleOid, MailSender mailSender,
+	public RejectMailTask(Long articleOid, MailSender mailSender,
 			SystemService systemService, ArticleService articleService,
 			ArticleLogService articleLogService) {
 		super(articleOid, mailSender, systemService, articleService, articleLogService);
 	}
 
-
-
 	@Override
 	public String[] getReceivers() {
-		return this.getLeaders();
+		return new String[] {this.agent.getEmail()};
 	}
 
 	@Override
 	public String[] getCcReceivers() {
-		return null;
+		return this.getLeaders();
 	}
 
 	@Override
 	public String getTitle() {
-		return "Please Approval Article";
+		return "KB article["+this.article.getArticleId().getOid()+"] has been rejected";
 	}
 
 	@Override
 	public String getMessage() {
-		return "Article is .....";
+		return "KB article["+this.article.getArticleId().getOid()+"] has been rejected";
 	}
 
 }

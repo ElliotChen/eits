@@ -45,7 +45,7 @@
 			</value>
 		</property>
 	</bean>
-
+	<!--  -->
 	<bean id="mailService" class="tw.com.dsc.service.impl.MailServiceImpl">
 		<property name="taskManager" ref="taskManager" />
 		<property name="mailSender" ref="mailSender" />

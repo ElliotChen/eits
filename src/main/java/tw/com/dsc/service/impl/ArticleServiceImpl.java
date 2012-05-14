@@ -29,6 +29,7 @@ import tw.com.dsc.domain.support.OperationEnum;
 import tw.com.dsc.domain.support.Page;
 import tw.com.dsc.domain.support.SimpleCondition;
 import tw.com.dsc.service.ArticleService;
+import tw.com.dsc.service.MailService;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.ThreadLocalHolder;
 
@@ -48,6 +49,8 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	@Autowired
 	private ArticleLogDao articleLogDao;
 	
+	@Autowired
+	private MailService mailService;
 	@Override
 	public ArticleDao getDao() {
 		return dao;
@@ -160,6 +163,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Create, op.getAccount(), "Create Draft", op.getIp()));
 		} else if (Status.WaitForApproving == status) {
 			this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Create, op.getAccount(), "Create Draft and Final as new", op.getIp()));
+			this.mailService.approval(article.getOid());
 		} else if (Status.Published == status) {
 			this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Create, op.getAccount(), "Create Draft and Publish as public", op.getIp()));
 		} else if (Status.WaitForProofRead == status) {
@@ -180,6 +184,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		this.dao.saveOrUpdate(article);
 		
 		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Final, op.getAccount(), "Update Status to Waiting for Approving", op.getIp()));
+		this.mailService.approval(article.getOid());
 	}
 	
 	@Transactional(readOnly=false)
@@ -210,6 +215,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		this.dao.saveOrUpdate(article);
 		
 		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Reject, op.getAccount(), "Reason:" + reason, op.getIp()));
+		this.mailService.reject(article.getOid());
 	}
 	
 	@Transactional(readOnly=false)
@@ -252,6 +258,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		this.dao.saveOrUpdate(article);
 		
 		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Final, op.getAccount(), "Ready to Published", op.getIp()));
+		this.mailService.readyPublish(article.getOid());
 	}
 	
 	@Transactional(readOnly=false)
@@ -277,6 +284,9 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 				article.setStatus(Status.WaitForProofRead);
 			} else if (Status.ReadyToPublish == article.getStatus() || Status.WaitForRepublish == article.getStatus()) {
 				article.setStatus(Status.Published);
+				if (Status.WaitForRepublish == article.getStatus()) {
+					this.mailService.republish(article.getOid());
+				}
 			} else {
 				logger.error("Incorrect Status[{}] for Publish", article.getStatus());
 			}
@@ -477,6 +487,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			art.setExpireDate(null);
 			this.dao.saveOrUpdate(art);
 			this.articleLogDao.create(new ArticleLog(art.getOid(), ActionType.Unpublish, op.getAccount(), "Wait For Republish", op.getIp()));
+			this.mailService.expired(art.getOid());
 		}
 	}
 }

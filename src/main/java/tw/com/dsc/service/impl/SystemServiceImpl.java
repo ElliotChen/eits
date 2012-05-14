@@ -148,4 +148,8 @@ public class SystemServiceImpl implements SystemService {
 		
 		return result;
 	}
+	
+	public Account findAccountByOid(String oid) {
+		return this.accountDao.findByOid(oid);
+	}
 }

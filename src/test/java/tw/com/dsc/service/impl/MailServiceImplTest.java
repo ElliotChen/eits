@@ -15,8 +15,13 @@ public class MailServiceImplTest {
 	@Autowired
 	private MailService mailService;
 	@Test
-	public void test() throws Exception {
+	public void testMail() throws Exception {
 		mailService.approval(8L);
+		mailService.reject(8L);
+		mailService.readyPublish(8L);
+		mailService.expired(8L);
+		mailService.republish(8L);
+		Thread.sleep(60*1000);
 	}
 
 }

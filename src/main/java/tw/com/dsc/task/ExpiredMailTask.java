@@ -7,28 +7,23 @@ import tw.com.dsc.service.ArticleService;
 import tw.com.dsc.service.SystemService;
 
 /**
- * Approval Notification – Notify agent leaders that there is a KB article waiting for approval.
- * 
- * Receiver : Leaders
+ * Expired Notification for Leader – Notify agent leaders that there is a KB article already expired.
+ * Expired Notification for Agent – Notify the agent that one of his KB article already expired.
  * @author elliot
  *
  */
-public class ApprovalMailTask extends MailTask {
+public class ExpiredMailTask extends MailTask {
 
 	
-	public ApprovalMailTask() {
+	public ExpiredMailTask() {
 		super();
 	}
-	
-	
 
-	public ApprovalMailTask(Long articleOid, MailSender mailSender,
+	public ExpiredMailTask(Long articleOid, MailSender mailSender,
 			SystemService systemService, ArticleService articleService,
 			ArticleLogService articleLogService) {
 		super(articleOid, mailSender, systemService, articleService, articleLogService);
 	}
-
-
 
 	@Override
 	public String[] getReceivers() {
@@ -37,17 +32,17 @@ public class ApprovalMailTask extends MailTask {
 
 	@Override
 	public String[] getCcReceivers() {
-		return null;
+		return new String[] {this.agent.getEmail()};
 	}
 
 	@Override
 	public String getTitle() {
-		return "Please Approval Article";
+		return "Article["+this.article.getArticleId().getOid()+"] Reject has been rejected";
 	}
 
 	@Override
 	public String getMessage() {
-		return "Article is .....";
+		return "your article["+this.article.getArticleId().getOid()+"] has been rejected";
 	}
 
 }
