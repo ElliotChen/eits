@@ -7,13 +7,18 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import tw.com.dsc.domain.Account;
 import tw.com.dsc.domain.AccountRole;
 import tw.com.dsc.domain.AccountRolePK;
+import tw.com.dsc.domain.AgentType;
+import tw.com.dsc.domain.Article;
 import tw.com.dsc.domain.Group;
 import tw.com.dsc.service.SystemService;
 import tw.com.dsc.to.User;
@@ -23,6 +28,7 @@ import tw.com.dsc.util.SystemUtils;
 @ContextConfiguration(locations = { "classpath:/applicationContextTest.xml" })
 @Transactional
 public class SystemServiceImplTest {
+	private static final Logger logger = LoggerFactory.getLogger(ArticleServiceImplTest.class);
 	@Autowired
 	private SystemService systemService;
 	@Test
@@ -81,5 +87,50 @@ public class SystemServiceImplTest {
 		SystemUtils.parseRole(ars, user);
 		
 		Assert.assertNotNull(user.getCurrentUserRole());
+	}
+	
+	@Test
+	public void testFindLeader() {
+		List<Account> accounts = null;
+		Article article = new Article();
+		article.setAgentType(AgentType.L2);
+		article.setUserGroup("L2_ZyDE_Team1");
+		accounts = systemService.findGroupLeaders(article);
+		logger.debug("Group[{}]:Leader Account[{}]", article.getUserGroup(), accounts);
+		Assert.assertFalse(accounts.isEmpty());
+		
+		article.setAgentType(AgentType.L3);
+		article.setUserGroup("L3_Team1");
+		accounts = systemService.findGroupLeaders(article);
+		logger.debug("Group[{}]:Leader Account[{}]", article.getUserGroup(), accounts);
+		Assert.assertFalse(accounts.isEmpty());
+		
+		
+		article.setAgentType(AgentType.L2);
+		article.setUserGroup("abc");
+		accounts = systemService.findGroupLeaders(article);
+		Assert.assertTrue(accounts.isEmpty());
+		
+		article.setAgentType(AgentType.L3);
+		article.setUserGroup("abc");
+		accounts = systemService.findGroupLeaders(article);
+		Assert.assertTrue(accounts.isEmpty());
+	}
+	
+	@Test
+	public void testFindAdmin() {
+		List<Account> accounts = null;
+		Article article = new Article();
+		article.setAgentType(AgentType.L2);
+		article.setUserGroup("L2_ZyDE_Team1");
+		accounts = systemService.findGroupAdmins(article);
+		logger.debug("Group[{}]:Admin Account[{}]", article.getUserGroup(), accounts);
+		Assert.assertTrue(accounts.isEmpty());
+		
+		article.setAgentType(AgentType.L3);
+		article.setUserGroup("L3_Team1");
+		accounts = systemService.findGroupAdmins(article);
+		logger.debug("Group[{}]:Admin Account[{}]", article.getUserGroup(), accounts);
+		Assert.assertFalse(accounts.isEmpty());
 	}
 }

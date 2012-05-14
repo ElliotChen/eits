@@ -1,9 +1,11 @@
 package tw.com.dsc.task;
 
+import java.util.List;
+
 import org.springframework.mail.MailSender;
 
+import tw.com.dsc.domain.Account;
 import tw.com.dsc.domain.Article;
-import tw.com.dsc.to.User;
 
 /**
  * Approval Notification – Notify agent leaders that there is a KB article waiting for approval.
@@ -19,8 +21,8 @@ public class ApprovalMailTask extends MailTask {
 		super();
 	}
 
-	public ApprovalMailTask(MailSender mailSender, User agent, User leader, Article article) {
-		super(mailSender, agent, leader, article);
+	public ApprovalMailTask(MailSender mailSender, Account agent, List<Account> leaders, Article article) {
+		super(mailSender, agent, leaders, article);
 	}
 
 	@Override

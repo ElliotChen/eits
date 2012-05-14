@@ -15,7 +15,10 @@ import tw.com.dsc.dao.AccountDao;
 import tw.com.dsc.dao.AccountRoleDao;
 import tw.com.dsc.dao.GroupDao;
 import tw.com.dsc.domain.Account;
+import tw.com.dsc.domain.AgentType;
+import tw.com.dsc.domain.Article;
 import tw.com.dsc.domain.ErrorType;
+import tw.com.dsc.domain.Group;
 import tw.com.dsc.service.SystemService;
 import tw.com.dsc.to.Model;
 import tw.com.dsc.to.Series;
@@ -82,4 +85,67 @@ public class SystemServiceImpl implements SystemService {
 	}
 	
 	
+	public List<Account> findGroupLeaders(Article article) {
+		List<Account> result = new ArrayList<Account>();
+		//Find Leader 
+		String groupId = article.getUserGroup();
+		String leaderGroupId = "";
+		if (StringUtils.isEmpty(groupId)) {
+			logger.error("System can't find leaders for an article[{}] with an empty group", article);
+			return result;
+		}
+		
+		if (AgentType.L3 == article.getAgentType()) {
+			leaderGroupId = groupId+"_Leader";
+		} else if (AgentType.L2 == article.getAgentType()) {
+			leaderGroupId = groupId+"_Leader";
+		} else {
+			logger.error("");
+		}
+		
+		logger.debug("Look up accounts for Leader Group[{}]", leaderGroupId);
+		
+		Group leader = this.groupDao.findByOid(leaderGroupId);
+		
+		if (null != leader) {
+			result.addAll(leader.getAccounts());
+		} else {
+			logger.error("Can't find Leader Group[{}] in system", leaderGroupId);
+		}
+		
+		return result;
+	}
+	
+	public List<Account> findGroupAdmins(Article article) {
+		List<Account> result = new ArrayList<Account>();
+		//Find Leader 
+		String groupId = article.getUserGroup();
+		String adminGroupId = "";
+		if (StringUtils.isEmpty(groupId)) {
+			logger.error("System can't find leaders for an article[{}] with an empty group", article);
+			return result;
+		}
+		
+		if (AgentType.L3 == article.getAgentType()) {
+			adminGroupId = "L3_Admin";
+		} else if (AgentType.L2 == article.getAgentType()) {
+			int ind = groupId.lastIndexOf("_");
+			String parentId = groupId.substring(0, ind);
+			adminGroupId = parentId + "_Admin";
+		} else {
+			logger.error("");
+		}
+		
+		logger.debug("Look up accounts for Admin Group[{}]", adminGroupId);
+		
+		Group admin = this.groupDao.findByOid(adminGroupId);
+
+		if (null != admin) {
+			result.addAll(admin.getAccounts());
+		} else {
+			logger.error("Can't find Admin Group[{}] in system", adminGroupId);
+		}
+		
+		return result;
+	}
 }

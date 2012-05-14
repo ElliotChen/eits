@@ -20,7 +20,7 @@ import tw.com.dsc.test.BaseTest;
 import tw.com.dsc.util.ThreadLocalHolder;
 
 public class MockArticleServiceImplTest extends BaseTest {
-private static final Logger logger = LoggerFactory.getLogger(ArticleServiceImplTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(ArticleServiceImplTest.class);
 	
 	ArticleServiceImpl service = null;
 	ArticleDao articleDao = null;

@@ -14,12 +14,12 @@ public interface MailService {
 7. Archived Notification – Notify all members that a KB article has been set as archived.
 	 */
 	
-	void approval(String group, Long articleOid);
-	void approval(String group, Article article);
-	void reject(String user, Long articleOid);
-	void reject(String user, Article article);
-	void readyPublish(String group, Long articleOid);
-	void readyPublish(String group, Article article);
+	void approval(Long articleOid);
+	void approval(Article article);
+	void reject(Long articleOid);
+	void reject(Article article);
+	void readyPublish(Long articleOid);
+	void readyPublish(Article article);
 	void expired(Long articleOid);
 	void expired(Article article);
 	
