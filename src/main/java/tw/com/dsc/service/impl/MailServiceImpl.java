@@ -4,7 +4,9 @@ import org.apache.velocity.app.VelocityEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailSender;
+import org.springframework.stereotype.Component;
 
 import tw.com.dsc.service.ArticleLogService;
 import tw.com.dsc.service.ArticleService;
@@ -26,15 +28,18 @@ import tw.com.dsc.task.RepublishMailTask;
 6. Republished Notification – Notify agent leaders that there is a KB article has been republished.
 7. Archived Notification – Notify all members that a KB article has been set as archived.
  */
-
+@Component("mailService")
 public class MailServiceImpl implements MailService {
 	private static final Logger logger = LoggerFactory.getLogger(MailServiceImpl.class);
+	@Autowired
 	private MailSender mailSender;
+	@Autowired
 	private VelocityEngine velocityEngine;
-	
+	@Value("${mail.sender}")
 	private String sender;
 	
 	private String allAddress;
+	@Autowired
 	private TaskManager taskManager;
 
 	@Autowired
@@ -48,6 +53,7 @@ public class MailServiceImpl implements MailService {
 	
 	@Override
 	public void approval(Long articleOid) {
+		System.out.println("!-------"+sender);
 		this.taskManager.arrangeMailTask(new ApprovalMailTask(articleOid, mailSender, systemService, articleService, articleLogService));
 	}
 

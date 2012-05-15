@@ -22,14 +22,14 @@
 	<task:scheduler id="scheduler" pool-size="2"/>
 
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="smtp.gmail.com" />
-		<property name="port" value="587" />
-		<property name="username" value="test@elliot.tw" />
-		<property name="password" value="27571256" />
+		<property name="host" value="${mail.host}" />
+		<property name="port" value="${mail.port}" />
+		<property name="username" value="${mail.username}" />
+		<property name="password" value="${mail.password}" />
 		<property name="javaMailProperties">
 			<props>
-				<prop key="mail.smtp.auth">true</prop>
-				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.smtp.auth">${mail.smtp.auth}</prop>
+				<prop key="mail.smtp.starttls.enable">${mail.smtp.starttls.enable}</prop>
 			</props>
 		</property>
 	</bean>
@@ -44,12 +44,5 @@
 				output.encoding=UTF-8
 			</value>
 		</property>
-	</bean>
-	<!--  -->
-	<bean id="mailService" class="tw.com.dsc.service.impl.MailServiceImpl">
-		<property name="taskManager" ref="taskManager" />
-		<property name="mailSender" ref="mailSender" />
-		<property name="velocityEngine" ref="velocityEngine" />
-		<property name="sender" value="test@elliot.tw" />
 	</bean>
 </beans>

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,30 +58,44 @@ public class SystemServiceImpl implements SystemService {
 	}
 
 	public ErrorType login(final User user) {
+		/* 1. Check account
+		 * 2. Check password 
+		 * 3. Check active date
+		 */
 		logger.debug("User[{}] try to login", user);
-		Account u = accountDao.findByOid(user.getAccount());
-		if (null == u) {
+		//Check account
+		Account account = accountDao.findByOid(user.getAccount());
+		if (null == account) {
+			logger.warn("Can't find Account[{}] from host[{}]", user.getAccount(), user.getIp());
 			return ErrorType.NotFound;
 		}
-		logger.debug("Find Account[{}]", u);
+		logger.debug("Find Account[{}]", account);
 		
+		//check password
+		String md5 = DigestUtils.md5Hex(user.getPassword());
+		if (!md5.equals(account.getPassword())) {
+			logger.warn("Incorrect password for Account[{}] from host[{}]", user.getAccount(), user.getIp());
+			return ErrorType.Password;
+		}
+		
+		//Check active date
 		Date now = new Date();
-		Date endDate = StringUtils.isNotEmpty(u.getEndDate())?DateUtils.pareseActiveDate(u.getEndDate()):null;
-		Date startDate = StringUtils.isNotEmpty(u.getStartDate())?DateUtils.pareseActiveDate(u.getStartDate()):null;
+		Date endDate = StringUtils.isNotEmpty(account.getEndDate())?DateUtils.pareseActiveDate(account.getEndDate()):null;
+		Date startDate = StringUtils.isNotEmpty(account.getStartDate())?DateUtils.pareseActiveDate(account.getStartDate()):null;
 		if (null == endDate || null == startDate) {
-			logger.error("Account doesn't keep Active StartDay[{}] or EndDay[{}]", u.getStartDate(), u.getEndDate());
+			logger.error("Account doesn't keep Active StartDay[{}] or EndDay[{}]", account.getStartDate(), account.getEndDate());
 		} else {
 			if ((null != endDate && !now.before(endDate)) || (null != startDate && !now.after(startDate))) {
-				logger.error("Account is a inactive account for StartDay[{}] and EndDay[{}]", u.getStartDate(), u.getEndDate());
+				logger.warn("Account is a inactive account for StartDay[{}] and EndDay[{}]", account.getStartDate(), account.getEndDate());
 				return ErrorType.Inactive;
 			}
 		}
 		
-		user.setName(u.getName());
-		user.setMail(u.getEmail());
+		user.setName(account.getName());
+		user.setMail(account.getEmail());
 		
 		SystemUtils.parseRole(this.accountRoleDao.listByAccount(user.getAccount()), user);
-		SystemUtils.parseGroup(u.getGroups(), user);
+		SystemUtils.parseGroup(account.getGroups(), user);
 		return null;
 	}
 	

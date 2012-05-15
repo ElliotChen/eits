@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import tw.com.dsc.domain.ErrorType;
 import tw.com.dsc.domain.Role;
 import tw.com.dsc.service.SystemService;
 import tw.com.dsc.to.User;
@@ -32,7 +33,11 @@ public class SystemAction extends BaseAction implements Preparable {
 		return "index";
 	}
 	public String login() {
-		this.systemService.login(loginUser);
+		ErrorType error = this.systemService.login(loginUser);
+		if (null != error) {
+			this.addActionError(this.getText("error."+error.name()));
+		}
+		
 		ThreadLocalHolder.setUser(loginUser);
 		return "index";
 	}
