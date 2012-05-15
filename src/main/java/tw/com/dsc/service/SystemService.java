@@ -11,7 +11,25 @@ import tw.com.dsc.to.User;
 public interface SystemService {
 	List<Series> listAllSeries();
 	ErrorType login(final User user);
+	
+	/**
+	 * Find Article's group leaders
+	 * @param article
+	 * @return
+	 */
 	List<Account> findGroupLeaders(Article article);
+	
+	/**
+	 * Find Article's group administrators
+	 * @param article
+	 * @return
+	 */
 	List<Account> findGroupAdmins(Article article);
+	
+	/**
+	 * Find Account By Oid
+	 * @param oid
+	 * @return
+	 */
 	Account findAccountByOid(String oid);
 }

@@ -21,7 +21,7 @@ public class MailServiceImplTest {
 		mailService.readyPublish(8L);
 		mailService.expired(8L);
 		mailService.republish(8L);
-		Thread.sleep(60*1000);
+		Thread.sleep(10*1000);
 	}
 
 }

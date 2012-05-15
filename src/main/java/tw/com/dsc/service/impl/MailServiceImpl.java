@@ -120,5 +120,29 @@ public class MailServiceImpl implements MailService {
 	public void setTaskManager(TaskManager taskManager) {
 		this.taskManager = taskManager;
 	}
+
+	public ArticleService getArticleService() {
+		return articleService;
+	}
+
+	public void setArticleService(ArticleService articleService) {
+		this.articleService = articleService;
+	}
+
+	public SystemService getSystemService() {
+		return systemService;
+	}
+
+	public void setSystemService(SystemService systemService) {
+		this.systemService = systemService;
+	}
+
+	public ArticleLogService getArticleLogService() {
+		return articleLogService;
+	}
+
+	public void setArticleLogService(ArticleLogService articleLogService) {
+		this.articleLogService = articleLogService;
+	}
 	
 }

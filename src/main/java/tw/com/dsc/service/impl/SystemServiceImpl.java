@@ -99,7 +99,6 @@ public class SystemServiceImpl implements SystemService {
 		return null;
 	}
 	
-	
 	public List<Account> findGroupLeaders(Article article) {
 		List<Account> result = new ArrayList<Account>();
 		//Find Leader 
@@ -115,7 +114,7 @@ public class SystemServiceImpl implements SystemService {
 		} else if (AgentType.L2 == article.getAgentType()) {
 			leaderGroupId = groupId+"_Leader";
 		} else {
-			logger.error("");
+			logger.error("AgentType[{}] doesn't have Group Leader.", article.getAgentType());
 		}
 		
 		logger.debug("Look up accounts for Leader Group[{}]", leaderGroupId);
@@ -148,7 +147,7 @@ public class SystemServiceImpl implements SystemService {
 			String parentId = groupId.substring(0, ind);
 			adminGroupId = parentId + "_Admin";
 		} else {
-			logger.error("");
+			logger.error("AgentType[{}] doesn't have Group Admin.", article.getAgentType());
 		}
 		
 		logger.debug("Look up accounts for Admin Group[{}]", adminGroupId);
@@ -167,4 +166,29 @@ public class SystemServiceImpl implements SystemService {
 	public Account findAccountByOid(String oid) {
 		return this.accountDao.findByOid(oid);
 	}
+
+	public AccountDao getAccountDao() {
+		return accountDao;
+	}
+
+	public void setAccountDao(AccountDao accountDao) {
+		this.accountDao = accountDao;
+	}
+
+	public GroupDao getGroupDao() {
+		return groupDao;
+	}
+
+	public void setGroupDao(GroupDao groupDao) {
+		this.groupDao = groupDao;
+	}
+
+	public AccountRoleDao getAccountRoleDao() {
+		return accountRoleDao;
+	}
+
+	public void setAccountRoleDao(AccountRoleDao accountRoleDao) {
+		this.accountRoleDao = accountRoleDao;
+	}
+	
 }

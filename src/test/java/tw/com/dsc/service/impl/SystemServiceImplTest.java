@@ -19,6 +19,7 @@ import tw.com.dsc.domain.AccountRole;
 import tw.com.dsc.domain.AccountRolePK;
 import tw.com.dsc.domain.AgentType;
 import tw.com.dsc.domain.Article;
+import tw.com.dsc.domain.ErrorType;
 import tw.com.dsc.domain.Group;
 import tw.com.dsc.service.SystemService;
 import tw.com.dsc.to.User;
@@ -132,5 +133,14 @@ public class SystemServiceImplTest {
 		accounts = systemService.findGroupAdmins(article);
 		logger.debug("Group[{}]:Admin Account[{}]", article.getUserGroup(), accounts);
 		Assert.assertFalse(accounts.isEmpty());
+	}
+	
+	@Test
+	public void testLogin() {
+		User user = new User();
+		user.setAccount("L3");
+		user.setPassword("123");
+		ErrorType et = this.systemService.login(user);
+		Assert.assertEquals(ErrorType.NotFound, et);
 	}
 }

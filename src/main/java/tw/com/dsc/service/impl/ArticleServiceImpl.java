@@ -8,7 +8,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import tw.com.dsc.dao.ArticleDao;
@@ -472,8 +474,9 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.View,  op.getAccount(), "View Detail.", op.getIp()));
 	}
 
-	@Transactional(readOnly=false)
+	@Transactional(readOnly=false, propagation=Propagation.REQUIRES_NEW)
 	public void expire() {
+		logger.info("Execute KB expire task");
 		User op = ThreadLocalHolder.getOperator();
 		Article example = new Article();
 		example.setStatus(Status.Published);
@@ -489,5 +492,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			this.articleLogDao.create(new ArticleLog(art.getOid(), ActionType.Unpublish, op.getAccount(), "Wait For Republish", op.getIp()));
 			this.mailService.expired(art.getOid());
 		}
+		
+		logger.info("Execute KB expire task finished, and expire [{}] article(s)", list.size());
 	}
 }

@@ -19,7 +19,16 @@
 	<bean id="taskManager" class="tw.com.dsc.service.impl.TaskManagerImpl">
 		<property name="taskExecutor" ref="taskExecutor" />
 	</bean>
-	<task:scheduler id="scheduler" pool-size="2"/>
+	<!-- 
+	<bean id="expireTask" class="tw.com.dsc.task.ExpireKBTask">
+		<property name="taskExecutor" ref="taskExecutor" />
+	</bean>
+	 -->
+	<task:scheduler id="scheduler" pool-size="10" />
+	<task:scheduled-tasks scheduler="scheduler">
+		<task:scheduled ref="articleService" method="expire" cron="0 */2 * * * *"/>
+	</task:scheduled-tasks>
+	<!-- <task:annotation-driven executor="taskExecutor" scheduler="scheduler"/> -->
 
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="${mail.host}" />
