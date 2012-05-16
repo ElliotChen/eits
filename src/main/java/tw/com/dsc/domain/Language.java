@@ -13,7 +13,7 @@ public class Language extends AbstractOIdObjectAuditable {
 	private static final long serialVersionUID = 4815255597802616325L;
 	
 	@Type(type = "yes_no")
-	@Column(name = "SYSTEM", length = 3)
+	@Column(name = "IS_SYSTEM", length = 3)
 	private Boolean system;
 	public Language() {
 		super();

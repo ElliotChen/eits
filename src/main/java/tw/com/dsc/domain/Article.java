@@ -96,7 +96,7 @@ public class Article extends AbstractSeqIdObjectAuditable {
 	private String answer;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "LEVEL", length = 10)
+	@Column(name = "LEVEL_TYPE", length = 10)
 	private Level level;
 	
 	@Column(name = "HITCOUNT")
@@ -127,7 +127,7 @@ public class Article extends AbstractSeqIdObjectAuditable {
 	private String scenario;
 	@Column(name = "STEP", length = 100)
 	private String step;
-	@Column(name = "vERIFICATION", length = 100)
+	@Column(name = "VERIFICATION", length = 100)
 	private String verification;
 	
 	/**Type = Issue**/
@@ -135,7 +135,7 @@ public class Article extends AbstractSeqIdObjectAuditable {
 	private String problem;
 	@Column(name = "SOLUTION", length = 100)
 	private String solution;
-	@Column(name = "PROCEDURE", length = 100)
+	@Column(name = "PROCEDURE_DATA", length = 100)
 	private String procedure;
 	
 	@Column(name = "RATE_1")
