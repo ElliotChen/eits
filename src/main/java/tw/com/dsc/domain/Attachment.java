@@ -26,6 +26,8 @@ public class Attachment extends AbstractSeqIdObject {
 	@Column(name="CONTENT_TYPE", length=20)
 	private String contentType;
 	
+	@Column(name="REAL_ABS_PATH", length=400)
+	private String realAbsPath;
 	public String getName() {
 		return name;
 	}
@@ -63,6 +65,14 @@ public class Attachment extends AbstractSeqIdObject {
 		return "Attachment [name=" + name + ", extension=" + extension + ", uri=" + uri + ", oid=" + oid + "]";
 	}
 	
+	public String getRealAbsPath() {
+		return realAbsPath;
+	}
+
+	public void setRealAbsPath(String realAbsPath) {
+		this.realAbsPath = realAbsPath;
+	}
+
 	public String getFullName() {
 		if (StringUtils.isEmpty(extension)) {
 			return this.oid.toString();

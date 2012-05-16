@@ -54,4 +54,6 @@
 
 	<context:annotation-config />
 	<context:component-scan base-package="tw.com.dsc" />
+	
+	<import resource="applicationContext_Mail.xml"/>
 </beans>

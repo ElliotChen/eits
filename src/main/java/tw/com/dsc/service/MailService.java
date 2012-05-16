@@ -21,6 +21,7 @@ public interface MailService {
 	 * @param articleOid
 	 */
 	void approval(Long articleOid);
+	void approval(Article article);
 	
 	/**
 	 * Reject Notification – Notify the agent that there is a KB article has been rejected.

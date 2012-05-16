@@ -540,11 +540,13 @@ public class Article extends AbstractSeqIdObjectAuditable {
 			return false;
 		}
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Article [articleId=" + articleId + ", language=" + language + ", userGroup=" + userGroup + ", type="
-				+ type + ", status=" + status + ", level=" + level + ", oid=" + oid + "]";
+		return "Article [articleId=" + articleId + ", language=" + language
+				+ ", agentType=" + agentType + ", userGroup=" + userGroup
+				+ ", status=" + status + ", level=" + level + ", oid=" + oid
+				+ "]";
 	}
 	
 }

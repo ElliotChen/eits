@@ -6,8 +6,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailSender;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
+import tw.com.dsc.domain.Article;
 import tw.com.dsc.service.ArticleLogService;
 import tw.com.dsc.service.ArticleService;
 import tw.com.dsc.service.MailService;
@@ -32,7 +34,7 @@ import tw.com.dsc.task.RepublishMailTask;
 public class MailServiceImpl implements MailService {
 	private static final Logger logger = LoggerFactory.getLogger(MailServiceImpl.class);
 	@Autowired
-	private MailSender mailSender;
+	private JavaMailSender javaMailSender;
 	@Autowired
 	private VelocityEngine velocityEngine;
 	@Value("${mail.sender}")
@@ -53,42 +55,39 @@ public class MailServiceImpl implements MailService {
 	
 	@Override
 	public void approval(Long articleOid) {
-		System.out.println("!-------"+sender);
-		this.taskManager.arrangeMailTask(new ApprovalMailTask(articleOid, mailSender, systemService, articleService, articleLogService));
+		this.taskManager.arrangeMailTask(new ApprovalMailTask(articleOid, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine));
+	}
+	
+	@Override
+	public void approval(Article article) {
+		this.taskManager.arrangeMailTask(new ApprovalMailTask(article, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine));
 	}
 
 	@Override
 	public void reject(Long articleOid) {
-		this.taskManager.arrangeMailTask(new RejectMailTask(articleOid, mailSender, systemService, articleService, articleLogService));
+		this.taskManager.arrangeMailTask(new RejectMailTask(articleOid, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine));
 	}
 
 	@Override
 	public void readyPublish(Long articleOid) {
-		this.taskManager.arrangeMailTask(new ReadyPublishMailTask(articleOid, mailSender, systemService, articleService, articleLogService));
+		this.taskManager.arrangeMailTask(new ReadyPublishMailTask(articleOid, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine));
 	}
 
 	@Override
 	public void expired(Long articleOid) {
-		this.taskManager.arrangeMailTask(new ExpiredMailTask(articleOid, mailSender, systemService, articleService, articleLogService));
+		this.taskManager.arrangeMailTask(new ExpiredMailTask(articleOid, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine));
 	}
 
 	@Override
 	public void republish(Long articleOid) {
-		this.taskManager.arrangeMailTask(new RepublishMailTask(articleOid, mailSender, systemService, articleService, articleLogService));
+		this.taskManager.arrangeMailTask(new RepublishMailTask(articleOid, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine));
 	}
 	
 	@Override
 	public void archived(Long articleOid) {
 		
 	}
-	public MailSender getMailSender() {
-		return mailSender;
-	}
-
-	public void setMailSender(MailSender mailSender) {
-		this.mailSender = mailSender;
-	}
-
+	
 	public VelocityEngine getVelocityEngine() {
 		return velocityEngine;
 	}

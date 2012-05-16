@@ -1,6 +1,7 @@
 package tw.com.dsc.task;
 
-import org.springframework.mail.MailSender;
+import org.apache.velocity.app.VelocityEngine;
+import org.springframework.mail.javamail.JavaMailSender;
 
 import tw.com.dsc.service.ArticleLogService;
 import tw.com.dsc.service.ArticleService;
@@ -19,10 +20,10 @@ public class ExpiredMailTask extends MailTask {
 		super();
 	}
 
-	public ExpiredMailTask(Long articleOid, MailSender mailSender,
+	public ExpiredMailTask(Long articleOid, JavaMailSender mailSender,
 			SystemService systemService, ArticleService articleService,
-			ArticleLogService articleLogService) {
-		super(articleOid, mailSender, systemService, articleService, articleLogService);
+			ArticleLogService articleLogService, String sender, VelocityEngine velocityEngine) {
+		super(articleOid, mailSender, systemService, articleService, articleLogService, sender, velocityEngine);
 	}
 
 	@Override

@@ -2,13 +2,14 @@ package tw.com.dsc.task;
 
 import java.util.List;
 
+import javax.mail.internet.MimeMessage;
+
+import org.apache.velocity.app.VelocityEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 
-import tw.com.dsc.dao.AccountDao;
-import tw.com.dsc.dao.ArticleLogDao;
 import tw.com.dsc.domain.Account;
 import tw.com.dsc.domain.Article;
 import tw.com.dsc.service.ArticleLogService;
@@ -17,12 +18,14 @@ import tw.com.dsc.service.SystemService;
 
 public abstract class MailTask implements Runnable {
 	private static final Logger logger = LoggerFactory.getLogger(MailTask.class);
-	private MailSender mailSender;
+	protected JavaMailSender javaMailSender;
 	protected Long articleOid;
 	protected Account agent;
 	protected List<Account> leaders;
 	protected Article article;
+	protected VelocityEngine velocityEngine;
 	
+	private String sender;
 	
 	private SystemService systemService;
 	
@@ -34,39 +37,48 @@ public abstract class MailTask implements Runnable {
 		super();
 	}
 
-	public MailTask(Long articleOid, MailSender mailSender, SystemService systemService, ArticleService articleService, ArticleLogService articleLogService) {
+	public MailTask(Long articleOid, JavaMailSender javaMailSender, SystemService systemService, ArticleService articleService, ArticleLogService articleLogService, String sender, VelocityEngine velocityEngine) {
 		this.articleOid = articleOid;
-		this.mailSender = mailSender;
+		this.javaMailSender = javaMailSender;
 		this.systemService = systemService;
 		this.articleService = articleService;
 		this.articleLogService = articleLogService;
+		this.sender = sender;
+		this.velocityEngine = velocityEngine;
 	}
 
 	@Override
 	public void run() {
-		this.article = this.articleService.findByOid(articleOid);
-		if (null == article) {
-			logger.error("Please check Article[{}], can't find this article in system!", this.articleOid);
-			return;
+		if (null == this.article) {
+			this.article = this.articleService.findByOid(articleOid);
+			if (null == article) {
+				logger.error("Please check Article[{}], can't find this article in system!", this.articleOid);
+				return;
+			}
 		}
-		
 		this.agent = this.systemService.findAccountByOid(article.getEntryUser());
 		this.leaders = this.systemService.findGroupLeaders(article);
 		
-		String[] receivers = this.getReceivers();
-		String[] cc = this.getCcReceivers();
-		logger.info("Send Mail to [{}]", receivers);
-		
-		SimpleMailMessage mail = new SimpleMailMessage();
-		mail.setFrom("test@elliot.tw");
-		mail.setTo(this.getReceivers());
-		if (null != cc && cc.length > 0) {
-			mail.setCc(cc);
+		MimeMessage mail = this.javaMailSender.createMimeMessage();
+		try {
+			MimeMessageHelper helper = new MimeMessageHelper(mail, true, "UTF-8");
+			String[] receivers = this.getReceivers();
+			String[] cc = this.getCcReceivers();
+			String title = this.getTitle();
+			String message = this.getMessage();
+			
+			helper.setFrom(this.sender);
+			helper.setTo(receivers);
+			if (null != cc && cc.length > 0) {
+				helper.setCc(cc);
+			}
+			helper.setSubject(title);
+			helper.setText(message, true);
+			logger.info("Send Mail[{}] to [{}]", message, receivers);
+			javaMailSender.send(mail);
+		} catch (Exception e) {
+
 		}
-		mail.setSubject(this.getTitle());
-		mail.setText(this.getMessage());
-		
-		mailSender.send(mail);
 		
 		logger.info("Send Mail Success!");
 		
@@ -88,13 +100,13 @@ public abstract class MailTask implements Runnable {
 		}
 		return leaderMails;
 	}
-
-	public MailSender getMailSender() {
-		return mailSender;
+	
+	public JavaMailSender getJavaMailSender() {
+		return javaMailSender;
 	}
 
-	public void setMailSender(MailSender mailSender) {
-		this.mailSender = mailSender;
+	public void setJavaMailSender(JavaMailSender javaMailSender) {
+		this.javaMailSender = javaMailSender;
 	}
 
 	public Long getArticleOid() {
@@ -127,6 +139,14 @@ public abstract class MailTask implements Runnable {
 
 	public void setArticleLogService(ArticleLogService articleLogService) {
 		this.articleLogService = articleLogService;
+	}
+
+	public String getSender() {
+		return sender;
+	}
+
+	public void setSender(String sender) {
+		this.sender = sender;
 	}
 	
 }

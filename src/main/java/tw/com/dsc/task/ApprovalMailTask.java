@@ -1,7 +1,13 @@
 package tw.com.dsc.task;
 
-import org.springframework.mail.MailSender;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.apache.velocity.app.VelocityEngine;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.ui.velocity.VelocityEngineUtils;
+
+import tw.com.dsc.domain.Article;
 import tw.com.dsc.service.ArticleLogService;
 import tw.com.dsc.service.ArticleService;
 import tw.com.dsc.service.SystemService;
@@ -20,14 +26,18 @@ public class ApprovalMailTask extends MailTask {
 		super();
 	}
 	
-	
-
-	public ApprovalMailTask(Long articleOid, MailSender mailSender,
+	public ApprovalMailTask(Long articleOid, JavaMailSender mailSender,
 			SystemService systemService, ArticleService articleService,
-			ArticleLogService articleLogService) {
-		super(articleOid, mailSender, systemService, articleService, articleLogService);
+			ArticleLogService articleLogService, String sender, VelocityEngine velocityEngine) {
+		super(articleOid, mailSender, systemService, articleService, articleLogService, sender, velocityEngine);
 	}
 
+	public ApprovalMailTask(Article article, JavaMailSender mailSender,
+			SystemService systemService, ArticleService articleService,
+			ArticleLogService articleLogService, String sender, VelocityEngine velocityEngine) {
+		super(null, mailSender, systemService, articleService, articleLogService, sender, velocityEngine);
+		this.article = article;
+	}
 
 
 	@Override
@@ -42,12 +52,15 @@ public class ApprovalMailTask extends MailTask {
 
 	@Override
 	public String getTitle() {
-		return "Please Approval Article";
+		return "Wait for Approval Notification";
 	}
 
 	@Override
 	public String getMessage() {
-		return "Article is .....";
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("articleOid", String.valueOf(this.article.getOid()));
+		String message = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "approval.vm", map);
+		return message;
 	}
 
 }

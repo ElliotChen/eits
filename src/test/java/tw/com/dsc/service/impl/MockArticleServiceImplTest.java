@@ -11,11 +11,13 @@ import org.slf4j.LoggerFactory;
 import tw.com.dsc.dao.ArticleDao;
 import tw.com.dsc.dao.ArticleIdDao;
 import tw.com.dsc.dao.ArticleLogDao;
+import tw.com.dsc.dao.StatisticsDataDao;
 import tw.com.dsc.domain.Article;
 import tw.com.dsc.domain.ArticleId;
 import tw.com.dsc.domain.ExpireType;
 import tw.com.dsc.domain.Status;
 import tw.com.dsc.domain.support.Page;
+import tw.com.dsc.service.MailService;
 import tw.com.dsc.test.BaseTest;
 import tw.com.dsc.util.ThreadLocalHolder;
 
@@ -26,6 +28,8 @@ public class MockArticleServiceImplTest extends BaseTest {
 	ArticleDao articleDao = null;
 	ArticleLogDao articleLogDao = null;
 	ArticleIdDao articleIdDao = null;
+	StatisticsDataDao statisticsDataDao =  null;
+	MailService mailService = null;
 	
 	@Before
 	public void before() {
@@ -33,10 +37,14 @@ public class MockArticleServiceImplTest extends BaseTest {
 		articleDao = Mockito.mock(ArticleDao.class);
 		articleLogDao = Mockito.mock(ArticleLogDao.class);
 		articleIdDao = Mockito.mock(ArticleIdDao.class);
+		statisticsDataDao = Mockito.mock(StatisticsDataDao.class);
+		mailService = Mockito.mock(MailService.class);
 		
 		service.setDao(articleDao);
 		service.setArticleLogDao(articleLogDao);
 		service.setArticleIdDao(articleIdDao);
+		service.setStatisticsDataDao(statisticsDataDao);
+		service.setMailService(mailService);
 	}
 	@Test
 	public void testSearchDraftPage() {

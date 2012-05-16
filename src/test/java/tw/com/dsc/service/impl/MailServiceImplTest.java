@@ -17,11 +17,13 @@ public class MailServiceImplTest {
 	@Test
 	public void testMail() throws Exception {
 		mailService.approval(8L);
+		/*
 		mailService.reject(8L);
 		mailService.readyPublish(8L);
 		mailService.expired(8L);
 		mailService.republish(8L);
-		Thread.sleep(10*1000);
+		*/
+		Thread.sleep(30*1000);
 	}
 
 }

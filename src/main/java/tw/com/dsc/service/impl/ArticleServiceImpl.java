@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tw.com.dsc.dao.ArticleDao;
 import tw.com.dsc.dao.ArticleIdDao;
 import tw.com.dsc.dao.ArticleLogDao;
+import tw.com.dsc.dao.StatisticsDataDao;
 import tw.com.dsc.domain.ActionType;
 import tw.com.dsc.domain.AgentType;
 import tw.com.dsc.domain.Article;
@@ -23,6 +24,7 @@ import tw.com.dsc.domain.ArticleId;
 import tw.com.dsc.domain.ArticleLog;
 import tw.com.dsc.domain.ExpireType;
 import tw.com.dsc.domain.Level;
+import tw.com.dsc.domain.StatisticsData;
 import tw.com.dsc.domain.Status;
 import tw.com.dsc.domain.support.Condition;
 import tw.com.dsc.domain.support.InCondition;
@@ -51,6 +53,8 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	@Autowired
 	private ArticleLogDao articleLogDao;
 	
+	@Autowired
+	private StatisticsDataDao statisticsDataDao;
 	@Autowired
 	private MailService mailService;
 	@Override
@@ -83,6 +87,22 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		this.dao = dao;
 	}
 	
+	public StatisticsDataDao getStatisticsDataDao() {
+		return statisticsDataDao;
+	}
+
+	public void setStatisticsDataDao(StatisticsDataDao statisticsDataDao) {
+		this.statisticsDataDao = statisticsDataDao;
+	}
+
+	public MailService getMailService() {
+		return mailService;
+	}
+
+	public void setMailService(MailService mailService) {
+		this.mailService = mailService;
+	}
+
 	@Transactional(readOnly=false)
 	public void draftNewArticle(Article article) {
 		User op = ThreadLocalHolder.getOperator();
@@ -269,6 +289,37 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		User op = ThreadLocalHolder.getOperator();
 		AgentType at = article.getAgentType();
 		logger.info("User[{}] try to publish a Article[{}]", op.getAccount(), article);
+
+		if (AgentType.L2 == at) {
+			if (Status.WaitForApproving == article.getStatus()) {
+				this.realPublish(article);
+			} else if (Status.WaitForRepublish == article.getStatus()) {
+				this.republish(article);
+			} else {
+				logger.error("Incorrect Status[{}] for Publish", article.getStatus());
+			}
+		} else if (AgentType.L3 == at) {
+			if (Status.ReadyToPublish == article.getStatus()) {
+				this.realPublish(article);
+			} else if (Status.WaitForRepublish == article.getStatus()) {
+				this.republish(article);
+			} else if (Status.WaitForApproving == article.getStatus()) {
+				this.approve(article);
+			} else {
+				logger.error("Incorrect Status[{}] for Publish", article.getStatus());
+			}
+		} else {
+			logger.error("Incorrect AgentType[{}] for Publish!", article.getAgentType());
+		}
+		
+		
+	}
+	
+	/**
+	 * @param article
+	 */
+	protected void realPublish(Article article) {
+		User op = ThreadLocalHolder.getOperator();
 		Calendar cal = Calendar.getInstance();
 		article.setPublishDate(new Date());
 		if (null == article.getExpireType()) {
@@ -277,63 +328,72 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		}
 		cal.add(Calendar.MONTH, article.getExpireType().getMonth());
 		article.setUpdateDate(new Date());
+		article.setExpireDate(cal.getTime());
+		article.setStatus(Status.Published);
 		
-		if (AgentType.L2 == at) {
-			article.setExpireDate(cal.getTime());
-			article.setStatus(Status.Published);
-		} else if (AgentType.L3 == at) {
-			if (Status.WaitForApproving == article.getStatus()) {
-				article.setStatus(Status.WaitForProofRead);
-			} else if (Status.ReadyToPublish == article.getStatus() || Status.WaitForRepublish == article.getStatus()) {
-				article.setStatus(Status.Published);
-				if (Status.WaitForRepublish == article.getStatus()) {
-					this.mailService.republish(article.getOid());
-				}
-			} else {
-				logger.error("Incorrect Status[{}] for Publish", article.getStatus());
-			}
-		} else {
-			logger.error("Incorrect AgentType[{}] for Publish!", article.getAgentType());
-		}
 		this.dao.saveOrUpdate(article);
 		
 		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Publish, op.getAccount(), "Publish", op.getIp()));
+
 	}
 	
-	@Transactional(readOnly=false)
-	public void ready(Article article) {
+	protected void republish(Article article) {
+		User op = ThreadLocalHolder.getOperator();
+		Calendar cal = Calendar.getInstance();
+		article.setPublishDate(new Date());
+		if (null == article.getExpireType()) {
+			logger.warn("Publish an article without expire type!");
+			article.setExpireType(ExpireType.M1);
+		}
+		cal.add(Calendar.MONTH, article.getExpireType().getMonth());
+		article.setUpdateDate(new Date());
+		article.setExpireDate(cal.getTime());
+		article.setStatus(Status.Published);
 		
+		this.dao.saveOrUpdate(article);
+		
+		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Republish, op.getAccount(), "Republish", op.getIp()));
+
 	}
+	
 	@Transactional(readOnly=false)
 	public void rate(Article article, int point) {
 		User op = ThreadLocalHolder.getOperator();
 		logger.debug("User[{}] rate [{}] to Article[{}]", new Object[] {op, point, article.getOid()});
+		ActionType at = ActionType.Rating1;
 		switch(point) {
 		case 1:
+			at = ActionType.Rating1;
 			article.setRate1(article.getRate1()+1);
 			break;
 		case 2:
+			at = ActionType.Rating2;
 			article.setRate2(article.getRate2()+1);
 			break;
 		case 3:
+			at = ActionType.Rating3;
 			article.setRate3(article.getRate3()+1);
 			break;
 		case 4:
+			at = ActionType.Rating4;
 			article.setRate4(article.getRate4()+1);
 			break;
 		case 5:
+			at = ActionType.Rating5;
 			article.setRate5(article.getRate5()+1);
 			break;
 		default:
 			logger.error("Unknow rate number[{}] for Article[{}]", point, article.getOid());
 		}
 		this.dao.saveOrUpdate(article);
-		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Rating, op.getAccount(), String.valueOf(point), op.getIp()));
+//		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Rating, op.getAccount(), String.valueOf(point), op.getIp()));
+		this.statisticsDataDao.create(new StatisticsData(article.getOid(), at, op.getAccount(), op.getIp()));
 	}
 	@Transactional(readOnly=false)
 	public void comment(Article article, String comment) {
 		User op = ThreadLocalHolder.getOperator();
 		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Comment, op.getAccount(), "Comment:"+comment, op.getIp()));
+		this.statisticsDataDao.create(new StatisticsData(article.getOid(), ActionType.Comment, op.getAccount(), op.getIp()));
 	}
 	/**
 	 * Active = true
@@ -471,7 +531,8 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		User op = ThreadLocalHolder.getOperator();
 		article.setHitCount(article.getHitCount()+1);
 		this.dao.saveOrUpdate(article);
-		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.View,  op.getAccount(), "View Detail.", op.getIp()));
+//		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.View,  op.getAccount(), "View Detail.", op.getIp()));
+		this.statisticsDataDao.create(new StatisticsData(article.getOid(), ActionType.View,  op.getAccount(), op.getIp()));
 	}
 
 	@Transactional(readOnly=false, propagation=Propagation.REQUIRES_NEW)

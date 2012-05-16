@@ -26,7 +26,7 @@ import tw.com.dsc.to.User;
 import tw.com.dsc.util.SystemUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:/applicationContextTest.xml" })
+@ContextConfiguration(locations = { "classpath:/applicationContext.xml" })
 @Transactional
 public class SystemServiceImplTest {
 	private static final Logger logger = LoggerFactory.getLogger(ArticleServiceImplTest.class);
@@ -142,5 +142,12 @@ public class SystemServiceImplTest {
 		user.setPassword("123");
 		ErrorType et = this.systemService.login(user);
 		Assert.assertEquals(ErrorType.NotFound, et);
+		
+		user.setAccount("L3_Admin");
+		user.setPassword("xxx");
+		et = this.systemService.login(user);
+		Assert.assertEquals(ErrorType.Password, et);
+		
+		
 	}
 }
