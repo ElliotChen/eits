@@ -52,7 +52,7 @@ Unpublished
 	<input type="text" name="example1.entryUser" size="6"/>
 	<input type="text" name="example1.entryDate" size="10" id="entryDate1" readonly="readonly"/>
 	<input type="text" name="example1.product" size="26"/>
-	<input type="text" name="example1.status" size="15"/>
+	<s:select name="example1.status" list="{'WaitForApproving', 'WaitForProofRead', 'ReadyToUpdate', 'ReadyToPublish'}" listValue="%{getText('enum.Status.'+toString())}" headerKey="" headerValue="----"></s:select>
 	<s:submit value="Search" />
 </s:form>
 

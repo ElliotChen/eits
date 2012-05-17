@@ -26,6 +26,7 @@ import tw.com.dsc.domain.Attachment;
 import tw.com.dsc.domain.Language;
 import tw.com.dsc.domain.Source;
 import tw.com.dsc.domain.Status;
+import tw.com.dsc.domain.support.BetweenCondition;
 import tw.com.dsc.domain.support.Page;
 import tw.com.dsc.service.ArticleLogService;
 import tw.com.dsc.service.ArticleService;
@@ -35,6 +36,7 @@ import tw.com.dsc.service.SystemService;
 import tw.com.dsc.to.JsonMsg;
 import tw.com.dsc.to.Series;
 import tw.com.dsc.to.User;
+import tw.com.dsc.util.DateUtils;
 import tw.com.dsc.util.ThreadLocalHolder;
 
 import com.opensymphony.xwork2.ModelDriven;
@@ -130,18 +132,30 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	
 	public String searchUnpublished() {
 		page = new Page<Article>(example1);
+		if (null != example1.getEntryDate()) {
+			page.getConditions().add(new BetweenCondition("entryDate", DateUtils.begin(example1.getEntryDate()), DateUtils.end(example1.getEntryDate())));
+			example1.setEntryDate(null);
+		}
 		this.unpublishedArticles = this.articleService.searchUnpublishedPage(page);
 		return "unpublished";
 	}
 	
 	public String searchDraft() {
 		page = new Page<Article>(example2);
+		if (null != example2.getEntryDate()) {
+			page.getConditions().add(new BetweenCondition("entryDate", DateUtils.begin(example2.getEntryDate()), DateUtils.end(example2.getEntryDate())));
+			example2.setEntryDate(null);
+		}
 		this.draftArticles = this.articleService.searchDraftPage(page);
 		return "draft";
 	}
 	
 	public String searchExpired() {
 		page = new Page<Article>(example3);
+		if (null != example3.getEntryDate()) {
+			page.getConditions().add(new BetweenCondition("entryDate", DateUtils.begin(example3.getEntryDate()), DateUtils.end(example3.getEntryDate())));
+			example3.setEntryDate(null);
+		}
 		this.expiredArticles = this.articleService.searchExpiredPage(page);
 		return "expired";
 	}

@@ -213,7 +213,7 @@
 		<tr>
 			<td>Save As:</td>
 			<td>
-				<s:radio name="statusAction" list="availableStatus" listValue="%{getText('create.statuAction.'+toString())}" value="'WaitForApproving'" />
+				<s:radio name="statusAction" list="availableStatus" listValue="%{getText('create.statusAction.'+toString())}" value="'WaitForApproving'" />
 			</td>
 		</tr>
 		<tr>

@@ -237,7 +237,7 @@
 		<tr>
 			<td>Status Action:</td>
 			<td>
-				<s:select id="statusAction" name="statusAction" list="availableStatus" listValue="%{getText('edit.statuAction.'+toString())}" headerKey="" headerValue="-----" onchange="checkAction(this)" />
+				<s:select id="statusAction" name="statusAction" list="availableStatus" listValue="%{getText('edit.statusAction.'+toString())}" headerKey="" headerValue="-----" onchange="checkAction(this)" />
 			</td>
 		</tr>
 		<s:if test="user.leader">

@@ -4,10 +4,10 @@
 <s:form id="createForm" namespace="/" action="language!create" theme="simple">
 <display:table name="page.result" partialList="true" pagesize="${page.pageSize}" size="${page.totalCount}" form="displayForm" sort="external" id="language" export="true" requestURI="language!search.action" class="displayTagGrid">
 	<display:caption>Language</display:caption>
-	<display:column title="">${language_rowNum}</display:column>
-	<display:column property="oid" title="Language ID" />
-	<display:column property="name" title="Language" />
-	<display:column title="Function">
+	<display:column title="" headerClass="tablehead">${language_rowNum}</display:column>
+	<display:column property="oid" title="Language ID" headerClass="tablehead"/>
+	<display:column property="name" title="Language" headerClass="tablehead"/>
+	<display:column title="Function" headerClass="tablehead">
 		<a href="javascript:editLanguage('${language.oid}','${language.name}');">Edit</a>
 		<c:if test="${!language.system}">
 			<a href="javascript:deleteLanguage('${language.oid}');">Delete</a>

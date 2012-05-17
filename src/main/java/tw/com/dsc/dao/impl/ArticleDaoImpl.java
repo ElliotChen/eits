@@ -37,7 +37,11 @@ public class ArticleDaoImpl extends AbstractBaseDao<Article, Long> implements Ar
 			ArticleId ai = example.getArticleId();
 			subCriteria = criteria.createCriteria("articleId");
 			if (StringUtils.isNotEmpty(ai.getOid())) {
-				subCriteria.add(Restrictions.eq("oid", ai.getOid()));
+				if (6 == ai.getOid().length()) {
+					subCriteria.add(Restrictions.eq("oid", ai.getOid()));
+				} else {
+					subCriteria.add(Restrictions.like("oid", ai.getOid(), MatchMode.ANYWHERE));
+				}
 			}
 		}
 	}
