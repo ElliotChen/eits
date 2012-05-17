@@ -21,7 +21,6 @@ import com.opensymphony.xwork2.ActionSupport;
 @Scope("prototype")
 public class CkEditorAction extends ActionSupport implements ServletContextAware {
 	private static final Logger logger = LoggerFactory.getLogger(CkEditorAction.class);
-	private static final String DEFAULT_PATH = "upload/";
 	private static final long serialVersionUID = 8521892056510784666L;
 	private File upload;
 	private String uploadFileName;
@@ -32,33 +31,27 @@ public class CkEditorAction extends ActionSupport implements ServletContextAware
 	
 	private ServletContext context;
 	
-	private String path = DEFAULT_PATH;
 	@Autowired
 	private AttachmentService attachmentService;
+	
 	public String uploadImage() {
-		String ctx = this.context.getContextPath();
-		try {
-			Attachment attachment = this.attachmentService.saveAttchment(ctx+"/"+path, uploadFileName, uploadContentType);
-			
+		logger.debug("Upload Image File[{}]", uploadFileName);
+		Attachment attachment = this.attachmentService.uploadImage(this.context.getContextPath()+"/", upload, uploadFileName, uploadContentType);
+		if (null != attachment) {
 			this.fileUrl = attachment.getUri();
-			
-			String folder = this.context.getRealPath("/")+path;
-			File pt = new File(folder);
-			if (!pt.exists()) {
-				pt.mkdirs();
-			}
-			FileUtils.copyFile(upload, new File(folder,attachment.getFullName()));
-			
-		} catch (IOException e) {
-			logger.error("File Upload Failed", e);
 		}
 		return "successImg";
 	}
 	
 	public String uploadFile() {
-		return this.uploadImage();
+		logger.debug("Upload File[{}]", uploadFileName);
+		Attachment attachment = this.attachmentService.uploadFile(this.context.getContextPath()+"/", upload, uploadFileName, uploadContentType);
+		if (null != attachment) {
+			this.fileUrl = attachment.getUri();
+		}
+		return "successImg";
 	}
-	
+
 	public File getUpload() {
 		return upload;
 	}

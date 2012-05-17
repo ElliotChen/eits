@@ -62,9 +62,10 @@ public class Attachment extends AbstractSeqIdObject {
 
 	@Override
 	public String toString() {
-		return "Attachment [name=" + name + ", extension=" + extension + ", uri=" + uri + ", oid=" + oid + "]";
+		return "Attachment [name=" + name + ", extension=" + extension + ", uri=" + uri + ", contentType="
+				+ contentType + ", realAbsPath=" + realAbsPath + "]";
 	}
-	
+
 	public String getRealAbsPath() {
 		return realAbsPath;
 	}
