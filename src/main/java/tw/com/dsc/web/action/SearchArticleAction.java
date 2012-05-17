@@ -45,7 +45,7 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	private JsonMsg jsonMsg;
 	
 	private List<Language> languages;
-	private List<Article> faqArticles;
+	private Page<Article> faqArticles;
 	private Page<Article> latestArticles;
 	private List<Article> sameArticles;
 	@Autowired
@@ -67,6 +67,7 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 		example = new Article();
 		example.setArticleId(new ArticleId());
 		example.setLanguage(new Language());
+		faqArticles= new Page<Article>(example);
 		latestArticles= new Page<Article>(example);
 	}
 
@@ -81,13 +82,8 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	}
 
 	public String search() {
-		logger.debug("Search Condition : ");
-		faqArticles = new ArrayList<Article>();
-
-		latestArticles = this.articleService.searchPublicArticlesPage(latestArticles);
-
-		this.mockArticles(faqArticles);
-//		this.mockArticles(latestArticles);
+		faqArticles = this.articleService.searchFaqArticlesPage(faqArticles);
+		latestArticles = this.articleService.searchLatestArticlesPage(latestArticles);
 
 		return "list";
 	}
@@ -101,29 +97,18 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 		return "detail";
 	}
 	
+	public String faq() {
+		faqArticles = this.articleService.searchFaqArticlesPage(faqArticles);
+		return "faq";
+	}
+	
+	public String latest() {
+		latestArticles = this.articleService.searchLatestArticlesPage(latestArticles);
+		return "latest";
+	}
+	
 	public List<Series> getSeries() {
 		return systemService.listAllSeries();
-	}
-
-	private void mockArticles(final List<Article> list) {
-		Article a1 = new Article();
-		a1.setOid(1L);
-		a1.setArticleId(new ArticleId("123456"));
-		a1.setSummary("All in!");
-		a1.setPublishDate(new Date());
-		a1.setHitCount(271);
-		a1.setLanguage(new Language("EN", "English"));
-
-		Article a2 = new Article();
-		a2.setOid(2L);
-		a2.setArticleId(new ArticleId("765432"));
-		a2.setSummary("Don't do this!");
-		a2.setPublishDate(new Date());
-		a2.setHitCount(157);
-		a2.setLanguage(new Language("EN", "English"));
-
-		list.add(a1);
-		list.add(a2);
 	}
 
 	public String rating() {
@@ -196,11 +181,11 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 		this.languageService = languageService;
 	}
 
-	public List<Article> getFaqArticles() {
+	public Page<Article> getFaqArticles() {
 		return faqArticles;
 	}
 
-	public void setFaqArticles(List<Article> faqArticles) {
+	public void setFaqArticles(Page<Article> faqArticles) {
 		this.faqArticles = faqArticles;
 	}
 

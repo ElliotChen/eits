@@ -1,7 +1,11 @@
 package tw.com.dsc.task;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import tw.com.dsc.service.ArticleLogService;
 import tw.com.dsc.service.ArticleService;
@@ -38,12 +42,16 @@ public class ExpiredMailTask extends MailTask {
 
 	@Override
 	public String getTitle() {
-		return "Article["+this.article.getArticleId().getOid()+"] Reject has been rejected";
+		return "Article["+this.article.getArticleId().getOid()+"] has been expired";
 	}
 
 	@Override
 	public String getMessage() {
-		return "your article["+this.article.getArticleId().getOid()+"] has been rejected";
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("articleOid", String.valueOf(this.article.getOid()));
+		map.put("summary", this.article.getSummary());
+		String message = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "mail/expired.vm", map);
+		return message;
 	}
 
 }

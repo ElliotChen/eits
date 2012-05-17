@@ -102,7 +102,7 @@
 		</tr>
 		<tr>
 			<td>Language:</td>
-			<td><s:select list="languages" listKey="oid" listValue="name" name="language.oid"/></td>
+			<td><s:select list="languages" listKey="oid" listValue="name" name="languageOid" value="language.oid"/></td>
 		</tr>
 		<s:if test="user.l3">
 		<tr>
@@ -262,7 +262,7 @@
 
 <s:form id="editPreviewForm" namespace="/" action="edit!previewSave" theme="simple" target="_blank">
 	<input type="hidden" name="articleId.oid" />
-	<input type="hidden" name="language.oid" />
+	<input type="hidden" name="languageOid" />
 	<input type="hidden" name="source" />
 	<input type="hidden" name="news" />
 	<input type="hidden" name="type" />

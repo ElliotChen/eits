@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -522,10 +523,30 @@ public class Article extends AbstractSeqIdObjectAuditable {
 	}
 
 	public String getRatingInfo() {
-		Integer total = this.rate1 + this.rate2 + this.rate3 + this.rate4 + this.rate5;
-		Float totalPoints = 1f*this.rate1 + 2f*this.rate2 + 3f*this.rate3 + 4f*this.rate4 + 5f*this.rate5;
+		int count = 0;
+		float points = 0;
+		if (null != this.rate1) {
+			count += this.rate1;
+			points += 1f * this.rate1;
+		}
+		if (null != this.rate2) {
+			count += this.rate2;
+			points += 2f * this.rate2;
+		}
+		if (null != this.rate3) {
+			count += this.rate3;
+			points += 3f * this.rate3;
+		}
+		if (null != this.rate4) {
+			count += this.rate4;
+			points += 4f * this.rate4;
+		}
+		if (null != this.rate5) {
+			count += this.rate5;
+			points += 5f * this.rate5;
+		}
 		
-		return (totalPoints/total)+" ("+total+" votes)";
+		return count != 0 ?(points/count)+" ("+count+" votes)":"";
 	}
 	
 	public boolean isReadonly() {

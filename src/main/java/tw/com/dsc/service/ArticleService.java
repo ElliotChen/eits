@@ -17,10 +17,14 @@ public interface ArticleService extends BaseDomainService<Article, Long> {
 	void readyUpdate(Article article);
 	void readyPublish(Article article);
 	void expire();
+	void archive(Article article);
 	
 	void rate(Article article, int point);
 	void comment(Article article, String comment);
-	Page<Article> searchPublicArticlesPage(Page<Article> page);
+	
+	Page<Article> searchFaqArticlesPage(Page<Article> page);
+	Page<Article> searchLatestArticlesPage(Page<Article> page);
+	
 	Page<Article> searchUnpublishedPage(Page<Article> page);
 	Page<Article> searchDraftPage(Page<Article> page);
 	Page<Article> searchExpiredPage(Page<Article> page);

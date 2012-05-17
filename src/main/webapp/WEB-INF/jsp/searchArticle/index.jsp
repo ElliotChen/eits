@@ -45,10 +45,7 @@ Product Model:<select id="exModel" name="example.product"><option value="">----<
 		<s:submit value="Search" /></td></tr>
 	</s:form>
 	</table>
-	<s:form id="displaytagform" namespace="/" action="searchArticle!search" theme="simple">
-		<div id="distagArea" class="distagArea">
-		</div>
-	</s:form>
+
 </div>
 <div class="clear"></div>
 <div id="articles">

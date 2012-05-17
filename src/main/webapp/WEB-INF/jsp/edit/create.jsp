@@ -80,6 +80,7 @@
 //-->
 </script>
 <s:form id="editForm" namespace="/" action="edit!create" theme="simple" method="POST" enctype ="multipart/form-data">
+	<s:hidden name="entryUser" />
 	<table>
 		<tr>
 			<td>ArticleID:</td>
@@ -87,7 +88,7 @@
 		</tr>
 		<tr>
 			<td>Language:</td>
-			<td><s:select list="languages" listKey="oid" listValue="name" name="language.oid"/></td>
+			<td><s:select list="languages" listKey="oid" listValue="name" name="languageOid" value="language.oid"/></td>
 		</tr>
 		<s:if test="user.l3">
 		<tr>
@@ -229,12 +230,13 @@
 
 <s:form id="editPreviewForm" namespace="/" action="edit!previewSave" theme="simple" target="_blank">
 	<input type="hidden" name="articleId.oid" />
-	<input type="hidden" name="language.oid" />
+	<input type="hidden" name="languageOid" />
 	<input type="hidden" name="source" />
 	<input type="hidden" name="news" />
 	<input type="hidden" name="type" />
 	<input type="hidden" name="summary" />
 	<input type="hidden" name="expireType" />
+	<input type="hidden" name="entryUser" />
 	<input type="hidden" name="entryDate" />
 	<input type="hidden" name="keywords" />
 	<input type="hidden" name="ticketId" />

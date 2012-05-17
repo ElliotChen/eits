@@ -185,7 +185,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Create, op.getAccount(), "Create Draft", op.getIp()));
 		} else if (Status.WaitForApproving == status) {
 			this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Create, op.getAccount(), "Create Draft and Final as new", op.getIp()));
-			this.mailService.approval(article.getOid());
+			this.mailService.approval(article);
 		} else if (Status.Published == status) {
 			this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Create, op.getAccount(), "Create Draft and Publish as public", op.getIp()));
 		} else if (Status.WaitForProofRead == status) {
@@ -395,6 +395,31 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Comment, op.getAccount(), "Comment:"+comment, op.getIp()));
 		this.statisticsDataDao.create(new StatisticsData(article.getOid(), ActionType.Comment, op.getAccount(), op.getIp()));
 	}
+	
+	public Page<Article> searchFaqArticlesPage(Page<Article> page) {
+		Article example = page.getExample();
+		User op = ThreadLocalHolder.getOperator();
+		
+		if (null == example) {
+			logger.warn("Page.example could not be null!");
+			example = new Article();
+			example.setOid(-1l);
+			
+			page.setExample(example);
+		}
+		
+		List<Condition> conds = page.getConditions();
+		conds.add(new InCondition("level", op.getAvailableLevels()));
+		example.setStatus(Status.Published);
+		if (AgentType.L3 != op.getAgentType()) {
+			example.setAgentType(AgentType.L2);
+		}
+		page.setDescOrders(new String[] {"hitCount"});
+		
+		
+		return this.dao.listByPage(page);
+	}
+	
 	/**
 	 * Active = true
 	 * Status = LeaderPublished
@@ -405,8 +430,9 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	 * @param page
 	 * @return
 	 */
-	public Page<Article> searchPublicArticlesPage(Page<Article> page) {
+	public Page<Article> searchLatestArticlesPage(Page<Article> page) {
 		Article example = page.getExample();
+		User op = ThreadLocalHolder.getOperator();
 		
 		if (null == example) {
 			logger.warn("Page.example could not be null!");
@@ -416,17 +442,13 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			page.setExample(example);
 		}
 		
-		List<Condition> conds = new ArrayList<Condition>();
-		if (null != page.getConditions()) {
-			for (Condition cond : page.getConditions()) {
-				conds.add(cond);
-			}
-		}
-		
+		List<Condition> conds = page.getConditions();
+		conds.add(new InCondition("level", op.getAvailableLevels()));
 		example.setStatus(Status.Published);
+		if (AgentType.L3 != op.getAgentType()) {
+			example.setAgentType(AgentType.L2);
+		}
 		page.setDescOrders(new String[] {"publishDate"});
-		User op = ThreadLocalHolder.getOperator();
-		conds.add(new InCondition("level", new Object[] {op.getAvailableLevels()}));
 		
 		return this.dao.listByPage(page);
 	}
@@ -535,7 +557,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		this.statisticsDataDao.create(new StatisticsData(article.getOid(), ActionType.View,  op.getAccount(), op.getIp()));
 	}
 
-	@Transactional(readOnly=false, propagation=Propagation.REQUIRES_NEW)
+	@Transactional(readOnly=false)
 	public void expire() {
 		logger.info("Execute KB expire task");
 		User op = ThreadLocalHolder.getOperator();
@@ -550,10 +572,26 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			art.setStatus(Status.WaitForRepublish);
 			art.setExpireDate(null);
 			this.dao.saveOrUpdate(art);
-			this.articleLogDao.create(new ArticleLog(art.getOid(), ActionType.Unpublish, op.getAccount(), "Wait For Republish", op.getIp()));
+			this.articleLogDao.create(new ArticleLog(art.getOid(), ActionType.Expired, "System", "Wait For Republish", op.getIp()));
 			this.mailService.expired(art.getOid());
 		}
 		
 		logger.info("Execute KB expire task finished, and expire [{}] article(s)", list.size());
+	}
+	
+	@Transactional(readOnly=false)
+	public void archive(Article article) {
+		User op = ThreadLocalHolder.getOperator();
+		if (!article.getAvailableStatus().contains(Status.Archived)) {
+			logger.warn("Article[{}] can't be archived for User[{}]", article, op.getAccount());
+			return;
+		}
+		article.setUpdateDate(new Date());
+		article.setStatus(Status.Archived);
+		
+		this.dao.saveOrUpdate(article);
+		
+		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Archived, op.getAccount(), "Archived", op.getIp()));
+		this.mailService.archived(article.getOid());
 	}
 }

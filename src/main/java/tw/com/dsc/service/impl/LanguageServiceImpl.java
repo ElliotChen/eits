@@ -51,6 +51,7 @@ public class LanguageServiceImpl extends AbstractDomainService<LanguageDao, Lang
 		this.dao.delete(language);
 	}
 	
+	@Override
 	public boolean checkDuplicate(Language language) {
 		Language example = new Language();
 		example.setName(language.getName());
@@ -60,5 +61,19 @@ public class LanguageServiceImpl extends AbstractDomainService<LanguageDao, Lang
 		List<Language> list = this.dao.listByExample(example, conds , LikeMode.NONE, new String[0], new String[0]);
 		
 		return !list.isEmpty();
+	}
+	
+	@Override
+	public Language findDefaultLanguage() {
+		Language example = new Language();
+		example.setSystem(Boolean.TRUE);
+		
+		List<Language> list = this.dao.listByExample(example);
+		
+		if (1 != list.size()) {
+			logger.error("Please check system default language, there are [{}] default language in system", list.size());
+		}
+		
+		return list.isEmpty()?null:list.get(0);
 	}
 }

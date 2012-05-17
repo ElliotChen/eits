@@ -25,13 +25,13 @@ public abstract class MailTask implements Runnable {
 	protected Article article;
 	protected VelocityEngine velocityEngine;
 	
-	private String sender;
+	protected String sender;
 	
-	private SystemService systemService;
+	protected SystemService systemService;
 	
-	private ArticleService articleService;
+	protected ArticleService articleService;
 	
-	private ArticleLogService articleLogService;
+	protected ArticleLogService articleLogService;
 	
 	public MailTask() {
 		super();

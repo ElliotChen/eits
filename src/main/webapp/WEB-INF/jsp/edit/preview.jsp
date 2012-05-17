@@ -38,7 +38,7 @@
 	</tr>
 	<tr>
 		<th>Type</th>
-		<td>${article.type}</td>
+		<td><s:property value="getText('enum.ArticleType.' + article.type)" /></td>
 		<th>&nbsp;</th>
 		<td>&nbsp;</td>
 	</tr>
@@ -110,6 +110,18 @@
 		<td>Product:</td>
 		<td><s:textarea name="product" cols="40" rows="4" readonly="readonly"/></td>
 		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<th>View</th>
+		<td>${article.hitCount}</td>
+		<th>&nbsp;</th>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<th>Rating</th>
+		<td>${article.ratingInfo}</td>
+		<th>&nbsp;</th>
 		<td>&nbsp;</td>
 	</tr>
 	<tr>

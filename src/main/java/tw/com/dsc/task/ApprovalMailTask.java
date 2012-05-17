@@ -59,7 +59,9 @@ public class ApprovalMailTask extends MailTask {
 	public String getMessage() {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("articleOid", String.valueOf(this.article.getOid()));
-		String message = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "approval.vm", map);
+		map.put("summary", this.article.getSummary());
+		map.put("entryUser", this.article.getEntryUser());
+		String message = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "mail/approval.vm", map);
 		return message;
 	}
 

@@ -33,7 +33,7 @@
 	}
 //-->
 </script>
-<s:if test="!@tw.com.dsc.util.ThreadLocalHolder@getUser().guest">
+<s:if test="user.l2">
 <s:form id="transform" action="edit!preCopy" theme="simple">
 	<input type="hidden" name="sourceOid" value="${article.oid}" />
 <table>
@@ -48,7 +48,7 @@
 		<th>Article ID</th>
 		<td>${article.articleId.oid}</td>
 		<th>Type</th>
-		<td>${article.type}</td>
+		<td><s:property value="getText('enum.ArticleType.' + article.type)" /></td>
 		<th>Language</th>
 		<td><s:select list="sameArticles" listKey="oid" listValue="language.name" onchange="viewArticle(this.value)" value="oid"></s:select></td>
 	</tr>

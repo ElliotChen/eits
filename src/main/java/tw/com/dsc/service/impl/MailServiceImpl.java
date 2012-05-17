@@ -1,11 +1,11 @@
 package tw.com.dsc.service.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.app.VelocityEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +16,7 @@ import tw.com.dsc.service.MailService;
 import tw.com.dsc.service.SystemService;
 import tw.com.dsc.service.TaskManager;
 import tw.com.dsc.task.ApprovalMailTask;
+import tw.com.dsc.task.ArchivedMailTask;
 import tw.com.dsc.task.ExpiredMailTask;
 import tw.com.dsc.task.ReadyPublishMailTask;
 import tw.com.dsc.task.RejectMailTask;
@@ -39,8 +40,8 @@ public class MailServiceImpl implements MailService {
 	private VelocityEngine velocityEngine;
 	@Value("${mail.sender}")
 	private String sender;
-	
-	private String allAddress;
+	@Value("${mail.allGroup}")
+	private String allGroup;
 	@Autowired
 	private TaskManager taskManager;
 
@@ -85,7 +86,11 @@ public class MailServiceImpl implements MailService {
 	
 	@Override
 	public void archived(Long articleOid) {
-		
+		if (StringUtils.isEmpty(allGroup)) {
+			logger.error("Please check configuration mail.allGroup in system.propertis");
+			return;
+		}
+		this.taskManager.arrangeMailTask(new ArchivedMailTask(articleOid, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine, allGroup));
 	}
 	
 	public VelocityEngine getVelocityEngine() {
@@ -104,12 +109,12 @@ public class MailServiceImpl implements MailService {
 		this.sender = sender;
 	}
 
-	public String getAllAddress() {
-		return allAddress;
+	public String getAllGroup() {
+		return allGroup;
 	}
 
-	public void setAllAddress(String allAddress) {
-		this.allAddress = allAddress;
+	public void setAllGroup(String allGroup) {
+		this.allGroup = allGroup;
 	}
 
 	public TaskManager getTaskManager() {

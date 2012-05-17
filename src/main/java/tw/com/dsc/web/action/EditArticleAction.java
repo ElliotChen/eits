@@ -82,14 +82,22 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	private String message;
 	private String rejectReason;
 	private String articleIdOid;
+	private String languageOid;
 	
 	private Integer ratingNumber;
 	private String suggestion;
 	private JsonMsg jsonMsg;
+	
+	
+	private Language lan;
 	@Override
 	public void prepare() throws Exception {
 		if (null != this.oid) {
 			this.article = this.articleService.findByOid(oid);
+		}
+		
+		if (StringUtils.isNotEmpty(this.languageOid)) {
+			this.lan = this.languageService.findByOid(this.languageOid);
 		}
 		this.example = new Article();
 		this.example1 = new Article();
@@ -148,8 +156,9 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	public String preCreate() {
 		article.setArticleId(new ArticleId(""));
 		article.setType(ArticleType.GeneralInfo);
-		article.setLanguage(new Language("EN", "English"));
+		article.setLanguage(this.languageService.findDefaultLanguage());
 		article.setHitCount(0);
+		article.setEntryUser(ThreadLocalHolder.getOperator().getAccount());
 		article.setEntryDate(new Date());
 //		article.setStatus(Status.Draft);
 		article.setNews(Boolean.FALSE);
@@ -158,27 +167,13 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	}
 	
 	public String create() {
-		Attachment attachment = null;
 		if (null != this.upload) {
-			String path = "upload/";
-			String ctx = this.context.getContextPath();
-			try {
-				attachment = this.attachmentService.saveAttchment(ctx+"/"+path, uploadFileName, uploadContentType);
-				
-				String folder = this.context.getRealPath("/")+path;
-				File pt = new File(folder);
-				if (!pt.exists()) {
-					pt.mkdirs();
-				}
-				FileUtils.copyFile(upload, new File(folder,attachment.getFullName()));
-				
-			} catch (IOException e) {
-				logger.error("File Upload Failed", e);
-			}
-			
+			Attachment attachment = this.attachmentService.uploadFirmware(this.context.getContextPath(), upload, uploadFileName, uploadContentType);
 			this.article.setFirmware(attachment);
 		}
-		
+		if (null != this.lan) {
+			this.article.setLanguage(lan);
+		}
 //		this.article.setArticleId(new ArticleId(articleIdOid));
 		
 		if ("Draft".equals(statusAction)) {
@@ -200,6 +195,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	}
 	
 	public String preview() {
+		/*
 		if (null != this.article && null != this.article.getLanguage()) {
 			Language lan = this.article.getLanguage();
 			if (StringUtils.isNotEmpty(lan.getOid()) && StringUtils.isEmpty(lan.getName())) {
@@ -212,6 +208,10 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 				}
 			}
 		}
+		*/
+		if (null != this.lan) {
+			this.article.setLanguage(lan);
+		}
 		return "preview";
 	}
 	
@@ -223,27 +223,16 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	}
 	
 	public String save() {
-		Attachment attachment = null;
 		if (null != this.upload) {
-			String path = "upload/";
-			String ctx = this.context.getContextPath();
-			try {
-				attachment = this.attachmentService.saveAttchment(ctx+"/"+path, uploadFileName, uploadContentType);
-				
-				String folder = this.context.getRealPath("/")+path;
-				File pt = new File(folder);
-				if (!pt.exists()) {
-					pt.mkdirs();
-				}
-				FileUtils.copyFile(upload, new File(folder,attachment.getFullName()));
-				
-			} catch (IOException e) {
-				logger.error("File Upload Failed", e);
-			}
-			
+			Attachment attachment = this.attachmentService.uploadFirmware(this.context.getContextPath(), upload, uploadFileName, uploadContentType);
 			this.article.setFirmware(attachment);
 		}
 		
+		if (null != this.lan && !this.lan.getOid().equals(this.article.getLanguage().getOid())) {
+			this.article.setLanguage(this.lan);
+		}
+//		Language lang = this.languageService.findByOid(this.article.getLanguage().getOid());
+//		this.article.setLanguage(lang);
 		this.article.setUpdateDate(new Date());
 				
 		if (StringUtils.isEmpty(this.statusAction)) {
@@ -260,6 +249,8 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 			this.articleService.readyUpdate(article);
 		} else if ("ReadyToPublish".equals(this.statusAction)) {
 			this.articleService.readyPublish(article);
+		} else if ("Archived".equals(this.statusAction)) {
+			this.articleService.archive(article);
 		}
 		this.addActionMessage("Save Success!");
 		return this.list();
@@ -280,6 +271,8 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 			this.articleService.readyUpdate(article);
 		} else if ("ReadyToPublish".equals(this.statusAction)) {
 			this.articleService.readyPublish(article);
+		} else if ("Archived".equals(this.statusAction)) {
+			this.articleService.archive(article);
 		}
 		this.addActionMessage("Update Status Success!");
 		return this.list();
@@ -565,6 +558,14 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	@Override
 	public void setServletContext(ServletContext context) {
 		this.context = context;
+	}
+
+	public String getLanguageOid() {
+		return languageOid;
+	}
+
+	public void setLanguageOid(String languageOid) {
+		this.languageOid = languageOid;
 	}
 	
 }

@@ -22,6 +22,20 @@
 		$('#expiredForm').ajaxForm({
             target: '#expiredDiv'
         });
+		
+		var datepicker_CurrentInput;
+		options = {
+				dateFormat : 'yy/mm/dd',
+				showButtonPanel: true,
+				closeText: 'Clear',
+				beforeShow: function (input, inst) { datepicker_CurrentInput = input; }
+		};
+		$(".ui-datepicker-close").live("click", function () {
+			datepicker_CurrentInput.value = "";
+		});
+		$( "#entryDate1" ).datepicker(options);
+		$( "#entryDate2" ).datepicker(options);
+		$( "#entryDate3" ).datepicker(options);
 	});
 	
 </script>
@@ -36,7 +50,7 @@ Unpublished
 	<input type="text" name="example1.articleId.oid" size="6"/>
 	<input type="text" name="example1.summary" size="40"/>
 	<input type="text" name="example1.entryUser" size="6"/>
-	<input type="text" name="example1.entryDate" size="10"/>
+	<input type="text" name="example1.entryDate" size="10" id="entryDate1" readonly="readonly"/>
 	<input type="text" name="example1.product" size="26"/>
 	<input type="text" name="example1.status" size="15"/>
 	<s:submit value="Search" />
@@ -55,7 +69,7 @@ Draft
 	<input type="text" name="example2.articleId.oid" size="9"/>
 	<input type="text" name="example2.summary" size="18"/>
 	<input type="text" name="example2.entryUser" size="8"/>
-	<input type="text" name="example2.entryDate" size="16"/>
+	<input type="text" name="example2.entryDate" size="16" id="entryDate2" readonly="readonly"/>
 	<input type="text" name="example2.product" size="17"/>
 	<s:submit value="Search" />
 </s:form>
@@ -73,7 +87,7 @@ Draft
 	<input type="text" name="example3.articleId.oid" size="9"/>
 	<input type="text" name="example3.summary" size="18"/>
 	<input type="text" name="example3.entryUser" size="8"/>
-	<input type="text" name="example3.entryDate" size="16"/>
+	<input type="text" name="example3.entryDate" size="16" id="entryDate3" readonly="readonly"/>
 	<input type="text" name="example3.product" size="17"/>
 	<s:submit value="Search" />
 </s:form>
