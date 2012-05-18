@@ -167,7 +167,7 @@
 		<tr>
 			<td>Status Action:</td>
 			<td>
-				<s:select id="statusAction" name="statusAction" list="availableStatus" listValue="%{getText('edit.statuAction.'+toString())}" headerKey="" headerValue="-----" />
+				<s:select id="statusAction" name="statusAction" list="availableStatus" listValue="%{getText('edit.statusAction.'+toString())}" headerKey="" headerValue="-----" />
 			</td>
 		</tr>
 		<tr>
