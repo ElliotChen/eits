@@ -1,5 +1,6 @@
 package tw.com.dsc.task;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.mail.internet.MimeMessage;
@@ -22,6 +23,7 @@ public abstract class MailTask implements Runnable {
 	protected Long articleOid;
 	protected Account agent;
 	protected List<Account> leaders;
+	protected List<Account> admins;
 	protected Article article;
 	protected VelocityEngine velocityEngine;
 	
@@ -58,6 +60,7 @@ public abstract class MailTask implements Runnable {
 		}
 		this.agent = this.systemService.findAccountByOid(article.getEntryUser());
 		this.leaders = this.systemService.findGroupLeaders(article);
+		this.admins = this.systemService.findGroupAdmins(article);
 		
 		MimeMessage mail = this.javaMailSender.createMimeMessage();
 		try {
@@ -93,10 +96,28 @@ public abstract class MailTask implements Runnable {
 	protected String[] getLeaders() {
 		if (null == this.leaders || this.leaders.isEmpty()) {
 			logger.error("Leader could not be null.");
+			return new String[0];
 		}
 		String[] leaderMails = new String[this.leaders.size()];
 		for (int i=0; i < this.leaders.size(); i++) {
 			leaderMails[i] = this.leaders.get(i).getEmail();
+		}
+		return leaderMails;
+	}
+	
+	protected String[] getAdminAndLeaders() {
+		List<Account> accounts = new ArrayList<Account>();
+		if (null != this.leaders && !this.leaders.isEmpty()) {
+			accounts.addAll(this.leaders);
+		}
+		
+		if (null != this.admins && !this.admins.isEmpty()) {
+			accounts.addAll(this.admins);
+		}
+		
+		String[] leaderMails = new String[accounts.size()];
+		for (int i=0; i < accounts.size(); i++) {
+			leaderMails[i] = accounts.get(i).getEmail();
 		}
 		return leaderMails;
 	}

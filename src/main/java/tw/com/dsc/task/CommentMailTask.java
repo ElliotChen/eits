@@ -19,25 +19,27 @@ import tw.com.dsc.service.SystemService;
  * @author elliot
  *
  */
-public class ApprovalMailTask extends MailTask {
+public class CommentMailTask extends MailTask {
 
-	
-	public ApprovalMailTask() {
+	private String comment;
+	public CommentMailTask() {
 		super();
 	}
 	
-	public ApprovalMailTask(Long articleOid, JavaMailSender mailSender,
+	public CommentMailTask(Long articleOid, JavaMailSender mailSender,
 			SystemService systemService, ArticleService articleService,
-			ArticleLogService articleLogService, String sender, VelocityEngine velocityEngine) {
+			ArticleLogService articleLogService, String sender, VelocityEngine velocityEngine, String comment) {
 		super(articleOid, mailSender, systemService, articleService, articleLogService, sender, velocityEngine);
+		this.comment = comment;
 	}
 
-	public ApprovalMailTask(Article article, JavaMailSender mailSender,
+	public CommentMailTask(Article article, JavaMailSender mailSender,
 			SystemService systemService, ArticleService articleService,
-			ArticleLogService articleLogService, String sender, VelocityEngine velocityEngine) {
+			ArticleLogService articleLogService, String sender, VelocityEngine velocityEngine, String comment) {
 		super(null, mailSender, systemService, articleService, articleLogService, sender, velocityEngine);
 		this.article = article;
 		this.articleOid = article.getOid();
+		this.comment = comment;
 	}
 
 
@@ -53,7 +55,7 @@ public class ApprovalMailTask extends MailTask {
 
 	@Override
 	public String getTitle() {
-		return "Wait for Approval Notification";
+		return "Comment Notification";
 	}
 
 	@Override
@@ -62,7 +64,8 @@ public class ApprovalMailTask extends MailTask {
 		map.put("articleOid", String.valueOf(this.article.getOid()));
 		map.put("summary", this.article.getSummary());
 		map.put("entryUser", this.article.getEntryUser());
-		String message = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "mail/approval.vm", map);
+		map.put("comment", this.comment);
+		String message = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "mail/comment.vm", map);
 		return message;
 	}
 

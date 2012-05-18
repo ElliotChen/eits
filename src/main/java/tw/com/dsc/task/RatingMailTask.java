@@ -13,37 +13,40 @@ import tw.com.dsc.service.ArticleService;
 import tw.com.dsc.service.SystemService;
 
 /**
- * Approval Notification – Notify agent leaders that there is a KB article waiting for approval.
+ * Rating Notification – 
  * 
  * Receiver : Leaders
  * @author elliot
  *
  */
-public class ApprovalMailTask extends MailTask {
+public class RatingMailTask extends MailTask {
 
+	private String rank;
 	
-	public ApprovalMailTask() {
+	public RatingMailTask() {
 		super();
 	}
 	
-	public ApprovalMailTask(Long articleOid, JavaMailSender mailSender,
+	public RatingMailTask(Long articleOid, JavaMailSender mailSender,
 			SystemService systemService, ArticleService articleService,
-			ArticleLogService articleLogService, String sender, VelocityEngine velocityEngine) {
+			ArticleLogService articleLogService, String sender, VelocityEngine velocityEngine, String rank) {
 		super(articleOid, mailSender, systemService, articleService, articleLogService, sender, velocityEngine);
+		this.rank = rank;
 	}
 
-	public ApprovalMailTask(Article article, JavaMailSender mailSender,
+	public RatingMailTask(Article article, JavaMailSender mailSender,
 			SystemService systemService, ArticleService articleService,
-			ArticleLogService articleLogService, String sender, VelocityEngine velocityEngine) {
+			ArticleLogService articleLogService, String sender, VelocityEngine velocityEngine, String rank) {
 		super(null, mailSender, systemService, articleService, articleLogService, sender, velocityEngine);
 		this.article = article;
 		this.articleOid = article.getOid();
+		this.rank = rank;
 	}
 
 
 	@Override
 	public String[] getReceivers() {
-		return this.getLeaders();
+		return this.getAdminAndLeaders();
 	}
 
 	@Override
@@ -53,7 +56,7 @@ public class ApprovalMailTask extends MailTask {
 
 	@Override
 	public String getTitle() {
-		return "Wait for Approval Notification";
+		return "Rating Notification";
 	}
 
 	@Override
@@ -62,7 +65,8 @@ public class ApprovalMailTask extends MailTask {
 		map.put("articleOid", String.valueOf(this.article.getOid()));
 		map.put("summary", this.article.getSummary());
 		map.put("entryUser", this.article.getEntryUser());
-		String message = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "mail/approval.vm", map);
+		map.put("rank", rank);
+		String message = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "mail/rating.vm", map);
 		return message;
 	}
 

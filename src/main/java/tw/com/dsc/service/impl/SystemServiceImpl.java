@@ -110,7 +110,11 @@ public class SystemServiceImpl implements SystemService {
 		}
 		
 		if (AgentType.L3 == article.getAgentType()) {
-			leaderGroupId = groupId+"_Leader";
+			if (!"L3_Admin".equals(groupId)) {
+				leaderGroupId = groupId+"_Leader";
+			} else {
+				leaderGroupId = groupId;
+			}
 		} else if (AgentType.L2 == article.getAgentType()) {
 			leaderGroupId = groupId+"_Leader";
 		} else {

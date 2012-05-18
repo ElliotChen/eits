@@ -77,6 +77,9 @@ public class AttachmentServiceImpl extends AbstractDomainService<AttachmentDao, 
 		
 		String subPath = contextPath.endsWith("/")?contextPath:contextPath+"/";
 		String tf = typeFolder.endsWith("/")?typeFolder:typeFolder+"/";
+		if (tf.startsWith("/")) {
+			tf = tf.substring(1, tf.length());
+		}
 		subPath += (tf+DateUtils.formatYearMonth(new Date()));
 		
 		String destPath = realParentPath+subPath;
