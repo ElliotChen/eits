@@ -26,12 +26,6 @@
 		$("#editPreviewForm").submit();
 	}
 
-	function cloneForm(sourceForm, targetForm) {
-	    $(':input[name]', sourceForm).each(function() {
-	        $('[name=\'' + $(this).attr('name') +'\']', targetForm).val($(this).val());
-	    });
-	}
-	
 	function cancelSave() {
 		$('#editForm').val('action', '${ctx}/edit!list.action');
 		$('#editForm').submit();
@@ -174,7 +168,7 @@
 			<td></td>
 			<td></td>
 			<td></td>
-			<td><input type="button" value="Cancle" onclick="switchMenu('m3', 'edit!list.action');" /><s:submit value="Submit" cssClass="save" /> <s:submit value="Delete" cssClass="save" action="edit" method="disable"/>
+			<td><input type="button" value="Cancle" onclick="switchMenu('m3', 'edit!list.action');" /><s:submit value="Submit" cssClass="save" /> <s:submit value="Delete" cssClass="delete" action="edit" method="disable"/>
 			</td>
 		</tr>
 	</table>

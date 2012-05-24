@@ -42,12 +42,6 @@
 		$("#editPreviewForm").submit();
 	}
 
-	function cloneForm(sourceForm, targetForm) {
-	    $(':input[name]', sourceForm).each(function() {
-	        $('[name=\'' + $(this).attr('name') +'\']', targetForm).val($(this).val());
-	    });
-	}
-	
 	function cancelSave() {
 		$('#editForm').val('action', '${ctx}/edit!list.action');
 		$('#editForm').submit();
@@ -79,9 +73,10 @@
 	}
 //-->
 </script>
+<div class="condition">
 <s:form id="editForm" namespace="/" action="edit!create" theme="simple" method="POST" enctype ="multipart/form-data">
 	<s:hidden name="entryUser" />
-	<table>
+	<table class="conditionborder">
 		<tr>
 			<td>ArticleID:</td>
 			<td><s:textfield name="articleId.oid" maxlength="6" size="6"/>(Draft)</td>
@@ -140,7 +135,7 @@
 		</tr>
 		<tr class="ArticleType SpecInfo">
 			<td>Ticket ID:</td>
-			<td><s:textfield name="ticketId"/></td>
+			<td><s:textfield id="ticketId" name="ticketId"/></td>
 		</tr>
 		<tr class="ArticleType GeneralInfo SpecInfo">
 			<td>Question:</td>
@@ -214,10 +209,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td><input type="button" value="Cancle" onclick="switchMenu('m3', 'edit!list.action');" />
+			<td colspan="4" align="right"><input type="button" value="Cancle" onclick="switchMenu('m3', 'edit!list.action');" />
 			<input type="button" value="Preview"
 				onclick="previewSave()" /> <s:submit value="Submit" cssClass="save" />
 			</td>
@@ -249,3 +241,4 @@
 	<input type="hidden" name="technology" />
 	<input type="hidden" name="product" />
 </s:form>
+</div>

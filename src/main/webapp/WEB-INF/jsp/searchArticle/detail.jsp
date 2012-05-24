@@ -18,7 +18,7 @@
 	}
 	
 	function suggest() {
-		if ($('#suggestion').val().trim() == "") {
+		if (!$('#suggestion').val()) {
 			alert('Suggestion could not be empty!');
 			return false;
 		}
@@ -33,17 +33,18 @@
 	}
 //-->
 </script>
+<div class="condition">
 <s:if test="user.l2">
 <s:form id="transform" action="edit!preCopy" theme="simple">
 	<input type="hidden" name="sourceOid" value="${article.oid}" />
-<table>
+<table class="conditionborder">
 	<tr><td><input type="submit" value="Translate"/><input type="button" value="View Log" onclick="viewArticleLog('${oid}')"/></td></tr>
 </table>
 </s:form>
 </s:if>
 
 <s:form id="detailform" action="article!preCopy" theme="simple">
-<table style="border: none">
+<table class="conditionborder">
 	<tr>
 		<th>Article ID</th>
 		<td>${article.articleId.oid}</td>
@@ -69,18 +70,18 @@
 		<td>&nbsp;</td>
 	</tr>
 </table>
-<fieldset>
+<fieldset class="conditionborder">
 	<legend>Question:</legend>
 	${article.question}
 </fieldset>
 
-<fieldset>
+<fieldset class="conditionborder">
 	<legend>Answer:</legend>
 	${article.answer}
 </fieldset>
 
 <div id="ratingDiv">
-	<fieldset>
+	<fieldset class="conditionborder">
 		<legend>Rating:</legend>
 		Did you find this article helpful? <br /> Poor <input
 			name="ratingNumber" type="radio" value="1" />1 <input
@@ -94,7 +95,7 @@
 </div>
 
 <div id="suggestionDiv">
-	<fieldset>
+	<fieldset class="conditionborder">
 		<legend>Suggest new content or let us know we can imporve
 			this content:</legend>
 		<textarea id="suggestion" name="suggestion" rows="10" cols="80"></textarea>
@@ -104,3 +105,4 @@
 	
 </div>
 </s:form>
+</div>

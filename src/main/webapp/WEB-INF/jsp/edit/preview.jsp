@@ -29,12 +29,26 @@
 
 </head>
 <body>
-<table>
+<div id="main" class="contents viewmycart" >
+<div class="condition">
+<table class="conditionborder">
 	<tr>
 		<th>Article ID</th>
 		<td>${article.articleId.oid}</td>
-		<td>Language</td>
+		<th>Language</th>
 		<td>${article.language.name}</td>
+	</tr>
+	<tr>
+		<th>Source</th>
+		<td>${article.source}</td>
+		<th>&nbsp;</th>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<th>ZyTech News</th>
+		<td>${article.news}</td>
+		<th>&nbsp;</th>
+		<td>&nbsp;</td>
 	</tr>
 	<tr>
 		<th>Type</th>
@@ -84,32 +98,26 @@
 		<th>&nbsp;</th>
 		<td>&nbsp;</td>
 	</tr>
-	<tr>
-		<td colspan="4">
-			<fieldset>
+</table>
+	<fieldset class="conditionborder">
 				<legend>Question:</legend>
 				${question}
 			</fieldset>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="4">
-			<fieldset>
+	<fieldset class="conditionborder">
 				<legend>Answer:</legend>
 				${answer}
 			</fieldset>
-		</td>
-	</tr>
+<table class="conditionborder">
 	<tr>
-		<td>Technology:</td>
+		<th>Technology:</th>
 		<td><s:textarea name="technology" cols="40" rows="4" readonly="readonly"/></td>
-		<td>&nbsp;</td>
+		<th>&nbsp;</th>
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
-		<td>Product:</td>
+		<th>Product:</th>
 		<td><s:textarea name="product" cols="40" rows="4" readonly="readonly"/></td>
-		<td>&nbsp;</td>
+		<th>&nbsp;</th>
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
@@ -128,7 +136,8 @@
 		<td colspan="4" align="right"><input type="button" value="close" onclick="window.close()"/></td>
 	</tr>
 </table>
-
+</div>
+</div>
 </body>
 </html>
 

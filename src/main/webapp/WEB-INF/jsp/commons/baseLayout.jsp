@@ -32,7 +32,12 @@
 <script language="JavaScript" type="text/javascript" src="<c:url value="/ckeditor/config.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.multiselect.min.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.multiselect.filter.min.js" />"></script>
-
+<style type="text/css">
+    #ui-datepicker-div
+    {
+        z-index: 9999999;
+    }
+</style>
 <script>
 	$(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
 	$('.cancel').live('click', function() {return confirm('Cancel?');});
@@ -192,6 +197,16 @@
 		}
 		$('#' + formname).submit();
 	}
+	
+	function cloneForm(sourceForm, targetForm) {
+	    $(':input[name]', sourceForm).each(function() {
+	        $('[name=\'' + $(this).attr('name') +'\']', targetForm).val($(this).val());
+	    });
+	  //Fix radio checked bug
+	    $(':input[name]:checked', sourceForm).each(function() {
+	        $('[name=\'' + $(this).attr('name') +'\']', targetForm).val($(this).val());
+	    });
+	}
 </script>
 </head>
 <body>
@@ -213,14 +228,14 @@
 		<input id="switchRoleName" type="hidden" name="userRole" />
 	</s:form>
 <div class="page">
-	<div id="header" style="height:90px; width: 90%; position: relative;">
+	<div id="header" style="height:90px; width: 90%; position: relative;" class="datagrid">
 		<tiles:insertAttribute name="header" />
 	</div>
-	<div id="menu" style="height:100px; width: 90%; position: relative;">
+	<div id="menu" style="height:100px; width: 90%; position: relative;" class="datagrid">
 		<tiles:insertAttribute name="menu" />
 	</div>
 	
-	<div id="main" class="contents viewmycart">
+	<div id="main" class="contents viewmycart" >
 		<tiles:insertAttribute name="main" />
 	</div>
 	<div id="footer" class="footer fix">

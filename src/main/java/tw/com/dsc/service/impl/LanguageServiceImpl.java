@@ -56,7 +56,7 @@ public class LanguageServiceImpl extends AbstractDomainService<LanguageDao, Lang
 		Language example = new Language();
 		example.setName(language.getName());
 		List<Condition> conds = new ArrayList<Condition>();
-		conds.add(new SimpleCondition("oid", language.getName(), OperationEnum.NE));
+		conds.add(new SimpleCondition("oid", language.getOid(), OperationEnum.NE));
 		
 		List<Language> list = this.dao.listByExample(example, conds , LikeMode.NONE, new String[0], new String[0]);
 		

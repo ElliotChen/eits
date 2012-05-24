@@ -43,11 +43,6 @@
 		$("#previewForm").submit();
 	}
 
-	function cloneForm(sourceForm, targetForm) {
-	    $(':input[name]', sourceForm).each(function() {
-	        $('[name=\'' + $(this).attr('name') +'\']', targetForm).val($(this).val());
-	    });
-	}
 	function copyAll() {
 		copyField('summary');
 		copyField('language.oid');
@@ -139,7 +134,7 @@
 			<td>Ticket ID:</td>
 			<td><s:textfield name="sarticle.ticketId" readonly="readonly"/></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('ticketId')" /></td>
-			<td><textfield id="ticketId" name="ticketId"/></td>
+			<td><s:textfield id="ticketId" name="ticketId"/></td>
 		</tr>
 		<tr class="ArticleType GeneralInfo SpecInfo">
 			<td>Question:</td>
@@ -252,7 +247,7 @@
 	</table>
 </s:form>
 
-<s:form id="previewForm" namespace="/" action="article!previewCopy" theme="simple" target="_blank">
+<s:form id="previewForm" namespace="/" action="edit!previewSave" theme="simple" target="_blank">
 	<input type="hidden" name="articleId.oid" />
 	<input type="hidden" name="language.oid" />
 	<input type="hidden" name="source" />

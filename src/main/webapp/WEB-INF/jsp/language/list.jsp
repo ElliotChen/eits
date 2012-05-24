@@ -30,7 +30,12 @@
 									}
 								}
 			    			}
-			    		} 
+			    		},
+			    		messages : {
+			    			name : {
+			    				remote : 'Language name exists.'
+			    			}
+			    		}
 			    	});
 			    return $('#updateForm').valid();
 			  }
@@ -56,7 +61,12 @@
 									}
 								}
 			    			}
-			    		} 
+			    		},
+			    		messages : {
+			    			name : {
+			    				remote : 'Language name exists.'
+			    			}
+			    		}
 			    	});
 			    return $('#createForm').valid();
 			  }
@@ -92,7 +102,7 @@
 			<tr>
 				<td>&nbsp;</td>
 				<td><input type="text" name="example.oid" size="32" /></td>
-				<td><input type="text" name="example.name" size="26" /></td>
+				<td><input type="text" name="example.name" size="25" /></td>
 				<td><s:submit value="Search" /></td>
 			</tr>
 		</table>
@@ -124,7 +134,7 @@
 			<tbody>
 				<tr class="odd">
 					<td><input type="text" id="moid" readonly="readonly" name="oid" /></td>
-					<td><input type="text" id="mname" name="name" /></td>
+					<td><input type="text" id="mname" name="name" maxlength="25"/></td>
 					<td><s:submit value="Save" cssClass="save" /><input type="button" value="Cancel" onclick="$('#languageEditDiv').hide();"/></td>
 				</tr>
 			</tbody>
@@ -148,8 +158,8 @@
 				<th>Function</th>
 			</tr>
 			<tr class="odd">
-				<td><input type="text" id="cmoid" name="oid" /></td>
-				<td><input type="text" id="cmname" name="name" /></td>
+				<td><input type="text" id="cmoid" name="oid" maxlength="32"/></td>
+				<td><input type="text" id="cmname" name="name" maxlength="25"/></td>
 				<td><input type="submit" value="Create" /></td>
 			</tr>
 		</table>

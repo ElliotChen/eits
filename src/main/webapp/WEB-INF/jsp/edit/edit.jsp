@@ -44,12 +44,6 @@
 		$("#editPreviewForm").submit();
 	}
 
-	function cloneForm(sourceForm, targetForm) {
-	    $(':input[name]', sourceForm).each(function() {
-	        $('[name=\'' + $(this).attr('name') +'\']', targetForm).val($(this).val());
-	    });
-	}
-	
 	function cancelSave() {
 		$('#editForm').val('action', '${ctx}/edit!list.action');
 		$('#editForm').submit();
@@ -93,9 +87,10 @@
 </script>
 <input type="button" value="View Log" onclick="viewArticleLog('${oid}')"/>
 <input type="button" value="View Reject Reason" onclick="viewRejectLogs('${oid}')"/>
+<div class="condition">
 <s:form id="editForm" namespace="/" action="edit!save" theme="simple" method="POST" enctype ="multipart/form-data">
 	<s:hidden name="oid" />
-	<table>
+	<table class="conditionborder">
 		<tr>
 			<td>ArticleID:</td>
 			<td><s:textfield name="articleId.oid" readonly="true" maxlength="6" size="6"/> (${article.status} - ${article.agentType})</td>
@@ -144,16 +139,7 @@
 			<td><s:select list="@tw.com.dsc.domain.ExpireType@values()" listValue="%{getText('enum.ExpireType.'+toString())}" name="expireType" /></td>
 		</tr>
 		<tr>
-			<td>Entry Date:</td>
-			<td><s:date name="entryDate" format="yyyy/MM/dd HH:mm:ss" /></td>
-			<td>Entry User:</td>
-			<td><s:property value="entryUser"/> </td>
-		</tr>
-		<tr>
-			<td>LAST UPDATE:</td>
-			<td><s:date name="updateDate" format="yyyy/MM/dd HH:mm:ss" /></td>
-			<td>Publish DATE:</td>
-			<td><s:date name="publishDate" format="yyyy/MM/dd HH:mm:ss" /></td>
+			<td colspan="2">Entry Date:<s:date name="entryDate" format="yyyy/MM/dd HH:mm:ss" />　　　　LAST UPDATE:<s:date name="updateDate" format="yyyy/MM/dd HH:mm:ss" />　　　　Publish DATE:<s:date name="publishDate" format="yyyy/MM/dd HH:mm:ss" /></td>
 		</tr>
 		<tr>
 			<td>Keywords:</td>
@@ -249,12 +235,9 @@
 		</tr>
 		</s:if>
 		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td><input type="button" value="Cancle" onclick="switchMenu('m3', 'edit!list.action');" />
+			<td colspan="2" align="right"><input type="button" value="Cancle" onclick="switchMenu('m3', 'edit!list.action');" />
 			<input type="button" value="Preview"
-				onclick="previewSave()" /> <s:submit value="Submit" cssClass="save" /> <s:submit value="Delete" cssClass="save" action="edit" method="disable"/>
+				onclick="previewSave()" /> <s:submit value="Submit" cssClass="save" /> <s:submit value="Delete" cssClass="delete" action="edit" method="disable"/>
 			</td>
 		</tr>
 	</table>
@@ -283,3 +266,4 @@
 	<input type="hidden" name="technology" />
 	<input type="hidden" name="product" />
 </s:form>
+</div>

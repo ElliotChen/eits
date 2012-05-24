@@ -12,7 +12,7 @@
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/superfish-navbar.css" />" />
 <!-- <link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.dataTables.css" />" />-->
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.datepick.css" />" />
-<link rel="stylesheet" type="text/css" href="<c:url value="/css/displaytag.css" />" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/style.css" />" />
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery-1.7.2.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.form.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.validate.min.js" />"></script>
@@ -26,13 +26,13 @@
 <body>
 <display:table name="${articleLogs}" id="log">
 	<display:caption>Article Logs</display:caption>
-	<display:column title="Create Date">
+	<display:column title="Create Date" headerClass="tablehead">
 		<fmt:formatDate value="${log.createdDate}" pattern="yyyy/MM/dd"/>
 	</display:column>
-	<display:column property="action" title="Action" />
-	<display:column property="account" title="User" />
-	<display:column property="message" title="Message" />
-	<display:column property="ip" title="IP" />
+	<display:column property="action" title="Action" headerClass="tablehead"/>
+	<display:column property="account" title="User" headerClass="tablehead"/>
+	<display:column property="message" title="Message" headerClass="tablehead"/>
+	<display:column property="ip" title="IP" headerClass="tablehead"/>
 </display:table>
 </body>
 </html>
