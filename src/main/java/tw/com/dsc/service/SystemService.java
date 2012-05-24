@@ -2,9 +2,12 @@ package tw.com.dsc.service;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
+
 import tw.com.dsc.domain.Account;
 import tw.com.dsc.domain.Article;
 import tw.com.dsc.domain.ErrorType;
+import tw.com.dsc.domain.Technology;
 import tw.com.dsc.to.Series;
 import tw.com.dsc.to.User;
 
@@ -32,4 +35,6 @@ public interface SystemService {
 	 * @return
 	 */
 	Account findAccountByOid(String oid);
+	
+	List<Technology> listAllTech();
 }

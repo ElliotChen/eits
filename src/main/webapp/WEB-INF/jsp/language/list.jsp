@@ -8,7 +8,9 @@
 		$('#displayForm').ajaxForm({
             target: '#languageDiv'
         });
-		
+		$('#deleteForm').ajaxForm({
+            target: '#main'
+        });
 		$('#updateForm').ajaxForm({
             target: '#main',
             beforeSubmit: function() {
@@ -71,9 +73,8 @@
 	
 	function deleteLanguage(oid) {
 		if (confirm('Delete ?')) {
-			$('#moid').val(oid);
-			$('#updateForm').attr('action', '${ctx}/language!delete.action');
-			$('#updateForm').submit();
+			$('#doid').val(oid);
+			$('#deleteForm').submit();
 		} else {
 			//return false;
 		}
@@ -84,18 +85,44 @@
       <s:actionmessage/>
    </div>
 </s:if>
-<div id="languageEditDiv">
+
+<div id="searchFormDiv" class="datagrid">
+	<s:form id="searchForm" namespace="/" action="language!search" theme="simple">
+		<table class="displayTagGrid">
+			<tr>
+				<td>&nbsp;</td>
+				<td><input type="text" name="example.oid" size="32" /></td>
+				<td><input type="text" name="example.name" size="26" /></td>
+				<td><s:submit value="Search" /></td>
+			</tr>
+		</table>
+		
+	</s:form>
+
+	<s:form id="displayForm" namespace="/" action="language!search" theme="simple">
+		<div id="distagArea" class="distagArea"></div>
+	</s:form>
+</div>
+
+
+<div id="languageDiv" class="datagrid">
+	<jsp:include page="language.jsp" />
+</div>
+<div id="languageEditDiv" class="datagrid">
 	<s:form id="updateForm" namespace="/" action="language!update" theme="simple">
-		<table>
+		<table class="displayTagGrid">
 			<thead>
 				<tr>
+				<th colspan="3">Edit Language</td>
+				</tr>
+				<tr class="tablehead">
 					<th>Language ID</th>
 					<th>Language</th>
 					<th>Function</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
+				<tr class="odd">
 					<td><input type="text" id="moid" readonly="readonly" name="oid" /></td>
 					<td><input type="text" id="mname" name="name" /></td>
 					<td><s:submit value="Save" cssClass="save" /><input type="button" value="Cancel" onclick="$('#languageEditDiv').hide();"/></td>
@@ -103,18 +130,28 @@
 			</tbody>
 		</table>
 	</s:form>
+	<s:form id="deleteForm" namespace="/" action="language!delete" theme="simple">
+		<input type="hidden" id="doid" name="oid" />
+	</s:form>
 </div>
 
-<s:form id="searchForm" namespace="/" action="language!search" theme="simple">
-	<input type="text" name="example.oid" size="32"/>
-	<input type="text" name="example.name" size="26"/>
-	<s:submit value="Search" />
-</s:form>
-
-<s:form id="displayForm" namespace="/" action="language!search" theme="simple">
-	<div id="distagArea" class="distagArea"></div>
-</s:form>
-
-<div id="languageDiv" class="datagrid">
-	<jsp:include page="language.jsp" />
+<div class="datagrid">
+	<s:form id="createForm" namespace="/" action="language!create" theme="simple">
+		<input type="hidden" name="system" value="false" />
+		<table class="displayTagGrid">
+			<tr>
+				<th colspan="3">Create Language</td>
+			</tr>
+			<tr class="tablehead">
+				<th>Language ID</td>
+				<th>Language</th>
+				<th>Function</th>
+			</tr>
+			<tr class="odd">
+				<td><input type="text" id="cmoid" name="oid" /></td>
+				<td><input type="text" id="cmname" name="name" /></td>
+				<td><input type="submit" value="Create" /></td>
+			</tr>
+		</table>
+	</s:form>
 </div>

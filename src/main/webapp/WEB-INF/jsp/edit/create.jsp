@@ -182,12 +182,9 @@
 		<tr>
 			<td>Technology:</td>
 			<td><s:textarea id="technology" name="technology" cols="40" rows="4" />
-				<select id="techSelect" name="techSelect" multiple="multiple">
-						<option value="Tech1">Tech1</option>
-						<option value="Tech2">Tech2</option>
-						<option value="Tech3">Tech3</option>
-						<option value="Tech4">Tech4</option>
-				</select>
+				<s:select id="techSelect" name="techSelect" list="technologies" listKey="technology" listValue="technology" multiple="true"/>
+				
+				
 			</td>
 		</tr>
 		<tr>

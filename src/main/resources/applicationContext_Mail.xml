@@ -1,35 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-		<property name="corePoolSize" value="5" />
-		<property name="maxPoolSize" value="20" />
-		<property name="queueCapacity" value="100" />
-		<property name="keepAliveSeconds" value="300" />
-		<property name="rejectedExecutionHandler">
-			<bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy" />
-		</property>
-	</bean>
+	
+	<!-- 
 	<bean id="taskManager" class="tw.com.dsc.service.impl.TaskManagerImpl">
 		<property name="taskExecutor" ref="taskExecutor" />
 	</bean>
-	<!-- 
+	
 	<bean id="expireTask" class="tw.com.dsc.task.ExpireKBTask">
 		<property name="taskExecutor" ref="taskExecutor" />
 	</bean>
 	 -->
-	<task:scheduler id="scheduler" pool-size="10" />
-	<task:scheduled-tasks scheduler="scheduler">
-		<task:scheduled ref="articleService" method="expire" cron="0 */2 * * * *"/>
-	</task:scheduled-tasks>
-	<!-- <task:annotation-driven executor="taskExecutor" scheduler="scheduler"/> -->
-
+	 
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="${mail.host}" />
 		<property name="port" value="${mail.port}" />

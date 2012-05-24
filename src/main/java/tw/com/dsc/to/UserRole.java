@@ -1,11 +1,15 @@
 package tw.com.dsc.to;
 
-import tw.com.dsc.domain.AgentType;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import tw.com.dsc.domain.Role;
 
 public class UserRole {
+	public static final Pattern L2_BRANCH = Pattern.compile("^L2_(.*)_.+$");
 	private Role role;
 	private String group;
+	private String branchCode;
 //	private AgentType agentType;
 	public UserRole() {
 		super();
@@ -13,7 +17,14 @@ public class UserRole {
 	public UserRole(Role role, String group) {
 		this.role = role;
 		this.group = group;
-//		this.agentType = agnetType;
+		if (Role.L2Admin == role || Role.L2Agent == role || Role.L2Leader == role) {
+			System.out.println("Check Group "+group+" for BranchCode");
+			Matcher matcher = L2_BRANCH.matcher(group);
+			if (matcher.matches()) {
+				this.branchCode = matcher.group(1);
+				System.out.println("Check Group for BranchCode:"+branchCode);
+			}
+		}
 	}
 	public Role getRole() {
 		return role;
@@ -37,6 +48,14 @@ public class UserRole {
 	*/
 	@Override
 	public String toString() {
-		return "UserRole [role=" + role + ", group=" + group + "]";
+		return "UserRole [role=" + role + ", group=" + group + ", branchCode=" + branchCode + "]";
+	}
+	
+	public String getBranchCode() {
+		return branchCode;
+	}
+	
+	public void setBranchCode(String branchCode) {
+		this.branchCode = branchCode;
 	}
 }

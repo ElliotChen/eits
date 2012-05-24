@@ -43,6 +43,7 @@ public class LanguageAction extends BaseAction implements Preparable, ModelDrive
 		}
 		example = new Language();
 		page = new Page<Language>(example);
+		page.setDescOrders(new String[] {"system","oid"});
 	}
 
 	public String index() {
@@ -56,6 +57,7 @@ public class LanguageAction extends BaseAction implements Preparable, ModelDrive
 		} else {
 			page.setPageNo(1);
 		}
+		
 		this.page = this.languageService.listByPage(page);
 		return "language";
 	}

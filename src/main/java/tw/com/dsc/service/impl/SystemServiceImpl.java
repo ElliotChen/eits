@@ -9,17 +9,20 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import tw.com.dsc.dao.AccountDao;
 import tw.com.dsc.dao.AccountRoleDao;
 import tw.com.dsc.dao.GroupDao;
+import tw.com.dsc.dao.TechnologyDao;
 import tw.com.dsc.domain.Account;
 import tw.com.dsc.domain.AgentType;
 import tw.com.dsc.domain.Article;
 import tw.com.dsc.domain.ErrorType;
 import tw.com.dsc.domain.Group;
+import tw.com.dsc.domain.Technology;
 import tw.com.dsc.service.SystemService;
 import tw.com.dsc.to.Model;
 import tw.com.dsc.to.Series;
@@ -37,7 +40,8 @@ public class SystemServiceImpl implements SystemService {
 	private GroupDao groupDao;
 	@Autowired
 	private AccountRoleDao accountRoleDao;
-	
+	@Autowired
+	private TechnologyDao technologyDao;
 	
 	private static List<Series> series;
 	static {
@@ -57,6 +61,11 @@ public class SystemServiceImpl implements SystemService {
 		return series;
 	}
 
+	@Override
+	@Cacheable(value="technologies")
+	public List<Technology> listAllTech() {
+		return this.technologyDao.listAll();
+	}
 	public ErrorType login(final User user) {
 		/* 1. Check account
 		 * 2. Check password 

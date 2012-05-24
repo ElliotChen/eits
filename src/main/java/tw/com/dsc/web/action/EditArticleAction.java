@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import tw.com.dsc.dao.TechnologyDao;
 import tw.com.dsc.domain.ActionType;
 import tw.com.dsc.domain.Article;
 import tw.com.dsc.domain.ArticleId;
@@ -26,6 +27,7 @@ import tw.com.dsc.domain.Attachment;
 import tw.com.dsc.domain.Language;
 import tw.com.dsc.domain.Source;
 import tw.com.dsc.domain.Status;
+import tw.com.dsc.domain.Technology;
 import tw.com.dsc.domain.support.BetweenCondition;
 import tw.com.dsc.domain.support.Page;
 import tw.com.dsc.service.ArticleLogService;
@@ -69,6 +71,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	
 	private List<Language> languages;
 	private List<ArticleLog> articleLogs;
+	private List<Technology> technologies;
 	@Autowired
 	private LanguageService languageService;
 	
@@ -80,6 +83,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	private SystemService systemService;
 	@Autowired
 	private ArticleLogService articleLogService;
+	
 	private ServletContext context;
 	private String message;
 	private String rejectReason;
@@ -120,6 +124,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		
 		page = new Page<Article>(example);
 		this.languages = this.languageService.listAll();
+		this.technologies = this.systemService.listAllTech();
 	}
 	
 	public String list() {
@@ -581,5 +586,14 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	public void setLanguageOid(String languageOid) {
 		this.languageOid = languageOid;
 	}
+
+	public List<Technology> getTechnologies() {
+		return technologies;
+	}
+
+	public void setTechnologies(List<Technology> technologies) {
+		this.technologies = technologies;
+	}
+	
 	
 }
