@@ -46,37 +46,45 @@
 <s:form id="detailform" action="article!preCopy" theme="simple">
 <table class="conditionborder">
 	<tr>
-		<th>Article ID</th>
+		<th>ARTICLE ID</th>
 		<td>${article.articleId.oid}</td>
-		<th>Type</th>
+		<th>TYPE</th>
 		<td><s:property value="getText('enum.ArticleType.' + article.type)" /></td>
-		<th>Language</th>
+		<th>Available Language</th>
 		<td><s:select list="sameArticles" listKey="oid" listValue="language.name" onchange="viewArticle(this.value)" value="oid"></s:select></td>
 	</tr>
 	<tr>
-		<th>Level</th>
+		<th>LEVEL</th>
 		<td>${article.level}</td>
-		<th>Firmware</th>
+		<th>FIRMWARE</th>
 		<td><c:if test="${null != article.firmware}"><a href="${article.firmware.uri}" target="_blank">${article.firmware.name}</a></c:if></td>
 		<th>&nbsp;</th>
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
-		<th>View</th>
+		<th>VIEWS</th>
 		<td>${article.hitCount}</td>
-		<th>Rating</th>
+		<th>RATING</th>
 		<td>${article.ratingInfo}</td>
+		<th>&nbsp;</th>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<th>TECHNOLOGY</th>
+		<td>${article.technology}</td>
+		<th>&nbsp;</th>
+		<td>&nbsp;</td>
 		<th>&nbsp;</th>
 		<td>&nbsp;</td>
 	</tr>
 </table>
 <fieldset class="conditionborder">
-	<legend>Question:</legend>
+	<legend>QUESTION:</legend>
 	${article.question}
 </fieldset>
 
 <fieldset class="conditionborder">
-	<legend>Answer:</legend>
+	<legend>ANSWER:</legend>
 	${article.answer}
 </fieldset>
 
@@ -89,7 +97,7 @@
 			name="ratingNumber" type="radio" value="3" />3 <input
 			name="ratingNumber" type="radio" value="4" />4 <input
 			name="ratingNumber" type="radio" value="5" checked="checked" />5
-		Excellent <input type="button" id="ratingButton" value="Rating" onclick="rating();" />
+		Excellent <input type="button" id="ratingButton" value="Rate" onclick="rating();" />
 		<div id="ratingMsg" style="color: blue;"></div>
 	</fieldset>
 </div>

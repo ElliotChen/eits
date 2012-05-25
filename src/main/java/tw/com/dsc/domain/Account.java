@@ -10,10 +10,12 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Immutable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Entity
+@Immutable
 @Table(name = "DOTJ_ACM2_ACCOUNT")
 public class Account implements Identifiable<String> {
 

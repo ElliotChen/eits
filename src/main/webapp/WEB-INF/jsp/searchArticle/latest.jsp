@@ -1,7 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/commons/base.jsp"%>
 <display:table name="${latestArticles.result}" partialList="true" pagesize="${latestArticles.pageSize}" size="${latestArticles.totalCount}" form="latestForm" sort="external" id="article" class="displayTagGrid">
-	<display:caption>Latest Articles</display:caption>
 	<display:column property="articleId.oid" title="ID" headerClass="tablehead"/>
 	<display:column property="summary" title="Summary" headerClass="tablehead"/>
 	<display:column title="Publish Date" headerClass="tablehead">

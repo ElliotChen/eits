@@ -78,16 +78,16 @@
 	<s:hidden name="entryUser" />
 	<table class="conditionborder">
 		<tr>
-			<td>ArticleID:</td>
+			<td>ARTICLE ID:</td>
 			<td><s:textfield name="articleId.oid" maxlength="6" size="6"/>(Draft)</td>
 		</tr>
 		<tr>
-			<td>Language:</td>
+			<td>LANGUAGE:</td>
 			<td><s:select list="languages" listKey="oid" listValue="name" name="languageOid" value="language.oid"/></td>
 		</tr>
 		<s:if test="user.l3">
 		<tr>
-			<td>Source:</td>
+			<td>SOURCE:</td>
 			<td><s:radio name="source" list="@tw.com.dsc.domain.Source@values()"
 					onchange="switchSource()" />
 					<select id="projectCode" name="projectCode" disabled="disabled">
@@ -104,7 +104,7 @@
 		
 		<s:if test="user.l3">
 		<tr>
-			<td>News:</td>
+			<td>ZyTech News:</td>
 			<td><s:radio name="news" list="#{'true':'Yes','false':'No'}" />
 			</td>
 		</tr>
@@ -114,11 +114,11 @@
 		</s:else>
 		
 		<tr>
-			<td>Type:</td>
+			<td>TYPE:</td>
 			<td><s:select id="type" name="type" list="@tw.com.dsc.domain.ArticleType@values()" listValue="%{getText('enum.ArticleType.'+toString())}" onchange="switchType();" /></td>
 		</tr>
 		<tr>
-			<td>Summary:</td>
+			<td>SUMMARY:</td>
 			<td><s:textfield name="summary" size="40" maxlength="50"/></td>
 		</tr>
 		<tr>
@@ -126,56 +126,56 @@
 			<td><s:select list="@tw.com.dsc.domain.ExpireType@values()" listValue="%{getText('enum.ExpireType.'+toString())}" name="expireType" /></td>
 		</tr>
 		<tr>
-			<td>EntryDate:</td>
+			<td>ENTRY DATE:</td>
 			<td><s:date name="entryDate" format="yyyy/MM/dd HH:mm:ss" /></td>
 		</tr>
 		<tr>
-			<td>Keywords:</td>
+			<td>KEYWORDS:</td>
 			<td><s:textfield name="keywords" size="40" maxlength="50"/></td>
 		</tr>
 		<tr class="ArticleType SpecInfo">
-			<td>Ticket ID:</td>
+			<td>eITS TICKET ID:</td>
 			<td><s:textfield id="ticketId" name="ticketId"/></td>
 		</tr>
 		<tr class="ArticleType GeneralInfo SpecInfo">
-			<td>Question:</td>
+			<td>QUESTION:</td>
 			<td><s:textarea id="question" name="question" cols="40" rows="4" /></td>
 		</tr>
 		<tr class="ArticleType GeneralInfo SpecInfo">
-			<td>Answer:</td>
+			<td>ANSWER:</td>
 			<td><s:textarea id="answer" name="answer" cols="40" rows="8" /></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
-			<td>Scenario Description:</td>
+			<td>SCENARIO DESCRIPTION:</td>
 			<td><s:textfield name="scenario" size="40" maxlength="50"/></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
-			<td>Setup/Step By Step Procedure:</td>
+			<td>SETUP/STEP BY STEP PROCEDURE:</td>
 			<td><s:textfield name="step" size="40" maxlength="50"/></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
-			<td>Verification:</td>
+			<td>VERIFICATION:</td>
 			<td><s:textfield name="verification" size="40" maxlength="50"/></td>
 		</tr>
 		
 		<tr class="ArticleType Issue">
-			<td>Problem Description:</td>
+			<td>PROBLEM DESCRIPTION:</td>
 			<td><s:textfield name="problem" size="40" maxlength="50"/></td>
 		</tr>
 		<tr class="ArticleType Issue">
-			<td>Solution:</td>
+			<td>SOLUTION:</td>
 			<td><s:textfield name="solution" size="40" maxlength="50"/></td>
 		</tr>
 		<tr class="ArticleType Issue">
-			<td>Procedure:</td>
+			<td>CONDITION/REPRODUCE PROCEDURE:</td>
 			<td><s:textfield name="procedure" size="40" maxlength="50"/></td>
 		</tr>
 		<tr>
-			<td>View Level:</td>
+			<td>VIEW LEVEL:</td>
 			<td><s:select id="level" name="level" list="user.availableLevels" listValue="%{getText('enum.Level.'+toString())}" /></td>
 		</tr>
 		<tr>
-			<td>Technology:</td>
+			<td>TECHNOLOGY:</td>
 			<td><s:textarea id="technology" name="technology" cols="40" rows="4" />
 				<s:select id="techSelect" name="techSelect" list="technologies" listKey="technology" listValue="technology" multiple="true"/>
 				
@@ -183,7 +183,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>Product:</td>
+			<td>PRODUCT:</td>
 			<td><s:textarea id="product" name="product" cols="40" rows="4" />
 				<select id="productSelect" name="productSelect" multiple="multiple">
 					<optgroup label="ProductA">
@@ -198,12 +198,12 @@
 			</td>
 		</tr>
 		<tr>
-			<td>Firmware:</td>
+			<td>FIRMWARE:</td>
 			<td><s:file name="upload" /> </td>
 		</tr>
 
 		<tr>
-			<td>Save As:</td>
+			<td>SAVE AS:</td>
 			<td>
 				<s:radio name="statusAction" list="availableStatus" listValue="%{getText('create.statusAction.'+toString())}" value="'WaitForApproving'" />
 			</td>

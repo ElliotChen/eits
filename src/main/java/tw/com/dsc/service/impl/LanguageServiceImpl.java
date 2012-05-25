@@ -60,7 +60,7 @@ public class LanguageServiceImpl extends AbstractDomainService<LanguageDao, Lang
 		
 		List<Language> list = this.dao.listByExample(example, conds , LikeMode.NONE, new String[0], new String[0]);
 		
-		return !list.isEmpty();
+		return list.isEmpty();
 	}
 	
 	@Override

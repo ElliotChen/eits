@@ -1,7 +1,5 @@
 package tw.com.dsc.web.action;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -15,12 +13,12 @@ import org.springframework.stereotype.Component;
 import tw.com.dsc.domain.Article;
 import tw.com.dsc.domain.ArticleId;
 import tw.com.dsc.domain.Language;
+import tw.com.dsc.domain.ProductSeries;
 import tw.com.dsc.domain.support.Page;
 import tw.com.dsc.service.ArticleService;
 import tw.com.dsc.service.LanguageService;
 import tw.com.dsc.service.SystemService;
 import tw.com.dsc.to.JsonMsg;
-import tw.com.dsc.to.Series;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.ThreadLocalHolder;
 
@@ -55,6 +53,8 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	
 	@Autowired
 	private SystemService systemService;
+	
+	private List<ProductSeries> productSeries;
 	@Override
 	public void prepare() throws Exception {
 		if (null != oid) {
@@ -78,6 +78,7 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 
 	public String index() {
 		this.languages = this.languageService.listAll();
+		this.productSeries = this.systemService.listAllSeries();
 		return "index";
 	}
 
@@ -107,7 +108,7 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 		return "latest";
 	}
 	
-	public List<Series> getSeries() {
+	public List<ProductSeries> getSeries() {
 		return systemService.listAllSeries();
 	}
 
@@ -243,6 +244,14 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 
 	public void setJsonMsg(JsonMsg jsonMsg) {
 		this.jsonMsg = jsonMsg;
+	}
+
+	public List<ProductSeries> getProductSeries() {
+		return productSeries;
+	}
+
+	public void setProductSeries(List<ProductSeries> productSeries) {
+		this.productSeries = productSeries;
 	}
 	
 }

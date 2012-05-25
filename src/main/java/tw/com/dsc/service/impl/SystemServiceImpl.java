@@ -16,12 +16,17 @@ import org.springframework.transaction.annotation.Transactional;
 import tw.com.dsc.dao.AccountDao;
 import tw.com.dsc.dao.AccountRoleDao;
 import tw.com.dsc.dao.GroupDao;
+import tw.com.dsc.dao.ProductSeriesDao;
+import tw.com.dsc.dao.ProjectDao;
 import tw.com.dsc.dao.TechnologyDao;
 import tw.com.dsc.domain.Account;
 import tw.com.dsc.domain.AgentType;
 import tw.com.dsc.domain.Article;
 import tw.com.dsc.domain.ErrorType;
 import tw.com.dsc.domain.Group;
+import tw.com.dsc.domain.ProductModel;
+import tw.com.dsc.domain.ProductSeries;
+import tw.com.dsc.domain.Project;
 import tw.com.dsc.domain.Technology;
 import tw.com.dsc.service.SystemService;
 import tw.com.dsc.to.Model;
@@ -42,29 +47,56 @@ public class SystemServiceImpl implements SystemService {
 	private AccountRoleDao accountRoleDao;
 	@Autowired
 	private TechnologyDao technologyDao;
-	
-	private static List<Series> series;
-	static {
-		series = new ArrayList<Series>();
-		
-		for (int i = 0; i < 100; i++) {
-			Series s = new Series("Series"+i, "Series"+i);
-			series.add(s);
-			int start = (i * 10) + 1;
-			for (int mi = start; mi < start + 10; mi++ ) {
-				s.addModel(new Model("model"+mi, "model"+mi));
-			}
-		}
-	}
+	@Autowired
+	private ProjectDao projectDao;
+	@Autowired
+	private ProductSeriesDao productSeriesDao;
 	@Override
-	public List<Series> listAllSeries() {
+	@Cacheable(value="series")
+	public List<ProductSeries> listAllSeries() {
+		List<ProductSeries> series = this.productSeriesDao.listAllSeries();
+		for (ProductSeries s : series) {
+			s.getModels().addAll(this.listModels(s.getId()));
+		}
+		return series;
+	}
+	
+	@Override
+	@Cacheable(value="series")
+	public List<ProductSeries> listSeries(String branchCode) {
+		List<ProductSeries> series = this.productSeriesDao.listSeries(branchCode);
+		for (ProductSeries s : series) {
+			s.getModels().addAll(this.listModels(s.getId(), branchCode));
+		}
 		return series;
 	}
 
 	@Override
+	@Cacheable(value="model")
+	public List<ProductModel> listModels(String seriesId) {
+		return this.productSeriesDao.listModels(seriesId);
+	}
+	
+	@Override
+	@Cacheable(value="model")
+	public List<ProductModel> listModels(String seriesId, String branchCode) {
+		return this.productSeriesDao.listModels(seriesId, branchCode);
+	}
+	
+	@Override
 	@Cacheable(value="technologies")
 	public List<Technology> listAllTech() {
-		return this.technologyDao.listAll();
+		List<Technology> techs = this.technologyDao.listAll();
+		for (Technology tech : techs) {
+			tech.getItems().size();
+		}
+		return techs;
+	}
+	
+	@Override
+	@Cacheable(value="projects")
+	public List<Project> listAllProject() {
+		return this.projectDao.listAll();
 	}
 	public ErrorType login(final User user) {
 		/* 1. Check account

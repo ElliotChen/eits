@@ -15,11 +15,12 @@
 		    data:{series : $('#exSeries').val()},
 		    url: '${ctx}/ajax!ajaxModels.action'
 		}).trigger('change');
+		/*
 		$('#exSeries').multiselect({position: {
 			      my: 'left bottom',
 			      at: 'left top'
 			   }, multiple:false}).multiselectfilter();
-		/*
+		
 		$('#exModel').multiselect({position: {
 		      my: 'left bottom',
 		      at: 'left top'
@@ -33,19 +34,27 @@
 <div id="search" class="condition">
 	<s:form id="searchForm" namespace="/" action="searchArticle!search" theme="simple">
 		<table class="conditionborder">
-<tr><td>Knowledge Base</td> <td align="right">Language:<s:select list="languages" listKey="oid" listValue="name" name="example.language.oid" value="EN"/></td></tr>
-<tr><td>
-Keyword:<s:textfield name="example.keywords" maxlength="60" size="60" /></td>
-<td align="right">
-Product Series:<select id="exSeries" name="series">
-			<option value="" selected="selected">----</option>
-			<option value="pa">PS1</option>
-			<option value="pb">PS2</option></select>
-Product Model:<select id="exModel" name="example.product"><option value="">----</option></select>
-		<s:submit value="Search" /></td></tr>
-	</s:form>
-	</table>
-
+			<tr>
+				<td><h3>Knowledge Base</h3></td>
+				<td align="right" colspan="2">Country:<select><option>----</option></select>　　Language:<s:select list="languages" listKey="oid" listValue="name" name="example.language.oid" value="EN" /></td>
+			</tr>
+			<tr>
+				<td colspan="3" style="line-height: 12px">Knowledge Base(KB) is designed to collect and publish users' valuable problem-solving experience for reference and reuse. 
+				An web-base service providing dynamic self-service information for online support requests. The Knowledge Base is where we post product information,
+				SB and SMB application, FAQs, and articles that might help solving user issues or problems. Please search your questions from Knowledge Base before submitting a request to the Support Feedback service.
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td>Product Series:<s:select id="exSeries" name="series" list="productSeries" listKey="id" listValue="name" headerKey="" headerValue="----" /></td>
+				<td rowspan="2"><s:submit value="Search" /></td>
+			</tr>
+			<tr>
+				<td>Keyword:<s:textfield name="example.keywords" maxlength="40" size="40" /></td>
+				<td>Product Model:<select id="exModel" name="example.product"><option value="">----</option></select></td>
+			</tr>
+			</s:form>
+		</table>
 </div>
 <div class="clear"></div>
 <div id="articles">

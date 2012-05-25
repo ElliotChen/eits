@@ -2,10 +2,15 @@
 <%@ include file="/WEB-INF/jsp/commons/base.jsp"%>
 <div class="logo_zyxel">
 	<a href="/"><img src="${ctx}/images/logo_zyxel.jpg" alt="ZyXEL Logo"></a>
+	<s:if test="user.guest">
+			Hi! Guest
+	</s:if>
+	<s:else>
+			<s:property value="user.account" />, welcome to eITS!
+	</s:else>
 </div>
 <div id="loginDiv" style="margin-left: 600px;">
 	<s:if test="user.guest">
-			Hi! Guest.
 		<a href="#login-box" class="login-window">Login</a>
 		<div id="login-box" class="login-popup">
 			<a href="#" class="close"><img src="images/close_pop.png" class="btn_close" title="Close Window" alt="Close" /></a>
@@ -23,8 +28,6 @@
 	<s:else>
 		<a href="#" onclick="switchMenu('m3', 'edit!list.action');">Home</a>
 		<a href="${ctx}/system!logout.action">Logout</a>
-		<br />
-			Welcome! <s:property value="user.account" />
 		<br />
 			Article#:<input type="text" id="quickOid" name="quickOid" size="6" maxlength="6" />
 		<input type="button" onclick="quickViewArticle();" value="Go" />

@@ -5,7 +5,10 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Immutable;
+
 @Entity
+@Immutable
 @Table(name = "DOTJ_ACM2_ACCOUNT_ROLE")
 public class AccountRole implements Identifiable<AccountRolePK> {
 	private static final long serialVersionUID = 9012314065005605051L;

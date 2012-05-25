@@ -1,6 +1,5 @@
 package tw.com.dsc.domain;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -9,10 +8,12 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Immutable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Entity
+@Immutable
 @Table(name = "DOTJ_ACM2_GROUP")
 public class Group implements Identifiable<String> {
 

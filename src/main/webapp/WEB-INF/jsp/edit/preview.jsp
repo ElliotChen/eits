@@ -33,13 +33,13 @@
 <div class="condition">
 <table class="conditionborder">
 	<tr>
-		<th>Article ID</th>
+		<th>ARTICLE ID</th>
 		<td>${article.articleId.oid}</td>
 		<th>Language</th>
 		<td>${article.language.name}</td>
 	</tr>
 	<tr>
-		<th>Source</th>
+		<th>SOURCE</th>
 		<td>${article.source}</td>
 		<th>&nbsp;</th>
 		<td>&nbsp;</td>
@@ -51,19 +51,19 @@
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
-		<th>Type</th>
+		<th>TYPE</th>
 		<td><s:property value="getText('enum.ArticleType.' + article.type)" /></td>
 		<th>&nbsp;</th>
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
-		<th>Summary</th>
+		<th>SUMMARY</th>
 		<td>${article.summary}</td>
 		<th>&nbsp;</th>
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
-		<th>Keywords</th>
+		<th>KEYWORDS</th>
 		<td>${article.keywords}</td>
 		<th>&nbsp;</th>
 		<td>&nbsp;</td>

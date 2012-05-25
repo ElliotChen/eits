@@ -1,14 +1,11 @@
 package tw.com.dsc.web.action;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletContext;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.util.ServletContextAware;
 import org.slf4j.Logger;
@@ -17,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import tw.com.dsc.dao.TechnologyDao;
 import tw.com.dsc.domain.ActionType;
 import tw.com.dsc.domain.Article;
 import tw.com.dsc.domain.ArticleId;
@@ -25,8 +21,8 @@ import tw.com.dsc.domain.ArticleLog;
 import tw.com.dsc.domain.ArticleType;
 import tw.com.dsc.domain.Attachment;
 import tw.com.dsc.domain.Language;
+import tw.com.dsc.domain.ProductSeries;
 import tw.com.dsc.domain.Source;
-import tw.com.dsc.domain.Status;
 import tw.com.dsc.domain.Technology;
 import tw.com.dsc.domain.support.BetweenCondition;
 import tw.com.dsc.domain.support.Page;
@@ -36,7 +32,6 @@ import tw.com.dsc.service.AttachmentService;
 import tw.com.dsc.service.LanguageService;
 import tw.com.dsc.service.SystemService;
 import tw.com.dsc.to.JsonMsg;
-import tw.com.dsc.to.Series;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.DateUtils;
 import tw.com.dsc.util.ThreadLocalHolder;
@@ -332,7 +327,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		return "quickEdit";
 	}
 	
-	public List<Series> getSeries() {
+	public List<ProductSeries> getSeries() {
 		return systemService.listAllSeries();
 	}
 	

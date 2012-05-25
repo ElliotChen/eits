@@ -2,17 +2,17 @@ package tw.com.dsc.service;
 
 import java.util.List;
 
-import org.springframework.cache.annotation.Cacheable;
-
 import tw.com.dsc.domain.Account;
 import tw.com.dsc.domain.Article;
 import tw.com.dsc.domain.ErrorType;
+import tw.com.dsc.domain.ProductModel;
+import tw.com.dsc.domain.ProductSeries;
+import tw.com.dsc.domain.Project;
 import tw.com.dsc.domain.Technology;
-import tw.com.dsc.to.Series;
 import tw.com.dsc.to.User;
 
 public interface SystemService {
-	List<Series> listAllSeries();
+	List<ProductSeries> listAllSeries();
 	ErrorType login(final User user);
 	
 	/**
@@ -37,4 +37,8 @@ public interface SystemService {
 	Account findAccountByOid(String oid);
 	
 	List<Technology> listAllTech();
+	List<Project> listAllProject();
+	List<ProductSeries> listSeries(String branchCode);
+	List<ProductModel> listModels(String seriesId);
+	List<ProductModel> listModels(String seriesId, String branchCode);
 }

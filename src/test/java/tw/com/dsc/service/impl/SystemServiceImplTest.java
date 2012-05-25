@@ -21,6 +21,9 @@ import tw.com.dsc.domain.AgentType;
 import tw.com.dsc.domain.Article;
 import tw.com.dsc.domain.ErrorType;
 import tw.com.dsc.domain.Group;
+import tw.com.dsc.domain.ProductSeries;
+import tw.com.dsc.domain.Project;
+import tw.com.dsc.domain.Technology;
 import tw.com.dsc.service.SystemService;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.SystemUtils;
@@ -147,7 +150,21 @@ public class SystemServiceImplTest {
 		user.setPassword("xxx");
 		et = this.systemService.login(user);
 		Assert.assertEquals(ErrorType.Password, et);
+	}
+	
+	@Test
+	public void testCache() {
+		List<Technology> techs = this.systemService.listAllTech();
+		List<Project> projects = this.systemService.listAllProject();
+//		List<ProductSeries> series = this.systemService.listAllSeries();
+		this.systemService.listSeries("EURBU");
+		//Test Cache works
+		this.systemService.listAllTech();
+		this.systemService.listAllProject();
 		
-		
+		this.systemService.listAllTech();
+		this.systemService.listAllProject();
+		this.systemService.listAllTech();
+		this.systemService.listAllProject();
 	}
 }
