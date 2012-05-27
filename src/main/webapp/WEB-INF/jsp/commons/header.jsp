@@ -1,12 +1,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/commons/base.jsp"%>
 <div class="logo_zyxel">
-	<a href="/"><img src="${ctx}/images/logo_zyxel.jpg" alt="ZyXEL Logo"></a>
+	<a href="http://www.zyxel.com.tw/"><img src="${ctx}/images/logo_zyxel.jpg" alt="ZyXEL Logo"></a>
 	<s:if test="user.guest">
 			Hi! Guest
 	</s:if>
 	<s:else>
-			<s:property value="user.account" />, welcome to eITS!
+			<s:property value="user.name" />, welcome to eITS!
 	</s:else>
 </div>
 <div id="loginDiv" style="margin-left: 600px;">

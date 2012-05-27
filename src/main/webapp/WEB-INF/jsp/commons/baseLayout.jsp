@@ -8,8 +8,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title><tiles:getAsString name="title" /></title>
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/smoothness/jquery-ui-1.8.18.custom.css" />" />
-<link rel="stylesheet" type="text/css" href="<c:url value="/css/superfish.css" />" />
-<link rel="stylesheet" type="text/css" href="<c:url value="/css/superfish-navbar.css" />" />
+<!-- <link rel="stylesheet" type="text/css" href="<c:url value="/css/superfish.css" />" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/superfish-navbar.css" />" />-->
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/menu.css" />" />
 <!-- <link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.dataTables.css" />" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/displaytag.css" />" />-->
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.datepick.css" />" />
@@ -69,10 +70,11 @@
             }
         });
 	$().ready(function() {
+		/*
 		$("#menu ul.sf-menu").superfish({
 			pathClass : 'current'
 		});
-		
+		*/
 		$('#articleForm').ajaxForm({
             target: '#main',
             success : $.unblockUI
@@ -228,10 +230,10 @@
 		<input id="switchRoleName" type="hidden" name="userRole" />
 	</s:form>
 <div class="page">
-	<div id="header" style="height:90px; width: 90%; position: relative;" class="datagrid">
+	<div id="header" style="width: 98%; position: relative;" class="datagrid">
 		<tiles:insertAttribute name="header" />
 	</div>
-	<div id="menu" style="height:100px; width: 90%; position: relative;" class="datagrid">
+	<div id="menu" style="width: 98%; position: relative;" class="datagrid">
 		<tiles:insertAttribute name="menu" />
 	</div>
 	

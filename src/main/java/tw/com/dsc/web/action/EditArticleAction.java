@@ -96,6 +96,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	
 	
 	private Language lan;
+	private Boolean copySourceFirmware;
 	@Override
 	public void prepare() throws Exception {
 		if (null != this.oid) {
@@ -218,7 +219,6 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	}
 	
 	public String previewSave() {
-		
 		return preview();
 	}
 	
@@ -240,6 +240,19 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		if (null != this.lan) {
 			this.article.setLanguage(lan);
 		}
+		if(null != this.sourceOid) {
+			this.sarticle = this.articleService.findByOid(sourceOid);
+			if (Boolean.TRUE.equals(this.copySourceFirmware)) {
+				this.article.setFirmware(this.sarticle.getFirmware());
+			}
+			if (null != this.article.getLanguage() && StringUtils.isNotEmpty(this.article.getLanguage().getOid())) {
+				String lanOid = this.article.getLanguage().getOid();
+				Language lan = this.languageService.findByOid(lanOid);
+				if (null != lan) {
+					this.article.setLanguage(lan);
+				}
+			}
+ 		}
 		return "preview";
 	}
 	
@@ -250,6 +263,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 			this.sarticle = this.articleService.findByOid(sourceOid);
 			this.copyLanguages.remove(this.sarticle.getLanguage());
 		}
+		
 		return "copy";
 	}
 	
@@ -629,6 +643,14 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 
 	public void setCopyLanguages(List<Language> copyLanguages) {
 		this.copyLanguages = copyLanguages;
+	}
+
+	public Boolean getCopySourceFirmware() {
+		return copySourceFirmware;
+	}
+
+	public void setCopySourceFirmware(Boolean copySourceFirmware) {
+		this.copySourceFirmware = copySourceFirmware;
 	}
 	
 }

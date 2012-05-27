@@ -58,10 +58,14 @@
 		copyField('procedure');
 		copyField('technology');
 		copyField('product');
-		copyField('firmware');
+		copyFirmware();
 	}
 	function copyField(fname) {
 		$('[name =\''+fname+'\']', $("#copyEditForm")).val($('[name =\'sarticle.'+fname+'\']', $("#copyEditForm")).val());
+	}
+	function copyFirmware() {
+		$('#tfn').val($('#sfn').val());
+		$('#copySourceFirmware').val('true');
 	}
 	function switchType() {
 		$('.ArticleType').hide();
@@ -219,9 +223,12 @@
 		</tr>
 		<tr>
 			<td>FIRMWARE:</td>
-			<td><s:textfield name="sarticle.firmware" readonly="true" /></td>
-			<td><input type="button" value="Copy >>" onclick="copyField('firmware')"/></td>
-			<td><s:textfield name="firmware" /></td>
+			<td>
+				<s:textfield id="sfn" name="sarticle.firmware.name" readonly="true" />
+				
+			</td>
+			<td><input type="button" value="Copy >>" onclick="copyFirmware()"/></td>
+			<td><s:file name="upload" /><input type="text" id="tfn" name="targetFirmware" size="20" readonly="readonly" /><input type="hidden" id="copySourceFirmware" name="copySourceFirmware" value="false"/></td>
 		</tr>
 		<!-- 
 		<tr>
@@ -251,6 +258,7 @@
 </s:form>
 
 <s:form id="previewForm" namespace="/" action="edit!previewSave" theme="simple" target="_blank">
+	<input type="hidden" name="sourceOid" value="${sarticle.oid}" />
 	<input type="hidden" name="articleId.oid" />
 	<input type="hidden" name="language.oid" />
 	<input type="hidden" name="source" />
@@ -272,4 +280,6 @@
 	<input type="hidden" name="level" />
 	<input type="hidden" name="technology" />
 	<input type="hidden" name="product" />
+	<input type="hidden" name="copySourceFirmware"/>
+	<input type="hidden" name="targetFirmware"/>
 </s:form>

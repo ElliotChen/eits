@@ -8,7 +8,7 @@
 			target: '#main',
 			beforeSubmit: function() {
 			    $('#editForm').validate({ rules : {
-			    	'articleId.oid' : {required:true, number:true},
+			    	'articleId.oid' : {required:true, number:true, minlength:6},
 					summary : {required:true},
 					keywords : {required:true},
 					question : {required:true},
