@@ -132,16 +132,16 @@
 
 	<tr>
 		<th>TECHNOLOGY:</th>
-		<td colspan="3"><s:textarea name="technology" cols="60" rows="8" readonly="readonly"/></td>
+		<td colspan="3"><s:textarea name="technology" cols="60" rows="8" readonly="true"/></td>
 	</tr>
 	<tr>
 		<th>PRODUCT:</th>
-		<td colspan="3"><s:textarea name="product" cols="60" rows="8" readonly="readonly"/></td>
+		<td colspan="3"><s:textarea name="product" cols="60" rows="8" readonly="true"/></td>
 	</tr>
 	<tr>
 		<th>FIRMWARE:</th>
 		<td colspan="3">
-			<input type="text" name="tfn" value="${targetFirmware}" />${targetFirmware}
+			<input type="text" name="targetFirmware" value="${targetFirmware}" readonly="readonly" />
 		</td>
 	</tr>
 	<tr>

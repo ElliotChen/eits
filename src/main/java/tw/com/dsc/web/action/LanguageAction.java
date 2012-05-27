@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import tw.com.dsc.domain.Language;
+import tw.com.dsc.domain.support.LikeCondition;
+import tw.com.dsc.domain.support.LikeMode;
 import tw.com.dsc.domain.support.Page;
 import tw.com.dsc.service.LanguageService;
 import tw.com.dsc.to.User;
@@ -57,7 +59,13 @@ public class LanguageAction extends BaseAction implements Preparable, ModelDrive
 		} else {
 			page.setPageNo(1);
 		}
-		
+		/*
+		if (null!=example && StringUtils.isNotEmpty(example.getOid())) {
+			String oid = example.getOid();
+			page.getConditions().add(new LikeCondition("oid", oid, LikeMode.ANYWHERE));
+			example.setOid(null);
+		}
+		*/
 		this.page = this.languageService.listByPage(page);
 		return "language";
 	}
@@ -85,8 +93,14 @@ public class LanguageAction extends BaseAction implements Preparable, ModelDrive
 		return this.list();
 	}
 
-	public String ajaxCheckDuplicate() {
-		Boolean result = this.languageService.checkDuplicate(example);
+	public String ajaxCheckDuplicateName() {
+		Boolean result = this.languageService.checkDuplicateName(example);
+		this.renderText(result.toString());
+		return null;
+	}
+	
+	public String ajaxCheckDuplicateOid() {
+		Boolean result = this.languageService.checkDuplicateOid(example);
 		this.renderText(result.toString());
 		return null;
 	}

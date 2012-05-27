@@ -3,6 +3,7 @@ package tw.com.dsc.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,14 +53,27 @@ public class LanguageServiceImpl extends AbstractDomainService<LanguageDao, Lang
 	}
 	
 	@Override
-	public boolean checkDuplicate(Language language) {
+	public boolean checkDuplicateName(Language language) {
 		Language example = new Language();
-		example.setName(language.getName());
 		List<Condition> conds = new ArrayList<Condition>();
-		conds.add(new SimpleCondition("oid", language.getOid(), OperationEnum.NE));
+		if (StringUtils.isNotEmpty(language.getOid())) {
+			conds.add(new SimpleCondition("oid", language.getOid(), OperationEnum.NE));
+		}
+		conds.add(new SimpleCondition("name", language.getName(), OperationEnum.EQ));
 		
 		List<Language> list = this.dao.listByExample(example, conds , LikeMode.NONE, new String[0], new String[0]);
+		logger.debug("check duplication Name for language[{}] and size is [{}]", language, list.size());
+		return list.isEmpty();
+	}
+	
+	@Override
+	public boolean checkDuplicateOid(Language language) {
+		Language example = new Language();
+		List<Condition> conds = new ArrayList<Condition>();
+		conds.add(new SimpleCondition("oid", language.getOid(), OperationEnum.EQ));
 		
+		List<Language> list = this.dao.listByExample(example, conds , LikeMode.NONE, new String[0], new String[0]);
+		logger.debug("check duplication Oid for language[{}] and size is [{}]", language, list.size());
 		return list.isEmpty();
 	}
 	

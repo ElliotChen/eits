@@ -96,7 +96,7 @@ public abstract class AbstractBaseDao<T extends Identifiable<Oid>, Oid extends S
 			criteria.add(createExample(example, matchMode));
 			if (null != example.getOid()) {
 				if (LikeMode.ANYWHERE == likeMode) {
-					criteria.add(Restrictions.like("oid", "%"+example.getOid()+"%"));
+					criteria.add(Restrictions.like("oid", "%"+example.getOid()+"%").ignoreCase());
 				} else {
 					criteria.add(Restrictions.idEq(example.getOid()));
 				}

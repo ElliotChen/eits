@@ -44,7 +44,7 @@
 <s:form id="transform" action="edit!preCopy" theme="simple">
 	<input type="hidden" name="sourceOid" value="${article.oid}" />
 <table class="conditionborder">
-	<tr><td><input type="submit" value="Translate"/><input type="button" value="View Log" onclick="viewArticleLog('${oid}')"/></td></tr>
+	<tr><td><input type="submit" value="Translate"/></td></tr>
 </table>
 </s:form>
 </s:if>

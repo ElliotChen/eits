@@ -97,6 +97,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	
 	private Language lan;
 	private Boolean copySourceFirmware;
+	private String targetFirmware;
 	@Override
 	public void prepare() throws Exception {
 		if (null != this.oid) {
@@ -204,6 +205,15 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 			this.article.setLanguage(lan);
 		}
 //		this.article.setArticleId(new ArticleId(articleIdOid));
+		//For Copy Action
+		if(null != this.sourceOid) {
+			this.sarticle = this.articleService.findByOid(sourceOid);
+			this.article.setArticleId(this.sarticle.getArticleId());
+			if (Boolean.TRUE.equals(this.copySourceFirmware)) {
+				this.article.setFirmware(this.sarticle.getFirmware());
+			}
+			
+		}
 		
 		if ("Draft".equals(statusAction)) {
 			this.articleService.draftNewArticle(article);
@@ -651,6 +661,14 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 
 	public void setCopySourceFirmware(Boolean copySourceFirmware) {
 		this.copySourceFirmware = copySourceFirmware;
+	}
+
+	public String getTargetFirmware() {
+		return targetFirmware;
+	}
+
+	public void setTargetFirmware(String targetFirmware) {
+		this.targetFirmware = targetFirmware;
 	}
 	
 }

@@ -26,7 +26,7 @@
 			<result name="index">/WEB-INF/jsp/searchArticle/index.jsp</result>
 			<result name="list">/WEB-INF/jsp/searchArticle/list.jsp</result>
 			<result name="detail">/WEB-INF/jsp/searchArticle/detail.jsp</result>
-
+			<result name="blank">/WEB-INF/jsp/commons/blank.jsp</result>
 			<result name="create">/WEB-INF/jsp/searchArticle/create.jsp</result>
 			<result name="update">/WEB-INF/jsp/searchArticle/update.jsp</result>
 			<result name="reload" type="redirect">/employee.action</result>

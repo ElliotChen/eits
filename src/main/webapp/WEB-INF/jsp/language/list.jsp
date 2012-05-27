@@ -11,66 +11,78 @@
 		$('#deleteForm').ajaxForm({
             target: '#main'
         });
-		$('#updateForm').ajaxForm({
-            target: '#main',
-            beforeSubmit: function() {
-			    $('#updateForm').validate(
-			    	{ rules : {
-						name : {
-							required:true,
-							remote:{
-								url:'${ctx}/language!ajaxCheckDuplicate.action',
-								data:{
-									oid:function() { 
-										return $("#moid").val(); 
-									},
-									name: function() { 
-										return $("#mname").val(); 
-										}
-									}
-								}
-			    			}
-			    		},
-			    		messages : {
-			    			name : {
-			    				remote : 'Language name exists.'
-			    			}
-			    		}
-			    	});
-			    return $('#updateForm').valid();
-			  }
-        });
 		
-		$('#createForm').ajaxForm({
-            target: '#main',
-            beforeSubmit: function() {
-			    $('#createForm').validate(
-			    	{ rules : {
-			    		oid : {required:true},
-			    		name : {
-							required:true,
-							remote:{
-								url:'${ctx}/language!ajaxCheckDuplicate.action',
-								data:{
-									oid:function() { 
-										return $("#cmoid").val(); 
-									},
-									name: function() { 
-										return $("#cmname").val(); 
-										}
+		$('#updateForm').validate(
+		    	{
+		    	submitHandler: function() {
+		    		$('#updateForm').ajaxSubmit({
+		                target: '#main'});
+		    	},
+		    	rules : {
+					name : {
+						required:true,
+						remote:{
+							url:'${ctx}/language!ajaxCheckDuplicateName.action',
+							data:{
+								'example.oid':function() { 
+									return $("#moid").val(); 
+								},
+								'example.name': function() { 
+									return $("#mname").val(); 
 									}
 								}
-			    			}
-			    		},
-			    		messages : {
-			    			name : {
-			    				remote : 'Language name exists.'
-			    			}
-			    		}
-			    	});
-			    return $('#createForm').valid();
-			  }
-        });
+							}
+		    			}
+		    		},
+		    		messages : {
+		    			name : {
+		    				remote : 'Language name exists.'
+		    			}
+		    		}
+		    	});
+		$('#createForm').validate(
+		    	{
+		    	submitHandler: function() {
+		    		$('#createForm').ajaxSubmit({
+		                target: '#main'});
+		    	},
+		    	rules : {
+		    		oid : {
+						required:true,
+						remote:{
+							url:'${ctx}/language!ajaxCheckDuplicateOid.action',
+							data:{
+								'example.oid':function() { 
+									return $("#cmoid").val(); 
+								}
+							}
+		    			}
+		    		},
+					name : {
+						required:true,
+						remote:{
+							url:'${ctx}/language!ajaxCheckDuplicateName.action',
+							data:{
+								'example.oid':function() { 
+									return $("#cmoid").val(); 
+								},
+								'example.name': function() { 
+									return $("#cmname").val(); 
+									}
+								}
+							}
+		    			}
+		    		},
+		    		messages : {
+		    			oid : {
+		    				remote : 'Language ID exists.'
+		    			},
+		    			name : {
+		    				remote : 'Language name exists.'
+		    			}
+		    		}
+		    	});
+		
 		
 		$('#languageEditDiv').hide();
 	});
@@ -135,7 +147,7 @@
 				<tr class="odd">
 					<td><input type="text" id="moid" readonly="readonly" name="oid" /></td>
 					<td><input type="text" id="mname" name="name" maxlength="25"/></td>
-					<td><s:submit value="Save" cssClass="save" /><input type="button" value="Cancel" onclick="$('#languageEditDiv').hide();"/></td>
+					<td><s:submit value="Save" cssClass="save"/><input type="button" value="Cancel" onclick="$('#languageEditDiv').hide();"/></td>
 				</tr>
 			</tbody>
 		</table>
@@ -160,7 +172,7 @@
 			<tr class="odd">
 				<td><input type="text" id="cmoid" name="oid" maxlength="32"/></td>
 				<td><input type="text" id="cmname" name="name" maxlength="25"/></td>
-				<td><input type="submit" value="Create" /></td>
+				<td><input type="submit" value="Create" class="save"/></td>
 			</tr>
 		</table>
 	</s:form>

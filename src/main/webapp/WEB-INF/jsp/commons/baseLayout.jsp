@@ -34,9 +34,12 @@
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.multiselect.min.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.multiselect.filter.min.js" />"></script>
 <style type="text/css">
-    #ui-datepicker-div
-    {
+    #ui-datepicker-div {
         z-index: 9999999;
+    }
+    
+    button.ui-datepicker-current { 
+    	display: none; 
     }
 </style>
 <script>
@@ -163,11 +166,18 @@
 	
 	function viewArticle(oid) {
 		$('#detailOid').val(oid);
+		$('#detailArticleId').val('');
 		$('#articleForm').submit();
 	}
 	
 	function quickViewArticle() {
 		viewArticle($('#quickOid').val());
+	}
+	
+	function quickViewArticleByArticleId() {
+		$('#detailOid').val('');
+		$('#detailArticleId').val($('#quickOid').val());
+		$('#articleForm').submit();
 	}
 	
 	function editArticle(oid) {
@@ -216,6 +226,7 @@
 	</form>
 	<s:form id="articleForm" namespace="/" action="searchArticle!detail" theme="simple">
 		<input id="detailOid" type="hidden" name="oid" />
+		<input id="detailArticleId" type="hidden" name="articleId" />
 	</s:form>
 	<s:form id="editArticleForm" namespace="/" action="edit!load" theme="simple">
 		<input id="editOid" type="hidden" name="oid" />

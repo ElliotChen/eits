@@ -8,7 +8,9 @@ public interface LanguageService extends BaseDomainService<Language, String> {
 	 * @param language
 	 * @return ture is duplicate.
 	 */
-	boolean checkDuplicate(Language language);
+	boolean checkDuplicateName(Language language);
+	
+	boolean checkDuplicateOid(Language language);
 	
 	Language findDefaultLanguage();
 }

@@ -30,7 +30,7 @@
 		<a href="${ctx}/system!logout.action">Logout</a>
 		<br />
 			Article#:<input type="text" id="quickOid" name="quickOid" size="6" maxlength="6" />
-		<input type="button" onclick="quickViewArticle();" value="Go" />
+		<input type="button" onclick="quickViewArticleByArticleId();" value="Go" />
 		<br />
 			Role:<s:select id="userRole" name="userRole" list="user.userRoles" listKey="role" listValue="role" onchange="switchRole()" value="user.currentUserRole.role"/>
 	</s:else>

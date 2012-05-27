@@ -9,6 +9,7 @@
 			beforeSubmit: function() {
 			    $('#editForm').validate({ rules : {
 			    	'articleId.oid' : {required:true, number:true, minlength:6},
+			    	languageOid : {required:true},
 					summary : {required:true},
 					keywords : {required:true},
 					question : {required:true},
@@ -122,56 +123,55 @@
 			<td><s:select list="@tw.com.dsc.domain.ExpireType@values()" listValue="%{getText('enum.ExpireType.'+toString())}" name="expireType" /></td>
 		</tr>
 		<tr>
-			<td>ENTRY DATE:</td>
-			<td><s:date name="entryDate" format="yyyy/MM/dd HH:mm:ss" /></td>
+			<td colspan="2">ENTRY DATE		<s:date name="entryDate" format="yyyy/MM/dd HH:mm:ss" />　　　　LAST UPDATE		<s:date name="updateDate" format="yyyy/MM/dd HH:mm:ss" />　　　　PUBLISH DATE		<s:date name="publishDate" format="yyyy/MM/dd HH:mm:ss" /></td>
 		</tr>
 		<tr>
-			<td>KEYWORDS:</td>
+			<td>KEYWORDS</td>
 			<td><s:textfield name="keywords" size="40" maxlength="50"/></td>
 		</tr>
 		<tr class="ArticleType SpecInfo">
-			<td>eITS TICKET ID:</td>
+			<td>eITS TICKET ID</td>
 			<td><s:textfield id="ticketId" name="ticketId"/></td>
 		</tr>
 		<tr class="ArticleType GeneralInfo SpecInfo">
-			<td>QUESTION:</td>
+			<td>QUESTION</td>
 			<td><s:textarea id="question" name="question" cols="40" rows="4" /></td>
 		</tr>
 		<tr class="ArticleType GeneralInfo SpecInfo">
-			<td>ANSWER:</td>
+			<td>ANSWER</td>
 			<td><s:textarea id="answer" name="answer" cols="40" rows="8" /></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
-			<td>SCENARIO DESCRIPTION:</td>
+			<td>SCENARIO DESCRIPTION</td>
 			<td><s:textfield name="scenario" size="40" maxlength="50"/></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
-			<td>SETUP/STEP BY STEP PROCEDURE:</td>
+			<td>SETUP/STEP BY STEP PROCEDURE</td>
 			<td><s:textfield name="step" size="40" maxlength="50"/></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
-			<td>VERIFICATION:</td>
+			<td>VERIFICATION</td>
 			<td><s:textfield name="verification" size="40" maxlength="50"/></td>
 		</tr>
 		
 		<tr class="ArticleType Issue">
-			<td>PROBLEM DESCRIPTION:</td>
+			<td>PROBLEM DESCRIPTION</td>
 			<td><s:textfield name="problem" size="40" maxlength="50"/></td>
 		</tr>
 		<tr class="ArticleType Issue">
-			<td>SOLUTION:</td>
+			<td>SOLUTION</td>
 			<td><s:textfield name="solution" size="40" maxlength="50"/></td>
 		</tr>
 		<tr class="ArticleType Issue">
-			<td>CONDITION/REPRODUCE PROCEDURE:</td>
+			<td>CONDITION/REPRODUCE PROCEDURE</td>
 			<td><s:textfield name="procedure" size="40" maxlength="50"/></td>
 		</tr>
 		<tr>
-			<td>VIEW LEVEL:</td>
+			<td>VIEW LEVEL</td>
 			<td><s:select id="level" name="level" list="user.availableLevels" listValue="%{getText('enum.Level.'+toString())}" /></td>
 		</tr>
 		<tr>
-			<td>TECHNOLOGY:</td>
+			<td>TECHNOLOGY</td>
 			<td><s:textarea id="technology" name="technology" cols="40" rows="4" />
 				<select id="techSelect" name="techSelect" multiple="true">
 					<s:iterator value="technologies" var="tech">
@@ -186,7 +186,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>PRODUCT:</td>
+			<td>PRODUCT</td>
 			<td><s:textarea id="product" name="product" cols="40" rows="4" />
 				<select id="productSelect" name="productSelect" multiple="true">
 					<s:iterator value="products" var="product">
@@ -200,12 +200,12 @@
 			</td>
 		</tr>
 		<tr>
-			<td>FIRMWARE:</td>
+			<td>FIRMWARE</td>
 			<td><s:file name="upload" /> </td>
 		</tr>
 
 		<tr>
-			<td>SAVE AS:</td>
+			<td>SAVE AS</td>
 			<td>
 				<s:radio name="statusAction" list="availableStatus" listValue="%{getText('create.statusAction.'+toString())}" value="'WaitForApproving'" />
 			</td>

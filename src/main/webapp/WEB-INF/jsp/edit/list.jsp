@@ -46,8 +46,8 @@
 </s:if>
 <div  class="condition">
 <s:form id="searchUnpublishedForm" namespace="/" action="edit!searchUnpublished" theme="simple">
-<table>
-	<tr><th colspan="7">Unpublished</th></tr>
+<table class="conditionborder">
+	<tr><th colspan="7">Unpublished Articles</th></tr>
 	<tr>
 	<td width="50"><input type="text" name="example1.articleId.oid" size="6"/></td>
 	<td width="300"><input type="text" name="example1.summary" size="30"/></td>
@@ -69,14 +69,19 @@
 </div>
 
 <div class="datagrid">
-Draft
+
 <s:form id="searchDraftForm" namespace="/" action="edit!searchDraft" theme="simple">
-	<input type="text" name="example2.articleId.oid" size="9"/>
-	<input type="text" name="example2.summary" size="18"/>
-	<input type="text" name="example2.entryUser" size="8"/>
-	<input type="text" name="example2.entryDate" size="16" id="entryDate2" readonly="readonly"/>
-	<input type="text" name="example2.product" size="17"/>
-	<s:submit value="Search" />
+<table class="conditionborder">
+	<tr><th colspan="6">Latest Draft Articles</th></tr>
+	<tr>
+	<td><input type="text" name="example2.articleId.oid" size="9"/></td>
+	<td><input type="text" name="example2.summary" size="18"/></td>
+	<td><input type="text" name="example2.entryUser" size="8"/></td>
+	<td><input type="text" name="example2.entryDate" size="16" id="entryDate2" readonly="readonly"/></td>
+	<td><input type="text" name="example2.product" size="17"/></td>
+	<td><s:submit value="Search" /></td>
+	</tr>
+</table>
 </s:form>
 
 <s:form id="draftForm" namespace="/" action="edit!searchDraft" theme="simple">
@@ -88,14 +93,19 @@ Draft
 </div>
 
 <div class="datagrid">
-Expired
+
 <s:form id="searchExpiredForm" namespace="/" action="edit!searchExpired" theme="simple">
-	<input type="text" name="example3.articleId.oid" size="9"/>
-	<input type="text" name="example3.summary" size="18"/>
-	<input type="text" name="example3.entryUser" size="8"/>
-	<input type="text" name="example3.entryDate" size="16" id="entryDate3" readonly="readonly"/>
-	<input type="text" name="example3.product" size="17"/>
-	<s:submit value="Search" />
+<table class="conditionborder">
+	<tr><th colspan="6">Expired Article List</th></tr>
+	<tr>
+	<td><input type="text" name="example3.articleId.oid" size="9"/></td>
+	<td><input type="text" name="example3.summary" size="18"/></td>
+	<td><input type="text" name="example3.entryUser" size="8"/></td>
+	<td><input type="text" name="example3.entryDate" size="16" id="entryDate3" readonly="readonly"/></td>
+	<td><input type="text" name="example3.product" size="17"/></td>
+	<td><s:submit value="Search" /></td>
+	</tr>
+</table>
 </s:form>
 
 <s:form id="expiredForm" namespace="/" action="edit!searchExpired" theme="simple">

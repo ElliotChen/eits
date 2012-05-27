@@ -1,8 +1,10 @@
 package tw.com.dsc.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.RequestAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,11 +12,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import tw.com.dsc.domain.AgentType;
 import tw.com.dsc.domain.Article;
 import tw.com.dsc.domain.ArticleId;
 import tw.com.dsc.domain.Language;
+import tw.com.dsc.domain.Level;
 import tw.com.dsc.domain.ProductSeries;
+import tw.com.dsc.domain.Status;
+import tw.com.dsc.domain.support.Condition;
+import tw.com.dsc.domain.support.LikeMode;
+import tw.com.dsc.domain.support.OperationEnum;
 import tw.com.dsc.domain.support.Page;
+import tw.com.dsc.domain.support.SimpleCondition;
 import tw.com.dsc.service.ArticleService;
 import tw.com.dsc.service.LanguageService;
 import tw.com.dsc.service.SystemService;
@@ -90,9 +99,32 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	}
 
 	public String detail() {
-		example.setArticleId(this.article.getArticleId());
+		if (StringUtils.isNotEmpty(this.articleId)) {
+//			example.setArticleId(new ArticleId(articleId));
+			List<Condition> conds = new ArrayList<Condition>();
+			conds.add(new SimpleCondition("articleId.oid", articleId, OperationEnum.EQ));
+			sameArticles = this.articleService.listByExample(example, conds, LikeMode.NONE, null, null);
+			if (sameArticles.isEmpty()) {
+				this.addActionError("No such article id : ["+this.articleId+"]");
+				return "blank";
+			}
+			this.article = sameArticles.get(0);
+		} else {
+			example.setArticleId(this.article.getArticleId());
+			sameArticles = this.articleService.listByExample(example);
+		}
 		
-		sameArticles = this.articleService.listByExample(example);
+		User op = ThreadLocalHolder.getOperator();
+		if (article.getStatus() != Status.Published) {
+			this.addActionError("This article is not public.");
+			return "blank";
+		} else if (Level.L3CSO == article.getLevel() && AgentType.L3 != op.getAgentType()) {
+			this.addActionError("You have no authorization for this article");
+			return "blank";
+		} else if (Level.Partner == article.getLevel() && op.isGuest()) {
+			this.addActionError("You have no authorization for this article");
+			return "blank";
+		}
 		
 		this.articleService.addHitCount(article);
 		return "detail";

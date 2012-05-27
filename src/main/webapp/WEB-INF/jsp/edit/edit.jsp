@@ -89,22 +89,22 @@
 //-->
 </script>
 <input type="button" value="View Log" onclick="viewArticleLog('${oid}')"/>
-<input type="button" value="View Reason" onclick="viewRejectLogs('${oid}')"/>
+
 <div class="condition">
 <s:form id="editForm" namespace="/" action="edit!save" theme="simple" method="POST" enctype ="multipart/form-data">
 	<s:hidden name="oid" />
 	<table class="conditionborder">
 		<tr>
-			<td>ARTICLE ID:</td>
-			<td><s:textfield name="articleId.oid" readonly="true" maxlength="6" size="6"/> (${article.status} - ${article.agentType})</td>
+			<td>ARTICLE ID</td>
+			<td><s:textfield name="articleId.oid" readonly="true" maxlength="6" size="6"/> (${article.status} - ${article.agentType})<input type="button" value="View Reason" onclick="viewRejectLogs('${oid}')"/></td>
 		</tr>
 		<tr>
-			<td>LANGUAGE:</td>
+			<td>LANGUAGE</td>
 			<td><s:select list="languages" listKey="oid" listValue="name" name="languageOid" value="language.oid"/></td>
 		</tr>
 		<s:if test="user.l3">
 		<tr>
-			<td>SOURCE:</td>
+			<td>SOURCE</td>
 			<td><s:radio name="source" list="@tw.com.dsc.domain.Source@values()"
 					onchange="switchSource()" />
 				<s:select id="projectCode" name="projectCode" list="projects" disabled="true" listKey="oid" listValue="projectCode"></s:select>
@@ -117,7 +117,7 @@
 		
 		<s:if test="user.l3">
 		<tr>
-			<td>ZyTech News:</td>
+			<td>ZyTech News</td>
 			<td><s:radio name="news" list="#{'true':'Yes','false':'No'}" />
 			</td>
 		</tr>
@@ -127,67 +127,71 @@
 		</s:else>
 		
 		<tr>
-			<td>TYPE:</td>
+			<td>TYPE</td>
 			<td><s:select id="type" name="type" list="@tw.com.dsc.domain.ArticleType@values()" listValue="%{getText('enum.ArticleType.'+toString())}" onchange="switchType();" /></td>
 		</tr>
 		<tr>
-			<td>SUMMARY:</td>
+			<td>SUMMARY</td>
 			<td><s:textfield name="summary" size="40" maxlength="50"/></td>
 		</tr>
 		<tr>
-			<td>Expire After:</td>
+			<td>Expire After</td>
 			<td><s:select list="@tw.com.dsc.domain.ExpireType@values()" listValue="%{getText('enum.ExpireType.'+toString())}" name="expireType" /></td>
 		</tr>
 		<tr>
 			<td colspan="2">ENTRY DATE:<s:date name="entryDate" format="yyyy/MM/dd HH:mm:ss" />　　　　LAST UPDATE:<s:date name="updateDate" format="yyyy/MM/dd HH:mm:ss" />　　　　PUBLISH DATE:<s:date name="publishDate" format="yyyy/MM/dd HH:mm:ss" /></td>
 		</tr>
 		<tr>
-			<td>KEYWORDS:</td>
+			<td>ENTRY USER</td>
+			<td>${entryUser}</td>
+		</tr>
+		<tr>
+			<td>KEYWORDS</td>
 			<td><s:textfield name="keywords" size="40" maxlength="50" /></td>
 		</tr>
 		<tr class="ArticleType SpecInfo">
-			<td>eITS TICKET ID:</td>
+			<td>eITS TICKET ID</td>
 			<td><s:textfield name="ticketId" maxlength="10"/></td>
 		</tr>
 		<tr class="ArticleType GeneralInfo SpecInfo">
-			<td>QUESTION:</td>
+			<td>QUESTION</td>
 			<td><s:textarea id="question" name="question" cols="40" rows="4" /></td>
 		</tr>
 		<tr class="ArticleType GeneralInfo SpecInfo">
-			<td>ANSWER:</td>
+			<td>ANSWER</td>
 			<td><s:textarea id="answer" name="answer" cols="40" rows="8" /></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
-			<td>SCENARIO DESCRIPTION:</td>
+			<td>SCENARIO DESCRIPTION</td>
 			<td><s:textfield name="scenario" size="40" maxlength="50"/></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
-			<td>SETUP/STEP BY STEP PROCEDURE:</td>
+			<td>SETUP/STEP BY STEP PROCEDURE</td>
 			<td><s:textfield name="step" size="40" maxlength="50"/></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
-			<td>VERIFICATION:</td>
+			<td>VERIFICATION</td>
 			<td><s:textfield name="verification" size="40" maxlength="50"/></td>
 		</tr>
 		
 		<tr class="ArticleType Issue">
-			<td>PROBLEM DESCRIPTION:</td>
+			<td>PROBLEM DESCRIPTION</td>
 			<td><s:textfield name="problem" size="40" maxlength="50"/></td>
 		</tr>
 		<tr class="ArticleType Issue">
-			<td>SOLUTION:</td>
+			<td>SOLUTION</td>
 			<td><s:textfield name="solution" size="40" maxlength="50"/></td>
 		</tr>
 		<tr class="ArticleType Issue">
-			<td>CONDITION/REPRODUCE PROCEDURE:</td>
+			<td>CONDITION/REPRODUCE PROCEDURE</td>
 			<td><s:textfield name="procedure" size="40" maxlength="50"/></td>
 		</tr>
 		<tr>
-			<td>VIEW LEVEL:</td>
+			<td>VIEW LEVEL</td>
 			<td><s:select id="level" name="level" list="user.availableLevels" listValue="%{getText('enum.Level.'+toString())}" /></td>
 		</tr>
 		<tr>
-			<td>TECHNOLOGY:</td>
+			<td>TECHNOLOGY</td>
 			<td><s:textarea id="technology" name="technology" cols="40" rows="4" />
 				<select id="techSelect" name="techSelect" multiple="true">
 					<s:iterator value="technologies" var="tech">
@@ -201,7 +205,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>PRODUCT:</td>
+			<td>PRODUCT</td>
 			<td><s:textarea id="product" name="product" cols="40" rows="4" />
 				<select id="productSelect" name="productSelect" multiple="true">
 					<s:iterator value="products" var="product">
@@ -215,22 +219,24 @@
 			</td>
 		</tr>
 		<tr>
-			<td>FIRMWARE:</td>
+			<td>FIRMWARE</td>
 			<td><s:file name="upload"/>
-			
-			<c:if test="${null != firmware}"><a href="${firmware.uri}" target="_blank">${firmware.name}</a></c:if>
+			<s:if test="null != firmware">
+				<input type="hidden" name="targetFirmware" value="${firmware.name}" />
+				<a href="${firmware.uri}" target="_blank">${firmware.name}</a>
+			</s:if>
 			</td>
 		</tr>
 
 		<tr>
-			<td>STATUS ACTION:</td>
+			<td>STATUS ACTION</td>
 			<td>
 				<s:select id="statusAction" name="statusAction" list="availableStatus" listValue="%{getText('edit.statusAction.'+toString())}" headerKey="" headerValue="-----" onchange="checkAction(this)" />
 			</td>
 		</tr>
 		<s:if test="user.leader">
 		<tr class="rejectArea" style="display: none;">
-			<td>REJECT REASON:</td>
+			<td>REJECT REASON</td>
 			<td>
 				<s:textarea name="rejectReason" cols="40" rows="4" />
 			</td>
@@ -269,5 +275,6 @@
 	<input type="hidden" name="level" />
 	<input type="hidden" name="technology" />
 	<input type="hidden" name="product" />
+	<input type="hidden" name="targetFirmware"/>
 </s:form>
 </div>
