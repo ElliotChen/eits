@@ -88,12 +88,8 @@
 		<s:if test="user.l3">
 		<tr>
 			<td>SOURCE:</td>
-			<td><s:radio name="source" list="@tw.com.dsc.domain.Source@values()"
-					onchange="switchSource()" />
-					<select id="projectCode" name="projectCode" disabled="disabled">
-						<option value="proA">ProjectA</option>
-						<option value="proB">ProjectB</option>
-					</select>
+			<td><s:radio name="source" list="@tw.com.dsc.domain.Source@values()" onchange="switchSource()" />
+				<s:select id="projectCode" name="projectCode" list="projects" disabled="true" listKey="oid" listValue="projectCode"></s:select>
 			</td>
 		</tr>
 		</s:if>

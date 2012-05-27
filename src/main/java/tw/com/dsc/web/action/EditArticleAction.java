@@ -22,6 +22,7 @@ import tw.com.dsc.domain.ArticleType;
 import tw.com.dsc.domain.Attachment;
 import tw.com.dsc.domain.Language;
 import tw.com.dsc.domain.ProductSeries;
+import tw.com.dsc.domain.Project;
 import tw.com.dsc.domain.Source;
 import tw.com.dsc.domain.Technology;
 import tw.com.dsc.domain.support.BetweenCondition;
@@ -67,6 +68,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	private List<Language> languages;
 	private List<ArticleLog> articleLogs;
 	private List<Technology> technologies;
+	private List<Project> projects;
 	@Autowired
 	private LanguageService languageService;
 	
@@ -120,6 +122,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		page = new Page<Article>(example);
 		this.languages = this.languageService.listAll();
 		this.technologies = this.systemService.listAllTech();
+		this.projects = this.systemService.listAllProject();
 	}
 	
 	public String list() {
@@ -589,6 +592,13 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	public void setTechnologies(List<Technology> technologies) {
 		this.technologies = technologies;
 	}
-	
+
+	public List<Project> getProjects() {
+		return projects;
+	}
+
+	public void setProjects(List<Project> projects) {
+		this.projects = projects;
+	}
 	
 }
