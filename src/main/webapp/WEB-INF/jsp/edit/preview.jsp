@@ -26,7 +26,20 @@
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.dataTables.min.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/hoverIntent.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/superfish.js" />"></script>
+<script type="text/javascript">
+<!--
+	$().ready(function() {
+		switchType();
 
+	});
+	
+	function switchType() {
+		$('.ArticleType').hide();
+		$('.${type}').show();
+	}
+	
+//-->
+</script>
 </head>
 <body>
 <div id="main" class="contents viewmycart" >
@@ -98,16 +111,63 @@
 		<th>&nbsp;</th>
 		<td>&nbsp;</td>
 	</tr>
-</table>
-	<fieldset class="conditionborder">
-				<legend>Question:</legend>
-				${question}
-			</fieldset>
-	<fieldset class="conditionborder">
-				<legend>Answer:</legend>
-				${answer}
-			</fieldset>
-<table class="conditionborder">
+
+	<tr class="ArticleType SpecInfo">
+			<th>eITS TICKET ID:</th>
+			<td>${ticketId}</td>
+			<th>&nbsp;</th>
+		<td>&nbsp;</td>
+		</tr>
+		<tr class="ArticleType GeneralInfo SpecInfo">
+			<th>QUESTION:</th>
+			<td>${question}</td>
+			<th>&nbsp;</th>
+		<td>&nbsp;</td>
+		</tr>
+		<tr class="ArticleType GeneralInfo SpecInfo">
+			<th>ANSWER:</th>
+			<td>${answer}</td>
+			<th>&nbsp;</th>
+		<td>&nbsp;</td>
+		</tr>
+		<tr class="ArticleType Application TroubleShooting">
+			<th>SCENARIO DESCRIPTION:</th>
+			<td>${scenario}</td>
+			<th>&nbsp;</th>
+		<td>&nbsp;</td>
+		</tr>
+		<tr class="ArticleType Application TroubleShooting">
+			<th>SETUP/STEP BY STEP PROCEDURE:</th>
+			<td>${step}</td>
+			<th>&nbsp;</th>
+		<td>&nbsp;</td>
+		</tr>
+		<tr class="ArticleType Application TroubleShooting">
+			<th>VERIFICATION:</th>
+			<td>${verification}</td>
+			<th>&nbsp;</th>
+		<td>&nbsp;</td>
+		</tr>
+		
+		<tr class="ArticleType Issue">
+			<th>PROBLEM DESCRIPTION:</th>
+			<td>${problem}</td>
+			<th>&nbsp;</th>
+		<td>&nbsp;</td>
+		</tr>
+		<tr class="ArticleType Issue">
+			<th>SOLUTION:</th>
+			<td>${solution}</td>
+			<th>&nbsp;</th>
+		<td>&nbsp;</td>
+		</tr>
+		<tr class="ArticleType Issue">
+			<th>CONDITION/REPRODUCE PROCEDURE:</th>
+			<td>${procedure}</td>
+			<th>&nbsp;</th>
+		<td>&nbsp;</td>
+		</tr>
+
 	<tr>
 		<th>Technology:</th>
 		<td><s:textarea name="technology" cols="40" rows="4" readonly="readonly"/></td>

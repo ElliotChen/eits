@@ -6,6 +6,7 @@
 		$('#transform').ajaxForm({
 			target : '#main'
 		});
+		switchType();
 	});
 	function rating() {
 		$.post('${ctx}/searchArticle!rating.action', {
@@ -30,6 +31,11 @@
 			$('#suggestion').remove();
 			$('#sugButton').remove();
 		}, 'json');
+	}
+	
+	function switchType() {
+		$('.ArticleType').hide();
+		$('.${article.type}').show();
 	}
 //-->
 </script>
@@ -78,16 +84,45 @@
 		<td>&nbsp;</td>
 	</tr>
 </table>
-<fieldset class="conditionborder">
-	<legend>QUESTION:</legend>
-	${article.question}
-</fieldset>
 
-<fieldset class="conditionborder">
-	<legend>ANSWER:</legend>
-	${article.answer}
-</fieldset>
-
+<fieldset class="conditionborder ArticleType GeneralInfo SpecInfo">
+			<legend>QUESTION:</legend>
+			${article.question}
+		</fieldset>
+		<fieldset class="conditionborder ArticleType GeneralInfo SpecInfo">
+			<legend>ANSWER:</legend>
+			${article.answer}
+		</fieldset>
+		
+<fieldset class="conditionborder ArticleType SpecInfo">
+			<legend>eITS TICKET ID:</legend>
+			${article.ticketId}
+		</fieldset>
+<fieldset class="conditionborder ArticleType Application TroubleShooting">
+			<legend>SCENARIO DESCRIPTION:</legend>
+			${article.scenario}
+		</fieldset>
+		<fieldset class="conditionborder ArticleType Application TroubleShooting">
+			<legend>SETUP/STEP BY STEP PROCEDURE:</legend>
+			${article.step}
+		</fieldset>
+		<fieldset class="conditionborder ArticleType Application TroubleShooting">
+			<legend>VERIFICATION:</legend>
+			${article.verification}
+		</fieldset>
+		
+		<fieldset class="conditionborder ArticleType Issue">
+			<legend>PROBLEM DESCRIPTION:</legend>
+			${article.problem}
+		</fieldset>
+		<fieldset class="conditionborder ArticleType Issue">
+			<legend>SOLUTION:</legend>
+			${article.solution}
+		</fieldset>
+		<fieldset class="conditionborder ArticleType Issue">
+			<legend>CONDITION/REPRODUCE PROCEDURE:</legend>
+			${article.procedure}
+		</fieldset>
 <div id="ratingDiv">
 	<fieldset class="conditionborder">
 		<legend>Rating:</legend>

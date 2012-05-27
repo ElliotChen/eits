@@ -110,7 +110,7 @@
 			<td>LANGUAGE:</td>
 			<td><s:select list="languages" listKey="oid" listValue="name" name="sarticle.language.oid" disabled="true"/></td>
 			<td></td>
-			<td><s:select list="languages" listKey="oid" listValue="name" name="language.oid"/></td>
+			<td><s:select list="copyLanguages" listKey="oid" listValue="name" name="language.oid"/></td>
 		</tr>
 		<tr>
 			<td>TYPE:</td>
@@ -190,27 +190,30 @@
 			<td><s:textarea name="sarticle.technology" readonly="true" cols="40" rows="4" /></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('technology')"/></td>
 			<td><s:textarea id="technology" name="technology" cols="40" rows="4" />
-				<select id="techSelect" name="techSelect" multiple="multiple">
-						<option value="Tech1">Tech1</option>
-						<option value="Tech2">Tech2</option>
-						<option value="Tech3">Tech3</option>
-						<option value="Tech4">Tech4</option>
-				</select></td>
+				<select id="techSelect" name="techSelect" multiple="true">
+					<s:iterator value="technologies" var="tech">
+						<optgroup label="<s:property value="technology" />">
+							<s:iterator value="#tech.items" var="item">
+								<option value="<s:property value="#tech.technology" />-<s:property value="name" />"><s:property value="name" /></option>
+							</s:iterator>
+						</optgroup>
+					</s:iterator>
+				</select>
+			</td>
 		</tr>
 		<tr>
 			<td>PRODUCT:</td>
 			<td><s:textarea name="sarticle.product" readonly="true" cols="40" rows="4" /></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('product')"/></td>
 			<td><s:textarea id="product" name="product" cols="40" rows="4" />
-				<select id="productSelect" name="productSelect" multiple="multiple">
-					<optgroup label="ProductA">
-						<option value="Model1">Model1</option>
-						<option value="Model2">Model2</option>
-					</optgroup>
-					<optgroup label="ProductB">
-						<option value="Model3">Model3</option>
-						<option value="Model4">Model4</option>
-					</optgroup>
+				<select id="productSelect" name="productSelect" multiple="true">
+					<s:iterator value="products" var="product">
+						<optgroup label="<s:property value="name" />">
+							<s:iterator value="#product.models" var="model">
+								<option value="<s:property value="#product.name" />-<s:property value="name" />"><s:property value="name" /></option>
+							</s:iterator>
+						</optgroup>
+					</s:iterator>
 				</select>
 			</td>
 		</tr>

@@ -1,6 +1,7 @@
 package tw.com.dsc.web.action;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -69,6 +70,8 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	private List<ArticleLog> articleLogs;
 	private List<Technology> technologies;
 	private List<Project> projects;
+	private List<ProductSeries> products;
+	private List<Language> copyLanguages;
 	@Autowired
 	private LanguageService languageService;
 	
@@ -120,9 +123,17 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		}
 		
 		page = new Page<Article>(example);
+		
 		this.languages = this.languageService.listAll();
 		this.technologies = this.systemService.listAllTech();
 		this.projects = this.systemService.listAllProject();
+		User op = ThreadLocalHolder.getOperator();
+		logger.debug("[{}]", op);
+		if (op.isL3()) {
+			this.products = this.systemService.listAllSeries();
+		} else {
+			this.products = this.systemService.listSeries(op.getCurrentUserRole().getBranchCode());
+		}
 	}
 	
 	public String list() {
@@ -233,8 +244,11 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	}
 	
 	public String preCopy() {
+		this.copyLanguages = new ArrayList<Language>(this.languages);
+		
 		if(null != this.sourceOid) {
 			this.sarticle = this.articleService.findByOid(sourceOid);
+			this.copyLanguages.remove(this.sarticle.getLanguage());
 		}
 		return "copy";
 	}
@@ -599,6 +613,22 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 
 	public void setProjects(List<Project> projects) {
 		this.projects = projects;
+	}
+
+	public List<ProductSeries> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<ProductSeries> products) {
+		this.products = products;
+	}
+
+	public List<Language> getCopyLanguages() {
+		return copyLanguages;
+	}
+
+	public void setCopyLanguages(List<Language> copyLanguages) {
+		this.copyLanguages = copyLanguages;
 	}
 	
 }

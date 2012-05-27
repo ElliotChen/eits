@@ -157,7 +157,7 @@ public class SystemServiceImplTest {
 		List<Technology> techs = this.systemService.listAllTech();
 		List<Project> projects = this.systemService.listAllProject();
 //		List<ProductSeries> series = this.systemService.listAllSeries();
-		this.systemService.listSeries("EURBU");
+		this.systemService.listSeries("ZyDE");
 		//Test Cache works
 		this.systemService.listAllTech();
 		this.systemService.listAllProject();
@@ -166,5 +166,13 @@ public class SystemServiceImplTest {
 		this.systemService.listAllProject();
 		this.systemService.listAllTech();
 		this.systemService.listAllProject();
+	}
+	
+	@Test
+	public void testListSeries() {
+		List<ProductSeries> listSeries = this.systemService.listSeries("ZyDE");
+		for (ProductSeries ps : listSeries) {
+			ps.getId();
+		}
 	}
 }

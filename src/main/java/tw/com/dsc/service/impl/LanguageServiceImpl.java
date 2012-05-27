@@ -76,4 +76,12 @@ public class LanguageServiceImpl extends AbstractDomainService<LanguageDao, Lang
 		
 		return list.isEmpty()?null:list.get(0);
 	}
+
+	@Override
+	public List<Language> listAll() {
+		Language example  = new Language();
+		return this.listByExample(example, null, LikeMode.NONE, null, new String[]{"system", "oid"});
+	}
+	
+	
 }

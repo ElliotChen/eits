@@ -64,6 +64,10 @@ public class SystemServiceImpl implements SystemService {
 	@Override
 	@Cacheable(value="series")
 	public List<ProductSeries> listSeries(String branchCode) {
+		if (StringUtils.isEmpty(branchCode)) {
+			logger.error("List Series for Branch Code can't accept emtpy parameter. Please check login user data.");
+			return new ArrayList<ProductSeries>();
+		}
 		List<ProductSeries> series = this.productSeriesDao.listSeries(branchCode);
 		for (ProductSeries s : series) {
 			s.getModels().addAll(this.listModels(s.getId(), branchCode));
@@ -74,12 +78,20 @@ public class SystemServiceImpl implements SystemService {
 	@Override
 	@Cacheable(value="model")
 	public List<ProductModel> listModels(String seriesId) {
+		if (StringUtils.isEmpty(seriesId)) {
+			logger.error("List Models for Series Code can't accept emtpy parameter. Please check login user data.");
+			return new ArrayList<ProductModel>();
+		}
 		return this.productSeriesDao.listModels(seriesId);
 	}
 	
 	@Override
 	@Cacheable(value="model")
 	public List<ProductModel> listModels(String seriesId, String branchCode) {
+		if (StringUtils.isEmpty(seriesId) || StringUtils.isEmpty(branchCode)) {
+			logger.error("List Models for Branch Code can't accept emtpy parameter. Please check login user data.");
+			return new ArrayList<ProductModel>();
+		}
 		return this.productSeriesDao.listModels(seriesId, branchCode);
 	}
 	
