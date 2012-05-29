@@ -1,4 +1,4 @@
-﻿target/
+target
 logs/
 .DS_Store
 *.log
