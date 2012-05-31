@@ -7,10 +7,10 @@
 	<display:column title="Entry Date" style="width:90px" headerClass="tablehead">
 		<fmt:formatDate value="${article.entryDate}" pattern="yyyy/MM/dd"/>
 	</display:column>
-	<display:column property="product" title="Prod. Series" style="width:200px" headerClass="tablehead"/>
+	<display:column property="product" title="Prod. Series" style="width:100px" headerClass="tablehead"/>
 	<display:column property="status" title="Status" style="width:100px" headerClass="tablehead"/>
-	<display:column title="Function" style="width:100px" headerClass="tablehead">
-      <a href="javascript:previewArticle('${article.oid}');">Preview</a>
-      <a href="javascript:editArticle('${article.oid}');">Edit</a>
+	<display:column title="Function" style="width:150px;" headerClass="tablehead">
+      <input type="button" onclick="javascript:previewArticle('${article.oid}');" value="Preview"/>
+      <input type="button" onclick="javascript:editArticle('${article.oid}');" value="Edit"/>
     </display:column>
 </display:table>

@@ -30,4 +30,6 @@ public interface ArticleService extends BaseDomainService<Article, Long> {
 	Page<Article> searchExpiredPage(Page<Article> page);
 	
 	void addHitCount(Article article);
+	
+	String getNextArticleId();
 }

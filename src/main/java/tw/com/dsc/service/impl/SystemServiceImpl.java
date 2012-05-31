@@ -117,6 +117,9 @@ public class SystemServiceImpl implements SystemService {
 		 */
 		logger.debug("User[{}] try to login", user);
 		//Check account
+		if (null == user || StringUtils.isEmpty(user.getAccount())) {
+			return ErrorType.NotFound;
+		}
 		Account account = accountDao.findByOid(user.getAccount());
 		if (null == account) {
 			logger.warn("Can't find Account[{}] from host[{}]", user.getAccount(), user.getIp());

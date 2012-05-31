@@ -1,7 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/commons/base.jsp"%>
 <div class="viewmycart">
-
 <display:table name="page.result" partialList="true" pagesize="${page.pageSize}" size="${page.totalCount}" form="displayForm" sort="external" id="language" export="true" requestURI="language!search.action" class="displayTagGrid">
 	<display:caption>Language</display:caption>
 	<display:column title="" headerClass="tablehead">${language_rowNum}</display:column>

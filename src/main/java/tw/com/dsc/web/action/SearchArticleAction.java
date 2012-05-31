@@ -50,6 +50,7 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	private Integer ratingNumber;
 	private String suggestion;
 	private JsonMsg jsonMsg;
+	private Integer pageNo;
 	
 	private List<Language> languages;
 	private Page<Article> faqArticles;
@@ -131,11 +132,21 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	}
 	
 	public String faq() {
+		if (null != pageNo) {
+			faqArticles.setPageNo(pageNo);
+		} else {
+			faqArticles.setPageNo(1);
+		}
 		faqArticles = this.articleService.searchFaqArticlesPage(faqArticles);
 		return "faq";
 	}
 	
 	public String latest() {
+		if (null != pageNo) {
+			latestArticles.setPageNo(pageNo);
+		} else {
+			latestArticles.setPageNo(1);
+		}
 		latestArticles = this.articleService.searchLatestArticlesPage(latestArticles);
 		return "latest";
 	}
@@ -284,6 +295,14 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 
 	public void setProductSeries(List<ProductSeries> productSeries) {
 		this.productSeries = productSeries;
+	}
+
+	public Integer getPageNo() {
+		return pageNo;
+	}
+
+	public void setPageNo(Integer pageNo) {
+		this.pageNo = pageNo;
 	}
 	
 }

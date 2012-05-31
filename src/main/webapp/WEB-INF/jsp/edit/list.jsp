@@ -68,8 +68,7 @@
 	<jsp:include page="unpublished.jsp" />
 </div>
 
-<div class="datagrid">
-
+<div class="condition">
 <s:form id="searchDraftForm" namespace="/" action="edit!searchDraft" theme="simple">
 <table class="conditionborder">
 	<tr><th colspan="6">Latest Draft Articles</th></tr>
@@ -87,13 +86,14 @@
 <s:form id="draftForm" namespace="/" action="edit!searchDraft" theme="simple">
 	<div id="distagArea" class="distagArea"></div>
 </s:form>
-<div id="draftDiv">
+</div>
+
+<div id="draftDiv" class="datagrid">
 	<jsp:include page="draft.jsp" />
 </div>
-</div>
 
-<div class="datagrid">
 
+<div class="condition">
 <s:form id="searchExpiredForm" namespace="/" action="edit!searchExpired" theme="simple">
 <table class="conditionborder">
 	<tr><th colspan="6">Expired Article List</th></tr>
@@ -111,7 +111,7 @@
 <s:form id="expiredForm" namespace="/" action="edit!searchExpired" theme="simple">
 	<div id="distagArea" class="distagArea"></div>
 </s:form>
-<div id="expiredDiv">
-	<jsp:include page="expired.jsp" />
 </div>
+<div id="expiredDiv" class="datagrid">
+	<jsp:include page="expired.jsp" />
 </div>

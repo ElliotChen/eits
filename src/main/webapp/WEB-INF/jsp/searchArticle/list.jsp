@@ -1,5 +1,16 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/commons/base.jsp"%>
+<script>
+	$().ready(function() {
+		$('#faqForm').ajaxForm({
+            target: '#faqArticleBlock'
+        });
+		$('#latestForm').ajaxForm({
+            target: '#latestArticleBlock'
+        });
+	});
+
+</script>
 <s:if test="hasActionMessages()">
    <div>
       <s:actionmessage/>

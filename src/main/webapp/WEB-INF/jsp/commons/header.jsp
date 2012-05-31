@@ -1,5 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/commons/base.jsp"%>
+<script type="text/javascript">
+<!--
+	$().ready(function() {
+		$('#loginForm').validate();
+	});
+</script>
 <div class="logo_zyxel">
 	<a href="http://www.zyxel.com.tw/"><img src="${ctx}/images/logo_zyxel.jpg" alt="ZyXEL Logo"></a>
 	<s:if test="user.guest">
@@ -9,17 +15,17 @@
 			<s:property value="user.name" />, welcome to eITS!
 	</s:else>
 </div>
-<div id="loginDiv" style="margin-left: 600px;">
+<div id="loginDiv" style="margin-left: 80%;">
 	<s:if test="user.guest">
 		<a href="#login-box" class="login-window">Login</a>
 		<div id="login-box" class="login-popup">
 			<a href="#" class="close"><img src="images/close_pop.png" class="btn_close" title="Close Window" alt="Close" /></a>
-			<form method="post" class="signin" action="${ctx}/system!login.action">
+			<form id="loginForm" method="post" class="signin" action="${ctx}/system!login.action">
 				<fieldset class="textbox">
 					<label class="username"> <span>Account</span> <input id="username" name="loginUser.account" value=""
-						type="text" autocomplete="on" placeholder="Account">
+						type="text" autocomplete="on" placeholder="Account" class="required">
 					</label> <label class="password"> <span>Password</span> <input id="password" name="loginUser.password" value=""
-						type="password" placeholder="Password">
+						type="password" placeholder="Password" class="required">
 					</label> <input class="submit button" type="submit" value="Login" />
 				</fieldset>
 			</form>

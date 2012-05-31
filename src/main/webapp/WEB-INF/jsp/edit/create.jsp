@@ -8,7 +8,6 @@
 			target: '#main',
 			beforeSubmit: function() {
 			    $('#editForm').validate({ rules : {
-			    	'articleId.oid' : {required:true, number:true, minlength:6},
 			    	languageOid : {required:true},
 					summary : {required:true},
 					keywords : {required:true},
@@ -80,7 +79,7 @@
 	<table class="conditionborder">
 		<tr>
 			<td>ARTICLE ID:</td>
-			<td><s:textfield name="articleId.oid" maxlength="6" size="6"/>(Draft)</td>
+			<td><s:textfield name="articleId.oid" maxlength="6" size="6" readonly="true"/>(Draft)</td>
 		</tr>
 		<tr>
 			<td>LANGUAGE:</td>

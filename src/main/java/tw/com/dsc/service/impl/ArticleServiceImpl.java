@@ -8,6 +8,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -57,6 +58,9 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	private StatisticsDataDao statisticsDataDao;
 	@Autowired
 	private MailService mailService;
+	
+	@Autowired
+	private DataFieldMaxValueIncrementer incrementer;
 	@Override
 	public ArticleDao getDao() {
 		return dao;
@@ -593,5 +597,18 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		
 		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Archived, op.getAccount(), "Archived", op.getIp()));
 		this.mailService.archived(article.getOid());
+	}
+
+	@Transactional(readOnly=false)
+	public String getNextArticleId() {
+		return this.incrementer.nextStringValue();
+	}
+	
+	public DataFieldMaxValueIncrementer getIncrementer() {
+		return incrementer;
+	}
+
+	public void setIncrementer(DataFieldMaxValueIncrementer incrementer) {
+		this.incrementer = incrementer;
 	}
 }

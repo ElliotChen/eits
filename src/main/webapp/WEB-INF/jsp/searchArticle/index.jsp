@@ -5,10 +5,13 @@
 		$('#searchForm').ajaxForm({
             target: '#articles'
         });
-		$('#displaytagform').ajaxForm({
-            target: '#articles'
-        });
 		
+		$('#faqForm').ajaxForm({
+            target: '#faqArticleBlock'
+        });
+		$('#latestForm').ajaxForm({
+            target: '#latestArticleBlock'
+        });
 		$('#exSeries').selectChain({
 		    target: $('#exModel'),
 		    type:'POST',

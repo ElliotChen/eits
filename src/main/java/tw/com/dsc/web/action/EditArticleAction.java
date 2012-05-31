@@ -93,7 +93,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	private Integer ratingNumber;
 	private String suggestion;
 	private JsonMsg jsonMsg;
-	
+	private Integer pageNo;
 	
 	private Language lan;
 	private Boolean copySourceFirmware;
@@ -148,6 +148,11 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	
 	public String searchUnpublished() {
 		page = new Page<Article>(example1);
+		if (null != pageNo) {
+			page.setPageNo(pageNo);
+		} else {
+			page.setPageNo(1);
+		}
 		if (null != example1.getEntryDate()) {
 			page.getConditions().add(new BetweenCondition("entryDate", DateUtils.begin(example1.getEntryDate()), DateUtils.end(example1.getEntryDate())));
 			example1.setEntryDate(null);
@@ -158,6 +163,11 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	
 	public String searchDraft() {
 		page = new Page<Article>(example2);
+		if (null != pageNo) {
+			page.setPageNo(pageNo);
+		} else {
+			page.setPageNo(1);
+		}
 		if (null != example2.getEntryDate()) {
 			page.getConditions().add(new BetweenCondition("entryDate", DateUtils.begin(example2.getEntryDate()), DateUtils.end(example2.getEntryDate())));
 			example2.setEntryDate(null);
@@ -168,6 +178,11 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	
 	public String searchExpired() {
 		page = new Page<Article>(example3);
+		if (null != pageNo) {
+			page.setPageNo(pageNo);
+		} else {
+			page.setPageNo(1);
+		}
 		if (null != example3.getEntryDate()) {
 			page.getConditions().add(new BetweenCondition("entryDate", DateUtils.begin(example3.getEntryDate()), DateUtils.end(example3.getEntryDate())));
 			example3.setEntryDate(null);
@@ -184,7 +199,9 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	}
 	
 	public String preCreate() {
-		article.setArticleId(new ArticleId(""));
+		String articleId = this.articleService.getNextArticleId();
+		logger.debug("Get new ArticleId[{}]", articleId);
+		article.setArticleId(new ArticleId(articleId));
 		article.setType(ArticleType.GeneralInfo);
 		article.setLanguage(this.languageService.findDefaultLanguage());
 		article.setHitCount(0);
@@ -263,6 +280,9 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 				}
 			}
  		}
+		if (StringUtils.isEmpty(this.targetFirmware) && (null != this.article.getFirmware())) {
+			this.targetFirmware = this.article.getFirmware().getName();
+		}
 		return "preview";
 	}
 	
@@ -669,6 +689,14 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 
 	public void setTargetFirmware(String targetFirmware) {
 		this.targetFirmware = targetFirmware;
+	}
+
+	public Integer getPageNo() {
+		return pageNo;
+	}
+
+	public void setPageNo(Integer pageNo) {
+		this.pageNo = pageNo;
 	}
 	
 }
