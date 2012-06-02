@@ -117,8 +117,8 @@ public class Article extends AbstractSeqIdObjectAuditable {
 	@Column(name = "PRODUCT", length = 100)
 	private String product;
 	
-	@ManyToOne
-	private Attachment firmware;
+	@Column(name = "FIRMWARE", length = 50)
+	private String firmware;
 	/*
 	@Type(type = "yes_no")
 	@Column(name = "ACTIVE", length = 3)
@@ -315,11 +315,11 @@ public class Article extends AbstractSeqIdObjectAuditable {
 		this.product = product;
 	}
 
-	public Attachment getFirmware() {
+	public String getFirmware() {
 		return firmware;
 	}
 
-	public void setFirmware(Attachment firmware) {
+	public void setFirmware(String firmware) {
 		this.firmware = firmware;
 	}
 	/*

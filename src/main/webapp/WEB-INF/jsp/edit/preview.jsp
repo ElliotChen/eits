@@ -57,7 +57,7 @@
 	</tr>
 	<tr>
 		<th>ZyTech News:</th>
-		<td colspan="3">${article.news}</td>
+		<td colspan="3"><s:property value="getText('boolean.' + article.news)" /></td>
 	</tr>
 	<tr>
 		<th>TYPE:</th>
@@ -141,7 +141,7 @@
 	<tr>
 		<th>FIRMWARE:</th>
 		<td colspan="3">
-			<input type="text" name="targetFirmware" value="${targetFirmware}" readonly="readonly" />
+			<input type="text" name="firmware" value="${article.firmware}" readonly="readonly" />
 		</td>
 	</tr>
 	<tr>

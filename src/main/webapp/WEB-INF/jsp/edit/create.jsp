@@ -14,7 +14,8 @@
 					question : {required:true},
 					answer : {required:true},
 					product : {required:true},
-					technology : {required:true}
+					technology : {required:true},
+					firmware : {required:true}
 				},
 				errorClass: "errorField"});
 			    return $('#editForm').valid();
@@ -22,8 +23,21 @@
 			});
 		delete CKEDITOR.instances['question'];
 		delete CKEDITOR.instances['answer'];
+		delete CKEDITOR.instances['scenario'];
+		delete CKEDITOR.instances['step'];
+		delete CKEDITOR.instances['verification'];
+		delete CKEDITOR.instances['problem'];
+		delete CKEDITOR.instances['solution'];
+		delete CKEDITOR.instances['procedure'];
+		
 		$('#question').ckeditor();
 		$('#answer').ckeditor();
+		$('#scenario').ckeditor();
+		$('#step').ckeditor();
+		$('#verification').ckeditor();
+		$('#problem').ckeditor();
+		$('#solution').ckeditor();
+		$('#procedure').ckeditor();
 		switchType();
 		$('#techSelect').multiselect({beforeclose: function(){
 			$('#technology').val($('#techSelect').val());
@@ -131,7 +145,7 @@
 		</tr>
 		<tr class="ArticleType SpecInfo">
 			<td>eITS TICKET ID</td>
-			<td><s:textfield id="ticketId" name="ticketId"/></td>
+			<td><s:textfield id="ticketId" name="ticketId" size="40" maxlength="50"/></td>
 		</tr>
 		<tr class="ArticleType GeneralInfo SpecInfo">
 			<td>QUESTION</td>
@@ -143,28 +157,28 @@
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
 			<td>SCENARIO DESCRIPTION</td>
-			<td><s:textfield name="scenario" size="40" maxlength="50"/></td>
+			<td><s:textarea id="scenario" name="scenario" cols="40" rows="4" /></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
 			<td>SETUP/STEP BY STEP PROCEDURE</td>
-			<td><s:textfield name="step" size="40" maxlength="50"/></td>
+			<td><s:textarea id="step" name="step" cols="40" rows="4" /></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
 			<td>VERIFICATION</td>
-			<td><s:textfield name="verification" size="40" maxlength="50"/></td>
+			<td><s:textarea id="verification" name="verification" cols="40" rows="4" /></td>
 		</tr>
 		
 		<tr class="ArticleType Issue">
 			<td>PROBLEM DESCRIPTION</td>
-			<td><s:textfield name="problem" size="40" maxlength="50"/></td>
+			<td><s:textarea id="problem" name="problem" cols="40" rows="4" /></td>
 		</tr>
 		<tr class="ArticleType Issue">
 			<td>SOLUTION</td>
-			<td><s:textfield name="solution" size="40" maxlength="50"/></td>
+			<td><s:textarea id="solution" name="solution" cols="40" rows="4" /></td>
 		</tr>
 		<tr class="ArticleType Issue">
 			<td>CONDITION/REPRODUCE PROCEDURE</td>
-			<td><s:textfield name="procedure" size="40" maxlength="50"/></td>
+			<td><s:textarea id="procedure" name="procedure" cols="40" rows="4" /></td>
 		</tr>
 		<tr>
 			<td>VIEW LEVEL</td>
@@ -201,7 +215,7 @@
 		</tr>
 		<tr>
 			<td>FIRMWARE</td>
-			<td><s:file name="upload" /> </td>
+			<td><s:textfield name="firmware" size="40" maxlength="50"/></td>
 		</tr>
 
 		<tr>
@@ -242,5 +256,6 @@
 	<input type="hidden" name="level" />
 	<input type="hidden" name="technology" />
 	<input type="hidden" name="product" />
+	<input type="hidden" name="firmware" />
 </s:form>
 </div>

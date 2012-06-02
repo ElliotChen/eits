@@ -214,10 +214,12 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	}
 	
 	public String create() {
+		/*
 		if (null != this.upload) {
 			Attachment attachment = this.attachmentService.uploadFirmware(this.context.getContextPath(), upload, uploadFileName, uploadContentType);
 			this.article.setFirmware(attachment);
 		}
+		*/
 		if (null != this.lan) {
 			this.article.setLanguage(lan);
 		}
@@ -280,9 +282,11 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 				}
 			}
  		}
+		/*
 		if (StringUtils.isEmpty(this.targetFirmware) && (null != this.article.getFirmware())) {
 			this.targetFirmware = this.article.getFirmware().getName();
 		}
+		*/
 		return "preview";
 	}
 	
@@ -298,10 +302,12 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	}
 	
 	public String save() {
+		/*
 		if (null != this.upload) {
 			Attachment attachment = this.attachmentService.uploadFirmware(this.context.getContextPath(), upload, uploadFileName, uploadContentType);
 			this.article.setFirmware(attachment);
 		}
+		*/
 		
 		if (null != this.lan && !this.lan.getOid().equals(this.article.getLanguage().getOid())) {
 			this.article.setLanguage(this.lan);

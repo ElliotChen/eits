@@ -63,7 +63,7 @@
 		<th>LEVEL</th>
 		<td>${article.level}</td>
 		<th>FIRMWARE</th>
-		<td><c:if test="${null != article.firmware}"><a href="${article.firmware.uri}" target="_blank">${article.firmware.name}</a></c:if></td>
+		<td>${article.firmware}</td>
 		<th>&nbsp;</th>
 		<td>&nbsp;</td>
 	</tr>

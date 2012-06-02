@@ -13,8 +13,10 @@
 					keywords : {required:true},
 					question : {required:true},
 					answer : {required:true},
+					technology : {required:true},
 					product : {required:true},
-					technology : {required:true}
+					firmware : {required:true}
+					
 				} ,
 				errorClass: "errorField"});
 			    return $('#copyEditForm').valid();
@@ -23,8 +25,22 @@
 		
 		delete CKEDITOR.instances['question'];
 		delete CKEDITOR.instances['answer'];
+		delete CKEDITOR.instances['scenario'];
+		delete CKEDITOR.instances['step'];
+		delete CKEDITOR.instances['verification'];
+		delete CKEDITOR.instances['problem'];
+		delete CKEDITOR.instances['solution'];
+		delete CKEDITOR.instances['procedure'];
+		
 		$('#question').ckeditor();
 		$('#answer').ckeditor();
+		$('#scenario').ckeditor();
+		$('#step').ckeditor();
+		$('#verification').ckeditor();
+		$('#problem').ckeditor();
+		$('#solution').ckeditor();
+		$('#procedure').ckeditor();
+		
 		switchType();
 		$('#techSelect').multiselect({beforeclose: function(){
 			$('#technology').val($('#techSelect').val());
@@ -59,7 +75,7 @@
 		copyField('procedure');
 		copyField('technology');
 		copyField('product');
-		copyFirmware();
+		copyField('firmware');
 	}
 	function copyField(fname) {
 		$('[name =\''+fname+'\']', $("#copyEditForm")).val($('[name =\'sarticle.'+fname+'\']', $("#copyEditForm")).val());
@@ -148,9 +164,9 @@
 		</tr>
 		<tr class="ArticleType SpecInfo">
 			<td>Ticket ID</td>
-			<td><s:textfield name="sarticle.ticketId" readonly="readonly"/></td>
+			<td><s:textfield name="sarticle.ticketId" readonly="readonly" size="40"/></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('ticketId')" /></td>
-			<td><s:textfield id="ticketId" name="ticketId"/></td>
+			<td><s:textfield id="ticketId" name="ticketId" size="40" maxlength="50"/></td>
 		</tr>
 		<tr class="ArticleType GeneralInfo SpecInfo">
 			<td>QUESTION</td>
@@ -166,38 +182,38 @@
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
 			<td>SCENARIO DESCRIPTION</td>
-			<td><s:textfield name="sarticle.scenario" size="40" maxlength="50" readonly="readonly"/></td>
+			<td><s:textarea name="sarticle.scenario" readonly="true" cols="40" rows="8" /></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('scenario')" /></td>
 			<td><s:textarea id="scenario" name="scenario" cols="40" rows="4" /></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
 			<td>SETUP/STEP BY STEP PROCEDURE</td>
-			<td><s:textfield name="sarticle.step" size="40" maxlength="50" readonly="readonly"/></td>
+			<td><s:textarea name="sarticle.step" readonly="true" cols="40" rows="8" /></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('step')" /></td>
 			<td><s:textarea id="step" name="step" cols="40" rows="4" /></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
 			<td>VERIFICATION</td>
-			<td><s:textfield name="sarticle.verification" size="40" maxlength="50" readonly="readonly"/></td>
+			<td><s:textarea name="sarticle.verification" readonly="true" cols="40" rows="8" /></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('verification')" /></td>
 			<td><s:textarea id="verification" name="verification" cols="40" rows="4" /></td>
 		</tr>
 		
 		<tr class="ArticleType Issue">
 			<td>PROBLEM DESCRIPTION</td>
-			<td><s:textfield name="sarticle.problem" size="40" maxlength="50" readonly="readonly"/></td>
+			<td><s:textarea name="sarticle.problem" readonly="true" cols="40" rows="8" /></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('problem')" /></td>
 			<td><s:textarea id="problem" name="problem" cols="40" rows="4" /></td>
 		</tr>
 		<tr class="ArticleType Issue">
 			<td>SOLUTION</td>
-			<td><s:textfield name="sarticle.solution" size="40" maxlength="50" readonly="readonly"/></td>
+			<td><s:textarea name="sarticle.solution" readonly="true" cols="40" rows="8" /></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('solution')" /></td>
 			<td><s:textarea id="solution" name="solution" cols="40" rows="4" /></td>
 		</tr>
 		<tr class="ArticleType Issue">
 			<td>CONDITION/REPRODUCE PROCEDURE</td>
-			<td><s:textfield name="sarticle.procedure" size="40" maxlength="50" readonly="readonly"/></td>
+			<td><s:textarea name="sarticle.procedure" readonly="true" cols="40" rows="8" /></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('procedure')" /></td>
 			<td><s:textarea id="procedure" name="procedure" cols="40" rows="4" /></td>
 		</tr>
@@ -236,11 +252,10 @@
 		<tr>
 			<td>FIRMWARE</td>
 			<td>
-				<s:textfield id="sfn" name="sarticle.firmware.name" readonly="true" />
-				
+				<s:textfield name="sarticle.firmware" readonly="true" size="40" maxlength="50"/>
 			</td>
-			<td><input type="button" value="Copy >>" onclick="copyFirmware()"/></td>
-			<td><input type="text" id="tfn" name="targetFirmware" readonly="readonly" hidden="true"/><s:file id="upload" name="upload" onchange="discopyFirmware()"/><input type="hidden" id="copySourceFirmware" name="copySourceFirmware" value="false"/></td>
+			<td><input type="button" value="Copy >>" onclick="copyField('firmware')"/></td>
+			<td><s:textfield name="firmware" size="40" maxlength="50"/></td>
 		</tr>
 		<!-- 
 		<tr>
@@ -292,7 +307,6 @@
 	<input type="hidden" name="level" />
 	<input type="hidden" name="technology" />
 	<input type="hidden" name="product" />
-	<input type="hidden" name="copySourceFirmware"/>
-	<input type="hidden" name="targetFirmware"/>
+	<input type="hidden" name="firmware"/>
 </s:form>
 </div>
