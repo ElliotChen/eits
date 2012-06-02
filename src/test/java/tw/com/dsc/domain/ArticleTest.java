@@ -195,4 +195,17 @@ public class ArticleTest extends BaseTest {
 		List<Status> availableStatus = article.getAvailableStatus();
 		Assert.assertTrue(availableStatus.isEmpty());
 	}
+	
+	@Test
+	public void testParser() {
+		Article article = new Article();
+		article.parser("Triple Play--Multicast,Triple Play--802.1P");
+		article.parser("UNIFIED SECURITY GATEWAY 100 SERIES--USG100-PLUS,UNIFIED SECURITY GATEWAY 100 SERIES--USG110");
+		
+		article.setProduct("UNIFIED SECURITY GATEWAY 100 SERIES--USG100-PLUS,UNIFIED SECURITY GATEWAY 100 SERIES--USG110");
+		List<String> models = article.getFormattedLiteModel();
+		for (String model : models) {
+			logger.debug(model);
+		}
+	}
 }

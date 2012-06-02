@@ -39,7 +39,7 @@
 		<table class="conditionborder">
 			<tr>
 				<td><h3>Knowledge Base</h3></td>
-				<td align="right" colspan="2">Country:<select><option>----</option></select>　　Language:<s:select list="languages" listKey="oid" listValue="name" name="example.language.oid" value="EN" /></td>
+				<td align="right" colspan="2">Language:<s:select list="languages" listKey="oid" listValue="name" name="example.language.oid" value="EN" /></td>
 			</tr>
 			<tr>
 				<td colspan="3" style="line-height: 12px">Knowledge Base(KB) is designed to collect and publish users' valuable problem-solving experience for reference and reuse. 
@@ -61,4 +61,5 @@
 </div>
 <div class="clear"></div>
 <div id="articles">
+	<jsp:include page="list.jsp"></jsp:include>
 </div>

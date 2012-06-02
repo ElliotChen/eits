@@ -77,9 +77,15 @@
 	</tr>
 	<tr>
 		<th>TECHNOLOGY</th>
-		<td>${article.technology}</td>
-		<th>&nbsp;</th>
-		<td>&nbsp;</td>
+		<td><s:iterator value="article.formattedTech" var="tech">
+				${tech}<br/>
+			</s:iterator>
+		</td>
+		<th>MODEL</th>
+		<td title="${article.product}">
+			<s:iterator value="article.formattedLiteModel" var="model">
+				${model}<br/>
+			</s:iterator></td>
 		<th>&nbsp;</th>
 		<td>&nbsp;</td>
 	</tr>

@@ -160,3 +160,5 @@ h4{ font-family:Verdana, Geneva, sans-serif; font-size:12px; color: #333;}
 /* Footer */
 .footerline {background:#709ec8 url('../images/footer_line.jpg') no-repeat left top; height:6px;}
 .footertext {text-align:right; color:#829c9e; font-size:12px; margin-top:5px;}
+
+.errorField {color:red;}

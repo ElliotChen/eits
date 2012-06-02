@@ -8,8 +8,8 @@ CKEDITOR.editorConfig = function( config )
 	// Define changes to default configuration here. For example:
 	// config.language = 'fr';
 	// config.uiColor = '#AADC6E';
-	config.filebrowserUploadUrl = '/eits/ckEditor!uploadFile.action?Type=File';
-	config.filebrowserImageUploadUrl = '/eits/ckEditor!uploadImage.action?Type=Image';
+	config.filebrowserUploadUrl = '/KB/ckEditor!uploadFile.action?Type=File';
+	config.filebrowserImageUploadUrl = '/KB/ckEditor!uploadImage.action?Type=Image';
 	config.toolbar = 'Full';
 	config.toolbar_Full =
 		[

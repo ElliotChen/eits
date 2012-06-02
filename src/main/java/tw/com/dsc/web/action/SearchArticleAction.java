@@ -89,6 +89,9 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	public String index() {
 		this.languages = this.languageService.listAll();
 		this.productSeries = this.systemService.listAllSeries();
+		
+		faqArticles = this.articleService.searchFaqArticlesPage(faqArticles);
+		latestArticles = this.articleService.searchLatestArticlesPage(latestArticles);
 		return "index";
 	}
 

@@ -43,7 +43,7 @@ public class User {
 	
 	private List<UserRole> userRoles = new ArrayList<UserRole>();
 	public User() {
-		this("","","","Localhost", new UserRole(Role.Guest, "Guest"));
+		this("Guest","Guest","Guest","Unknown", new UserRole(Role.Guest, "Guest"));
 	}
 	
 	public User(String account, String password, String name, String ip, UserRole userRole) {
@@ -236,7 +236,7 @@ public class User {
 	}
 	
 	public boolean isL2() {
-		return this.l2Admin || this.l2Leader || this.l2Agent || this.partner;
+		return this.l2Admin || this.l2Leader || this.l2Agent;
 	}
 
 	public List<UserRole> getUserRoles() {

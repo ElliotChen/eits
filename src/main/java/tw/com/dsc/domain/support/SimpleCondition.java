@@ -5,15 +5,21 @@ public class SimpleCondition implements Condition {
 	private String fieldName;
 	private Object value;
 	private OperationEnum operation;
+	private boolean ignoreCase = false;
 	public SimpleCondition() {
 		super();
 	}
 	
 	public SimpleCondition(String fieldName, Object value, OperationEnum operation) {
+		this(fieldName, value, operation, false);
+	}
+	
+	public SimpleCondition(String fieldName, Object value, OperationEnum operation, boolean ignoreCase) {
 		super();
 		this.fieldName = fieldName;
 		this.value = value;
 		this.operation = operation;
+		this.ignoreCase = ignoreCase;
 	}
 
 	public String getFieldName() {
@@ -38,6 +44,14 @@ public class SimpleCondition implements Condition {
 
 	public void setOperation(OperationEnum operation) {
 		this.operation = operation;
+	}
+
+	public boolean isIgnoreCase() {
+		return ignoreCase;
+	}
+
+	public void setIgnoreCase(boolean ignoreCase) {
+		this.ignoreCase = ignoreCase;
 	}
 
 	@Override

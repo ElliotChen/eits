@@ -340,7 +340,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>eits</finalName>
+		<finalName>KB</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

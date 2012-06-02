@@ -12,7 +12,7 @@
 			Hi! Guest
 	</s:if>
 	<s:else>
-			<s:property value="user.name" />, welcome to eITS!
+			<s:property value="user.name" />, welcome to ZyXEL KB!
 	</s:else>
 </div>
 <div id="loginDiv" style="margin-left: 80%;">

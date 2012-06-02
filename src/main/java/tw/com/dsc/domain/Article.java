@@ -3,8 +3,12 @@ package tw.com.dsc.domain;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,6 +20,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +34,7 @@ import tw.com.dsc.util.ThreadLocalHolder;
 public class Article extends AbstractSeqIdObjectAuditable {
 	private static final Logger logger = LoggerFactory.getLogger(Article.class);
 	private static final long serialVersionUID = -2523850559752209196L;
-
+	public static final Pattern parser = Pattern.compile("(.*)--(.*)$");
 	@ManyToOne
 	private ArticleId articleId;
 
@@ -569,5 +574,64 @@ public class Article extends AbstractSeqIdObjectAuditable {
 				+ ", status=" + status + ", level=" + level + ", oid=" + oid
 				+ "]";
 	}
+
+	public List<String> getFormattedTech() {
+		return this.parser(this.technology);
+	}
 	
+	public List<String> getFormattedLiteModel() {
+		if (StringUtils.isEmpty(this.product)) {
+			return new ArrayList<String>();
+		}
+		String[] sources = this.product.split(",");
+		logger.debug("Size[{}]", sources.length);
+		if (3 >= sources.length) {
+			return this.parser(this.product);
+		}
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(sources[0]);
+		for (int i = 1; i < 3; i++) {
+			sb.append(",");
+			sb.append(sources[i]);
+		}
+		
+		return this.parser(sb.toString());
+	}
+	
+	public List<String> getFormattedModel() {
+		return this.parser(this.product);
+	}
+	
+	public List<String> parser(String origin) {
+		List<String> result = new ArrayList<String>();
+		Map<String, List<String>> container = new TreeMap<String, List<String>>();
+		if (StringUtils.isNotEmpty(origin)) {
+			String[] sources = origin.split(",");
+			
+			for (String source : sources) {
+				Matcher matcher = parser.matcher(source);
+				if (matcher.matches()) {
+					String key = matcher.group(1);
+					String value = matcher.group(2);
+					if (container.containsKey(key)) {
+						container.get(key).add("--"+value);
+					} else {
+						List<String> values = new ArrayList<String>();
+						values.add("--"+value);
+						container.put(key, values);
+					}
+					logger.debug("Key[{}] -- Value[{}]", key, value);
+				}
+			}
+		}
+		for (Entry<String, List<String>> entry : container.entrySet()) {
+			result.add(entry.getKey());
+			for (String value : entry.getValue()) {
+				result.add(value);
+			}
+		}
+		
+		return result;
+	}
 }

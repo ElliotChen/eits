@@ -17,7 +17,8 @@
 					rejectReason : {required:function(element) {
 				        return $("#statusAction").val() == 'Draft';
 				      }}
-				} });
+				},
+				errorClass: "errorField" });
 			    return $('#editForm').valid();
 			  }
 			});
@@ -192,12 +193,12 @@
 		</tr>
 		<tr>
 			<td>TECHNOLOGY</td>
-			<td><s:textarea id="technology" name="technology" cols="40" rows="4" />
+			<td><s:textarea id="technology" name="technology" cols="40" rows="4" readonly="true"/>
 				<select id="techSelect" name="techSelect" multiple="true">
 					<s:iterator value="technologies" var="tech">
 						<optgroup label="<s:property value="technology" />">
 							<s:iterator value="#tech.items" var="item">
-								<option value="<s:property value="#tech.technology" />-<s:property value="name" />"><s:property value="name" /></option>
+								<option value="<s:property value="#tech.technology" />--<s:property value="name" />"><s:property value="name" /></option>
 							</s:iterator>
 						</optgroup>
 					</s:iterator>
@@ -206,12 +207,12 @@
 		</tr>
 		<tr>
 			<td>PRODUCT</td>
-			<td><s:textarea id="product" name="product" cols="40" rows="4" />
+			<td><s:textarea id="product" name="product" cols="40" rows="4" readonly="true" />
 				<select id="productSelect" name="productSelect" multiple="true">
 					<s:iterator value="products" var="product">
 						<optgroup label="<s:property value="name" />">
 							<s:iterator value="#product.models" var="model">
-								<option value="<s:property value="#product.name" />-<s:property value="name" />"><s:property value="name" /></option>
+								<option value="<s:property value="#product.name" />--<s:property value="name" />"><s:property value="name" /></option>
 							</s:iterator>
 						</optgroup>
 					</s:iterator>

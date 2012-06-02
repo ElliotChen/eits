@@ -45,7 +45,11 @@ public abstract class CriterionHelper {
 		Criterion result = null;
 		switch (sc.getOperation()) {
 		case EQ:
-			result = Restrictions.eq(sc.getFieldName(), sc.getValue());
+			if (sc.isIgnoreCase()) {
+				result = Restrictions.eq(sc.getFieldName(), sc.getValue()).ignoreCase();
+			} else {
+				result = Restrictions.eq(sc.getFieldName(), sc.getValue());
+			}
 			break;
 		case NE:
 			result = Restrictions.ne(sc.getFieldName(), sc.getValue());

@@ -6,7 +6,7 @@
 	<display:column title="Publish Date" headerClass="tablehead">
 		<fmt:formatDate value="${article.publishDate}" pattern="yyyy/MM/dd"/>
 	</display:column>
-	<display:column property="hitCount" title="Hit Count" headerClass="tablehead"/>
+	<display:column property="hitCount" title="View Count" headerClass="tablehead"/>
 	<display:column title="Function" headerClass="tablehead">
 		<input type="button" value="View" onclick="viewArticle('${article.oid}');" />
     </display:column>

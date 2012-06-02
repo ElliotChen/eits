@@ -414,10 +414,13 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		
 		List<Condition> conds = page.getConditions();
 		conds.add(new InCondition("level", op.getAvailableLevels()));
-		example.setStatus(Status.Published);
+		conds.add(new InCondition("status", new Status[] {Status.Published, Status.WaitForRepublish}));
+		//example.setStatus(Status.Published);
+		/*
 		if (AgentType.L3 != op.getAgentType()) {
 			example.setAgentType(AgentType.L2);
 		}
+		*/
 		page.setDescOrders(new String[] {"hitCount"});
 		
 		
@@ -448,10 +451,13 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		
 		List<Condition> conds = page.getConditions();
 		conds.add(new InCondition("level", op.getAvailableLevels()));
-		example.setStatus(Status.Published);
+		conds.add(new InCondition("status", new Status[] {Status.Published, Status.WaitForRepublish}));
+		//example.setStatus(Status.Published);
+		/*
 		if (AgentType.L3 != op.getAgentType()) {
 			example.setAgentType(AgentType.L2);
 		}
+		*/
 		page.setDescOrders(new String[] {"publishDate"});
 		
 		return this.dao.listByPage(page);

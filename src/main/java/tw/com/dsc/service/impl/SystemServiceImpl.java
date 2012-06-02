@@ -28,6 +28,10 @@ import tw.com.dsc.domain.ProductModel;
 import tw.com.dsc.domain.ProductSeries;
 import tw.com.dsc.domain.Project;
 import tw.com.dsc.domain.Technology;
+import tw.com.dsc.domain.support.Condition;
+import tw.com.dsc.domain.support.LikeMode;
+import tw.com.dsc.domain.support.OperationEnum;
+import tw.com.dsc.domain.support.SimpleCondition;
 import tw.com.dsc.service.SystemService;
 import tw.com.dsc.to.Model;
 import tw.com.dsc.to.Series;
@@ -120,7 +124,17 @@ public class SystemServiceImpl implements SystemService {
 		if (null == user || StringUtils.isEmpty(user.getAccount())) {
 			return ErrorType.NotFound;
 		}
-		Account account = accountDao.findByOid(user.getAccount());
+		Account example = new Account();
+		List<Condition> conds = new ArrayList<Condition>();
+		conds.add(new SimpleCondition("id", user.getAccount(), OperationEnum.EQ, true));
+		List<Account> accounts = accountDao.listByExample(example, conds, null, null, null);
+//		Account account = accountDao.findByOid(user.getAccount());
+		Account account = null;
+		if (!accounts.isEmpty()) {
+			account = accounts.get(0);
+			user.setAccount(account.getId());
+		}
+		
 		if (null == account) {
 			logger.warn("Can't find Account[{}] from host[{}]", user.getAccount(), user.getIp());
 			return ErrorType.NotFound;

@@ -18,6 +18,7 @@
 		    		$('#updateForm').ajaxSubmit({
 		                target: '#main'});
 		    	},
+				errorClass: "errorField",
 		    	rules : {
 					name : {
 						required:true,
@@ -46,6 +47,7 @@
 		    		$('#createForm').ajaxSubmit({
 		                target: '#main'});
 		    	},
+				errorClass: "errorField",
 		    	rules : {
 		    		oid : {
 						required:true,

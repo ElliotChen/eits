@@ -7,7 +7,7 @@
 <head>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>EITS</title>
+<title>ZyXEL KB</title>
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/smoothness/jquery-ui-1.8.18.custom.css" />" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/superfish.css" />" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/superfish-navbar.css" />" />
