@@ -24,9 +24,9 @@
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.validate.min.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.blockUI.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.datepick.min.js" />"></script>
-<!-- <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.dataTables.min.js" />"></script>-->
+<!-- <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.dataTables.min.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/hoverIntent.js" />"></script>
-<script language="JavaScript" type="text/javascript" src="<c:url value="/js/superfish.js" />"></script>
+<script language="JavaScript" type="text/javascript" src="<c:url value="/js/superfish.js" />"></script>-->
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/select-chain.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/ckeditor/ckeditor.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/ckeditor/adapters/jquery.js" />"></script>
@@ -128,13 +128,15 @@
 	}); // end of ready
 	
 	function switchMenu(menuId, action) {
+		
 		$('#menu li.current').removeClass('current');
-		$('#menu li').removeClass('sf-breadcrumb');
+		/*('#menu li').removeClass('sf-breadcrumb');*/
 		$('#'+menuId).parents("li").addClass('current');
+		/*
 		$("#menu ul.sf-menu").superfish({
 			pathClass : 'current'
 		});
-		
+		*/
 		$.ajax({
 			url: action,
 			type: 'POST',

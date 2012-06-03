@@ -295,7 +295,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		logger.info("User[{}] try to publish a Article[{}]", op.getAccount(), article);
 
 		if (AgentType.L2 == at) {
-			if (Status.WaitForApproving == article.getStatus()) {
+			if (Status.WaitForApproving == article.getStatus() || Status.Draft == article.getStatus()) {
 				this.realPublish(article);
 			} else if (Status.WaitForRepublish == article.getStatus()) {
 				this.republish(article);
