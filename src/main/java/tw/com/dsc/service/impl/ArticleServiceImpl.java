@@ -617,4 +617,15 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	public void setIncrementer(DataFieldMaxValueIncrementer incrementer) {
 		this.incrementer = incrementer;
 	}
+	
+	
+	public Boolean checkRated(Long articleOid, String account) {
+		List<Condition> conds = new ArrayList<Condition>();
+		conds.add(new SimpleCondition("articleOid", articleOid, OperationEnum.EQ));
+		conds.add(new SimpleCondition("account", account, OperationEnum.EQ));
+		conds.add(new InCondition("action", new Object[] {ActionType.Rating1, ActionType.Rating2, ActionType.Rating3, ActionType.Rating4, ActionType.Rating5}));
+		List<StatisticsData> statis = this.statisticsDataDao.listByExample(new StatisticsData(), conds, LikeMode.NONE, null, null);
+		
+		return !statis.isEmpty();
+	}
 }

@@ -237,6 +237,11 @@ public class SystemServiceImpl implements SystemService {
 		return result;
 	}
 	
+	@Override
+	public ProductSeries findBySeriesId(String seriesId) {
+		return this.productSeriesDao.findBySeriesId(seriesId);
+	}
+	
 	public Account findAccountByOid(String oid) {
 		return this.accountDao.findByOid(oid);
 	}

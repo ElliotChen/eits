@@ -32,4 +32,6 @@ public interface ArticleService extends BaseDomainService<Article, Long> {
 	void addHitCount(Article article);
 	
 	String getNextArticleId();
+	
+	Boolean checkRated(Long articleOid, String account);
 }

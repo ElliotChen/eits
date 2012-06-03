@@ -132,13 +132,18 @@
 <div id="ratingDiv">
 	<fieldset class="conditionborder">
 		<legend>Rating:</legend>
-		Did you find this article helpful? <br /> Poor <input
+		<s:if test="rated">
+			You have rated this article already.
+		</s:if>
+		<s:else>
+			Did you find this article helpful? <br /> Poor <input
 			name="ratingNumber" type="radio" value="1" />1 <input
 			name="ratingNumber" type="radio" value="2" />2 <input
 			name="ratingNumber" type="radio" value="3" />3 <input
 			name="ratingNumber" type="radio" value="4" />4 <input
 			name="ratingNumber" type="radio" value="5" checked="checked" />5
 		Excellent <input type="button" id="ratingButton" value="Rate" onclick="rating();" />
+		</s:else>
 		<div id="ratingMsg" style="color: blue;"></div>
 	</fieldset>
 </div>
@@ -153,5 +158,9 @@
 	</fieldset>
 	
 </div>
+
+<table class="conditionborder">
+	<tr><td><input type="button" value="close" onclick="closeAjaxArticle()"/></td></tr>
+</table>
 </s:form>
 </div>

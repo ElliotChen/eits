@@ -52,6 +52,11 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	private JsonMsg jsonMsg;
 	private Integer pageNo;
 	
+	private Boolean rated;
+	
+	private String exSeries;
+	private String exModel;
+	
 	private List<Language> languages;
 	private Page<Article> faqArticles;
 	private Page<Article> latestArticles;
@@ -96,6 +101,16 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	}
 
 	public String search() {
+		if (StringUtils.isNotEmpty(this.exSeries)) {
+			ProductSeries ps = this.systemService.findBySeriesId(exSeries);
+			if (null != ps) {
+				if (StringUtils.isNotEmpty(this.exModel)) {
+					this.example.setProduct(ps.getName() +"--"+this.exModel);
+				} else {
+					this.example.setProduct(ps.getName());
+				}
+			}
+		}
 		faqArticles = this.articleService.searchFaqArticlesPage(faqArticles);
 		latestArticles = this.articleService.searchLatestArticlesPage(latestArticles);
 
@@ -131,6 +146,11 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 		}
 		
 		this.articleService.addHitCount(article);
+		
+		this.rated = Boolean.FALSE;
+		if (!op.isGuest()) {
+			this.rated = this.articleService.checkRated(this.article.getOid(), op.getAccount());
+		}
 		return "detail";
 	}
 	
@@ -160,13 +180,13 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 
 	public String rating() {
 		this.articleService.rate(article, ratingNumber);
-		this.jsonMsg = new JsonMsg("Thanks for your rating for articleId");
+		this.jsonMsg = new JsonMsg("Thanks for your rating.");
 		return "rating";
 	}
 	
 	public String suggest() {
 		this.articleService.comment(article, suggestion);
-		this.jsonMsg = new JsonMsg("Thanks for your suggestion, ["+this.suggestion+"]");
+		this.jsonMsg = new JsonMsg("Thanks for your suggestion.");
 		return "rating";
 	}
 	
@@ -307,5 +327,29 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	public void setPageNo(Integer pageNo) {
 		this.pageNo = pageNo;
 	}
-	
+
+	public Boolean getRated() {
+		return rated;
+	}
+
+	public void setRated(Boolean rated) {
+		this.rated = rated;
+	}
+
+	public String getExSeries() {
+		return exSeries;
+	}
+
+	public void setExSeries(String exSeries) {
+		this.exSeries = exSeries;
+	}
+
+	public String getExModel() {
+		return exModel;
+	}
+
+	public void setExModel(String exModel) {
+		this.exModel = exModel;
+	}
+
 }

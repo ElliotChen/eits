@@ -12,13 +12,17 @@
 		$('#latestForm').ajaxForm({
             target: '#latestArticleBlock'
         });
+		
 		$('#exSeries').selectChain({
 		    target: $('#exModel'),
 		    type:'POST',
 		    data:{series : $('#exSeries').val()},
 		    url: '${ctx}/ajax!ajaxModels.action'
 		}).trigger('change');
-		/*
+		
+		$('#exSeries').ufd({useUiCss:true});
+		
+		/*$('#exModel').ufd({useUiCss:true});
 		$('#exSeries').multiselect({position: {
 			      my: 'left bottom',
 			      at: 'left top'
@@ -49,17 +53,18 @@
 			</tr>
 			<tr>
 				<td>&nbsp;</td>
-				<td>Product Series:<s:select id="exSeries" name="series" list="productSeries" listKey="id" listValue="name" headerKey="" headerValue="----" /></td>
+				<td>Product Series:<s:select id="exSeries" name="exSeries" list="productSeries" listKey="id" listValue="name" headerKey="" headerValue="----" /></td>
 				<td rowspan="2"><s:submit value="Search" /></td>
 			</tr>
 			<tr>
 				<td>Keyword:<s:textfield name="example.keywords" maxlength="40" size="40" /></td>
-				<td>Product Model:<select id="exModel" name="example.product"><option value="">----</option></select></td>
+				<td>Product Model:<select id="exModel" name="exModel"><option value="">----</option></select></td>
 			</tr>
 			</s:form>
 		</table>
 </div>
-<div class="clear"></div>
 <div id="articles">
 	<jsp:include page="list.jsp"></jsp:include>
+</div>
+<div id="detail">
 </div>

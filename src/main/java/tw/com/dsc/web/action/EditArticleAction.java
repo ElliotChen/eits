@@ -390,6 +390,11 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		return "rating";
 	}
 	
+	public String listModels() {
+		logger.debug("Project code is [{}]", this.example.getProjectCode());
+		return "productModel";
+	}
+	
 	public String quickEdit() {
 		return "quickEdit";
 	}

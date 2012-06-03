@@ -21,12 +21,12 @@ public class AjaxAction extends ActionSupport {
 	private List<SelectOption> options;
 	@Autowired
 	private SystemService systemService;
-	private String series;
+	private String exSeries;
 	public String ajaxModels() {
 		
 		options = new ArrayList<SelectOption>();
 		options.add(new SelectOption("", "-----"));
-		List<ProductModel> models = systemService.listModels(series);
+		List<ProductModel> models = systemService.listModels(exSeries);
 		for (ProductModel model : models) {
 			options.add(new SelectOption(model.getName(), model.getName()));
 		}
@@ -39,12 +39,11 @@ public class AjaxAction extends ActionSupport {
 	public void setOptions(List<SelectOption> options) {
 		this.options = options;
 	}
-	public String getSeries() {
-		return series;
+	public String getExSeries() {
+		return exSeries;
 	}
-	public void setSeries(String series) {
-		this.series = series;
+	public void setExSeries(String exSeries) {
+		this.exSeries = exSeries;
 	}
-	
 	
 }

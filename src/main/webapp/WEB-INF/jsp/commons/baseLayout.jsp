@@ -18,6 +18,7 @@
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/login.css" />" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.multiselect.css" />" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.multiselect.filter.css" />" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/ufd-base.css" />" />
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery-1.7.2.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery-ui-1.8.18.custom.min.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.form.js" />"></script>
@@ -33,6 +34,7 @@
 <script language="JavaScript" type="text/javascript" src="<c:url value="/ckeditor/config.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.multiselect.min.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.multiselect.filter.min.js" />"></script>
+<script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.ui.ufd.js" />"></script>
 <style type="text/css">
     #ui-datepicker-div {
         z-index: 9999999;
@@ -78,6 +80,11 @@
 			pathClass : 'current'
 		});
 		*/
+		$('#ajaxArticleForm').ajaxForm({
+            target: '#detail',
+            success : $.unblockUI
+        });
+		
 		$('#articleForm').ajaxForm({
             target: '#main',
             success : $.unblockUI
@@ -166,6 +173,19 @@
 		*/
 	}
 	
+	function viewAjaxArticle(oid) {
+		$('#ajaxDetailOid').val(oid);
+		$('#ajaxDetailArticleId').val('');
+		$('#search').hide();
+		$('#articles').hide();
+		$('#ajaxArticleForm').submit();
+	}
+	function closeAjaxArticle() {
+		$('#search').show();
+		$('#articles').show();
+		$('#detail').html('');
+	}
+	
 	function viewArticle(oid) {
 		$('#detailOid').val(oid);
 		$('#detailArticleId').val('');
@@ -226,7 +246,7 @@
 <body>
 	<form id="menuForm" >
 	</form>
-	<s:form id="articleForm" namespace="/" action="searchArticle!detail" theme="simple">
+	<s:form id="articleForm" namespace="/" action="searchArticle!detail" theme="simple" target="_blank">
 		<input id="detailOid" type="hidden" name="oid" />
 		<input id="detailArticleId" type="hidden" name="articleId" />
 	</s:form>
@@ -241,6 +261,10 @@
 	</s:form>
 	<s:form id="switchRoleForm" namespace="/" action="system!switchRole" theme="simple">
 		<input id="switchRoleName" type="hidden" name="userRole" />
+	</s:form>
+	<s:form id="ajaxArticleForm" namespace="/" action="searchArticle!detail" theme="simple">
+		<input id="ajaxDetailOid" type="hidden" name="oid" />
+		<input id="ajaxDetailArticleId" type="hidden" name="articleId" />
 	</s:form>
 <div class="page">
 	<div id="header" style="width: 98%; position: relative;" class="datagrid">

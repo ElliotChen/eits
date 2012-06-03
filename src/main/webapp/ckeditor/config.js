@@ -29,4 +29,5 @@ CKEDITOR.editorConfig = function( config )
 		[
 			['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink','-','About']
 		];
+	config.image_previewText='';
 };

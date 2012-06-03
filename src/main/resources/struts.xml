@@ -20,6 +20,7 @@
 		</action>
 		<action name="system!*" method="{1}" class="systemAction">
 			<result type="tiles" name="index">index</result>
+			<result type="tiles" name="loginRedirect">loginRedirect</result>
 		</action>
 		
 		<action name="searchArticle!*" method="{1}" class="searchArticleAction">
@@ -52,6 +53,7 @@
 				<param name="root">jsonMsg</param>
 			</result>
 			<result type="tiles" name="quickEdit">quickEdit</result>
+			<result name="productModel">/WEB-INF/jsp/edit/productModel.jsp</result>
 		</action>
 		
 		<action name="language!*" method="{1}" class="languageAction">

@@ -4,6 +4,10 @@
 <script type="text/javascript">
 <!--
 	$().ready(function() {
+		$('#psForm').ajaxForm({
+            target: '#productSelectDiv',
+            success : $.unblockUI
+        });
 		$('#editForm').ajaxForm({
 			target: '#main',
 			beforeSubmit: function() {
@@ -119,8 +123,15 @@
 			});
 		}
 	}
+	function switchProjectCode() {
+		$('#pCode').val($('#projectCode').val());
+		$('#psForm').submit();
+	}
 //-->
 </script>
+<s:form id="psForm" namespace="/" action="edit!listModels" theme="simple">
+	<input id="pCode" type="hidden" name="example.projectCode" />
+</s:form>
 <div class="condition">
 <s:form id="editForm" namespace="/" action="edit!create" theme="simple" method="POST" enctype ="multipart/form-data">
 	<s:hidden name="entryUser" />
@@ -137,12 +148,13 @@
 		<tr>
 			<td>SOURCE:</td>
 			<td><s:radio name="source" list="@tw.com.dsc.domain.Source@values()" onchange="switchSource()" />
-				<s:select id="projectCode" name="projectCode" list="projects" disabled="true" listKey="oid" listValue="projectCode"></s:select>
+				<s:select id="projectCode" name="projectCode" list="projects" disabled="true" listKey="oid" listValue="projectCode" headerKey="" headerValue="----" onchange="switchProjectCode()"></s:select>
 			</td>
 		</tr>
 		</s:if>
 		<s:else>
 			<input type="hidden" name="source" value="OBM"/>
+			<input type="hidden" name="projectCode" value=""/>
 		</s:else>
 		
 		
@@ -220,6 +232,7 @@
 		<tr>
 			<td>TECHNOLOGY</td>
 			<td><s:textarea id="technology" name="technology" cols="40" rows="4" readonly="true"/>
+				<div>
 				<select id="techSelect" name="techSelect" multiple="true">
 					<s:iterator value="technologies" var="tech">
 						<optgroup label="<s:property value="technology" />">
@@ -229,12 +242,13 @@
 						</optgroup>
 					</s:iterator>
 				</select>
-				
+				</div>
 			</td>
 		</tr>
 		<tr>
 			<td>PRODUCT</td>
 			<td><s:textarea id="product" name="product" cols="40" rows="4" readonly="true"/>
+				<div id="productSelectDiv">
 				<select id="productSelect" name="productSelect" multiple="true">
 					<s:iterator value="products" var="product">
 						<optgroup label="<s:property value="name" />">
@@ -244,6 +258,7 @@
 						</optgroup>
 					</s:iterator>
 				</select>
+				</div>
 			</td>
 		</tr>
 		<tr>
@@ -270,6 +285,7 @@
 	<input type="hidden" name="articleId.oid" />
 	<input type="hidden" name="languageOid" />
 	<input type="hidden" name="source" />
+	<input type="hidden" name="projectCode" />
 	<input type="hidden" name="news" />
 	<input type="hidden" name="type" />
 	<input type="hidden" name="summary" />

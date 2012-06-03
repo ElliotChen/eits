@@ -30,7 +30,8 @@ public class SystemAction extends BaseAction implements Preparable {
 		loginUser = ThreadLocalHolder.getOperator();
 	}
 	public String index() {
-		return "index";
+//		return "index";
+		return "loginRedirect";
 	}
 	public String login() {
 		ErrorType error = this.systemService.login(loginUser);
@@ -39,7 +40,8 @@ public class SystemAction extends BaseAction implements Preparable {
 		}
 		
 		ThreadLocalHolder.setUser(loginUser);
-		return "index";
+//		return "index";
+		return "loginRedirect";
 	}
 
 	public String logout() {

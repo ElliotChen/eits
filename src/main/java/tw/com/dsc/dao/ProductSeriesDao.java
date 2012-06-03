@@ -6,6 +6,7 @@ import tw.com.dsc.domain.ProductModel;
 import tw.com.dsc.domain.ProductSeries;
 
 public interface ProductSeriesDao {
+	ProductSeries findBySeriesId(String seriesId);
 	List<ProductSeries> listAllSeries();
 	List<ProductSeries> listSeries(String branchCode);
 	List<ProductModel> listModels(String seriesId);
