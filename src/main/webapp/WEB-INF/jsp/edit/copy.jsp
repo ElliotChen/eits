@@ -7,6 +7,10 @@
 		$('#copyEditForm').ajaxForm({
         	target: '#main',
         	beforeSubmit: function() {
+        		for (var i in CKEDITOR.instances)
+		        {
+		            CKEDITOR.instances[i].updateElement();
+		        };
 			    $('#copyEditForm').validate({ rules : {
 					'language.oid' : {required:true},
 					summary : {required:true},
@@ -15,9 +19,37 @@
 					answer : {required:true},
 					technology : {required:true},
 					product : {required:true},
-					firmware : {required:true}
+					firmware : {required:true},
+					ticketId : {required:function(element) {
+				        return $("#type").val() == 'SpecInfo';
+				    }},
+					question : {required:function(element) {
+						return ($("#type").val() == 'GeneralInfo' || $("#type").val() == 'SpecInfo');
+				    }},
+					answer : {required:function(element) {
+				        return ($("#type").val() == 'GeneralInfo' || $("#type").val() == 'SpecInfo');
+				    }},
+				    scenario : {required:function(element) {
+					    return $("#type").val() == 'Application' || $("#type").val() == 'TroubleShooting';
+					}},
+					step : {required:function(element) {
+						return $("#type").val() == 'Application' || $("#type").val() == 'TroubleShooting';
+					}},
+					verification : {required:function(element) {
+						return $("#type").val() == 'Application' || $("#type").val() == 'TroubleShooting';
+					}},
+					problem : {required:function(element) {
+						return $("#type").val() == 'Issue';
+					}},
+					solution : {required:function(element) {
+						return $("#type").val() == 'Issue';
+					}},
+					procedure : {required:function(element) {
+						return $("#type").val() == 'Issue';
+					}}
 					
 				} ,
+				ignore : [],
 				errorClass: "errorField"});
 			    return $('#copyEditForm').valid();
 			  }
