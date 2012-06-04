@@ -188,10 +188,10 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		if (Status.Draft == status) {
 			this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Create, op.getAccount(), "Create Draft", op.getIp()));
 		} else if (Status.WaitForApproving == status) {
-			this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Create, op.getAccount(), "Create Draft and Final as new", op.getIp()));
+			this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Create, op.getAccount(), "Create Draft and Save as Final", op.getIp()));
 			this.mailService.approval(article);
 		} else if (Status.Published == status) {
-			this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Create, op.getAccount(), "Create Draft and Publish as public", op.getIp()));
+			this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Create, op.getAccount(), "Create Draft and Published", op.getIp()));
 		} else if (Status.WaitForProofRead == status) {
 			this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Create, op.getAccount(), "Create Draft and Waiting for Proof Read", op.getIp()));
 		}
@@ -225,7 +225,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		
 		this.dao.saveOrUpdate(article);
 		
-		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Approve, op.getAccount(), "Approve", op.getIp()));
+		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Approve, op.getAccount(), "Approved", op.getIp()));
 	}
 	
 	@Transactional(readOnly=false)
@@ -253,7 +253,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		
 		this.dao.saveOrUpdate(article);
 		
-		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Delete, op.getAccount(), "Delete", op.getIp()));
+		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Delete, op.getAccount(), "Deleted", op.getIp()));
 	}
 	
 	@Transactional(readOnly=false)
@@ -558,6 +558,29 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		return this.dao.listByPage(page);
 	}
 	
+	public Page<Article> searchL3LatestPublishedPage(Page<Article> page) {
+		User op = ThreadLocalHolder.getOperator();
+		
+		Article example = page.getExample();
+		
+		if (null == example) {
+			logger.warn("Page.example could not be null!");
+			example = new Article();
+			example.setOid(-1l);
+			
+			page.setExample(example);
+		}
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MONTH, -1);
+		List<Condition> conds = page.getConditions();
+		
+		conds.add(new SimpleCondition("status", Status.Published, OperationEnum.EQ));
+		conds.add(new InCondition("level", new Object[] {Level.Public, Level.Partner} ));
+		conds.add(new SimpleCondition("agentType", AgentType.L3, OperationEnum.EQ));
+		conds.add(new SimpleCondition("publishDate", cal.getTime(), OperationEnum.GE));
+		page.setDescOrders(new String[] {"publishDate"});
+		return this.dao.listByPage(page);
+	}
 	@Transactional(readOnly=false)
 	public void addHitCount(Article article) {
 		User op = ThreadLocalHolder.getOperator();

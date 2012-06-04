@@ -98,12 +98,12 @@
 <table class="conditionborder">
 	<tr><th colspan="6">Expired Article List</th></tr>
 	<tr>
-	<td><input type="text" name="example3.articleId.oid" size="9"/></td>
-	<td><input type="text" name="example3.summary" size="18"/></td>
-	<td><input type="text" name="example3.entryUser" size="8"/></td>
-	<td><input type="text" name="example3.entryDate" size="16" id="entryDate3" readonly="readonly"/></td>
-	<td><input type="text" name="example3.product" size="17"/></td>
-	<td><s:submit value="Search" /></td>
+	<td width="50"><input type="text" name="example3.articleId.oid" size="6"/></td>
+	<td width="300"><input type="text" name="example3.summary" size="35"/></td>
+	<td width="50"><input type="text" name="example3.entryUser" size="6"/></td>
+	<td width="90"><input type="text" name="example3.entryDate" size="10" id="entryDate3" readonly="readonly"/></td>
+	<td width="200"><input type="text" name="example3.product" size="17"/></td>
+	<td width="100"><s:submit value="Search" /></td>
 	</tr>
 </table>
 </s:form>

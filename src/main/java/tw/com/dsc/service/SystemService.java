@@ -13,6 +13,7 @@ import tw.com.dsc.to.User;
 
 public interface SystemService {
 	List<ProductSeries> listAllSeries();
+	List<ProductModel> listAllModels();
 	ErrorType login(final User user);
 	
 	/**

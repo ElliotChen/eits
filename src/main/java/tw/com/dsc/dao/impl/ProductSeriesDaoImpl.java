@@ -29,6 +29,7 @@ public class ProductSeriesDaoImpl implements ProductSeriesDao, InitializingBean 
 	private static final String L3_SERIES_ID = "SELECT ID, SERIES_NAME FROM EITS_SYS_PRODUCT_SERIES WHERE ID = ?";
 	private static final String L3_SERIES = "SELECT ID, SERIES_NAME FROM EITS_SYS_PRODUCT_SERIES";
 	private static final String L3_MODELS = "SELECT t.ID, t.MODEL_NAME from eits_sys_product_model t where NVL(END_OF_CSO_DATE, '3000/01/01') >= TO_CHAR(sysdate, 'YYYY/MM/DD') And t.SERIES_ID = ? and is_show ='Y'  order by t.MODEL_NAME asc";
+	private static final String L3_ALL_MODELS = "SELECT t.ID, t.MODEL_NAME from eits_sys_product_model t where NVL(END_OF_CSO_DATE, '3000/01/01') >= TO_CHAR(sysdate, 'YYYY/MM/DD') and is_show ='Y'  order by t.MODEL_NAME asc";
 	private static final String L3_BRANCH_SERIES = "SELECT DISTINCT PS.ID, PS.SERIES_NAME FROM EITS_SYS_PRODUCT_MODEL_SETUP PMS INNER JOIN EITS_SYS_PRODUCT_MODEL PM ON (PMS.ID = PM.ID) INNER JOIN EITS_SYS_PRODUCT_SERIES PS ON (PM.SERIES_ID = PS.ID)  where PMS.BRANCH_CODE = ? And NVL(PM.END_OF_CSO_DATE, '3000/01/01') >= TO_CHAR(sysdate, 'YYYY/MM/DD') order by PS.SERIES_NAME asc";
 	private static final String L3_BRANCH_MODELS = "SELECT PM.ID, PM.MODEL_NAME FROM EITS_SYS_PRODUCT_MODEL PM, EITS_SYS_PRODUCT_MODEL_SETUP PMS WHERE PM.ID = PMS.ID AND NVL(PM.END_OF_CSO_DATE, '3000/01/01') >= TO_CHAR(sysdate, 'YYYY/MM/DD') AND PMS.BRANCH_CODE = ? AND PM.SERIES_ID = ? order by PM.MODEL_NAME ASC";
 	private static final String L3_SERIES_BY_PROJECT_CODE = "SELECT m.ID, m.MODEL_NAME, s.ID as seriesId, s.SERIES_NAME , pd.project_code FROM eits_sys_product_model m, EITS_SYS_PRODUCT_SERIES s, EITS_SYS_PROJECT_DETAIL pd WHERE NVL (m.END_OF_CSO_DATE, '3000/01/01') >= TO_CHAR (SYSDATE, 'YYYY/MM/DD') and m.is_show ='Y' and m.ID = pd.PRODUCT_MODEL_ID and m.SERIES_ID = s.ID and pd.project_code = ? order by s.SERIES_NAME ASC";
@@ -41,9 +42,16 @@ public class ProductSeriesDaoImpl implements ProductSeriesDao, InitializingBean 
 		List<ProductSeries> list = jdbcTemplate.query(L3_SERIES_ID, new Object[] {seriesId}, new SeriesMapper());
 		return list.isEmpty()?null : list.get(0);
 	}
+	
 	@Override
 	public List<ProductSeries> listAllSeries() {
 		List<ProductSeries> list = jdbcTemplate.query(L3_SERIES, new SeriesMapper());
+		return list;
+	}
+	
+	@Override
+	public List<ProductModel> listAllModels() {
+		List<ProductModel> list = jdbcTemplate.query(L3_ALL_MODELS, new ModelMapper());
 		return list;
 	}
 
@@ -65,13 +73,43 @@ public class ProductSeriesDaoImpl implements ProductSeriesDao, InitializingBean 
 	@Override
 	public List<ProductSeries> listSeriesByProjectCode(String projectCode) {
 		List<SeriesModel> sms = jdbcTemplate.query(L3_SERIES_BY_PROJECT_CODE, new Object[] {projectCode}, new SeriesModelMapper());
-		
-		Map<String, ProductSeries> map = new HashMap<String, ProductSeries>();
+		logger.debug("Find ProductSeries[{}] for ProjectCode[{}]", sms.size(), projectCode);
 		ProductSeries lastSeries = null;
-
-		
-		
-		return new ArrayList<ProductSeries>();
+		if (!sms.isEmpty()) {
+			lastSeries = new ProductSeries();
+			SeriesModel sm = sms.get(0);
+			lastSeries.setId(sm.getSeriesId());
+			lastSeries.setName(sm.getSeriesName());
+			List<ProductModel> mods = new ArrayList<ProductModel>();
+			ProductModel mod = new ProductModel();
+			mod.setOid(sm.getModelId());
+			mod.setName(sm.getModelName());
+			mods.add(mod);
+			
+			lastSeries.setModels(mods);
+		}
+		List<ProductSeries> series = new ArrayList<ProductSeries>();
+		for (SeriesModel sm : sms) {
+			if (null == lastSeries || !sm.getSeriesId().equals(lastSeries.getId())) {
+				lastSeries = new ProductSeries();
+				lastSeries.setId(sm.getSeriesId());
+				lastSeries.setName(sm.getSeriesName());
+				List<ProductModel> mods = new ArrayList<ProductModel>();
+				ProductModel mod = new ProductModel();
+				mod.setOid(sm.getModelId());
+				mod.setName(sm.getModelName());
+				mods.add(mod);
+				
+				series.add(lastSeries);
+			} else {
+				ProductModel mod = new ProductModel();
+				mod.setOid(sm.getModelId());
+				mod.setName(sm.getModelName());
+				lastSeries.getModels().add(mod);
+			}
+		}
+		logger.debug("Parse ProductSeries[{}] for ProjectCode[{}]", series.size(), projectCode);
+		return series;
 	}
 	
 	public DataSource getDataSource() {

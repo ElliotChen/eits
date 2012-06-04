@@ -36,6 +36,8 @@
 			<result name="rating" type="json">
 				<param name="root">jsonMsg</param>
 			</result>
+			<result name="publishedIndex">/WEB-INF/jsp/searchArticle/publishedIndex.jsp</result>
+			<result name="published">/WEB-INF/jsp/searchArticle/published.jsp</result>
 		</action>
 		<action name="edit!*" method="{1}" class="editAction">
 			<result name="list">/WEB-INF/jsp/edit/list.jsp</result>

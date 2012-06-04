@@ -23,6 +23,9 @@
 					product : {required:true},
 					technology : {required:true},
 					firmware : {required:true},
+					projectCode : {required:function(element) {
+				        return 'Project' == $('input:[name="source"]:checked').val();
+				    }},
 					ticketId : {required:function(element) {
 				        return $("#type").val() == 'SpecInfo';
 				    }},
@@ -112,6 +115,7 @@
 					$(this).removeAttr('disabled');
 				}
 			});
+			showAllModel();
 		} else {
 			$('#projectCode').removeAttr('disabled');
 			$('#level').children('option').each(function() {
@@ -121,10 +125,15 @@
 					$(this).attr('selected', 'selected');
 				}
 			});
+			switchProjectCode();
 		}
 	}
 	function switchProjectCode() {
 		$('#pCode').val($('#projectCode').val());
+		$('#psForm').submit();
+	}
+	function showAllModel() {
+		$('#pCode').val('');
 		$('#psForm').submit();
 	}
 //-->

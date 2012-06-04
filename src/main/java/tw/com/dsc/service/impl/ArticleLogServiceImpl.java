@@ -23,7 +23,7 @@ public class ArticleLogServiceImpl extends AbstractDomainService<ArticleLogDao, 
 	
 	@Override
 	public List<ArticleLog> findByArticleOid(Long articleOid) {
-		return this.dao.listByExample(new ArticleLog(articleOid, null, null, null, null));
+		return this.dao.listByExample(new ArticleLog(articleOid, null, null, null, null), null, null, new String[] {"createdDate"}, null);
 	}
 
 	@Override

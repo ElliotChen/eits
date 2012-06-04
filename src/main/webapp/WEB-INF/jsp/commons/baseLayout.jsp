@@ -9,8 +9,9 @@
 <title>ZyXEL KB</title>
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/smoothness/jquery-ui-1.8.18.custom.css" />" />
 <!-- <link rel="stylesheet" type="text/css" href="<c:url value="/css/superfish.css" />" />
-<link rel="stylesheet" type="text/css" href="<c:url value="/css/superfish-navbar.css" />" />-->
-<link rel="stylesheet" type="text/css" href="<c:url value="/css/menu.css" />" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/superfish-navbar.css" />" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/menu.css" />" />-->
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/newMenu.css" />" />
 <!-- <link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.dataTables.css" />" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/displaytag.css" />" />-->
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.datepick.css" />" />

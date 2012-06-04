@@ -27,6 +27,7 @@ import tw.com.dsc.domain.Project;
 import tw.com.dsc.domain.Source;
 import tw.com.dsc.domain.Technology;
 import tw.com.dsc.domain.support.BetweenCondition;
+import tw.com.dsc.domain.support.LikeMode;
 import tw.com.dsc.domain.support.Page;
 import tw.com.dsc.service.ArticleLogService;
 import tw.com.dsc.service.ArticleService;
@@ -366,7 +367,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	public String viewLogs() {
 		ArticleLog exam = new ArticleLog();
 		exam.setArticleOid(oid);
-		this.articleLogs = this.articleLogService.listByExample(exam);
+		this.articleLogs = this.articleLogService.listByExample(exam, null, null, new String[] {"oid"}, null);
 		return "log";
 	}
 	
@@ -374,7 +375,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		ArticleLog exam = new ArticleLog();
 		exam.setArticleOid(oid);
 		exam.setAction(ActionType.Reject);
-		this.articleLogs = this.articleLogService.listByExample(exam);
+		this.articleLogs = this.articleLogService.listByExample(exam, null, null, null, new String[] {"oid"});
 		return "log";
 	}
 	
@@ -392,6 +393,9 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	
 	public String listModels() {
 		logger.debug("Project code is [{}]", this.example.getProjectCode());
+		if (StringUtils.isNotEmpty(this.example.getProjectCode())) {
+			this.products = this.systemService.listSeriesByProjectCode(this.example.getProjectCode());
+		}
 		return "productModel";
 	}
 	

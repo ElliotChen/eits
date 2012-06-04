@@ -61,7 +61,7 @@
 			</tr>
 			<tr>
 				<td>Keyword:<s:textfield name="example.keywords" maxlength="40" size="40" /></td>
-				<td>Product Model:<select id="exModel" name="exModel"><option value="">----</option></select></td>
+				<td>Product Model:<s:select id="exModel" name="exModel" list="productModels" listKey="name" listValue="name" headerKey="" headerValue="----"/></td>
 			</tr>
 			</s:form>
 		</table>

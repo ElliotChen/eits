@@ -17,6 +17,7 @@ import tw.com.dsc.domain.Article;
 import tw.com.dsc.domain.ArticleId;
 import tw.com.dsc.domain.Language;
 import tw.com.dsc.domain.Level;
+import tw.com.dsc.domain.ProductModel;
 import tw.com.dsc.domain.ProductSeries;
 import tw.com.dsc.domain.Status;
 import tw.com.dsc.domain.support.Condition;
@@ -61,6 +62,7 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	private Page<Article> faqArticles;
 	private Page<Article> latestArticles;
 	private List<Article> sameArticles;
+	private Page<Article> publishedArticles;
 	@Autowired
 	private LanguageService languageService;
 	@Autowired
@@ -70,6 +72,7 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	private SystemService systemService;
 	
 	private List<ProductSeries> productSeries;
+	private List<ProductModel> productModels;
 	@Override
 	public void prepare() throws Exception {
 		if (null != oid) {
@@ -84,6 +87,7 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 		example.setLanguage(new Language());
 		faqArticles= new Page<Article>(example);
 		latestArticles= new Page<Article>(example);
+		publishedArticles = new Page<Article>(example);
 	}
 
 	@Override
@@ -94,6 +98,7 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	public String index() {
 		this.languages = this.languageService.listAll();
 		this.productSeries = this.systemService.listAllSeries();
+		this.productModels = this.systemService.listAllModels();
 		
 		faqArticles = this.articleService.searchFaqArticlesPage(faqArticles);
 		latestArticles = this.articleService.searchLatestArticlesPage(latestArticles);
@@ -188,6 +193,21 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 		this.articleService.comment(article, suggestion);
 		this.jsonMsg = new JsonMsg("Thanks for your suggestion.");
 		return "rating";
+	}
+	
+	public String publishedIndex() {
+		publishedArticles = this.articleService.searchL3LatestPublishedPage(publishedArticles);
+		return "publishedIndex";
+	}
+	
+	public String latestL3Published() {
+		if (null != pageNo) {
+			publishedArticles.setPageNo(pageNo);
+		} else {
+			publishedArticles.setPageNo(1);
+		}
+		publishedArticles = this.articleService.searchL3LatestPublishedPage(publishedArticles);
+		return "published";
 	}
 	
 	@Override
@@ -350,6 +370,22 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 
 	public void setExModel(String exModel) {
 		this.exModel = exModel;
+	}
+
+	public Page<Article> getPublishedArticles() {
+		return publishedArticles;
+	}
+
+	public void setPublishedArticles(Page<Article> publishedArticles) {
+		this.publishedArticles = publishedArticles;
+	}
+
+	public List<ProductModel> getProductModels() {
+		return productModels;
+	}
+
+	public void setProductModels(List<ProductModel> productModels) {
+		this.productModels = productModels;
 	}
 
 }

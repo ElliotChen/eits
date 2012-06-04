@@ -8,7 +8,7 @@
 		<fmt:formatDate value="${article.entryDate}" pattern="yyyy/MM/dd"/>
 	</display:column>
 	<display:column property="product" title="Prod. Series" style="width:200px" headerClass="tablehead"/>
-	<display:column title="Function" headerClass="tablehead">
+	<display:column title="Function" style="width:100px" headerClass="tablehead">
       <input type="button" onclick="javascript:previewArticle('${article.oid}');" value="Preview" />
       <input type="button" onclick="javascript:editArticle('${article.oid}');" value="Edit"/>
     </display:column>

@@ -20,6 +20,9 @@
 					technology : {required:true},
 					product : {required:true},
 					firmware : {required:true},
+					projectCode : {required:function(element) {
+				        return 'Project' == $('input:[name="source"]:checked').val();
+				    }},
 					ticketId : {required:function(element) {
 				        return $("#type").val() == 'SpecInfo';
 				    }},
@@ -138,6 +141,7 @@
 					$(this).removeAttr('disabled');
 				}
 			});
+			showAllModel();
 		} else {
 			$('#projectCode').removeAttr('disabled');
 			$('#level').children('option').each(function() {
@@ -147,10 +151,22 @@
 					$(this).attr('selected', 'selected');
 				}
 			});
+			switchProjectCode();
 		}
+	}
+	function switchProjectCode() {
+		$('#pCode').val($('#projectCode').val());
+		$('#psForm').submit();
+	}
+	function showAllModel() {
+		$('#pCode').val('');
+		$('#psForm').submit();
 	}
 //-->
 </script>
+<s:form id="psForm" namespace="/" action="edit!listModels" theme="simple">
+	<input id="pCode" type="hidden" name="example.projectCode" />
+</s:form>
 <div class="condition">
 <s:form id="copyEditForm" namespace="/" action="edit!create" theme="simple" method="POST" enctype ="multipart/form-data">
 	<input type="hidden" name="sourceOid" value="${sarticle.oid}" />

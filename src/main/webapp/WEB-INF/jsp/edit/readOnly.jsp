@@ -17,8 +17,21 @@
 			});
 		delete CKEDITOR.instances['question'];
 		delete CKEDITOR.instances['answer'];
+		delete CKEDITOR.instances['scenario'];
+		delete CKEDITOR.instances['step'];
+		delete CKEDITOR.instances['verification'];
+		delete CKEDITOR.instances['problem'];
+		delete CKEDITOR.instances['solution'];
+		delete CKEDITOR.instances['procedure'];
+		
 		$('#question').ckeditor();
 		$('#answer').ckeditor();
+		$('#scenario').ckeditor();
+		$('#step').ckeditor();
+		$('#verification').ckeditor();
+		$('#problem').ckeditor();
+		$('#solution').ckeditor();
+		$('#procedure').ckeditor();
 		switchType();
 	});
 	function previewSave() {
@@ -92,7 +105,7 @@
 		</tr>
 		<tr class="ArticleType SpecInfo">
 			<td>eITS TICKET ID</td>
-			<td><s:textfield name="ticketId" maxlength="10" disabled="true"/></td>
+			<td><s:textfield name="ticketId" size="40" disabled="true"/></td>
 		</tr>
 		<tr class="ArticleType GeneralInfo SpecInfo">
 			<td>QUESTION</td>
@@ -104,28 +117,28 @@
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
 			<td>SCENARIO DESCRIPTION</td>
-			<td><s:textfield name="scenario" size="40" maxlength="50" disabled="true"/></td>
+			<td><s:textarea id="scenario" name="scenario" cols="40" rows="4" disabled="true"/></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
 			<td>SETUP/STEP BY STEP PROCEDURE</td>
-			<td><s:textfield name="step" size="40" maxlength="50" disabled="true"/></td>
+			<td><s:textarea id="step" name="step" cols="40" rows="4" disabled="true"/></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
 			<td>VERIFICATION</td>
-			<td><s:textfield name="verification" size="40" maxlength="50" disabled="true"/></td>
+			<td><s:textarea id="verification" name="verification" cols="40" rows="4" disabled="true"/></td>
 		</tr>
 		
 		<tr class="ArticleType Issue">
 			<td>PROBLEM DESCRIPTION</td>
-			<td><s:textfield name="problem" size="40" maxlength="50" disabled="true"/></td>
+			<td><s:textarea id="problem" name="problem" cols="40" rows="4" disabled="true"/></td>
 		</tr>
 		<tr class="ArticleType Issue">
 			<td>SOLUTION</td>
-			<td><s:textfield name="solution" size="40" maxlength="50" disabled="true"/></td>
+			<td><s:textarea id="solution" name="solution" cols="40" rows="4" disabled="true"/></td>
 		</tr>
 		<tr class="ArticleType Issue">
 			<td>CONDITION/REPRODUCE PROCEDURE</td>
-			<td><s:textfield name="procedure" size="40" maxlength="50" disabled="true"/></td>
+			<td><s:textarea id="procedure" name="procedure" cols="40" rows="4" disabled="true"/></td>
 		</tr>
 		<tr>
 			<td>VIEW LEVEL</td>
@@ -143,9 +156,8 @@
 		</tr>
 		<tr>
 			<td>FIRMWARE</td>
-			<td><s:file name="upload" disabled="true"/>
-			
-			<c:if test="${null != firmware}"><a href="${firmware.uri}" target="_blank">${firmware.name}</a></c:if>
+			<td>
+				<s:textfield name="firmware" size="40" maxlength="10" disabled="true"/>
 			</td>
 		</tr>
 
