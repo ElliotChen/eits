@@ -19,6 +19,7 @@
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.multiselect.css" />" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.multiselect.filter.css" />" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/ufd-base.css" />" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/plain/plain.css" />" />
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery-1.7.2.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery-ui-1.8.18.custom.min.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.form.js" />"></script>

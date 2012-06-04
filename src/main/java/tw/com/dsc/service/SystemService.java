@@ -42,4 +42,5 @@ public interface SystemService {
 	List<ProductModel> listModels(String seriesId);
 	List<ProductModel> listModels(String seriesId, String branchCode);
 	ProductSeries findBySeriesId(String seriesId);
+	List<ProductSeries> listSeriesByProjectCode(String projectCode);
 }

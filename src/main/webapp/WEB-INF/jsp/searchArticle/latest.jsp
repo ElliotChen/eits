@@ -8,6 +8,6 @@
 	</display:column>
 	<display:column property="hitCount" title="View Count" headerClass="tablehead"/>
 	<display:column title="Function" headerClass="tablehead">
-		<input type="button" value="View" onclick="viewArticle('${article.oid}');" />
+		<input type="button" value="View" onclick="viewAjaxArticle('${article.oid}');" />
     </display:column>
 </display:table>

@@ -2,7 +2,10 @@ package tw.com.dsc.dao.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -17,6 +20,7 @@ import org.springframework.stereotype.Repository;
 import tw.com.dsc.dao.ProductSeriesDao;
 import tw.com.dsc.domain.ProductModel;
 import tw.com.dsc.domain.ProductSeries;
+import tw.com.dsc.to.SeriesModel;
 
 @Repository("productSeriesDao")
 public class ProductSeriesDaoImpl implements ProductSeriesDao, InitializingBean {
@@ -27,6 +31,7 @@ public class ProductSeriesDaoImpl implements ProductSeriesDao, InitializingBean 
 	private static final String L3_MODELS = "SELECT t.ID, t.MODEL_NAME from eits_sys_product_model t where NVL(END_OF_CSO_DATE, '3000/01/01') >= TO_CHAR(sysdate, 'YYYY/MM/DD') And t.SERIES_ID = ? and is_show ='Y'  order by t.MODEL_NAME asc";
 	private static final String L3_BRANCH_SERIES = "SELECT DISTINCT PS.ID, PS.SERIES_NAME FROM EITS_SYS_PRODUCT_MODEL_SETUP PMS INNER JOIN EITS_SYS_PRODUCT_MODEL PM ON (PMS.ID = PM.ID) INNER JOIN EITS_SYS_PRODUCT_SERIES PS ON (PM.SERIES_ID = PS.ID)  where PMS.BRANCH_CODE = ? And NVL(PM.END_OF_CSO_DATE, '3000/01/01') >= TO_CHAR(sysdate, 'YYYY/MM/DD') order by PS.SERIES_NAME asc";
 	private static final String L3_BRANCH_MODELS = "SELECT PM.ID, PM.MODEL_NAME FROM EITS_SYS_PRODUCT_MODEL PM, EITS_SYS_PRODUCT_MODEL_SETUP PMS WHERE PM.ID = PMS.ID AND NVL(PM.END_OF_CSO_DATE, '3000/01/01') >= TO_CHAR(sysdate, 'YYYY/MM/DD') AND PMS.BRANCH_CODE = ? AND PM.SERIES_ID = ? order by PM.MODEL_NAME ASC";
+	private static final String L3_SERIES_BY_PROJECT_CODE = "SELECT m.ID, m.MODEL_NAME, s.ID as seriesId, s.SERIES_NAME , pd.project_code FROM eits_sys_product_model m, EITS_SYS_PRODUCT_SERIES s, EITS_SYS_PROJECT_DETAIL pd WHERE NVL (m.END_OF_CSO_DATE, '3000/01/01') >= TO_CHAR (SYSDATE, 'YYYY/MM/DD') and m.is_show ='Y' and m.ID = pd.PRODUCT_MODEL_ID and m.SERIES_ID = s.ID and pd.project_code = ? order by s.SERIES_NAME ASC";
 	@Autowired
 	private DataSource dataSource;
 	
@@ -56,6 +61,19 @@ public class ProductSeriesDaoImpl implements ProductSeriesDao, InitializingBean 
 	public List<ProductModel> listModels(String seriesId, String brahchCode) {
 		return jdbcTemplate.query(L3_BRANCH_MODELS, new Object[] {brahchCode, seriesId}, new ModelMapper());
 	}
+	
+	@Override
+	public List<ProductSeries> listSeriesByProjectCode(String projectCode) {
+		List<SeriesModel> sms = jdbcTemplate.query(L3_SERIES_BY_PROJECT_CODE, new Object[] {projectCode}, new SeriesModelMapper());
+		
+		Map<String, ProductSeries> map = new HashMap<String, ProductSeries>();
+		ProductSeries lastSeries = null;
+
+		
+		
+		return new ArrayList<ProductSeries>();
+	}
+	
 	public DataSource getDataSource() {
 		return dataSource;
 	}
@@ -88,6 +106,18 @@ class ModelMapper implements RowMapper<ProductModel> {
 		ProductModel entity = new ProductModel();
 		entity.setOid(rs.getString(1));
 		entity.setName(rs.getString(2));
+		return entity;
+	}
+}
+
+class SeriesModelMapper implements RowMapper<SeriesModel> {
+	@Override
+	public SeriesModel mapRow(ResultSet rs, int index) throws SQLException {
+		SeriesModel entity = new SeriesModel();
+		entity.setModelId(rs.getString(1));
+		entity.setModelName(rs.getString(2));
+		entity.setSeriesId(rs.getString(3));
+		entity.setSeriesName(rs.getString(4));
 		return entity;
 	}
 }

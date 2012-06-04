@@ -242,6 +242,20 @@ public class SystemServiceImpl implements SystemService {
 		return this.productSeriesDao.findBySeriesId(seriesId);
 	}
 	
+	public List<ProductSeries> listSeriesByProjectCode(String projectCode) {
+		Project example = new Project();
+		List<Condition> conds = new ArrayList<Condition>();
+		conds.add(new SimpleCondition("projectCode", projectCode, OperationEnum.EQ));
+		
+		List<Project> projects = this.projectDao.listByExample(example, conds, LikeMode.NONE, null, null);
+		if (projects.isEmpty()) {
+			logger.warn("Can't find any projects for code[{}]", projectCode);
+			return new ArrayList<ProductSeries>();
+		}
+		
+		return this.productSeriesDao.listSeriesByProjectCode(projectCode);
+	}
+	
 	public Account findAccountByOid(String oid) {
 		return this.accountDao.findByOid(oid);
 	}

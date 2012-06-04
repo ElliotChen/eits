@@ -50,12 +50,12 @@
 	<tr><th colspan="7">Unpublished Articles</th></tr>
 	<tr>
 	<td width="50"><input type="text" name="example1.articleId.oid" size="6"/></td>
-	<td width="300"><input type="text" name="example1.summary" size="30"/></td>
+	<td width="300"><input type="text" name="example1.summary" size="35"/></td>
 	<td width="50"><input type="text" name="example1.entryUser" size="6"/></td>
 	<td width="90"><input type="text" name="example1.entryDate" size="10" id="entryDate1" readonly="readonly"/></td>
-	<td width="200"><input type="text" name="example1.product" size="26"/></td>
-	<td width="120"><s:select name="example1.status" list="{'WaitForApproving', 'WaitForProofRead', 'ReadyToUpdate', 'ReadyToPublish'}" listValue="%{getText('enum.Status.'+toString())}" headerKey="" headerValue="----"></s:select></td>
-	<td><s:submit value="Search" /></td>
+	<td width="100"><input type="text" name="example1.product" size="10"/></td>
+	<td width="150"><s:select name="example1.status" list="{'WaitForApproving', 'WaitForProofRead', 'ReadyToUpdate', 'ReadyToPublish'}" listValue="%{getText('enum.Status.'+toString())}" headerKey="" headerValue="----"></s:select></td>
+	<td width="100"><s:submit value="Search" /></td>
 	</tr>
 </table>
 </s:form>
@@ -73,12 +73,12 @@
 <table class="conditionborder">
 	<tr><th colspan="6">Latest Draft Articles</th></tr>
 	<tr>
-	<td><input type="text" name="example2.articleId.oid" size="9"/></td>
-	<td><input type="text" name="example2.summary" size="18"/></td>
-	<td><input type="text" name="example2.entryUser" size="8"/></td>
-	<td><input type="text" name="example2.entryDate" size="16" id="entryDate2" readonly="readonly"/></td>
-	<td><input type="text" name="example2.product" size="17"/></td>
-	<td><s:submit value="Search" /></td>
+	<td width="50"><input type="text" name="example2.articleId.oid" size="6"/></td>
+	<td width="300"><input type="text" name="example2.summary" size="35"/></td>
+	<td width="50"><input type="text" name="example2.entryUser" size="6"/></td>
+	<td width="90"><input type="text" name="example2.entryDate" size="10" id="entryDate2" readonly="readonly"/></td>
+	<td width="200"><input type="text" name="example2.product" size="17"/></td>
+	<td width="100"><s:submit value="Search" /></td>
 	</tr>
 </table>
 </s:form>

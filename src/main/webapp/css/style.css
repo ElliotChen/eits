@@ -124,6 +124,7 @@ h4{ font-family:Verdana, Geneva, sans-serif; font-size:12px; color: #333;}
 .conditionborder {border:2px solid #ccc; width:100%;}
 .condition {padding:10px; margin-bottom:5px; font-size:12px;}
 .condition table tr td {line-height:28px; padding:0 7px; vertical-align:middle;}
+.condition table tr th {line-height:28px; padding:0 7px; vertical-align:middle; text-align:left}
 .condition table tr td img{position:relative; top:4px; z-index:0;}
 
 .pagefunc {height:20px; font-size:12px; text-align:center;}

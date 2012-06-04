@@ -6,7 +6,6 @@
         };
         
         var settings = $.extend({}, defaults, options);
-        
         if (!(settings.target instanceof $)) settings.target = $(settings.target);
         
         return this.each(function () {
@@ -29,6 +28,7 @@
                     type: (settings.type || 'get'),
                     dataType: 'json',
                     success: function (j) {
+                    	
                         var options = [], i = 0, o = null;
                         
                         for (i = 0; i < j.length; i++) {
@@ -38,7 +38,9 @@
                             o.text = typeof j[i] == 'object' ? j[i][settings.value] : j[i];
                             settings.target.get(0).options[i] = o;
                         }
-
+                        if($.isFunction(settings.afterChange)) {
+                        	settings.afterChange();
+                        }
 			// hand control back to browser for a moment
 			setTimeout(function () {
 			    settings.target
@@ -47,7 +49,7 @@
                                 .parent('select')
                                 .trigger('change');
 			}, 0);
-                    },
+				},
                     error: function (xhr, desc, er) {
                         // add whatever debug you want here.
 			alert("an error occurred");

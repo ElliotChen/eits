@@ -4,6 +4,10 @@
 <script type="text/javascript">
 <!--
 	$().ready(function() {
+		$('#psForm').ajaxForm({
+            target: '#productSelectDiv',
+            success : $.unblockUI
+        });
 		$('#editForm').ajaxForm({
 			target: '#main',
 			  beforeSubmit: function() {

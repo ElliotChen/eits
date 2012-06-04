@@ -17,11 +17,12 @@
 		    target: $('#exModel'),
 		    type:'POST',
 		    data:{series : $('#exSeries').val()},
-		    url: '${ctx}/ajax!ajaxModels.action'
+		    url: '${ctx}/ajax!ajaxModels.action',
+		    afterChange : resetModel
 		}).trigger('change');
 		
-		$('#exSeries').ufd({useUiCss:true});
-		
+		$('#exSeries').ufd();
+		$('#exModel').ufd();
 		/*$('#exModel').ufd({useUiCss:true});
 		$('#exSeries').multiselect({position: {
 			      my: 'left bottom',
@@ -34,7 +35,9 @@
 		   }, multiple:false}).multiselectfilter();
 		*/
 	});
-
+	function resetModel() {
+		$('#exModel').ufd("changeOptions");
+	}
 </script>
 
 <br />
@@ -53,7 +56,7 @@
 			</tr>
 			<tr>
 				<td>&nbsp;</td>
-				<td>Product Series:<s:select id="exSeries" name="exSeries" list="productSeries" listKey="id" listValue="name" headerKey="" headerValue="----" /></td>
+				<td>Product Series:<s:select id="exSeries" name="exSeries" list="productSeries" listKey="id" listValue="name" headerKey="" headerValue="----"/></td>
 				<td rowspan="2"><s:submit value="Search" /></td>
 			</tr>
 			<tr>

@@ -160,7 +160,7 @@
 </div>
 
 <table class="conditionborder">
-	<tr><td><input type="button" value="close" onclick="closeAjaxArticle()"/></td></tr>
+	<tr><td><input type="button" value="Close" onclick="closeAjaxArticle()"/></td></tr>
 </table>
 </s:form>
 </div>
