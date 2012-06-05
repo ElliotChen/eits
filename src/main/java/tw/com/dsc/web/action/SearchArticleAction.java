@@ -98,7 +98,8 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	public String index() {
 		this.languages = this.languageService.listAll();
 		this.productSeries = this.systemService.listAllSeries();
-		this.productModels = this.systemService.listAllModels();
+//		this.productModels = this.systemService.listAllModels();
+		this.productModels = new ArrayList<ProductModel>();
 		
 		faqArticles = this.articleService.searchFaqArticlesPage(faqArticles);
 		latestArticles = this.articleService.searchLatestArticlesPage(latestArticles);
@@ -115,6 +116,8 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 					this.example.setProduct(ps.getName());
 				}
 			}
+		} else if(StringUtils.isNotEmpty(this.exModel)) {
+			this.example.setProduct(this.exModel);
 		}
 		faqArticles = this.articleService.searchFaqArticlesPage(faqArticles);
 		latestArticles = this.articleService.searchLatestArticlesPage(latestArticles);

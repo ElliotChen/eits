@@ -25,8 +25,8 @@
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.blockUI.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.datepick.min.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.dataTables.min.js" />"></script>
-<script language="JavaScript" type="text/javascript" src="<c:url value="/js/hoverIntent.js" />"></script>
-<script language="JavaScript" type="text/javascript" src="<c:url value="/js/superfish.js" />"></script>
+<!-- <script language="JavaScript" type="text/javascript" src="<c:url value="/js/hoverIntent.js" />"></script>
+<script language="JavaScript" type="text/javascript" src="<c:url value="/js/superfish.js" />"></script> -->
 <script type="text/javascript">
 <!--
 	$().ready(function() {

@@ -63,7 +63,7 @@ $.widget(widgetName, {
 
 		this.wrapper = $([
 			'<span class="', css.wrapper, ' ', css.hidden, ' ', css.skin, '">',
-				'<input type="text" id="',inputId,'" class="', css.input, '" name="', inputName, '"/>',
+				'<input type="text" autocomplete="off" id="',inputId,'" class="', css.input, '" name="', inputName, '"/>',
 				'<button type="button" tabindex="-1" class="', css.button, '"><div class="', css.buttonIcon, '"/></button>',
 			//   <select .../> goes here
 			'</span>'

@@ -21,6 +21,7 @@ import tw.com.dsc.domain.AgentType;
 import tw.com.dsc.domain.Article;
 import tw.com.dsc.domain.ErrorType;
 import tw.com.dsc.domain.Group;
+import tw.com.dsc.domain.ProductModel;
 import tw.com.dsc.domain.ProductSeries;
 import tw.com.dsc.domain.Project;
 import tw.com.dsc.domain.Technology;
@@ -174,5 +175,17 @@ public class SystemServiceImplTest {
 		for (ProductSeries ps : listSeries) {
 			ps.getId();
 		}
+	}
+	
+	@Test
+	public void testGetAllModels() {
+		List<ProductModel> models = this.systemService.listAllModels();
+		logger.debug("check models size[{}]", models.size());
+	}
+	
+	@Test
+	public void testListProjectSeries() {
+		List<ProductSeries> series = this.systemService.listSeriesByProjectCode("30efc832-669d-478e-bc07-ee0eac68793b");
+		logger.debug("check series size[{}]", series.size());
 	}
 }

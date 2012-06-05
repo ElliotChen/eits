@@ -73,32 +73,20 @@ public class ProductSeriesDaoImpl implements ProductSeriesDao, InitializingBean 
 	@Override
 	public List<ProductSeries> listSeriesByProjectCode(String projectCode) {
 		List<SeriesModel> sms = jdbcTemplate.query(L3_SERIES_BY_PROJECT_CODE, new Object[] {projectCode}, new SeriesModelMapper());
-		logger.debug("Find ProductSeries[{}] for ProjectCode[{}]", sms.size(), projectCode);
+		logger.debug("Find ProductSeriesModel[{}] for ProjectCode[{}]", sms.size(), projectCode);
 		ProductSeries lastSeries = null;
-		if (!sms.isEmpty()) {
-			lastSeries = new ProductSeries();
-			SeriesModel sm = sms.get(0);
-			lastSeries.setId(sm.getSeriesId());
-			lastSeries.setName(sm.getSeriesName());
-			List<ProductModel> mods = new ArrayList<ProductModel>();
-			ProductModel mod = new ProductModel();
-			mod.setOid(sm.getModelId());
-			mod.setName(sm.getModelName());
-			mods.add(mod);
-			
-			lastSeries.setModels(mods);
-		}
 		List<ProductSeries> series = new ArrayList<ProductSeries>();
 		for (SeriesModel sm : sms) {
 			if (null == lastSeries || !sm.getSeriesId().equals(lastSeries.getId())) {
 				lastSeries = new ProductSeries();
 				lastSeries.setId(sm.getSeriesId());
 				lastSeries.setName(sm.getSeriesName());
-				List<ProductModel> mods = new ArrayList<ProductModel>();
+				lastSeries.setModels(new ArrayList<ProductModel>());
+				
 				ProductModel mod = new ProductModel();
 				mod.setOid(sm.getModelId());
 				mod.setName(sm.getModelName());
-				mods.add(mod);
+				lastSeries.getModels().add(mod);
 				
 				series.add(lastSeries);
 			} else {

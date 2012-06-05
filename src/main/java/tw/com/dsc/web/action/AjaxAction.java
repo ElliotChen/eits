@@ -3,6 +3,7 @@ package tw.com.dsc.web.action;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,12 @@ public class AjaxAction extends ActionSupport {
 		
 		options = new ArrayList<SelectOption>();
 		options.add(new SelectOption("", "-----"));
-		List<ProductModel> models = systemService.listModels(exSeries);
+		List<ProductModel> models = null;
+		if (StringUtils.isEmpty(this.exSeries)) {
+			models = systemService.listAllModels();
+		} else {
+			models = systemService.listModels(exSeries);
+		}
 		for (ProductModel model : models) {
 			options.add(new SelectOption(model.getName(), model.getName()));
 		}
