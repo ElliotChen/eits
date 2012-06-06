@@ -169,6 +169,7 @@ public class SystemServiceImpl implements SystemService {
 		
 		user.setName(account.getName());
 		user.setMail(account.getEmail());
+		user.setDefaultRoleId(account.getDefaultRoleId());
 		
 		SystemUtils.parseRole(this.accountRoleDao.listByAccount(user.getAccount()), user);
 		SystemUtils.parseGroup(account.getGroups(), user);

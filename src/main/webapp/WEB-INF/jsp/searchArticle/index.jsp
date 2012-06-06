@@ -46,22 +46,21 @@
 		<table class="conditionborder">
 			<tr>
 				<td><h3>Knowledge Base</h3></td>
-				<td align="right" colspan="2">Language:<s:select list="languages" listKey="oid" listValue="name" name="example.language.oid" value="EN" /></td>
+				<td align="right" colspan="4">Language:<s:select list="languages" listKey="oid" listValue="name" name="example.language.oid" value="EN" /></td>
 			</tr>
 			<tr>
-				<td colspan="3" style="line-height: 12px">Knowledge Base(KB) is designed to collect and publish users' valuable problem-solving experience for reference and reuse. 
-				An web-base service providing dynamic self-service information for online support requests. The Knowledge Base is where we post product information,
-				SB and SMB application, FAQs, and articles that might help solving user issues or problems. Please search your questions from Knowledge Base before submitting a request to the Support Feedback service.
+				<td colspan="5" style="line-height: 18px; font-size: 18px">The Knowledge Base is where we post product information, SB and SMB application, FAQs, and articles that might help solving user issues or problems. We strongly recommend to search your questions from Knowledge Base before submitting a request to our local support.
 				</td>
 			</tr>
 			<tr>
 				<td>&nbsp;</td>
-				<td>Product Series:<s:select id="exSeries" name="exSeries" list="productSeries" listKey="id" listValue="name" headerKey="" headerValue="----"/></td>
-				<td rowspan="2"><s:submit value="Search" /></td>
+				<td nowrap="nowrap">Product Series:</td><td><s:select id="exSeries" name="exSeries" list="productSeries" listKey="id" listValue="name" headerKey="" headerValue="----"/></td>
+				<td>&nbsp;</td>
 			</tr>
 			<tr>
-				<td>Keyword:<s:textfield name="example.keywords" maxlength="40" size="40" /></td>
-				<td>Product Model:<s:select id="exModel" name="exModel" list="productModels" listKey="name" listValue="name" headerKey="" headerValue="----"/></td>
+				<td nowrap="nowrap">Keyword:<s:textfield name="example.keywords" maxlength="40" size="40" /></td>
+				<td nowrap="nowrap">Product Model:</td><td><s:select id="exModel" name="exModel" list="productModels" listKey="name" listValue="name" headerKey="" headerValue="----"/></td>
+				<td><s:submit value="Search" /></td>
 			</tr>
 			</s:form>
 		</table>

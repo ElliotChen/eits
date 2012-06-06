@@ -96,11 +96,13 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	}
 
 	public String index() {
+		Language defaultLan = languageService.findDefaultLanguage();
+		
 		this.languages = this.languageService.listAll();
 		this.productSeries = this.systemService.listAllSeries();
 //		this.productModels = this.systemService.listAllModels();
 		this.productModels = new ArrayList<ProductModel>();
-		
+		example.setLanguage(new Language(defaultLan.getOid(), null));
 		faqArticles = this.articleService.searchFaqArticlesPage(faqArticles);
 		latestArticles = this.articleService.searchLatestArticlesPage(latestArticles);
 		return "index";
@@ -118,6 +120,9 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 			}
 		} else if(StringUtils.isNotEmpty(this.exModel)) {
 			this.example.setProduct(this.exModel);
+		}
+		if (null==this.example.getLanguage() || StringUtils.isEmpty(this.example.getLanguage().getOid())) {
+			this.example.setLanguage(new Language("EN", null));
 		}
 		faqArticles = this.articleService.searchFaqArticlesPage(faqArticles);
 		latestArticles = this.articleService.searchLatestArticlesPage(latestArticles);
@@ -168,6 +173,9 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 		} else {
 			faqArticles.setPageNo(1);
 		}
+		if (null==this.faqArticles.getExample().getLanguage() || StringUtils.isEmpty(this.faqArticles.getExample().getLanguage().getOid())) {
+			this.faqArticles.getExample().setLanguage(new Language("EN", null));
+		}
 		faqArticles = this.articleService.searchFaqArticlesPage(faqArticles);
 		return "faq";
 	}
@@ -177,6 +185,9 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 			latestArticles.setPageNo(pageNo);
 		} else {
 			latestArticles.setPageNo(1);
+		}
+		if (null==this.latestArticles.getExample().getLanguage() || StringUtils.isEmpty(this.latestArticles.getExample().getLanguage().getOid())) {
+			this.latestArticles.getExample().setLanguage(new Language("EN", null));
 		}
 		latestArticles = this.articleService.searchLatestArticlesPage(latestArticles);
 		return "latest";

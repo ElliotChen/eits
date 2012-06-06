@@ -2,6 +2,7 @@
 <%@ include file="/WEB-INF/jsp/commons/base.jsp"%>
 <script>
 	$().ready(function() {
+		switchMenu('m3');
 		$('#searchUnpublishedForm').ajaxForm({
             target: '#unpublishedDiv'
         });
@@ -33,9 +34,7 @@
 		$(".ui-datepicker-close").live("click", function () {
 			datepicker_CurrentInput.value = "";
 		});
-		$( "#entryDate1" ).datepicker(options);
-		$( "#entryDate2" ).datepicker(options);
-		$( "#entryDate3" ).datepicker(options);
+		$( ".calendar" ).datepicker(options);
 	});
 	
 </script>
@@ -49,13 +48,16 @@
 <table class="conditionborder">
 	<tr><th colspan="7">Unpublished Articles</th></tr>
 	<tr>
-	<td width="50"><input type="text" name="example1.articleId.oid" size="6"/></td>
-	<td width="300"><input type="text" name="example1.summary" size="35"/></td>
-	<td width="50"><input type="text" name="example1.entryUser" size="6"/></td>
-	<td width="90"><input type="text" name="example1.entryDate" size="10" id="entryDate1" readonly="readonly"/></td>
-	<td width="100"><input type="text" name="example1.product" size="10"/></td>
-	<td width="150"><s:select name="example1.status" list="{'WaitForApproving', 'WaitForProofRead', 'ReadyToUpdate', 'ReadyToPublish'}" listValue="%{getText('enum.Status.'+toString())}" headerKey="" headerValue="----"></s:select></td>
-	<td width="100"><s:submit value="Search" /></td>
+		<td>ID</td><td><input type="text" name="example1.articleId.oid" size="6" maxlength="6"/></td>
+		<td>Summary</td><td><input type="text" name="example1.summary" size="30"/></td>
+		<td>Agent</td><td><input type="text" name="example1.entryUser" size="15"/></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>Entry Date </td><td><input type="text" name="beginDate" size="10" id="beginDate1" readonly="readonly" class="calendar"/>~<input type="text" name="endDate" size="10" id="endDate1" readonly="readonly" class="calendar"/></td>
+		<td>Prod. Series</td><td><input type="text" name="example1.product" size="30"/></td>
+		<td>Status</td><td><s:select name="example1.status" list="{'WaitForApproving', 'WaitForProofRead', 'ReadyToUpdate', 'ReadyToPublish'}" listValue="%{getText('enum.Status.'+toString())}" headerKey="" headerValue="----"></s:select></td>
+		<td><s:submit value="Search" /></td>
 	</tr>
 </table>
 </s:form>
@@ -73,13 +75,15 @@
 <table class="conditionborder">
 	<tr><th colspan="6">Latest Draft Articles</th></tr>
 	<tr>
-	<td width="50"><input type="text" name="example2.articleId.oid" size="6"/></td>
-	<td width="300"><input type="text" name="example2.summary" size="35"/></td>
-	<td width="50"><input type="text" name="example2.entryUser" size="6"/></td>
-	<td width="90"><input type="text" name="example2.entryDate" size="10" id="entryDate2" readonly="readonly"/></td>
-	<td width="200"><input type="text" name="example2.product" size="17"/></td>
-	<td width="100"><s:submit value="Search" /></td>
-	</tr>
+		<td>ID</td><td><input type="text" name="example2.articleId.oid" size="6"/></td>
+		<td>Summary</td><td><input type="text" name="example2.summary" size="30"/></td>
+		<td>Agent</td><td><input type="text" name="example2.entryUser" size="15"/></td></tr>
+	<tr>
+	<tr>
+		<td>Entry Date </td><td><input type="text" name="beginDate" size="10" id="beginDate2" readonly="readonly" class="calendar"/>~<input type="text" name="endDate" size="10" id="endDate2" readonly="readonly" class="calendar"/></td>
+		<td>Prod. Series</td><td><input type="text" name="example2.product" size="30"/></td>
+		<td colspan="2" align="right"><s:submit value="Search" /></td>
+	<tr>
 </table>
 </s:form>
 
@@ -98,13 +102,15 @@
 <table class="conditionborder">
 	<tr><th colspan="6">Expired Article List</th></tr>
 	<tr>
-	<td width="50"><input type="text" name="example3.articleId.oid" size="6"/></td>
-	<td width="300"><input type="text" name="example3.summary" size="35"/></td>
-	<td width="50"><input type="text" name="example3.entryUser" size="6"/></td>
-	<td width="90"><input type="text" name="example3.entryDate" size="10" id="entryDate3" readonly="readonly"/></td>
-	<td width="200"><input type="text" name="example3.product" size="17"/></td>
-	<td width="100"><s:submit value="Search" /></td>
-	</tr>
+		<td>ID</td><td><input type="text" name="example3.articleId.oid" size="6"/></td>
+		<td>Summary</td><td><input type="text" name="example3.summary" size="30"/></td>
+		<td>Agent</td><td><input type="text" name="example3.entryUser" size="15"/></td></tr>
+	<tr>
+	<tr>
+		<td>Entry Date </td><td><input type="text" name="beginDate" size="10" id="beginDate3" readonly="readonly" class="calendar"/>~<input type="text" name="endDate" size="10" id="endDate3" readonly="readonly" class="calendar"/></td>
+		<td>Prod. Series</td><td><input type="text" name="example3.product" size="30"/></td>
+		<td colspan="2" align="right"><s:submit value="Search" /></td>
+	<tr>
 </table>
 </s:form>
 

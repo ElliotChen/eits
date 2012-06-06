@@ -19,7 +19,7 @@
 	}
 	
 	function suggest() {
-		if (!$('#suggestion').val()) {
+		if (!$('#suggestion').val().trim()) {
 			alert('Suggestion could not be empty!');
 			return false;
 		}

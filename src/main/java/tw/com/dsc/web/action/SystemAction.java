@@ -47,14 +47,14 @@ public class SystemAction extends BaseAction implements Preparable {
 	public String logout() {
 		loginUser = new User();
 		ThreadLocalHolder.setUser(loginUser);
-		return "index";
+		return "loginRedirect";
 	}
 
 	public String switchRole() {
 		User op = ThreadLocalHolder.getUser();
 		logger.debug("User[{}] try to switch role to [{}]", op.getAccount(), this.userRole);
 		op.switchRole(userRole);
-		return "index";
+		return "loginRedirect";
 	}
 	
 	public User getLoginUser() {

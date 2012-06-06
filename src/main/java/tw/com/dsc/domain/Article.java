@@ -603,6 +603,17 @@ public class Article extends AbstractSeqIdObjectAuditable {
 		return this.parser(this.product);
 	}
 	
+	public String getFormattedSeries() {
+		List<String> all = this.parser(this.product);
+		StringBuilder sb = new StringBuilder();		
+		for (String a : all) {
+			if (!a.startsWith("--")) {
+				sb.append(a+"<br>");
+			}
+		}
+		return sb.toString();
+	}
+	
 	public List<String> parser(String origin) {
 		List<String> result = new ArrayList<String>();
 		Map<String, List<String>> container = new TreeMap<String, List<String>>();

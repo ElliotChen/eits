@@ -133,11 +133,23 @@
 
 	<tr>
 		<th>TECHNOLOGY:</th>
-		<td colspan="3"><s:textarea name="technology" cols="60" rows="8" readonly="true"/></td>
+		<td colspan="3">
+		<textarea rows="8" cols="60" readonly="readonly">
+<s:iterator value="article.formattedTech" var="t">
+${t}
+</s:iterator>
+	</textarea>
+		</td>
 	</tr>
 	<tr>
 		<th>PRODUCT:</th>
-		<td colspan="3"><s:textarea name="product" cols="60" rows="8" readonly="true"/></td>
+		<td colspan="3" title="${article.product}">
+			<textarea rows="8" cols="60" readonly="readonly">
+<s:iterator value="article.formattedModel" var="m">
+${m}
+</s:iterator>
+			</textarea>
+		</td>
 	</tr>
 	<tr>
 		<th>FIRMWARE:</th>

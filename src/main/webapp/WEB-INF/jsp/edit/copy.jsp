@@ -58,6 +58,11 @@
 			  }
     	});
 		
+		for (var i in CKEDITOR.instances)
+        {
+            delete CKEDITOR.instances[i];
+        };
+        /*
 		delete CKEDITOR.instances['question'];
 		delete CKEDITOR.instances['answer'];
 		delete CKEDITOR.instances['scenario'];
@@ -66,7 +71,7 @@
 		delete CKEDITOR.instances['problem'];
 		delete CKEDITOR.instances['solution'];
 		delete CKEDITOR.instances['procedure'];
-		
+		*/
 		$('#question').ckeditor();
 		$('#answer').ckeditor();
 		$('#scenario').ckeditor();
@@ -75,6 +80,15 @@
 		$('#problem').ckeditor();
 		$('#solution').ckeditor();
 		$('#procedure').ckeditor();
+		
+		$('#squestion').ckeditor();
+		$('#sanswer').ckeditor();
+		$('#sscenario').ckeditor();
+		$('#sstep').ckeditor();
+		$('#sverification').ckeditor();
+		$('#sproblem').ckeditor();
+		$('#ssolution').ckeditor();
+		$('#sprocedure').ckeditor();
 		
 		switchType();
 		$('#techSelect').multiselect({beforeclose: function(){
@@ -218,50 +232,50 @@
 		</tr>
 		<tr class="ArticleType GeneralInfo SpecInfo">
 			<td>QUESTION</td>
-			<td><s:textarea name="sarticle.question" readonly="true" cols="40" rows="4" /></td>
+			<td><s:textarea id="squestion" name="sarticle.question" readonly="true" cols="40" rows="4" /></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('question')" /></td>
 			<td><s:textarea id="question" name="question" cols="40" rows="4" /></td>
 		</tr>
 		<tr class="ArticleType GeneralInfo SpecInfo">
 			<td>ANSWER</td>
-			<td><s:textarea name="sarticle.answer" readonly="true" cols="40" rows="8" /></td>
+			<td><s:textarea id="sanswer" name="sarticle.answer" readonly="true" cols="40" rows="8" /></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('answer')"/></td>
 			<td><s:textarea id="answer" name="answer" cols="40" rows="8" /></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
 			<td>SCENARIO DESCRIPTION</td>
-			<td><s:textarea name="sarticle.scenario" readonly="true" cols="40" rows="8" /></td>
+			<td><s:textarea id="sscenario" name="sarticle.scenario" readonly="true" cols="40" rows="8" /></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('scenario')" /></td>
 			<td><s:textarea id="scenario" name="scenario" cols="40" rows="4" /></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
 			<td>SETUP/STEP BY STEP PROCEDURE</td>
-			<td><s:textarea name="sarticle.step" readonly="true" cols="40" rows="8" /></td>
+			<td><s:textarea id="sstep" name="sarticle.step" readonly="true" cols="40" rows="8" /></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('step')" /></td>
 			<td><s:textarea id="step" name="step" cols="40" rows="4" /></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
 			<td>VERIFICATION</td>
-			<td><s:textarea name="sarticle.verification" readonly="true" cols="40" rows="8" /></td>
+			<td><s:textarea id="sverification" name="sarticle.verification" readonly="true" cols="40" rows="8" /></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('verification')" /></td>
 			<td><s:textarea id="verification" name="verification" cols="40" rows="4" /></td>
 		</tr>
 		
 		<tr class="ArticleType Issue">
 			<td>PROBLEM DESCRIPTION</td>
-			<td><s:textarea name="sarticle.problem" readonly="true" cols="40" rows="8" /></td>
+			<td><s:textarea id="sproblem" name="sarticle.problem" readonly="true" cols="40" rows="8" /></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('problem')" /></td>
 			<td><s:textarea id="problem" name="problem" cols="40" rows="4" /></td>
 		</tr>
 		<tr class="ArticleType Issue">
 			<td>SOLUTION</td>
-			<td><s:textarea name="sarticle.solution" readonly="true" cols="40" rows="8" /></td>
+			<td><s:textarea id="ssolution" name="sarticle.solution" readonly="true" cols="40" rows="8" /></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('solution')" /></td>
 			<td><s:textarea id="solution" name="solution" cols="40" rows="4" /></td>
 		</tr>
 		<tr class="ArticleType Issue">
 			<td>CONDITION/REPRODUCE PROCEDURE</td>
-			<td><s:textarea name="sarticle.procedure" readonly="true" cols="40" rows="8" /></td>
+			<td><s:textarea id="sprocedure" name="sarticle.procedure" readonly="true" cols="40" rows="8" /></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('procedure')" /></td>
 			<td><s:textarea id="procedure" name="procedure" cols="40" rows="4" /></td>
 		</tr>

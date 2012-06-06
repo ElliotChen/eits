@@ -28,7 +28,9 @@ import tw.com.dsc.domain.Source;
 import tw.com.dsc.domain.Technology;
 import tw.com.dsc.domain.support.BetweenCondition;
 import tw.com.dsc.domain.support.LikeMode;
+import tw.com.dsc.domain.support.OperationEnum;
 import tw.com.dsc.domain.support.Page;
+import tw.com.dsc.domain.support.SimpleCondition;
 import tw.com.dsc.service.ArticleLogService;
 import tw.com.dsc.service.ArticleService;
 import tw.com.dsc.service.AttachmentService;
@@ -99,6 +101,9 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	private Language lan;
 	private Boolean copySourceFirmware;
 	private String targetFirmware;
+	
+	private Date beginDate;
+	private Date endDate;
 	@Override
 	public void prepare() throws Exception {
 		if (null != this.oid) {
@@ -147,6 +152,20 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		return "list";
 	}
 	
+	protected void initDateCondition(Page<Article> page) {
+		logger.debug("Search Entry Date From {} to {}", this.beginDate, this.endDate);
+		if (null != this.beginDate && null != this.endDate) {
+			if (this.beginDate.before(this.endDate)) {
+				page.getConditions().add(new BetweenCondition("entryDate", DateUtils.begin(beginDate), DateUtils.end(endDate)));
+			} else {
+				page.getConditions().add(new BetweenCondition("entryDate", DateUtils.begin(endDate), DateUtils.end(beginDate)));
+			}
+		} else if (null != this.beginDate) {
+			page.getConditions().add(new SimpleCondition("entryDate", DateUtils.begin(this.beginDate), OperationEnum.GE));
+		} else if (null != this.endDate) {
+			page.getConditions().add(new SimpleCondition("entryDate", DateUtils.end(this.endDate), OperationEnum.LE));
+		}
+	}
 	public String searchUnpublished() {
 		page = new Page<Article>(example1);
 		if (null != pageNo) {
@@ -154,10 +173,15 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		} else {
 			page.setPageNo(1);
 		}
+		example1.setEntryDate(null);
+		this.initDateCondition(page);
+		page.setDescOrders(new String[] {"entryDate"});
+		/*
 		if (null != example1.getEntryDate()) {
 			page.getConditions().add(new BetweenCondition("entryDate", DateUtils.begin(example1.getEntryDate()), DateUtils.end(example1.getEntryDate())));
 			example1.setEntryDate(null);
 		}
+		*/
 		this.unpublishedArticles = this.articleService.searchUnpublishedPage(page);
 		return "unpublished";
 	}
@@ -169,10 +193,15 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		} else {
 			page.setPageNo(1);
 		}
+		example2.setEntryDate(null);
+		this.initDateCondition(page);
+		page.setDescOrders(new String[] {"entryDate"});
+		/*
 		if (null != example2.getEntryDate()) {
 			page.getConditions().add(new BetweenCondition("entryDate", DateUtils.begin(example2.getEntryDate()), DateUtils.end(example2.getEntryDate())));
 			example2.setEntryDate(null);
 		}
+		*/
 		this.draftArticles = this.articleService.searchDraftPage(page);
 		return "draft";
 	}
@@ -184,10 +213,15 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		} else {
 			page.setPageNo(1);
 		}
+		example3.setEntryDate(null);
+		this.initDateCondition(page);
+		page.setDescOrders(new String[] {"entryDate"});
+		/*
 		if (null != example3.getEntryDate()) {
 			page.getConditions().add(new BetweenCondition("entryDate", DateUtils.begin(example3.getEntryDate()), DateUtils.end(example3.getEntryDate())));
 			example3.setEntryDate(null);
 		}
+		*/
 		this.expiredArticles = this.articleService.searchExpiredPage(page);
 		return "expired";
 	}
@@ -712,6 +746,22 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 
 	public void setPageNo(Integer pageNo) {
 		this.pageNo = pageNo;
+	}
+
+	public Date getBeginDate() {
+		return beginDate;
+	}
+
+	public void setBeginDate(Date beginDate) {
+		this.beginDate = beginDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
 	}
 	
 }

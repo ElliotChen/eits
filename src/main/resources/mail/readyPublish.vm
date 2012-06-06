@@ -7,7 +7,7 @@
 <p>Dear All,</p>
 <br /><br />
 <p>
-Please check KB <a target="_blank" href="http://localhost:8080/eits/edit!quickEdit.action?oid=$articleOid"> [$articleOid] : [$summary]</a> from $entryUser.
+Please check KB <a target="_blank" href="http://172.23.5.212/KB/edit!quickEdit.action?oid=$articleOid"> [$articleOid] : [$summary]</a> from $entryUser.
 It's ready to be published. 
 </p>
 </body>

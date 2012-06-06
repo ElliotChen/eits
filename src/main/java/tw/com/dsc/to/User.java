@@ -42,18 +42,20 @@ public class User {
 	private List<String> l2AgentGroups = new ArrayList<String>();
 	
 	private List<UserRole> userRoles = new ArrayList<UserRole>();
+	
+	private String defaultRoleId;
 	public User() {
-		this("Guest","Guest","Guest","Unknown", new UserRole(Role.Guest, "Guest"));
+		this("Guest","Guest","Guest","Unknown", new UserRole(Role.Guest, "Guest"), "Guest");
 	}
 	
-	public User(String account, String password, String name, String ip, UserRole userRole) {
+	public User(String account, String password, String name, String ip, UserRole userRole, String defaultRoleId) {
 		this.account = account;
 		this.password = password;
 		this.name = name;
 		this.ip = ip;
 		this.currentUserRole = userRole;
 //		this.userRoles.add(userRole);
-		
+		this.defaultRoleId = defaultRoleId;
 		this.checkAuthorization();
 	}
 	/*
@@ -356,4 +358,14 @@ public class User {
 		}
 		return role;
 	}
+
+	public String getDefaultRoleId() {
+		return defaultRoleId;
+	}
+
+	public void setDefaultRoleId(String defaultRoleId) {
+		this.defaultRoleId = defaultRoleId;
+	}
+	
+	
 }

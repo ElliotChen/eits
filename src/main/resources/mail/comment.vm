@@ -7,7 +7,7 @@
 <p>Dear All,</p>
 <br /><br />
 <p>
-KB <a target="_blank" href="http://localhost:8080/eits/edit!quickEdit.action?oid=$articleOid"> [$articleOid] : [$summary]</a> has a new comment. <br>
+KB <a target="_blank" href="http://172.23.5.212/KB/edit!quickEdit.action?oid=$articleOid"> [$articleOid] : [$summary]</a> has a new comment. <br>
 $comment
 </p>
 </body>

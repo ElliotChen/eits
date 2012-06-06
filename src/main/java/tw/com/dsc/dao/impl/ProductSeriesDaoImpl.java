@@ -27,7 +27,7 @@ public class ProductSeriesDaoImpl implements ProductSeriesDao, InitializingBean 
 	private static final Logger logger = LoggerFactory.getLogger(ProductSeriesDaoImpl.class);
 	
 	private static final String L3_SERIES_ID = "SELECT ID, SERIES_NAME FROM EITS_SYS_PRODUCT_SERIES WHERE ID = ?";
-	private static final String L3_SERIES = "SELECT ID, SERIES_NAME FROM EITS_SYS_PRODUCT_SERIES";
+	private static final String L3_SERIES = "SELECT ID, SERIES_NAME FROM EITS_SYS_PRODUCT_SERIES ORDER BY SERIES_NAME asc";
 	private static final String L3_MODELS = "SELECT t.ID, t.MODEL_NAME from eits_sys_product_model t where NVL(END_OF_CSO_DATE, '3000/01/01') >= TO_CHAR(sysdate, 'YYYY/MM/DD') And t.SERIES_ID = ? and is_show ='Y'  order by t.MODEL_NAME asc";
 	private static final String L3_ALL_MODELS = "SELECT t.ID, t.MODEL_NAME from eits_sys_product_model t where NVL(END_OF_CSO_DATE, '3000/01/01') >= TO_CHAR(sysdate, 'YYYY/MM/DD') and is_show ='Y'  order by t.MODEL_NAME asc";
 	private static final String L3_BRANCH_SERIES = "SELECT DISTINCT PS.ID, PS.SERIES_NAME FROM EITS_SYS_PRODUCT_MODEL_SETUP PMS INNER JOIN EITS_SYS_PRODUCT_MODEL PM ON (PMS.ID = PM.ID) INNER JOIN EITS_SYS_PRODUCT_SERIES PS ON (PM.SERIES_ID = PS.ID)  where PMS.BRANCH_CODE = ? And NVL(PM.END_OF_CSO_DATE, '3000/01/01') >= TO_CHAR(sysdate, 'YYYY/MM/DD') order by PS.SERIES_NAME asc";

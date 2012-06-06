@@ -146,6 +146,7 @@
 			pathClass : 'current'
 		});
 		*/
+		if (action) {
 		$.ajax({
 			url: action,
 			type: 'POST',
@@ -156,6 +157,7 @@
 				alert('Loading failed');
 			}
 		});
+		}
 	}
 	
 	function switchRole(userRole) {

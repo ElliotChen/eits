@@ -36,7 +36,18 @@ public abstract class SystemUtils {
 		}
 
 		if (!user.getUserRoles().isEmpty()) {
-			user.switchRole(user.getUserRoles().get(0).getRole());
+			Role role = null;
+			for (UserRole ur : user.getUserRoles()) {
+				if (ur.getRole().getValue().equalsIgnoreCase(user.getDefaultRoleId())) {
+					role = ur.getRole();
+				}
+			}
+			if (null != role) {
+				user.switchRole(role);
+			} else {
+				logger.error("Can't find Default Roie[{}] in {}", user.getDefaultRoleId(), user);
+				user.switchRole(user.getUserRoles().get(0).getRole());
+			}
 		}
 	}
 	public static String parseGroupId(String gid) {
