@@ -243,6 +243,8 @@ $.widget(widgetName, {
 		this.listScroll.bind("DOMMouseScroll mousewheel", function(e) {
 			self.stopEvent(e);
 			e = e ? e : window.event;
+			/*EC Fixed*/
+			if(!e.detail && !e.wheelDelta){e = e.originalEvent;}
 			var normal = e.detail ? e.detail * -1 : e.wheelDelta / 40;
 			
 			var curST = self.listScroll.scrollTop();

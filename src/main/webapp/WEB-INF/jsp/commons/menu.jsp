@@ -10,8 +10,7 @@
 	<li><a id="m5" href="javascript:switchMenu('m5', 'searchArticle!publishedIndex.action');" style="text-transform: uppercase">L3 Latest Published Articles</a></li>
 	</s:if>
 	<s:if test="user.l3Admin">
-		<li><a id="m4" href="javascript:switchMenu('m4', 'language!index.action');" style="text-transform: uppercase">Language</a></li>
+	<li><a id="m6" href="javascript:switchMenu('m6', 'export!export.action');" style="text-transform: uppercase">Export</a></li>
+	<li><a id="m4" href="javascript:switchMenu('m4', 'language!index.action');" style="text-transform: uppercase">Language</a></li>
 	</s:if>
-	
-	
 </ul>

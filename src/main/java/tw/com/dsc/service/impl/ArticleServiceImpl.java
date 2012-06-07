@@ -9,9 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import tw.com.dsc.dao.ArticleDao;
@@ -35,6 +33,7 @@ import tw.com.dsc.domain.support.Page;
 import tw.com.dsc.domain.support.SimpleCondition;
 import tw.com.dsc.service.ArticleService;
 import tw.com.dsc.service.MailService;
+import tw.com.dsc.to.ExportInfo;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.ThreadLocalHolder;
 
@@ -650,5 +649,23 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		List<StatisticsData> statis = this.statisticsDataDao.listByExample(new StatisticsData(), conds, LikeMode.NONE, null, null);
 		
 		return !statis.isEmpty();
+	}
+	
+	@Override
+	public List<ExportInfo> listProofReadArticles() {
+		List<ExportInfo> infos = new ArrayList<ExportInfo>();
+		
+		Article example = new Article();
+		example.setStatus(Status.WaitForProofRead);
+		ExportInfo info = null;
+		for (Article article : this.dao.listByExample(example, null, null, new String[] {"entryUser"}, null)) {
+			if (null == info || !article.getEntryUser().equals(info.getAccount())) {
+				info = new ExportInfo();
+				info.setAccount(article.getEntryUser());
+				infos.add(info);
+			}
+			info.getArticles().add(article);
+		}
+		return infos;
 	}
 }

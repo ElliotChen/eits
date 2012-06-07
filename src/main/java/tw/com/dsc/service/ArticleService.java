@@ -1,7 +1,10 @@
 package tw.com.dsc.service;
 
+import java.util.List;
+
 import tw.com.dsc.domain.Article;
 import tw.com.dsc.domain.support.Page;
+import tw.com.dsc.to.ExportInfo;
 
 public interface ArticleService extends BaseDomainService<Article, Long> {
 	void draftNewArticle(Article article);
@@ -35,4 +38,5 @@ public interface ArticleService extends BaseDomainService<Article, Long> {
 	String getNextArticleId();
 	
 	Boolean checkRated(Long articleOid, String account);
+	List<ExportInfo> listProofReadArticles();
 }

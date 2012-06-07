@@ -12,8 +12,8 @@
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/superfish-navbar.css" />" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/menu.css" />" />-->
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/newMenu.css" />" />
-<!-- <link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.dataTables.css" />" />
-<link rel="stylesheet" type="text/css" href="<c:url value="/css/displaytag.css" />" />-->
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.dataTables.css" />" />
+<!-- <link rel="stylesheet" type="text/css" href="<c:url value="/css/displaytag.css" />" />-->
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/jquery.datepick.css" />" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/style.css" />" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/login.css" />" />

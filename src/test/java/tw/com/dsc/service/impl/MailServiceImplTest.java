@@ -38,10 +38,11 @@ public class MailServiceImplTest {
 	@Test
 	public void testZyxelMail() {
 		SimpleMailMessage mail = new SimpleMailMessage();
-		mail.setFrom("test@elliot.tw");
+		mail.setReplyTo("tasker@zyxel.com.tw");
+		mail.setFrom("tasker@zyxel.com.tw");
 		mail.setTo("chenensign@gmail.com");
 		mail.setSubject("zyxel");
 		mail.setText("TT");
-		this.javaMailSender.send(mail );
+		this.javaMailSender.send(mail);
 	}
 }

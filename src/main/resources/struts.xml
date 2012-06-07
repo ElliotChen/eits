@@ -63,6 +63,10 @@
 			<result name="language">/WEB-INF/jsp/language/language.jsp</result>
 		</action>
 		
+		<action name="export!*" method="{1}" class="exportAction">
+			<result name="exportHtml">/WEB-INF/jsp/export/exportHtml.jsp</result>
+		</action>
+		
 		<action name="ajax!*" method="{1}" class="ajaxAction">
 			<result name="jsonModels" type="json">
 				<param name="root">options</param>

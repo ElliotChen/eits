@@ -58,11 +58,17 @@ public class SystemServiceImpl implements SystemService {
 	@Override
 	@Cacheable(value="series")
 	public List<ProductSeries> listAllSeries() {
-		List<ProductSeries> series = this.productSeriesDao.listAllSeries();
-		for (ProductSeries s : series) {
-			s.getModels().addAll(this.listModels(s.getId()));
+		List<ProductSeries> result = new ArrayList<ProductSeries>();
+//		List<ProductSeries> series = this.productSeriesDao.listAllSeries();
+		for (ProductSeries s : this.productSeriesDao.listAllSeries()) {
+			List<ProductModel> models = this.listModels(s.getId());
+			if (!models.isEmpty()) {
+				s.getModels().addAll(models);
+				result.add(s);
+			}
+			
 		}
-		return series;
+		return result;
 	}
 	
 	@Override
@@ -78,11 +84,17 @@ public class SystemServiceImpl implements SystemService {
 			logger.error("List Series for Branch Code can't accept emtpy parameter. Please check login user data.");
 			return new ArrayList<ProductSeries>();
 		}
-		List<ProductSeries> series = this.productSeriesDao.listSeries(branchCode);
-		for (ProductSeries s : series) {
-			s.getModels().addAll(this.listModels(s.getId(), branchCode));
+		List<ProductSeries> result = new ArrayList<ProductSeries>();
+//		List<ProductSeries> series = this.productSeriesDao.listSeries(branchCode);
+		for (ProductSeries s : this.productSeriesDao.listSeries(branchCode)) {
+			List<ProductModel> models = this.listModels(s.getId(), branchCode);
+			if (!models.isEmpty()) {
+				s.getModels().addAll(models);
+				result.add(s);
+			}
+			
 		}
-		return series;
+		return result;
 	}
 
 	@Override
