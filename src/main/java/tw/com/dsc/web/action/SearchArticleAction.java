@@ -21,6 +21,7 @@ import tw.com.dsc.domain.ProductModel;
 import tw.com.dsc.domain.ProductSeries;
 import tw.com.dsc.domain.Status;
 import tw.com.dsc.domain.support.Condition;
+import tw.com.dsc.domain.support.InCondition;
 import tw.com.dsc.domain.support.LikeMode;
 import tw.com.dsc.domain.support.OperationEnum;
 import tw.com.dsc.domain.support.Page;
@@ -73,6 +74,11 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	
 	private List<ProductSeries> productSeries;
 	private List<ProductModel> productModels;
+	
+	/**
+	 * 已使用的language
+	 */
+	private List<Language> usedLanguage;
 	@Override
 	public void prepare() throws Exception {
 		if (null != oid) {
@@ -133,8 +139,14 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	public String detail() {
 		if (StringUtils.isNotEmpty(this.articleId)) {
 //			example.setArticleId(new ArticleId(articleId));
+			Language dlan = this.languageService.findDefaultLanguage();
 			List<Condition> conds = new ArrayList<Condition>();
 			conds.add(new SimpleCondition("articleId.oid", articleId, OperationEnum.EQ));
+			conds.add(new InCondition("status", new Object[] {Status.Published,Status.WaitForRepublish}));
+			/*
+			if (null != dlan) {
+				conds.add(new SimpleCondition("language.oid", dlan.getOid(), OperationEnum.EQ));
+			*/
 			sameArticles = this.articleService.listByExample(example, conds, LikeMode.NONE, null, null);
 			if (sameArticles.isEmpty()) {
 				this.addActionError("No such article id : ["+this.articleId+"]");
@@ -142,12 +154,14 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 			}
 			this.article = sameArticles.get(0);
 		} else {
+			List<Condition> conds = new ArrayList<Condition>();
+			conds.add(new InCondition("status", new Object[] {Status.Published,Status.WaitForRepublish}));
 			example.setArticleId(this.article.getArticleId());
-			sameArticles = this.articleService.listByExample(example);
+			sameArticles = this.articleService.listByExample(example, conds, LikeMode.NONE, null, null);
 		}
 		
 		User op = ThreadLocalHolder.getOperator();
-		if (article.getStatus() != Status.Published) {
+		if (article.getStatus() != Status.Published && article.getStatus() != Status.WaitForRepublish) {
 			this.addActionError("This article is not public.");
 			return "blank";
 		} else if (Level.L3CSO == article.getLevel() && AgentType.L3 != op.getAgentType()) {
@@ -159,6 +173,7 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 		}
 		
 		this.articleService.addHitCount(article);
+		this.usedLanguage = this.articleService.listUsedLanguage(article);
 		
 		this.rated = Boolean.FALSE;
 		if (!op.isGuest()) {
@@ -401,5 +416,15 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	public void setProductModels(List<ProductModel> productModels) {
 		this.productModels = productModels;
 	}
+
+	public List<Language> getUsedLanguage() {
+		return usedLanguage;
+	}
+
+	public void setUsedLanguage(List<Language> usedLanguage) {
+		this.usedLanguage = usedLanguage;
+	}
+	
+	
 
 }

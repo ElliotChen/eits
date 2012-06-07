@@ -3,6 +3,7 @@ package tw.com.dsc.service;
 import java.util.List;
 
 import tw.com.dsc.domain.Article;
+import tw.com.dsc.domain.Language;
 import tw.com.dsc.domain.support.Page;
 import tw.com.dsc.to.ExportInfo;
 
@@ -39,4 +40,5 @@ public interface ArticleService extends BaseDomainService<Article, Long> {
 	
 	Boolean checkRated(Long articleOid, String account);
 	List<ExportInfo> listProofReadArticles();
+	List<Language> listUsedLanguage(Article article);
 }

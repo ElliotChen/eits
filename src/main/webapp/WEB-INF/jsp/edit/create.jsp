@@ -144,11 +144,14 @@
 <div class="condition">
 <s:form id="editForm" namespace="/" action="edit!create" theme="simple" method="POST" enctype ="multipart/form-data">
 	<s:hidden name="entryUser" />
+	<s:hidden name="articleId.oid" />
 	<table class="conditionborder">
+		<!-- 
 		<tr>
 			<td>ARTICLE ID:</td>
 			<td><s:textfield name="articleId.oid" maxlength="6" size="6" readonly="true"/>(Draft)</td>
 		</tr>
+		 -->
 		<tr>
 			<td>LANGUAGE:</td>
 			<td><s:select list="languages" listKey="oid" listValue="name" name="languageOid" value="language.oid"/></td>

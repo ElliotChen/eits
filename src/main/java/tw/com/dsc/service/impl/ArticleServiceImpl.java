@@ -22,6 +22,7 @@ import tw.com.dsc.domain.Article;
 import tw.com.dsc.domain.ArticleId;
 import tw.com.dsc.domain.ArticleLog;
 import tw.com.dsc.domain.ExpireType;
+import tw.com.dsc.domain.Language;
 import tw.com.dsc.domain.Level;
 import tw.com.dsc.domain.StatisticsData;
 import tw.com.dsc.domain.Status;
@@ -667,5 +668,21 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			info.getArticles().add(article);
 		}
 		return infos;
+	}
+	
+	
+	public List<Language> listUsedLanguage(Article article) {
+		List<Language> usedLanguage = new ArrayList<Language>();
+		
+		Article example = new Article();
+		example.setArticleId(article.getArticleId());
+		
+		List<Article> articles = this.dao.listByExample(example);
+		
+		for (Article art : articles) {
+			usedLanguage.add(art.getLanguage());
+		}
+		
+		return usedLanguage;
 	}
 }

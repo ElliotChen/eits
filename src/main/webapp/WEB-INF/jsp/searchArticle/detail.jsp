@@ -20,7 +20,7 @@
 	
 	function suggest() {
 		if (!$('#suggestion').val().trim()) {
-			alert('Suggestion could not be empty!');
+			alert('Please leave us your comment.');
 			return false;
 		}
 		$.post('${ctx}/searchArticle!suggest.action', {
@@ -44,7 +44,13 @@
 <s:form id="transform" action="edit!preCopy" theme="simple">
 	<input type="hidden" name="sourceOid" value="${article.oid}" />
 <table class="conditionborder">
-	<tr><td><input type="submit" value="Translate"/></td></tr>
+	<tr><td><input type="submit" value="Translate"/></td><td>Translated Language:</td>
+		<td>
+			<s:iterator value="usedLanguage" var="lang">
+				<s:property value="name"/> | 
+			</s:iterator>
+		</td>
+	</tr>
 </table>
 </s:form>
 </s:if>
@@ -52,28 +58,36 @@
 <s:form id="detailform" action="article!preCopy" theme="simple">
 <table class="conditionborder">
 	<tr>
-		<th>ARTICLE ID</th>
+		<th>ARTICLE ID:</th>
 		<td>${article.articleId.oid}</td>
-		<th>TYPE</th>
+		<th>TYPE:</th>
 		<td><s:property value="getText('enum.ArticleType.' + article.type)" /></td>
-		<th>Available Language</th>
+		<th>AVAILABLE LANGUAGE:</th>
 		<td><s:select list="sameArticles" listKey="oid" listValue="language.name" onchange="viewArticle(this.value)" value="oid"></s:select></td>
 	</tr>
 	<tr>
-		<th>LEVEL</th>
+		<th>LEVEL:</th>
 		<td>${article.level}</td>
-		<th>FIRMWARE</th>
+		<th>FIRMWARE:</th>
 		<td>${article.firmware}</td>
 		<th>&nbsp;</th>
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
-		<th>VIEWS</th>
+		<th>VIEWS:</th>
 		<td>${article.hitCount}</td>
-		<th>RATING</th>
+		<th>RATING:</th>
 		<td>${article.ratingInfo}</td>
 		<th>&nbsp;</th>
 		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<th>TECHNOLOGY:</th>
+		<td colspan="5">${article.hitCount}</td>
+	</tr>
+	<tr>
+		<th>PRODUCT MODEL:</th>
+		<td colspan="5">${article.hitCount}</td>
 	</tr>
 	<tr>
 		<th>TECHNOLOGY</th>

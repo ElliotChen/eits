@@ -632,7 +632,7 @@ public class Article extends AbstractSeqIdObjectAuditable {
 						values.add("--"+value);
 						container.put(key, values);
 					}
-					logger.debug("Key[{}] -- Value[{}]", key, value);
+//					logger.debug("Key[{}] -- Value[{}]", key, value);
 				}
 			}
 		}
@@ -642,7 +642,12 @@ public class Article extends AbstractSeqIdObjectAuditable {
 				result.add(value);
 			}
 		}
-		
+		if (logger.isDebugEnabled()) {
+			logger.debug("Parse Data[{}] to ", origin);
+			for (String format : result) {
+				logger.debug(format);
+			}
+		}
 		return result;
 	}
 }

@@ -25,8 +25,10 @@ import tw.com.dsc.domain.Language;
 import tw.com.dsc.domain.ProductSeries;
 import tw.com.dsc.domain.Project;
 import tw.com.dsc.domain.Source;
+import tw.com.dsc.domain.Status;
 import tw.com.dsc.domain.Technology;
 import tw.com.dsc.domain.support.BetweenCondition;
+import tw.com.dsc.domain.support.Condition;
 import tw.com.dsc.domain.support.LikeMode;
 import tw.com.dsc.domain.support.OperationEnum;
 import tw.com.dsc.domain.support.Page;
@@ -104,6 +106,10 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	
 	private Date beginDate;
 	private Date endDate;
+	/**
+	 * 已使用的language
+	 */
+	private List<Language> usedLanguage;
 	@Override
 	public void prepare() throws Exception {
 		if (null != this.oid) {
@@ -234,9 +240,9 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	}
 	
 	public String preCreate() {
-		String articleId = this.articleService.getNextArticleId();
-		logger.debug("Get new ArticleId[{}]", articleId);
-		article.setArticleId(new ArticleId(articleId));
+//		String articleId = this.articleService.getNextArticleId();
+//		logger.debug("Get new ArticleId[{}]", articleId);
+//		article.setArticleId(new ArticleId(articleId));
 		article.setType(ArticleType.GeneralInfo);
 		article.setLanguage(this.languageService.findDefaultLanguage());
 		article.setHitCount(0);
@@ -255,6 +261,9 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 			this.article.setFirmware(attachment);
 		}
 		*/
+		String articleId = this.articleService.getNextArticleId();
+		logger.debug("Get new ArticleId[{}]", articleId);
+		article.setArticleId(new ArticleId(articleId));
 		if (null != this.lan) {
 			this.article.setLanguage(lan);
 		}
@@ -333,6 +342,13 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 			this.copyLanguages.remove(this.sarticle.getLanguage());
 		}
 		
+		this.usedLanguage = this.articleService.listUsedLanguage(this.sarticle);
+		
+		this.copyLanguages.removeAll(this.usedLanguage);
+		if (this.copyLanguages.isEmpty()) {
+			this.addActionError("There is no available language to translate.");
+			return "blank";
+		}
 		return "copy";
 	}
 	
@@ -762,6 +778,14 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+
+	public List<Language> getUsedLanguage() {
+		return usedLanguage;
+	}
+
+	public void setUsedLanguage(List<Language> usedLanguage) {
+		this.usedLanguage = usedLanguage;
 	}
 	
 }
