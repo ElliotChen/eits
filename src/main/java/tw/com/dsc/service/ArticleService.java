@@ -40,5 +40,7 @@ public interface ArticleService extends BaseDomainService<Article, Long> {
 	
 	Boolean checkRated(Long articleOid, String account);
 	List<ExportInfo> listProofReadArticles();
+	List<ExportInfo> listProofReadNews();
+	List<ExportInfo> listProofReadKB();
 	List<Language> listUsedLanguage(Article article);
 }

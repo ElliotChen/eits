@@ -151,9 +151,17 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	}
 	
 	public String list() {
-		this.unpublishedArticles = this.articleService.searchUnpublishedPage(new Page<Article>(example));
-		this.draftArticles = this.articleService.searchDraftPage(new Page<Article>(example));
-		this.expiredArticles = this.articleService.searchExpiredPage(new Page<Article>(example));
+		Page<Article> pag1 = new Page<Article>(example);
+		pag1.setDescOrders(new String[] {"oid"});
+		
+		Page<Article> pag2 = new Page<Article>(example);
+		pag2.setDescOrders(new String[] {"oid"});
+		
+		Page<Article> pag3 = new Page<Article>(example);
+		pag3.setDescOrders(new String[] {"oid"});
+		this.unpublishedArticles = this.articleService.searchUnpublishedPage(pag1);
+		this.draftArticles = this.articleService.searchDraftPage(pag2);
+		this.expiredArticles = this.articleService.searchExpiredPage(pag3);
 		
 		return "list";
 	}
@@ -181,7 +189,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		}
 		example1.setEntryDate(null);
 		this.initDateCondition(page);
-		page.setDescOrders(new String[] {"entryDate"});
+		page.setDescOrders(new String[] {"oid"});
 		/*
 		if (null != example1.getEntryDate()) {
 			page.getConditions().add(new BetweenCondition("entryDate", DateUtils.begin(example1.getEntryDate()), DateUtils.end(example1.getEntryDate())));
@@ -201,7 +209,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		}
 		example2.setEntryDate(null);
 		this.initDateCondition(page);
-		page.setDescOrders(new String[] {"entryDate"});
+		page.setDescOrders(new String[] {"oid"});
 		/*
 		if (null != example2.getEntryDate()) {
 			page.getConditions().add(new BetweenCondition("entryDate", DateUtils.begin(example2.getEntryDate()), DateUtils.end(example2.getEntryDate())));
@@ -221,7 +229,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		}
 		example3.setEntryDate(null);
 		this.initDateCondition(page);
-		page.setDescOrders(new String[] {"entryDate"});
+		page.setDescOrders(new String[] {"oid"});
 		/*
 		if (null != example3.getEntryDate()) {
 			page.getConditions().add(new BetweenCondition("entryDate", DateUtils.begin(example3.getEntryDate()), DateUtils.end(example3.getEntryDate())));

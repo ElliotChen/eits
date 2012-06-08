@@ -23,6 +23,8 @@ public class ExportAction extends BaseAction implements Preparable {
 	
 	
 	private List<ExportInfo> infos;
+	
+	private String label;
 	@Override
 	public void prepare() throws Exception {
 		
@@ -30,7 +32,17 @@ public class ExportAction extends BaseAction implements Preparable {
 	
 	public String export() {
 		this.infos = this.articleService.listProofReadArticles();
-		return "exportHtml";
+		return "export";
+	}
+	public String exportNews() {
+		this.label = "Zyxel News";
+		this.infos = this.articleService.listProofReadNews();
+		return "export";
+	}
+	public String exportKB() {
+		this.label = "Zyxel KB";
+		this.infos = this.articleService.listProofReadKB();
+		return "export";
 	}
 	public ArticleService getArticleService() {
 		return articleService;
@@ -47,4 +59,13 @@ public class ExportAction extends BaseAction implements Preparable {
 		this.infos = infos;
 	}
 
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	
 }

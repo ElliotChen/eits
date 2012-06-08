@@ -81,6 +81,7 @@
 		<th>&nbsp;</th>
 		<td>&nbsp;</td>
 	</tr>
+	<%-- 
 	<tr>
 		<th>TECHNOLOGY:</th>
 		<td colspan="5">${article.hitCount}</td>
@@ -89,13 +90,14 @@
 		<th>PRODUCT MODEL:</th>
 		<td colspan="5">${article.hitCount}</td>
 	</tr>
+	--%>
 	<tr>
-		<th>TECHNOLOGY</th>
+		<th>TECHNOLOGY:</th>
 		<td><s:iterator value="article.formattedTech" var="tech">
 				${tech}<br/>
 			</s:iterator>
 		</td>
-		<th>MODEL</th>
+		<th>MODEL:</th>
 		<td title="${article.product}">
 			<s:iterator value="article.formattedLiteModel" var="model">
 				${model}<br/>

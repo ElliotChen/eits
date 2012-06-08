@@ -23,6 +23,7 @@ public class SystemAction extends BaseAction implements Preparable {
 	
 	private Role userRole;
 	
+	private String token;
 	@Autowired
 	private SystemService systemService;
 	@Override
@@ -57,6 +58,11 @@ public class SystemAction extends BaseAction implements Preparable {
 		return "loginRedirect";
 	}
 	
+	public String eitsLogin() {
+		this.addActionError("Not implementation.");
+		return "loginRedirect";
+	}
+	
 	public User getLoginUser() {
 		return loginUser;
 	}
@@ -75,4 +81,11 @@ public class SystemAction extends BaseAction implements Preparable {
 	public void setSystemService(SystemService systemService) {
 		this.systemService = systemService;
 	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
+	}
+	
 }

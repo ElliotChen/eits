@@ -670,6 +670,42 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		return infos;
 	}
 	
+	@Override
+	public List<ExportInfo> listProofReadNews() {
+		List<ExportInfo> infos = new ArrayList<ExportInfo>();
+		
+		Article example = new Article();
+		example.setStatus(Status.WaitForProofRead);
+		example.setNews(Boolean.TRUE);
+		ExportInfo info = null;
+		for (Article article : this.dao.listByExample(example, null, null, new String[] {"entryUser"}, null)) {
+			if (null == info || !article.getEntryUser().equals(info.getAccount())) {
+				info = new ExportInfo();
+				info.setAccount(article.getEntryUser());
+				infos.add(info);
+			}
+			info.getArticles().add(article);
+		}
+		return infos;
+	}
+	@Override
+	public List<ExportInfo> listProofReadKB() {
+		List<ExportInfo> infos = new ArrayList<ExportInfo>();
+		
+		Article example = new Article();
+		example.setStatus(Status.WaitForProofRead);
+		example.setNews(Boolean.FALSE);
+		ExportInfo info = null;
+		for (Article article : this.dao.listByExample(example, null, null, new String[] {"entryUser"}, null)) {
+			if (null == info || !article.getEntryUser().equals(info.getAccount())) {
+				info = new ExportInfo();
+				info.setAccount(article.getEntryUser());
+				infos.add(info);
+			}
+			info.getArticles().add(article);
+		}
+		return infos;
+	}
 	
 	public List<Language> listUsedLanguage(Article article) {
 		List<Language> usedLanguage = new ArrayList<Language>();

@@ -7,7 +7,7 @@
 	});
 </script>
 <div class="logo_zyxel">
-	<a href="http://www.zyxel.com.tw/"><img src="${ctx}/images/logo_zyxel.jpg" alt="ZyXEL Logo"></a>
+	<a href="${ctx}"><img src="${ctx}/images/logo_zyxel.jpg" alt="ZyXEL Logo" /></a>
 	<s:if test="user.guest">
 			Hi! Guest
 	</s:if>

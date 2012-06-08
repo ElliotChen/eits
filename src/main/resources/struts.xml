@@ -67,6 +67,7 @@
 		<action name="export!*" method="{1}" class="exportAction">
 			<result name="exportHtml">/WEB-INF/jsp/export/exportHtml.jsp</result>
 			<result name="exportWord">/WEB-INF/jsp/export/exportWord.jsp</result>
+			<result name="export">/WEB-INF/jsp/export/export.jsp</result>
 		</action>
 		
 		<action name="ajax!*" method="{1}" class="ajaxAction">
