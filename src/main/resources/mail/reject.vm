@@ -7,8 +7,6 @@
 <p>Hi $entryUser,</p>
 <br /><br />
 <p>
-KB <a target="_blank" href="http://172.23.5.212/KB/edit!quickEdit.action?oid=$articleOid"> [$articleOid] : [$summary]</a> from $entryUser has been reject for reason as following
-$reason.
-</p>
+Please provide email template asap.</p>
 </body>
 </html>

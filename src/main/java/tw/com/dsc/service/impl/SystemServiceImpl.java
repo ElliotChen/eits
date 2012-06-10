@@ -3,6 +3,10 @@ package tw.com.dsc.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.crypto.BadPaddingException;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
@@ -37,7 +41,9 @@ import tw.com.dsc.to.Model;
 import tw.com.dsc.to.Series;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.DateUtils;
+import tw.com.dsc.util.EncryptUtils;
 import tw.com.dsc.util.SystemUtils;
+import tw.com.dsc.util.ThreadLocalHolder;
 
 @Service("systemService")
 @Transactional(readOnly=true)
@@ -275,6 +281,60 @@ public class SystemServiceImpl implements SystemService {
 		return this.productSeriesDao.listSeriesByProjectCode(project.getProjectCode());
 	}
 	
+	@Override
+	public ErrorType eitsLogin(final String token) {
+		User user = ThreadLocalHolder.getOperator();
+		logger.info("Eits Login Token [{}]", token);
+		String base64 = "";
+		try {
+			base64 = EncryptUtils.decrypt(token);
+		} catch (BadPaddingException e) {
+			e.printStackTrace();
+		}
+		Pattern eitsPattern = Pattern.compile("^(.*)____(.*)____(.*)$");
+		
+		Matcher matcher = eitsPattern.matcher(base64);
+		if (!matcher.matches()) {
+			logger.error("Incorrect token data [{}] From host[{}]", token, user.getIp());
+			return ErrorType.TokenIncorrect;
+		}
+		
+		String activeDate = matcher.group(1);
+		String accountId = matcher.group(2);
+		String host = matcher.group(3);
+		
+		logger.info("Parsing token result Date[{}], Account[{}], Host[{}]", new String[] {activeDate, accountId, host});
+		
+		Date date = DateUtils.pareseDateTime(activeDate);
+		if (date.before(new Date())) {
+			return ErrorType.TokenExpired;
+		}
+		
+		Account example = new Account();
+		List<Condition> conds = new ArrayList<Condition>();
+		conds.add(new SimpleCondition("id", accountId, OperationEnum.EQ, true));
+		List<Account> accounts = accountDao.listByExample(example, conds, null, null, null);
+		Account account = null;
+		if (!accounts.isEmpty()) {
+			account = accounts.get(0);
+			user.setAccount(account.getId());
+		}
+		
+		if (null == account) {
+			logger.warn("Can't find Account[{}] from host[{}]", user.getAccount(), user.getIp());
+			return ErrorType.NotFound;
+		}
+		logger.debug("Find Account[{}]", account);
+		
+		user.setName(account.getName());
+		user.setMail(account.getEmail());
+		user.setDefaultRoleId(account.getDefaultRoleId());
+		
+		SystemUtils.parseRole(this.accountRoleDao.listByAccount(user.getAccount()), user);
+		SystemUtils.parseGroup(account.getGroups(), user);
+		return null;
+		
+	}
 	public Account findAccountByOid(String oid) {
 		return this.accountDao.findByOid(oid);
 	}

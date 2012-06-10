@@ -12,10 +12,11 @@ import javax.crypto.spec.DESKeySpec;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EncryptUtils {
-	private static final Logger logger = Logger.getLogger(EncryptUtils.class);
+	private static final Logger logger = LoggerFactory.getLogger(EncryptUtils.class);
 	private static final String PASSWORD = "eits_zyxel";
 
 	private static ThreadLocal<Cipher> encripty = new ThreadLocal<Cipher>();
@@ -32,6 +33,7 @@ public class EncryptUtils {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		String server = request.getServerName();
 		String source = sdf.format(cal.getTime()) + "____" + accountId + "____" + server;
+		logger.debug("Token is [{}]", source);
 		String result = "";
 		try {
 			result = Base64.encodeBase64String(enCipher.doFinal(source.getBytes()));

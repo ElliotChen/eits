@@ -9,7 +9,6 @@
 <p>
 Some News Articles were expired,<br>
 Below is the list of News in question:<br>
-
 #if ($article.news) 
 <font color="red">News List</font><br>
 #else
@@ -20,7 +19,7 @@ Below is the list of News in question:<br>
 	<tr bgcolor="grey"><td>KB#</td><td>Summery</td><td>Engineer</td><td>Leader</td><td>Publish Update</td><td>Expired Date</td></tr>
 	<tr>
 		<td><a target="_blank" href="$server/edit!quickEdit.action?oid=$article.oid"> $article.articleId.oid </a></td>
-		<td>$article.summary</td><td>$agent.name</td><td>$leader.name</td><td>$article.publishDate</td><td>$article.expireDate</td></tr>
+		<td>$article.summary</td><td>$agent.name</td><td>$receiver.name</td><td>$article.publishDate</td><td>$article.expireDate</td></tr>
 </table>
 </p>
 

@@ -244,6 +244,14 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		if (article.isReadonly()) {
 			return "readOnly";
 		}
+		
+		this.copyLanguages = new ArrayList<Language>(this.languages);
+		this.usedLanguage = this.articleService.listUsedLanguage(this.article);
+		this.copyLanguages.removeAll(this.usedLanguage);
+		this.copyLanguages.add(this.article.getLanguage());
+		
+		this.languages = this.copyLanguages;
+		
 		return "edit";
 	}
 	

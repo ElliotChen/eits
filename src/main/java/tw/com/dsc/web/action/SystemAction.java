@@ -59,7 +59,10 @@ public class SystemAction extends BaseAction implements Preparable {
 	}
 	
 	public String eitsLogin() {
-		this.addActionError("Not implementation.");
+		ErrorType error = this.systemService.eitsLogin(token);
+		if (null != error) {
+			this.addActionError(this.getText("error."+error.name()));
+		}
 		return "loginRedirect";
 	}
 	

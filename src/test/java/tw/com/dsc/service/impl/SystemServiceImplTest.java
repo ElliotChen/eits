@@ -28,6 +28,7 @@ import tw.com.dsc.domain.Technology;
 import tw.com.dsc.service.SystemService;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.SystemUtils;
+import tw.com.dsc.util.ThreadLocalHolder;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:/applicationContext.xml" })
@@ -187,5 +188,28 @@ public class SystemServiceImplTest {
 	public void testListProjectSeries() {
 		List<ProductSeries> series = this.systemService.listSeriesByProjectCode("30efc832-669d-478e-bc07-ee0eac68793b");
 		logger.debug("check series size[{}]", series.size());
+	}
+	
+	@Test
+	public void testEitsLogin() {
+		String expired = "eGcrD519c+6AGDAKObDzYhVLIEA/B0FQey+FHZS9UHkW70V4cVjl0ZMVys0sN/RT";
+		String notaccount = "qDQRnaHfYpHf+EHq/IxOfZ7fdjmJaJwNVAkO/F+3kyZLmvPgCjF+X61mqVIWVYfh";
+		
+		User user = new User();
+		ThreadLocalHolder.setUser(user);
+		String tokey = "qDQRnaHfYpHf+EHq/IxOfUyFCN0Ujsr3ey+FHZS9UHkW70V4cVjl0ZMVys0sN/RT";
+		
+		ErrorType et = this.systemService.eitsLogin(tokey);
+		Assert.assertNull(et);
+		
+		
+		et = this.systemService.eitsLogin(expired);
+		Assert.assertEquals(ErrorType.TokenExpired, et);
+		
+		et = this.systemService.eitsLogin(notaccount);
+		Assert.assertEquals(ErrorType.NotFound, et);
+		
+		et = this.systemService.eitsLogin("abc");
+		Assert.assertEquals(ErrorType.TokenIncorrect, et);
 	}
 }

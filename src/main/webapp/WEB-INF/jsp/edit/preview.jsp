@@ -68,10 +68,12 @@
 		<th>SUMMARY:</th>
 		<td colspan="3">${article.summary}</td>
 	</tr>
+	<%-- 
 	<tr>
 		<th>KEYWORDS:</th>
 		<td colspan="3">${article.keywords}</td>
 	</tr>
+	--%>
 	<tr>
 		<th>ENTRY User:</th>
 		<td colspan="3">${article.entryUser}</td>

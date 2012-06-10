@@ -1,7 +1,9 @@
 package tw.com.dsc.task;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.mail.internet.MimeMessage;
 
@@ -22,9 +24,11 @@ public abstract class MailTask implements Runnable {
 	protected JavaMailSender javaMailSender;
 	protected Long articleOid;
 	protected Account agent;
+	protected Account receiver;
 	protected List<Account> leaders;
 	protected List<Account> admins;
 	protected Article article;
+	protected String serverUrl;
 	protected VelocityEngine velocityEngine;
 	
 	protected String sender;
@@ -34,12 +38,13 @@ public abstract class MailTask implements Runnable {
 	protected ArticleService articleService;
 	
 	protected ArticleLogService articleLogService;
+
 	
 	public MailTask() {
 		super();
 	}
 
-	public MailTask(Long articleOid, JavaMailSender javaMailSender, SystemService systemService, ArticleService articleService, ArticleLogService articleLogService, String sender, VelocityEngine velocityEngine) {
+	public MailTask(Long articleOid, JavaMailSender javaMailSender, SystemService systemService, ArticleService articleService, ArticleLogService articleLogService, String sender, VelocityEngine velocityEngine, String serverUrl) {
 		this.articleOid = articleOid;
 		this.javaMailSender = javaMailSender;
 		this.systemService = systemService;
@@ -47,6 +52,7 @@ public abstract class MailTask implements Runnable {
 		this.articleLogService = articleLogService;
 		this.sender = sender;
 		this.velocityEngine = velocityEngine;
+		this.serverUrl = serverUrl;
 	}
 
 	@Override
@@ -64,21 +70,27 @@ public abstract class MailTask implements Runnable {
 		
 		MimeMessage mail = this.javaMailSender.createMimeMessage();
 		try {
-			MimeMessageHelper helper = new MimeMessageHelper(mail, true, "UTF-8");
-			String[] receivers = this.getReceivers();
-			String[] cc = this.getCcReceivers();
-			String title = this.getTitle();
-			String message = this.getMessage();
 			
-			helper.setFrom(this.sender);
-			helper.setTo(receivers);
-			if (null != cc && cc.length > 0) {
-				helper.setCc(cc);
+			List<Account> receivers = this.getReceivers();
+//			List<Account> cc = this.getCcReceivers();
+			
+			for (Account receiver : receivers) {
+				MimeMessageHelper helper = new MimeMessageHelper(mail, true, "UTF-8");
+				String title = this.getTitle();
+				String message = this.getMessage(receiver);
+			
+				helper.setFrom(this.sender);
+				helper.setTo(receiver.getEmail());
+				/*
+				if (null != cc && cc.length > 0) {
+					helper.setCc(cc);
+				}
+				*/
+				helper.setSubject(title);
+				helper.setText(message, true);
+				logger.info("Send Mail[{}] to [{}]", message, receivers);
+				javaMailSender.send(mail);
 			}
-			helper.setSubject(title);
-			helper.setText(message, true);
-			logger.info("Send Mail[{}] to [{}]", message, receivers);
-			javaMailSender.send(mail);
 		} catch (Exception e) {
 
 		}
@@ -87,41 +99,32 @@ public abstract class MailTask implements Runnable {
 		
 	}
 	
-	public abstract String[] getReceivers();
-	public abstract String[] getCcReceivers();
+	public abstract List<Account> getReceivers();
+	public abstract List<Account> getCcReceivers();
 	public abstract String getTitle();
-	public abstract String getMessage();
+	public abstract String getMessage(Account receiver);
 	
 	
-	protected String[] getLeaders() {
-		if (null == this.leaders || this.leaders.isEmpty()) {
-			logger.error("Leader could not be null.");
-			return new String[0];
-		}
-		String[] leaderMails = new String[this.leaders.size()];
-		for (int i=0; i < this.leaders.size(); i++) {
-			leaderMails[i] = this.leaders.get(i).getEmail();
-		}
-		return leaderMails;
+	protected List<Account> getLeaders() {
+		return this.leaders;
 	}
 	
-	protected String[] getAdminAndLeaders() {
+	protected List<Account> getAdminAndLeaders() {
 		List<Account> accounts = new ArrayList<Account>();
-		if (null != this.leaders && !this.leaders.isEmpty()) {
-			accounts.addAll(this.leaders);
-		}
-		
-		if (null != this.admins && !this.admins.isEmpty()) {
-			accounts.addAll(this.admins);
-		}
-		
-		String[] leaderMails = new String[accounts.size()];
-		for (int i=0; i < accounts.size(); i++) {
-			leaderMails[i] = accounts.get(i).getEmail();
-		}
-		return leaderMails;
+		accounts.addAll(this.leaders);
+		accounts.addAll(this.admins);
+		return accounts;
 	}
 	
+	protected Map<String, Object> initBaseMap(Account receiver) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("article", this.article);
+		map.put("agent", agent);
+		map.put("receiver", receiver);
+		map.put("server", this.serverUrl);
+		
+		return map;
+	}
 	public JavaMailSender getJavaMailSender() {
 		return javaMailSender;
 	}
@@ -169,5 +172,6 @@ public abstract class MailTask implements Runnable {
 	public void setSender(String sender) {
 		this.sender = sender;
 	}
+	
 	
 }

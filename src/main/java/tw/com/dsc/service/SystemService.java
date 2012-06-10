@@ -15,6 +15,7 @@ public interface SystemService {
 	List<ProductSeries> listAllSeries();
 	List<ProductModel> listAllModels();
 	ErrorType login(final User user);
+	ErrorType eitsLogin(final String token);
 	
 	/**
 	 * Find Article's group leaders

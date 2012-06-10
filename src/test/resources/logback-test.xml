@@ -25,6 +25,8 @@
 		</encoder>
 	</appender>
 	<logger name="tw.com.dsc" level="DEBUG"/>
+	<logger name="org.hibernate.sql" level="DEBUG" />
+	<logger name="org.hibernate.type" level="TRACE" />
 	<root level="INFO">
 		<appender-ref ref="stdout" />
 		<appender-ref ref="file" />

@@ -1,33 +1,23 @@
 package tw.com.dsc.domain.support;
 
 public class OrCondition implements Condition {
-	private Condition condition1;
-	private Condition condition2;
-
+	private Condition[] conditions;
 	public OrCondition() {
 		super();
 	}
 
-	public OrCondition(Condition condition1, Condition condition2) {
+	public OrCondition(Condition... conditions) {
 		super();
-		this.condition1 = condition1;
-		this.condition2 = condition2;
+		this.conditions = conditions;
 	}
 
-	public Condition getCondition1() {
-		return condition1;
+
+	public Condition[] getConditions() {
+		return conditions;
 	}
 
-	public void setCondition1(Condition condition1) {
-		this.condition1 = condition1;
-	}
-
-	public Condition getCondition2() {
-		return condition2;
-	}
-
-	public void setCondition2(Condition condition2) {
-		this.condition2 = condition2;
+	public void setConditions(Condition[] conditions) {
+		this.conditions = conditions;
 	}
 
 	@Override

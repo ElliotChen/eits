@@ -9,7 +9,7 @@ public class LikeCondition implements Condition {
 		super();
 	}
 	
-	public LikeCondition(String fieldName, Object value, LikeMode likeMode) {
+	public LikeCondition(String fieldName, Object value) {
 		super();
 		this.fieldName = fieldName;
 		this.value = value;

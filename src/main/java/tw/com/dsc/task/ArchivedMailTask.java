@@ -1,13 +1,15 @@
 package tw.com.dsc.task;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
+import tw.com.dsc.domain.Account;
 import tw.com.dsc.service.ArticleLogService;
 import tw.com.dsc.service.ArticleService;
 import tw.com.dsc.service.SystemService;
@@ -28,32 +30,35 @@ public class ArchivedMailTask extends MailTask {
 
 	public ArchivedMailTask(Long articleOid, JavaMailSender mailSender,
 			SystemService systemService, ArticleService articleService,
-			ArticleLogService articleLogService, String sender, VelocityEngine velocityEngine, String allGroup) {
-		super(articleOid, mailSender, systemService, articleService, articleLogService, sender, velocityEngine);
+			ArticleLogService articleLogService, String sender, VelocityEngine velocityEngine, String allGroup, String serverUrl) {
+		super(articleOid, mailSender, systemService, articleService, articleLogService, sender, velocityEngine, serverUrl);
 		this.allGroup = allGroup;
 	}
 
 	@Override
-	public String[] getReceivers() {
-		return new String[]{allGroup};
+	public List<Account> getReceivers() {
+		Account fake = new Account();
+		fake.setEmail(this.allGroup);
+		fake.setName("All");
+		
+		List<Account> accounts = new ArrayList<Account>();
+		accounts.add(fake);
+		return accounts;
 	}
 
 	@Override
-	public String[] getCcReceivers() {
+	public List<Account> getCcReceivers() {
 		return null;
 	}
 
 	@Override
 	public String getTitle() {
-		return "Article["+this.article.getArticleId().getOid()+"] has been archived";
+		return "[Archived] KB System Notification";
 	}
 
 	@Override
-	public String getMessage() {
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("articleOid", String.valueOf(this.article.getOid()));
-		map.put("summary", this.article.getSummary());
-		map.put("entryUser", this.article.getEntryUser());
+	public String getMessage(Account receiver) {
+		Map<String, Object> map = initBaseMap(receiver);
 		String message = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "mail/archived.vm", map);
 		return message;
 	}

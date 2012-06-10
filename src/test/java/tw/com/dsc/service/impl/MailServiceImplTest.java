@@ -14,18 +14,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import tw.com.dsc.service.MailService;
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/applicationContext_Mail_Test.xml"})
+@ContextConfiguration(locations = {"/applicationContext.xml"})
 public class MailServiceImplTest {
-	
+	@Autowired
 	private MailService mailService;
 	
-	@Autowired
-	private JavaMailSender javaMailSender;
-	
-	@Ignore
 	@Test
 	public void testMail() throws Exception {
-		mailService.approval(8L);
+		mailService.expired(4L);
+		mailService.republish(4L);
+		mailService.archived(3L);
 		/*
 		mailService.reject(8L);
 		mailService.readyPublish(8L);
@@ -34,7 +32,7 @@ public class MailServiceImplTest {
 		*/
 		Thread.sleep(30*1000);
 	}
-
+	/*
 	@Test
 	public void testZyxelMail() {
 		SimpleMailMessage mail = new SimpleMailMessage();
@@ -45,4 +43,5 @@ public class MailServiceImplTest {
 		mail.setText("TT");
 		this.javaMailSender.send(mail);
 	}
+	*/
 }

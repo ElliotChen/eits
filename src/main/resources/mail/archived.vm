@@ -4,10 +4,27 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 <body>
-<p>Dear All,</p>
+<p>Dear $receiver.name,</p>
 <br /><br />
 <p>
-KB <a target="_blank" href="http://172.23.5.212/KB/edit!quickEdit.action?oid=$articleOid"> [$articleOid] : [$summary]</a> from $entryUser has been archived.
+Some News Articles were Archived,<br>
+Below is the list of News in question:<br>
+#if ($article.news) 
+<font color="red">News List</font><br>
+#else
+<font color="red">KB List</font><br>
+#end
+
+<table>
+	<tr bgcolor="grey"><td>KB#</td><td>Summery</td><td>Engineer</td><td>Leader</td><td>Publish Update</td><td>Archived Date</td></tr>
+	<tr>
+		<td><a target="_blank" href="$server/edit!quickEdit.action?oid=$article.oid"> $article.articleId.oid </a></td>
+		<td>$article.summary</td><td>$agent.name</td><td>$receiver.name</td><td>$article.publishDate</td><td>$article.updateDate</td></tr>
+</table>
+</p>
+
+<p>
+<font color="red">********** This E-mail was sent automatically by Knowledgebase System! Do not reply this mail directly **********</font>
 </p>
 </body>
 </html>

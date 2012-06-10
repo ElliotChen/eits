@@ -14,7 +14,6 @@
 			    $('#copyEditForm').validate({ rules : {
 					'language.oid' : {required:true},
 					summary : {required:true},
-					keywords : {required:true},
 					question : {required:true},
 					answer : {required:true},
 					technology : {required:true},

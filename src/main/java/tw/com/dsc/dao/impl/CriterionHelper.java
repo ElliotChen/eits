@@ -1,5 +1,8 @@
 package tw.com.dsc.dao.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 
@@ -7,6 +10,7 @@ import tw.com.dsc.domain.support.AndCondition;
 import tw.com.dsc.domain.support.BetweenCondition;
 import tw.com.dsc.domain.support.Condition;
 import tw.com.dsc.domain.support.InCondition;
+import tw.com.dsc.domain.support.LikeCondition;
 import tw.com.dsc.domain.support.NotNullCondition;
 import tw.com.dsc.domain.support.NullCondition;
 import tw.com.dsc.domain.support.OrCondition;
@@ -33,6 +37,9 @@ public abstract class CriterionHelper {
 			break;
 		case Or:
 			result = parse((OrCondition) condition);
+			break;
+		case Like:
+			result = parse((LikeCondition) condition);
 			break;
 		case Simple:
 			result = parse((SimpleCondition) condition);
@@ -92,9 +99,11 @@ public abstract class CriterionHelper {
 	}
 
 	public static Criterion parse(OrCondition oc) {
-		Criterion cri1 = parse(oc.getCondition1());
-		Criterion cri2 = parse(oc.getCondition2());
-		Criterion result = Restrictions.or(cri1, cri2);
+		List<Criterion> crits = new ArrayList<Criterion>();
+		for (Condition cond : oc.getConditions()) {
+			crits.add(parse(cond));
+		}
+		Criterion result = Restrictions.or(crits.toArray(new Criterion[crits.size()]));
 		return result;
 	}
 
@@ -102,6 +111,11 @@ public abstract class CriterionHelper {
 		Criterion cri1 = parse(ac.getCondition1());
 		Criterion cri2 = parse(ac.getCondition2());
 		Criterion result = Restrictions.and(cri1, cri2);
+		return result;
+	}
+	
+	public static Criterion parse(LikeCondition lc) {
+		Criterion result = Restrictions.like(lc.getFieldName(), lc.getValue());
 		return result;
 	}
 }

@@ -19,7 +19,6 @@
 			    $('#editForm').validate({ rules : {
 			    	languageOid : {required:true},
 					summary : {required:true},
-					keywords : {required:true},
 					product : {required:true},
 					technology : {required:true},
 					firmware : {required:true},
@@ -145,6 +144,7 @@
 <s:form id="editForm" namespace="/" action="edit!create" theme="simple" method="POST" enctype ="multipart/form-data">
 	<s:hidden name="entryUser" />
 	<s:hidden name="articleId.oid" />
+	<s:hidden name="keywords" />
 	<table class="conditionborder">
 		<!-- 
 		<tr>
@@ -196,10 +196,12 @@
 		<tr>
 			<td colspan="2">ENTRY DATE		<s:date name="entryDate" format="yyyy/MM/dd HH:mm:ss" />　　　　LAST UPDATE		<s:date name="updateDate" format="yyyy/MM/dd HH:mm:ss" />　　　　PUBLISH DATE		<s:date name="publishDate" format="yyyy/MM/dd HH:mm:ss" /></td>
 		</tr>
+		<%-- 
 		<tr>
 			<td>KEYWORDS</td>
 			<td><s:textfield name="keywords" size="40" maxlength="50"/></td>
 		</tr>
+		--%>
 		<tr class="ArticleType SpecInfo">
 			<td>eITS TICKET ID</td>
 			<td><s:textfield id="ticketId" name="ticketId" size="40" maxlength="50"/></td>

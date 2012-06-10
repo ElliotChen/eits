@@ -54,6 +54,7 @@
 <div class="condition">
 <s:form id="editForm" namespace="/" action="edit!updateStatus" theme="simple" method="POST" enctype ="multipart/form-data">
 	<s:hidden name="oid" />
+	<s:hidden name="keywords" />
 	<table class="conditionborder">
 		<tr>
 			<td>ARTICLE ID</td>
@@ -99,10 +100,12 @@
 			<td>ENTRY USER</td>
 			<td>${entryUser}</td>
 		</tr>
+		<%--
 		<tr>
 			<td>KEYWORDS</td>
 			<td><s:textfield name="keywords" size="40" maxlength="50" disabled="true"/></td>
 		</tr>
+		 --%>
 		<tr class="ArticleType SpecInfo">
 			<td>eITS TICKET ID</td>
 			<td><s:textfield name="ticketId" size="40" disabled="true"/></td>

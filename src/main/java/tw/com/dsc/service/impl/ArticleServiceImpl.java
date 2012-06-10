@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,10 @@ import tw.com.dsc.domain.StatisticsData;
 import tw.com.dsc.domain.Status;
 import tw.com.dsc.domain.support.Condition;
 import tw.com.dsc.domain.support.InCondition;
+import tw.com.dsc.domain.support.LikeCondition;
 import tw.com.dsc.domain.support.LikeMode;
 import tw.com.dsc.domain.support.OperationEnum;
+import tw.com.dsc.domain.support.OrCondition;
 import tw.com.dsc.domain.support.Page;
 import tw.com.dsc.domain.support.SimpleCondition;
 import tw.com.dsc.service.ArticleService;
@@ -412,15 +415,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			page.setExample(example);
 		}
 		
-		List<Condition> conds = page.getConditions();
-		conds.add(new InCondition("level", op.getAvailableLevels()));
-		conds.add(new InCondition("status", new Status[] {Status.Published, Status.WaitForRepublish}));
-		//example.setStatus(Status.Published);
-		/*
-		if (AgentType.L3 != op.getAgentType()) {
-			example.setAgentType(AgentType.L2);
-		}
-		*/
+		this.initFaqLastestSearch(page);
 		page.setDescOrders(new String[] {"hitCount"});
 		
 		
@@ -449,6 +444,17 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			page.setExample(example);
 		}
 		
+		this.initFaqLastestSearch(page);
+		page.setDescOrders(new String[] {"publishDate"});
+		
+		return this.dao.listByPage(page);
+	}
+	
+	protected void initFaqLastestSearch(Page<Article> page) {
+		Article example = page.getExample();
+		User op = ThreadLocalHolder.getOperator();
+		String keyword = example.getKeywords();
+		
 		List<Condition> conds = page.getConditions();
 		conds.add(new InCondition("level", op.getAvailableLevels()));
 		conds.add(new InCondition("status", new Status[] {Status.Published, Status.WaitForRepublish}));
@@ -458,9 +464,20 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			example.setAgentType(AgentType.L2);
 		}
 		*/
-		page.setDescOrders(new String[] {"publishDate"});
-		
-		return this.dao.listByPage(page);
+		if (StringUtils.isNotEmpty(keyword)) {
+			String likeValue = "%"+keyword+"%";
+			Condition qcond = new LikeCondition("question", likeValue);
+			Condition acond = new LikeCondition("answer", likeValue);
+			Condition scond = new LikeCondition("scenario", likeValue);
+			Condition stcond = new LikeCondition("step", likeValue);
+			Condition vcond = new LikeCondition("verification", likeValue);
+			Condition pmcond = new LikeCondition("problem", likeValue);
+			Condition socond = new LikeCondition("solution", likeValue);
+			Condition pecond = new LikeCondition("procedure", likeValue);
+			Condition smcond = new LikeCondition("summary", likeValue);
+			conds.add(new OrCondition(qcond, acond, scond, stcond, vcond, pmcond, socond, pecond, smcond));
+			example.setKeywords(null);
+		}
 	}
 	
 	public Page<Article> searchUnpublishedPage(Page<Article> page) {

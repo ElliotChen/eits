@@ -1,12 +1,14 @@
 package tw.com.dsc.task;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
+import tw.com.dsc.domain.Account;
 import tw.com.dsc.domain.Article;
 import tw.com.dsc.service.ArticleLogService;
 import tw.com.dsc.service.ArticleService;
@@ -28,26 +30,26 @@ public class ApprovalMailTask extends MailTask {
 	
 	public ApprovalMailTask(Long articleOid, JavaMailSender mailSender,
 			SystemService systemService, ArticleService articleService,
-			ArticleLogService articleLogService, String sender, VelocityEngine velocityEngine) {
-		super(articleOid, mailSender, systemService, articleService, articleLogService, sender, velocityEngine);
+			ArticleLogService articleLogService, String sender, VelocityEngine velocityEngine, String serverUrl) {
+		super(articleOid, mailSender, systemService, articleService, articleLogService, sender, velocityEngine, serverUrl);
 	}
 
 	public ApprovalMailTask(Article article, JavaMailSender mailSender,
 			SystemService systemService, ArticleService articleService,
-			ArticleLogService articleLogService, String sender, VelocityEngine velocityEngine) {
-		super(null, mailSender, systemService, articleService, articleLogService, sender, velocityEngine);
+			ArticleLogService articleLogService, String sender, VelocityEngine velocityEngine, String serverUrl) {
+		super(null, mailSender, systemService, articleService, articleLogService, sender, velocityEngine, serverUrl);
 		this.article = article;
 		this.articleOid = article.getOid();
 	}
 
 
 	@Override
-	public String[] getReceivers() {
+	public List<Account> getReceivers() {
 		return this.getLeaders();
 	}
 
 	@Override
-	public String[] getCcReceivers() {
+	public List<Account> getCcReceivers() {
 		return null;
 	}
 
@@ -57,11 +59,14 @@ public class ApprovalMailTask extends MailTask {
 	}
 
 	@Override
-	public String getMessage() {
+	public String getMessage(Account receiver) {
+		/*
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("articleOid", String.valueOf(this.article.getOid()));
 		map.put("summary", this.article.getSummary());
 		map.put("entryUser", this.article.getEntryUser());
+		*/
+		Map<String, Object> map = initBaseMap(receiver);
 		String message = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "mail/approval.vm", map);
 		return message;
 	}

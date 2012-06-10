@@ -42,6 +42,10 @@ public class MailServiceImpl implements MailService {
 	private String sender;
 	@Value("${mail.allGroup}")
 	private String allGroup;
+	
+	@Value("${server.url}")
+	private String serverUrl;
+	
 	@Autowired
 	private TaskManager taskManager;
 
@@ -56,32 +60,32 @@ public class MailServiceImpl implements MailService {
 	
 	@Override
 	public void approval(Long articleOid) {
-		this.taskManager.arrangeMailTask(new ApprovalMailTask(articleOid, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine));
+		this.taskManager.arrangeMailTask(new ApprovalMailTask(articleOid, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine, serverUrl));
 	}
 	
 	@Override
 	public void approval(Article article) {
-		this.taskManager.arrangeMailTask(new ApprovalMailTask(article, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine));
+		this.taskManager.arrangeMailTask(new ApprovalMailTask(article, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine, serverUrl));
 	}
 
 	@Override
 	public void reject(Long articleOid) {
-		this.taskManager.arrangeMailTask(new RejectMailTask(articleOid, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine));
+		this.taskManager.arrangeMailTask(new RejectMailTask(articleOid, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine, serverUrl));
 	}
 
 	@Override
 	public void readyPublish(Long articleOid) {
-		this.taskManager.arrangeMailTask(new ReadyPublishMailTask(articleOid, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine));
+		this.taskManager.arrangeMailTask(new ReadyPublishMailTask(articleOid, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine, serverUrl));
 	}
 
 	@Override
 	public void expired(Long articleOid) {
-		this.taskManager.arrangeMailTask(new ExpiredMailTask(articleOid, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine));
+		this.taskManager.arrangeMailTask(new ExpiredMailTask(articleOid, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine, serverUrl));
 	}
 
 	@Override
 	public void republish(Long articleOid) {
-		this.taskManager.arrangeMailTask(new RepublishMailTask(articleOid, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine));
+		this.taskManager.arrangeMailTask(new RepublishMailTask(articleOid, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine, serverUrl));
 	}
 	
 	@Override
@@ -90,7 +94,7 @@ public class MailServiceImpl implements MailService {
 			logger.error("Please check configuration mail.allGroup in system.propertis");
 			return;
 		}
-		this.taskManager.arrangeMailTask(new ArchivedMailTask(articleOid, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine, allGroup));
+		this.taskManager.arrangeMailTask(new ArchivedMailTask(articleOid, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine, allGroup, serverUrl));
 	}
 	
 	public VelocityEngine getVelocityEngine() {
@@ -147,6 +151,14 @@ public class MailServiceImpl implements MailService {
 
 	public void setArticleLogService(ArticleLogService articleLogService) {
 		this.articleLogService = articleLogService;
+	}
+
+	public String getServerUrl() {
+		return serverUrl;
+	}
+
+	public void setServerUrl(String serverUrl) {
+		this.serverUrl = serverUrl;
 	}
 	
 }
