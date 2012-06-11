@@ -466,15 +466,15 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		*/
 		if (StringUtils.isNotEmpty(keyword)) {
 			String likeValue = "%"+keyword+"%";
-			Condition qcond = new LikeCondition("question", likeValue);
-			Condition acond = new LikeCondition("answer", likeValue);
-			Condition scond = new LikeCondition("scenario", likeValue);
-			Condition stcond = new LikeCondition("step", likeValue);
-			Condition vcond = new LikeCondition("verification", likeValue);
-			Condition pmcond = new LikeCondition("problem", likeValue);
-			Condition socond = new LikeCondition("solution", likeValue);
-			Condition pecond = new LikeCondition("procedure", likeValue);
-			Condition smcond = new LikeCondition("summary", likeValue);
+			Condition qcond = new LikeCondition("question", likeValue, true);
+			Condition acond = new LikeCondition("answer", likeValue, true);
+			Condition scond = new LikeCondition("scenario", likeValue, true);
+			Condition stcond = new LikeCondition("step", likeValue, true);
+			Condition vcond = new LikeCondition("verification", likeValue, true);
+			Condition pmcond = new LikeCondition("problem", likeValue, true);
+			Condition socond = new LikeCondition("solution", likeValue, true);
+			Condition pecond = new LikeCondition("procedure", likeValue, true);
+			Condition smcond = new LikeCondition("summary", likeValue, true);
 			conds.add(new OrCondition(qcond, acond, scond, stcond, vcond, pmcond, socond, pecond, smcond));
 			example.setKeywords(null);
 		}

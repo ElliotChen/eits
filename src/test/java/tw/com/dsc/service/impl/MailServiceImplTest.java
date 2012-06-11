@@ -21,10 +21,12 @@ public class MailServiceImplTest {
 	
 	@Test
 	public void testMail() throws Exception {
-		mailService.expired(4L);
+		mailService.approval(1L);
+		mailService.reject(1L);
+		mailService.readyPublish(1L);
+		/*
 		mailService.republish(4L);
 		mailService.archived(3L);
-		/*
 		mailService.reject(8L);
 		mailService.readyPublish(8L);
 		mailService.expired(8L);

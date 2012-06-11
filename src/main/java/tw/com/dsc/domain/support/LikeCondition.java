@@ -5,15 +5,21 @@ public class LikeCondition implements Condition {
 	private String fieldName;
 	private Object value;
 	private LikeMode likeMode;
+	private boolean ignoreCase = false;
 	public LikeCondition() {
 		super();
 	}
 	
 	public LikeCondition(String fieldName, Object value) {
+		this(fieldName, value, false);
+	}
+	
+	public LikeCondition(String fieldName, Object value, boolean ignoreCase) {
 		super();
 		this.fieldName = fieldName;
 		this.value = value;
 		this.likeMode = likeMode;
+		this.ignoreCase = ignoreCase;
 	}
 
 	public String getFieldName() {
@@ -53,6 +59,14 @@ public class LikeCondition implements Condition {
 	@Override
 	public String toString() {
 		return "SimpleCondition [fieldName=" + fieldName + ", value=" + value + ", likeMode=" + likeMode + "]";
+	}
+
+	public boolean isIgnoreCase() {
+		return ignoreCase;
+	}
+
+	public void setIgnoreCase(boolean ignoreCase) {
+		this.ignoreCase = ignoreCase;
 	}
 
 	

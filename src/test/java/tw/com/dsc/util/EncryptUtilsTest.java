@@ -14,7 +14,7 @@ public class EncryptUtilsTest {
 		HttpServletRequest mock = Mockito.mock(HttpServletRequest.class);
 		Mockito.when(mock.getServerName()).thenReturn("192.168.1.13");
 		
-		String token = EncryptUtils.encrypt(mock, "abc");
+		String token = EncryptUtils.encrypt(mock, "l3_admin");
 		System.out.println(token);
 	}
 

@@ -47,7 +47,7 @@ public class RejectMailTask extends MailTask {
 
 	@Override
 	public String getTitle() {
-		return "KB article["+this.article.getArticleId().getOid()+"] has been rejected";
+		return "[Leader Rejected] KB System Notification";
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class RejectMailTask extends MailTask {
 		
 		ArticleLog log = this.articleLogService.getLatestRejectReason(this.article.getOid());
 		if (null != log) {
-			map.put("reason", log.getMessage());
+			map.put("reason", log.getMessage().replace("Reason:", ""));
 		} else {
 			map.put("reason", "Unknow");
 		}

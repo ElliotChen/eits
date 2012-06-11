@@ -4,10 +4,23 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 <body>
-<p>Dear All,</p>
-<br /><br />
 <p>
-Please provide email template asap.
+Dear Leader,<br/>
+<br/>
+A new Kb article was created in knowledgebase system.<br/>
+The basic information is shown as below:
+
+<table>
+<tr><td bgcolor="grey">- KB# :</td><td>$article.articleId.oid</td></tr>
+<tr><td bgcolor="grey">- Engineer :</td><td>$agent.name</td></tr>
+<tr><td bgcolor="grey">- Summery :</td><td>$article.summary</td></tr>
+</table>
+
+Please make a click on the link as below, you will be redirected directly to the Article.<br/>
+<a target="_blank" href="$server/edit!quickEdit.action?oid=$article.oid"> Edit Article </a>
+</p>
+<p>
+<font color="red">********** This E-mail was sent automatically by Knowledgebase System. Do not reply this mail directly**********</font>
 </p>
 </body>
 </html>

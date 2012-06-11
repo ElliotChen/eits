@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import tw.com.dsc.dao.ArticleLogDao;
+import tw.com.dsc.domain.ActionType;
 import tw.com.dsc.domain.ArticleLog;
 import tw.com.dsc.domain.support.LikeMode;
 import tw.com.dsc.service.ArticleLogService;
@@ -40,7 +41,7 @@ public class ArticleLogServiceImpl extends AbstractDomainService<ArticleLogDao, 
 	public ArticleLog getLatestRejectReason(Long articleOid) {
 		ArticleLog example = new ArticleLog();
 		example.setArticleOid(articleOid);
-		
+		example.setAction(ActionType.Reject);
 		List<ArticleLog> list = this.dao.listByExample(example, null, LikeMode.NONE, new String[] {}, new String[] {"createdDate"});
 		if (list.isEmpty()) {
 			logger.warn("Can't find any reject reason for Article[{}]", articleOid);

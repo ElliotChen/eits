@@ -55,7 +55,7 @@ public class ApprovalMailTask extends MailTask {
 
 	@Override
 	public String getTitle() {
-		return "Wait for Approval Notification";
+		return "[New] KB System Notification";
 	}
 
 	@Override

@@ -36,7 +36,8 @@ public class EncryptUtils {
 		logger.debug("Token is [{}]", source);
 		String result = "";
 		try {
-			result = Base64.encodeBase64String(enCipher.doFinal(source.getBytes()));
+//			result = Base64.encodeBase64String(enCipher.doFinal(source.getBytes()));
+			result = new String(Base64.encodeBase64URLSafe(enCipher.doFinal(source.getBytes())));
 		} catch (Exception e) {
 			logger.error("encode failed");
 			e.printStackTrace();

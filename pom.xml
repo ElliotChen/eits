@@ -551,10 +551,12 @@
 						<excludes>
 							<exclude>system.properties</exclude>
 							<exclude>logback.xml</exclude>
+							<exclude>applicationContext_Mail.xml</exclude>
 						</excludes>
 					</resource>
 					<resource>
 						<directory>src/stage/resources</directory>
+						<filtering>true</filtering>
 					</resource>
 				</resources>
 			</build>

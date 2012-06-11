@@ -130,6 +130,19 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 		if (null==this.example.getLanguage() || StringUtils.isEmpty(this.example.getLanguage().getOid())) {
 			this.example.setLanguage(new Language("EN", null));
 		}
+		Article faq = new Article();
+		faq.setProduct(this.example.getProduct());
+		faq.setLanguage(this.example.getLanguage());
+		faq.setKeywords(this.example.getKeywords());
+		faqArticles.setExample(faq);
+		
+		
+		Article last = new Article();
+		last.setProduct(this.example.getProduct());
+		last.setLanguage(this.example.getLanguage());
+		last.setKeywords(this.example.getKeywords());
+		latestArticles.setExample(last);
+		
 		faqArticles = this.articleService.searchFaqArticlesPage(faqArticles);
 		latestArticles = this.articleService.searchLatestArticlesPage(latestArticles);
 

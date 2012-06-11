@@ -44,7 +44,7 @@ public class ReadyPublishMailTask extends MailTask {
 
 	@Override
 	public String getTitle() {
-		return "A KB article is ready to be published.";
+		return "[Ready to be published] KB System Notification";
 	}
 
 	@Override

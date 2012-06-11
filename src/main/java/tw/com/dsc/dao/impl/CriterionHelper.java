@@ -115,7 +115,12 @@ public abstract class CriterionHelper {
 	}
 	
 	public static Criterion parse(LikeCondition lc) {
-		Criterion result = Restrictions.like(lc.getFieldName(), lc.getValue());
+		Criterion result = null;
+		if (lc.isIgnoreCase()) {
+			result = Restrictions.like(lc.getFieldName(), lc.getValue()).ignoreCase();
+		} else {
+			result = Restrictions.like(lc.getFieldName(), lc.getValue());
+		}
 		return result;
 	}
 }

@@ -315,17 +315,19 @@ public class SystemServiceImpl implements SystemService {
 		conds.add(new SimpleCondition("id", accountId, OperationEnum.EQ, true));
 		List<Account> accounts = accountDao.listByExample(example, conds, null, null, null);
 		Account account = null;
+
 		if (!accounts.isEmpty()) {
 			account = accounts.get(0);
 			user.setAccount(account.getId());
 		}
 		
 		if (null == account) {
-			logger.warn("Can't find Account[{}] from host[{}]", user.getAccount(), user.getIp());
+			logger.warn("Can't find Account[{}] from host[{}]", accountId, user.getIp());
 			return ErrorType.NotFound;
 		}
-		logger.debug("Find Account[{}]", account);
 		
+		logger.debug("Find Account[{}]", account);
+		user.setAccount(account.getId());
 		user.setName(account.getName());
 		user.setMail(account.getEmail());
 		user.setDefaultRoleId(account.getDefaultRoleId());

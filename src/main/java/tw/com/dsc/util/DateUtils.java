@@ -48,7 +48,7 @@ public abstract class DateUtils {
 	public static final Date pareseDateTime(String date) {
 		Date result = null;
 		try {
-			result = getDefaultDateFormat().parse(date);
+			result = getDefaultDateTimeFormat().parse(date);
 		} catch (ParseException e) {
 			logger.error("Can't parse {} to Date", date);
 		}
