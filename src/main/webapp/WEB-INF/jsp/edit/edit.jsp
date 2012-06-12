@@ -51,7 +51,7 @@
 						return $("#type").val() == 'Issue';
 					}},					
 					rejectReason : {required:function(element) {
-				        return $("#statusAction").val() == 'Draft';
+				        return $("#statusAction").val() == 'LeaderReject';
 				      }}
 				},
 				ignore : [],
@@ -132,7 +132,7 @@
 	}
 	
 	function checkAction(op) {
-		if ('Draft' == op.value) {
+		if ('LeaderReject' == op.value) {
 			$('.rejectArea').show();
 		} else {
 			$('.rejectArea').hide();

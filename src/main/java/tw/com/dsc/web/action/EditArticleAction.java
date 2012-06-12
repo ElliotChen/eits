@@ -387,7 +387,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 			this.articleService.saveOrUpdate(article);
 		} else if ("WaitForProofRead".equals(this.statusAction)) {
 			this.articleService.approve(article);
-		} else if ("Draft".equals(this.statusAction)) {
+		} else if ("LeaderReject".equals(this.statusAction)) {
 			this.articleService.reject(article, this.rejectReason);
 		} else if ("Published".equals(this.statusAction)) {
 			this.articleService.publish(article);
@@ -409,7 +409,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 			this.articleService.saveOrUpdate(article);
 		} else if ("WaitForProofRead".equals(this.statusAction)) {
 			this.articleService.approve(article);
-		} else if ("Draft".equals(this.statusAction)) {
+		} else if ("LeaderReject".equals(this.statusAction)) {
 			this.articleService.reject(article, this.rejectReason);
 		} else if ("Published".equals(this.statusAction)) {
 			this.articleService.publish(article);

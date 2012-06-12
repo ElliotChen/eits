@@ -9,5 +9,6 @@ public enum Status {
 	Published,
 	WaitForRepublish,
 	Archived,
-	Deleted
+	Deleted,
+	LeaderReject
 }

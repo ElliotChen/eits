@@ -486,12 +486,16 @@ public class Article extends AbstractSeqIdObjectAuditable {
 			case WaitForApproving:
 				
 				if (AgentType.L2 == this.agentType && op.isL2Manager()) {
-					result.add(Status.Draft);
+					result.add(Status.LeaderReject);
 					result.add(Status.Published);
 				} else if(AgentType.L3 == this.agentType && op.isL3Manager()) {
-					result.add(Status.Draft);
+					result.add(Status.LeaderReject);
 					result.add(Status.WaitForProofRead);
+					result.add(Status.Published);
 				}
+				break;
+			case LeaderReject:
+				result.add(Status.WaitForApproving);
 				break;
 			case WaitForProofRead:
 				if(AgentType.L3 == this.agentType && op.isL3Manager()) {

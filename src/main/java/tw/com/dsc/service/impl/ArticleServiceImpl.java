@@ -234,12 +234,12 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	@Transactional(readOnly=false)
 	public void reject(Article article, String reason) {
 		User op = ThreadLocalHolder.getOperator();
-		if (!article.getAvailableStatus().contains(Status.Draft)) {
+		if (!article.getAvailableStatus().contains(Status.LeaderReject)) {
 			logger.warn("Article[{}] can't be rejected for User[{}]", article, op.getAccount());
 			return;
 		}
 		article.setUpdateDate(new Date());
-		article.setStatus(Status.Draft);
+		article.setStatus(Status.LeaderReject);
 		
 		this.dao.saveOrUpdate(article);
 		
@@ -306,12 +306,10 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 				logger.error("Incorrect Status[{}] for Publish", article.getStatus());
 			}
 		} else if (AgentType.L3 == at) {
-			if (Status.ReadyToPublish == article.getStatus()) {
+			if (Status.ReadyToPublish == article.getStatus() || Status.WaitForApproving == article.getStatus()) {
 				this.realPublish(article);
 			} else if (Status.WaitForRepublish == article.getStatus()) {
 				this.republish(article);
-			} else if (Status.WaitForApproving == article.getStatus()) {
-				this.approve(article);
 			} else {
 				logger.error("Incorrect Status[{}] for Publish", article.getStatus());
 			}
@@ -360,7 +358,8 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		this.dao.saveOrUpdate(article);
 		
 		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Republish, op.getAccount(), "Republish", op.getIp()));
-
+		
+		this.mailService.republish(article.getOid());
 	}
 	
 	@Transactional(readOnly=false)
@@ -482,11 +481,12 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	
 	public Page<Article> searchUnpublishedPage(Page<Article> page) {
 		User op = ThreadLocalHolder.getOperator();
+		/* Remove for LeaderReject
 		if (!op.isLeader()) {
 			page.setTotalCount(0);
 			return page;
 		}
-		
+		*/
 		Article example = page.getExample();
 		
 		if (null == example) {
@@ -505,11 +505,17 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			}
 		}
 		*/
-		String[] groups = op.getAvailableGroups();
-		if (groups.length > 0) {
-			conds.add(new InCondition("userGroup", groups));
+		if (op.isLeader()) {
+			String[] groups = op.getAvailableGroups();
+			if (groups.length > 0) {
+				conds.add(new InCondition("userGroup", groups));
+			}
+			conds.add(new InCondition("status", new Object[] {Status.WaitForApproving, Status.WaitForProofRead, Status.ReadyToUpdate, Status.ReadyToPublish, Status.LeaderReject}));
+		} else {
+			example.setEntryUser(op.getAccount());
+			conds.add(new InCondition("status", new Object[] {Status.LeaderReject}));
 		}
-		conds.add(new InCondition("status", new Object[] {Status.WaitForApproving, Status.WaitForProofRead, Status.ReadyToUpdate, Status.ReadyToPublish}));
+		
 		conds.add(new InCondition("level", op.getAvailableLevels()));
 		conds.add(new SimpleCondition("agentType", op.getAgentType(), OperationEnum.EQ));
 		
