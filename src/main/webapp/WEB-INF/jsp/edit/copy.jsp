@@ -90,6 +90,7 @@
 		$('#sprocedure').ckeditor();
 		
 		switchType();
+		$(".numeric").numeric({ decimal: false, negative: false });
 		$('#techSelect').multiselect({beforeclose: function(){
 			$('#technology').val($('#techSelect').val());
 		   },position: {
@@ -227,7 +228,7 @@
 			<td>Ticket ID</td>
 			<td><s:textfield name="sarticle.ticketId" readonly="readonly" size="40"/></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('ticketId')" /></td>
-			<td><s:textfield id="ticketId" name="ticketId" size="40" maxlength="50"/></td>
+			<td><s:textfield id="ticketId" name="ticketId" size="40" maxlength="50" class="numeric"/></td>
 		</tr>
 		<tr class="ArticleType GeneralInfo SpecInfo">
 			<td>QUESTION</td>

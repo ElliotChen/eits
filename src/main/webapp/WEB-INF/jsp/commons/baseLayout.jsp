@@ -37,6 +37,7 @@
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.multiselect.min.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.multiselect.filter.min.js" />"></script>
 <script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.ui.ufd.js" />"></script>
+<script language="JavaScript" type="text/javascript" src="<c:url value="/js/jquery.numeric.js" />"></script>
 <style type="text/css">
     #ui-datepicker-div {
         z-index: 9999999;

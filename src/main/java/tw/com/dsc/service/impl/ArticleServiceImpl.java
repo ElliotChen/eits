@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,17 +17,21 @@ import org.springframework.transaction.annotation.Transactional;
 import tw.com.dsc.dao.ArticleDao;
 import tw.com.dsc.dao.ArticleIdDao;
 import tw.com.dsc.dao.ArticleLogDao;
+import tw.com.dsc.dao.ExportPackageDao;
 import tw.com.dsc.dao.StatisticsDataDao;
 import tw.com.dsc.domain.ActionType;
 import tw.com.dsc.domain.AgentType;
 import tw.com.dsc.domain.Article;
 import tw.com.dsc.domain.ArticleId;
 import tw.com.dsc.domain.ArticleLog;
+import tw.com.dsc.domain.ArticleType;
 import tw.com.dsc.domain.ExpireType;
+import tw.com.dsc.domain.ExportPackage;
 import tw.com.dsc.domain.Language;
 import tw.com.dsc.domain.Level;
 import tw.com.dsc.domain.StatisticsData;
 import tw.com.dsc.domain.Status;
+import tw.com.dsc.domain.support.BetweenCondition;
 import tw.com.dsc.domain.support.Condition;
 import tw.com.dsc.domain.support.InCondition;
 import tw.com.dsc.domain.support.LikeCondition;
@@ -39,6 +44,7 @@ import tw.com.dsc.service.ArticleService;
 import tw.com.dsc.service.MailService;
 import tw.com.dsc.to.ExportInfo;
 import tw.com.dsc.to.User;
+import tw.com.dsc.util.DateUtils;
 import tw.com.dsc.util.ThreadLocalHolder;
 
 @Service("articleService")
@@ -59,10 +65,15 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	
 	@Autowired
 	private StatisticsDataDao statisticsDataDao;
+	
+	@Autowired
+	private ExportPackageDao exportPackageDao;
+	
 	@Autowired
 	private MailService mailService;
 	
 	@Autowired
+	@Qualifier("articleIdSeq")
 	private DataFieldMaxValueIncrementer incrementer;
 	@Override
 	public ArticleDao getDao() {
@@ -743,5 +754,45 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		}
 		
 		return usedLanguage;
+	}
+	
+	@Transactional(readOnly=false)
+	public List<ExportInfo> exportProofRead(String epId, ArticleType[] types) {
+		ExportPackage ep = this.exportPackageDao.findByOid(epId);
+		
+		Article example = new Article();
+		example.setStatus(Status.WaitForProofRead);
+		example.setNews(ep.getNews());
+		List<Condition> conds = new ArrayList<Condition>();
+		conds.add(new BetweenCondition("entryDate", DateUtils.begin(ep.getBeginDate()), DateUtils.end(ep.getEndDate())));
+		conds.add(new InCondition("type", types));
+		
+		List<Article> articles = this.dao.listByExample(example, conds, null, new String[] {"entryUser"}, null);
+		
+		List<ExportInfo> infos = new ArrayList<ExportInfo>();
+		ExportInfo info = null;
+		for (Article article : articles) {
+			article.setExportPackage(ep);
+			this.dao.update(article);
+			if (null == info || !article.getEntryUser().equals(info.getAccount())) {
+				info = new ExportInfo();
+				info.setAccount(article.getEntryUser());
+				infos.add(info);
+			}
+			info.getArticles().add(article);
+		}
+		
+		//Update ArticleIdList
+		StringBuilder sb = new StringBuilder();
+		if (!articles.isEmpty()) {
+			sb.append(articles.get(0).getArticleId().getOid());
+			for (int i = 1; i < articles.size(); i++) {
+				sb.append(","+articles.get(i).getArticleId().getOid());
+			}
+		}
+		ep.setArticleIdList(sb.toString());
+		ep.setExportDate(new Date());
+		this.exportPackageDao.update(ep);
+		return infos;
 	}
 }

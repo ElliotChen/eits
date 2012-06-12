@@ -78,6 +78,7 @@
 		$('#solution').ckeditor();
 		$('#procedure').ckeditor();
 		switchType();
+		$(".numeric").numeric({ decimal: false, negative: false });
 		$('#techSelect').multiselect({beforeclose: function(){
 			$('#technology').val($('#techSelect').val());
 		   }, position: {
@@ -204,7 +205,7 @@
 		--%>
 		<tr class="ArticleType SpecInfo">
 			<td>eITS TICKET ID</td>
-			<td><s:textfield id="ticketId" name="ticketId" size="40" maxlength="50"/></td>
+			<td><s:textfield id="ticketId" name="ticketId" size="40" maxlength="50" class="numeric"/></td>
 		</tr>
 		<tr class="ArticleType GeneralInfo SpecInfo">
 			<td>QUESTION</td>

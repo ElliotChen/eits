@@ -21,6 +21,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -129,19 +131,28 @@ public class Article extends AbstractSeqIdObjectAuditable {
 	private String ticketId;
 	
 	/** Application and TroubleShooting **/
-	@Column(name = "SCENARIO", length = 100)
+	@Lob
+	@Column(name = "SCENARIO")
 	private String scenario;
-	@Column(name = "STEP", length = 100)
+	
+	@Lob
+	@Column(name = "STEP")
 	private String step;
-	@Column(name = "VERIFICATION", length = 100)
+	
+	@Lob
+	@Column(name = "VERIFICATION")
 	private String verification;
 	
 	/**Type = Issue**/
-	@Column(name = "PROBLEM", length = 100)
+	@Lob
+	@Column(name = "PROBLEM")
 	private String problem;
-	@Column(name = "SOLUTION", length = 100)
+	@Lob
+	@Column(name = "SOLUTION")
 	private String solution;
-	@Column(name = "PROCEDURE_DATA", length = 100)
+	
+	@Lob
+	@Column(name = "PROCEDURE_DATA")
 	private String procedure;
 	
 	@Column(name = "RATE_1")
@@ -154,6 +165,9 @@ public class Article extends AbstractSeqIdObjectAuditable {
 	private Integer rate4;
 	@Column(name = "RATE_5")
 	private Integer rate5;
+	
+	@ManyToOne
+	private ExportPackage exportPackage;
 	
 	public ArticleId getArticleId() {
 		return articleId;
@@ -449,6 +463,14 @@ public class Article extends AbstractSeqIdObjectAuditable {
 
 	public void setRate5(Integer rate5) {
 		this.rate5 = rate5;
+	}
+
+	public ExportPackage getExportPackage() {
+		return exportPackage;
+	}
+
+	public void setExportPackage(ExportPackage exportPackage) {
+		this.exportPackage = exportPackage;
 	}
 
 	public List<Status> getAvailableStatus() {

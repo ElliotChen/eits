@@ -10,6 +10,7 @@
 	<li><a id="m5" href="javascript:switchMenu('m5', 'searchArticle!publishedIndex.action');" style="text-transform: uppercase">L3 Latest Articles</a></li>
 	</s:if>
 	<s:if test="user.l3Admin">
+	<li><a id="m7" href="javascript:switchMenu('m7', 'news!index.action');" style="text-transform: uppercase">ZyTech News</a></li>
 	<li>
 		<a id="m6" href="#" style="text-transform: uppercase">Export</a>
 		<ul>

@@ -81,7 +81,7 @@
 		<th>&nbsp;</th>
 		<td>&nbsp;</td>
 	</tr>
-	<%-- 
+	
 	<tr>
 		<th>TECHNOLOGY:</th>
 		<td colspan="5">${article.hitCount}</td>
@@ -90,7 +90,7 @@
 		<th>PRODUCT MODEL:</th>
 		<td colspan="5">${article.hitCount}</td>
 	</tr>
-	--%>
+	<%-- 
 	<tr>
 		<th>TECHNOLOGY:</th>
 		<td><s:iterator value="article.formattedTech" var="tech">
@@ -105,6 +105,7 @@
 		<th>&nbsp;</th>
 		<td>&nbsp;</td>
 	</tr>
+	--%>
 </table>
 
 <fieldset class="conditionborder ArticleType GeneralInfo SpecInfo">

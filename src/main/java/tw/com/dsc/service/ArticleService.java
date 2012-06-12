@@ -1,8 +1,11 @@
 package tw.com.dsc.service;
 
+import java.util.Date;
 import java.util.List;
 
 import tw.com.dsc.domain.Article;
+import tw.com.dsc.domain.ArticleType;
+import tw.com.dsc.domain.ExportPackage;
 import tw.com.dsc.domain.Language;
 import tw.com.dsc.domain.support.Page;
 import tw.com.dsc.to.ExportInfo;
@@ -43,4 +46,6 @@ public interface ArticleService extends BaseDomainService<Article, Long> {
 	List<ExportInfo> listProofReadNews();
 	List<ExportInfo> listProofReadKB();
 	List<Language> listUsedLanguage(Article article);
+	
+	List<ExportInfo> exportProofRead(String epId, ArticleType[] types);
 }

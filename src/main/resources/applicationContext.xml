@@ -66,6 +66,11 @@
 		<property name="incrementerName" value="SEQ_ARTICLE_ID" />
 		<property name="paddingLength" value="6"/>
 	</bean>
+	<bean id="exportIdSeq" class="org.springframework.jdbc.support.incrementer.OracleSequenceMaxValueIncrementer">
+		<property name="dataSource" ref="dataSource" />
+		<property name="incrementerName" value="SEQ_EITS_EXPORT_PACKAGE" />
+		<property name="paddingLength" value="3"/>
+	</bean>
 	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
 	
 	<context:annotation-config />

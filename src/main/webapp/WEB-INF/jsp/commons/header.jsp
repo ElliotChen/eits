@@ -4,6 +4,7 @@
 <!--
 	$().ready(function() {
 		$('#loginForm').validate();
+		$(".numeric").numeric({ decimal: false, negative: false });
 	});
 </script>
 <div class="logo_zyxel">
@@ -35,7 +36,7 @@
 		<a href="#" onclick="switchMenu('m3', 'edit!list.action');">Home</a>
 		<a href="${ctx}/system!logout.action">Logout</a>
 		<br />
-			Article#:<input type="text" id="quickOid" name="quickOid" size="6" maxlength="6" />
+			Article#:<input type="text" id="quickOid" name="quickOid" size="6" maxlength="6"  class="numeric"/>
 		<input type="button" onclick="quickViewArticleByArticleId();" value="Go" />
 		<br />
 			Role:<s:select id="userRole" name="userRole" list="user.userRoles" listKey="role" listValue="role" onchange="switchRole()" value="user.currentUserRole.role"/>

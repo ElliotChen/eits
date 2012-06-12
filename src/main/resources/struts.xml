@@ -80,6 +80,12 @@
 			<result name="successImg">/WEB-INF/jsp/ckeditor/successImg.jsp</result>
 			<result name="failImg">/WEB-INF/jsp/ckeditor/failImg.jsp</result>
 		</action>
+		
+		<action name="news!*" method="{1}" class="newsAction">
+			<result name="index">/WEB-INF/jsp/news/index.jsp</result>
+			<result name="packageList">/WEB-INF/jsp/news/packageList.jsp</result>
+			<result name="export">/WEB-INF/jsp/export/export.jsp</result>
+		</action>
 	</package>
 
 </struts>
