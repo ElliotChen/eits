@@ -478,18 +478,21 @@ public class Article extends AbstractSeqIdObjectAuditable {
 		ArrayList<Status> result = new ArrayList<Status>();
 		
 		if (null == this.status) {
-			
+			/*
 			if (AgentType.L2 == op.getAgentType() && op.isL2Manager()) {
 				result.add(Status.Published);
 			} else if(AgentType.L3 == op.getAgentType() && op.isL3Manager()) {
-				result.add(Status.WaitForProofRead);
+				result.add(Status);
 			} else {
 				//logger.error("Please check AgentType[{}] for User[{}]", op.getAgentType(), op.getAccount());
 			}
+			*/
 			
 			if (!op.isGuest()) {
+				result.add(Status.Published);
 				result.add(Status.WaitForApproving);
 				result.add(Status.Draft);
+				
 			} else {
 				logger.warn("Guest can't get any available status!");
 			}
@@ -512,12 +515,15 @@ public class Article extends AbstractSeqIdObjectAuditable {
 					result.add(Status.Published);
 				} else if(AgentType.L3 == this.agentType && op.isL3Manager()) {
 					result.add(Status.LeaderReject);
-					result.add(Status.WaitForProofRead);
+					result.add(Status.LeaderApproved);
 					result.add(Status.Published);
 				}
 				break;
 			case LeaderReject:
 				result.add(Status.WaitForApproving);
+				break;
+			case LeaderApproved:
+				//result.add(Status.WaitForProofRead);
 				break;
 			case WaitForProofRead:
 				if(AgentType.L3 == this.agentType && op.isL3Manager()) {

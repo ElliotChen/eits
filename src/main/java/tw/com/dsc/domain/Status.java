@@ -10,5 +10,6 @@ public enum Status {
 	WaitForRepublish,
 	Archived,
 	Deleted,
-	LeaderReject
+	LeaderReject,
+	LeaderApproved
 }

@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import tw.com.dsc.domain.ActionType;
+import tw.com.dsc.domain.AgentType;
 import tw.com.dsc.domain.Article;
 import tw.com.dsc.domain.ArticleId;
 import tw.com.dsc.domain.ArticleLog;
@@ -299,10 +300,20 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		} else if ("WaitForApproving".equals(statusAction)) {
 			this.articleService.finalNewArticle(article);
 		} else if ("Published".equals(statusAction) ) {
-			this.articleService.publishNewL2Article(article);
-		} else if ("WaitForProofRead".equals(statusAction)) {
+			logger.debug("");
+			if (ThreadLocalHolder.getOperator().isL2()) {
+				this.articleService.publishNewL2Article(article);
+			} else if (ThreadLocalHolder.getOperator().isL3()){
+				this.articleService.publishNewL3Article(article);
+			} else {
+				logger.error("Incorrect AgentType to publish Article");
+			}
+		}
+		/*
+		else if ("WaitForProofRead".equals(statusAction)) {
 			this.articleService.publishNewL3Article(article);
-		} 
+		}
+		*/
 		
 		return this.list();
 	}
@@ -385,7 +396,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 				
 		if (StringUtils.isEmpty(this.statusAction)) {
 			this.articleService.saveOrUpdate(article);
-		} else if ("WaitForProofRead".equals(this.statusAction)) {
+		} else if ("LeaderApproved".equals(this.statusAction)) {
 			this.articleService.approve(article);
 		} else if ("LeaderReject".equals(this.statusAction)) {
 			this.articleService.reject(article, this.rejectReason);
@@ -407,7 +418,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	public String updateStatus() {
 		if (StringUtils.isEmpty(this.statusAction)) {
 			this.articleService.saveOrUpdate(article);
-		} else if ("WaitForProofRead".equals(this.statusAction)) {
+		} else if ("LeaderApproved".equals(this.statusAction)) {
 			this.articleService.approve(article);
 		} else if ("LeaderReject".equals(this.statusAction)) {
 			this.articleService.reject(article, this.rejectReason);

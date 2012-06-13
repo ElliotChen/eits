@@ -162,12 +162,29 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	
 	@Transactional(readOnly=false)
 	public void publishNewL3Article(Article article) {
+		/*
 		User op = ThreadLocalHolder.getOperator();
 		if (!article.getAvailableStatus().contains(Status.WaitForProofRead)) {
 			logger.warn("Article[{}] can't be proof read for User[{}]", article, op.getAccount());
 			return;
 		}
 		this.newArticle(article, Status.WaitForProofRead);
+		*/
+		User op = ThreadLocalHolder.getOperator();
+		if (!article.getAvailableStatus().contains(Status.Published)) {
+			logger.warn("Article[{}] can't be published for User[{}]", article, op.getAccount());
+			return;
+		}
+		
+		Calendar cal = Calendar.getInstance();
+		article.setPublishDate(new Date());
+		if (null == article.getExpireType()) {
+			logger.warn("Publish an article without expire type!");
+			article.setExpireType(ExpireType.M1);
+		}
+		cal.add(Calendar.MONTH, article.getExpireType().getMonth());
+		article.setExpireDate(cal.getTime());
+		this.newArticle(article, Status.Published);
 	}
 	
 	protected void newArticle(Article article, Status status) {
@@ -230,12 +247,12 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	@Transactional(readOnly=false)
 	public void approve(Article article) {
 		User op = ThreadLocalHolder.getOperator();
-		if (!article.getAvailableStatus().contains(Status.WaitForProofRead)) {
+		if (!article.getAvailableStatus().contains(Status.LeaderApproved)) {
 			logger.warn("Article[{}] can't be approved for User[{}]", article, op.getAccount());
 			return;
 		}
 		article.setUpdateDate(new Date());
-		article.setStatus(Status.WaitForProofRead);
+		article.setStatus(Status.LeaderApproved);
 		
 		this.dao.saveOrUpdate(article);
 		
@@ -761,7 +778,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		ExportPackage ep = this.exportPackageDao.findByOid(epId);
 		
 		Article example = new Article();
-		example.setStatus(Status.WaitForProofRead);
+		example.setStatus(Status.LeaderApproved);
 		example.setNews(ep.getNews());
 		List<Condition> conds = new ArrayList<Condition>();
 		conds.add(new BetweenCondition("entryDate", DateUtils.begin(ep.getBeginDate()), DateUtils.end(ep.getEndDate())));
