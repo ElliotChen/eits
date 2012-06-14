@@ -91,7 +91,7 @@
 		<td colspan="3"><fmt:formatDate value="${publishDate}" pattern="yyyy/MM/dd HH:mm:ss" /></td>
 	</tr>
 	<tr>
-		<th>VIEW LEVEL</th>
+		<th>VIEW LEVEL:</th>
 		<td colspan="3">${level}</td>
 	</tr>
 

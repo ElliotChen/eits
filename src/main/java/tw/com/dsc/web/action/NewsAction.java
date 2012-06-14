@@ -1,5 +1,6 @@
 package tw.com.dsc.web.action;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +12,10 @@ import org.springframework.stereotype.Component;
 
 import tw.com.dsc.domain.ArticleType;
 import tw.com.dsc.domain.ExportPackage;
+import tw.com.dsc.domain.support.Condition;
+import tw.com.dsc.domain.support.OperationEnum;
 import tw.com.dsc.domain.support.Page;
+import tw.com.dsc.domain.support.SimpleCondition;
 import tw.com.dsc.service.ArticleService;
 import tw.com.dsc.service.ExportPackageService;
 import tw.com.dsc.to.ExportInfo;
@@ -40,6 +44,7 @@ public class NewsAction extends BaseAction implements Preparable {
 	private Date beginDate;
 	private Date endDate;
 	private ArticleType[] types;
+	private String[] epOids;
 	@Override
 	public void prepare() throws Exception {
 		if (null == pageNo) {
@@ -50,10 +55,11 @@ public class NewsAction extends BaseAction implements Preparable {
 	public String index() {
 		
 		ExportPackage example = new ExportPackage();
+		example.setClosed(Boolean.FALSE);
 		Page<ExportPackage> page = new Page<ExportPackage>(example);
 		page.setPageNo(pageNo);
 		page.setDescOrders(new String[] {"oid"});
-		
+//		page.getConditions().add(new SimpleCondition("news", 'N', OperationEnum.EQ));
 		this.exportPackages = this.exportPackageService.listByPage(page);
 		
 		return "index";
@@ -61,19 +67,33 @@ public class NewsAction extends BaseAction implements Preparable {
 	
 	public String searchExportPackage() {
 		ExportPackage example = new ExportPackage();
+		example.setClosed(Boolean.FALSE);
 		Page<ExportPackage> page = new Page<ExportPackage>(example);
 		page.setPageNo(pageNo);
 		page.setDescOrders(new String[] {"oid"});
+//		page.getConditions().add(new SimpleCondition("news", 'N', OperationEnum.EQ));
 		
 		this.exportPackages = this.exportPackageService.listByPage(page);
 		
 		return "packageList";
 	}
-	
+	public String preExport() {
+		infos = this.articleService.searchForProofRead(news, beginDate, endDate, types);
+		return "export";
+	}
 	public String export() {
 		ExportPackage ep = exportPackageService.create(news, beginDate, endDate, types);
 		infos = this.articleService.exportProofRead(ep.getOid(), types);
-		return "export";
+		this.addActionMessage("Export Finished. Please reload ZyTech News for more details.");
+		return "exportRes";
+	}
+	
+	public String updateProofRead() {
+		for (String epOid : this.epOids) {
+			this.articleService.readyUpdate(epOid);
+		}
+		this.addActionMessage("Update status success.");
+		return this.searchExportPackage();
 	}
 
 	public ArticleService getArticleService() {
@@ -146,6 +166,14 @@ public class NewsAction extends BaseAction implements Preparable {
 
 	public void setInfos(List<ExportInfo> infos) {
 		this.infos = infos;
+	}
+
+	public String[] getEpOids() {
+		return epOids;
+	}
+
+	public void setEpOids(String[] epOids) {
+		this.epOids = epOids;
 	}
 	
 }

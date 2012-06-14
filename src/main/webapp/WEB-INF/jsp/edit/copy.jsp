@@ -111,7 +111,6 @@
 
 	function copyAll() {
 		copyField('summary');
-		copyField('language.oid');
 		copyField('type');
 		copyField('question');
 		copyField('answer');
@@ -190,97 +189,100 @@
 	<input type="hidden" name="expireType" value="${sarticle.expireType}" />
 	<input type="hidden" name="keywords" value="${sarticle.keywords}" />
 	<input type="hidden" name="level" value="Public" />
+	<input type="hidden" id="type" name="type" value="${sarticle.type}" />
 	<table class="conditionborder">
 		<tr>
 			<td colspan="4" style="text-align: center;"><input type="button" value="Copy All" onclick="copyAll();" /></td>
 		</tr>
 		<tr>
-			<td>ARTICLE ID</td>
+			<td>ARTICLE ID:</td>
 			<td><s:textfield name="sarticle.articleId.oid" readonly="true" size="6"/></td>
 			<td></td>
 			<td>${sarticle.articleId.oid}</td>
 		</tr>
 		<tr>
-			<td>LANGUAGE</td>
+			<td>LANGUAGE:</td>
 			<td><s:select list="languages" listKey="oid" listValue="name" name="sarticle.language.oid" disabled="true"/></td>
 			<td></td>
 			<td><s:select list="copyLanguages" listKey="oid" listValue="name" name="language.oid"/></td>
 		</tr>
+		<%--
 		<tr>
 			<td>TYPE</td>
 			<td><s:select id="stype" name="sarticle.type" list="@tw.com.dsc.domain.ArticleType@values()" listValue="%{getText('enum.ArticleType.'+toString())}" disabled="true"/></td>
 			<td></td>
 			<td><s:select id="type" name="type" list="@tw.com.dsc.domain.ArticleType@values()" listValue="%{getText('enum.ArticleType.'+toString())}" onchange="switchType();" value="sarticle.type"/></td>
 		</tr>
+		 --%>
 		<tr>
-			<td>SUMMARY</td>
+			<td>SUMMARY:</td>
 			<td><s:textfield name="sarticle.summary" readonly="true" /></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('summary')"/></td>
 			<td><s:textfield name="summary" /></td>
 		</tr>
 		<tr>
-			<td>ENTRY DATE</td>
+			<td>ENTRY DATE:</td>
 			<td><s:date name="sarticle.entryDate" format="yyyy/MM/dd HH:mm:ss" /></td>
 			<td></td>
 			<td><s:date name="entryDate" format="yyyy/MM/dd HH:mm:ss" /></td>
 		</tr>
 		<tr class="ArticleType SpecInfo">
-			<td>Ticket ID</td>
+			<td>Ticket ID:</td>
 			<td><s:textfield name="sarticle.ticketId" readonly="readonly" size="40"/></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('ticketId')" /></td>
-			<td><s:textfield id="ticketId" name="ticketId" size="40" maxlength="50" class="numeric"/></td>
+			<td><s:textfield id="ticketId" name="ticketId" size="40" maxlength="50" cssClass="numeric"/></td>
 		</tr>
 		<tr class="ArticleType GeneralInfo SpecInfo">
-			<td>QUESTION</td>
+			<td>QUESTION:</td>
 			<td><s:textarea id="squestion" name="sarticle.question" readonly="true" cols="40" rows="4" /></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('question')" /></td>
 			<td><s:textarea id="question" name="question" cols="40" rows="4" /></td>
 		</tr>
 		<tr class="ArticleType GeneralInfo SpecInfo">
-			<td>ANSWER</td>
+			<td>ANSWER:</td>
 			<td><s:textarea id="sanswer" name="sarticle.answer" readonly="true" cols="40" rows="8" /></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('answer')"/></td>
 			<td><s:textarea id="answer" name="answer" cols="40" rows="8" /></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
-			<td>SCENARIO DESCRIPTION</td>
+			<td>SCENARIO DESCRIPTION:</td>
 			<td><s:textarea id="sscenario" name="sarticle.scenario" readonly="true" cols="40" rows="8" /></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('scenario')" /></td>
 			<td><s:textarea id="scenario" name="scenario" cols="40" rows="4" /></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
-			<td>SETUP/STEP BY STEP PROCEDURE</td>
+			<td>SETUP/STEP BY STEP PROCEDURE:</td>
 			<td><s:textarea id="sstep" name="sarticle.step" readonly="true" cols="40" rows="8" /></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('step')" /></td>
 			<td><s:textarea id="step" name="step" cols="40" rows="4" /></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
-			<td>VERIFICATION</td>
+			<td>VERIFICATION:</td>
 			<td><s:textarea id="sverification" name="sarticle.verification" readonly="true" cols="40" rows="8" /></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('verification')" /></td>
 			<td><s:textarea id="verification" name="verification" cols="40" rows="4" /></td>
 		</tr>
 		
 		<tr class="ArticleType Issue">
-			<td>PROBLEM DESCRIPTION</td>
+			<td>PROBLEM DESCRIPTION:</td>
 			<td><s:textarea id="sproblem" name="sarticle.problem" readonly="true" cols="40" rows="8" /></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('problem')" /></td>
 			<td><s:textarea id="problem" name="problem" cols="40" rows="4" /></td>
 		</tr>
 		<tr class="ArticleType Issue">
-			<td>SOLUTION</td>
+			<td>SOLUTION:</td>
 			<td><s:textarea id="ssolution" name="sarticle.solution" readonly="true" cols="40" rows="8" /></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('solution')" /></td>
 			<td><s:textarea id="solution" name="solution" cols="40" rows="4" /></td>
 		</tr>
 		<tr class="ArticleType Issue">
-			<td>CONDITION/REPRODUCE PROCEDURE</td>
+			<td>CONDITION/REPRODUCE PROCEDURE:</td>
 			<td><s:textarea id="sprocedure" name="sarticle.procedure" readonly="true" cols="40" rows="8" /></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('procedure')" /></td>
 			<td><s:textarea id="procedure" name="procedure" cols="40" rows="4" /></td>
 		</tr>
 		<tr>
-			<td>TECHNOLOGY</td>
+			<td>TECHNOLOGY:</td>
 			<td><s:textarea name="sarticle.technology" readonly="true" cols="40" rows="4"/></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('technology')"/></td>
 			<td><s:textarea id="technology" name="technology" cols="40" rows="4" readonly="true"/>
@@ -296,7 +298,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>PRODUCT</td>
+			<td>PRODUCT:</td>
 			<td><s:textarea name="sarticle.product" readonly="true" cols="40" rows="4"/></td>
 			<td><input type="button" value="Copy >>" onclick="copyField('product')"/></td>
 			<td><s:textarea id="product" name="product" cols="40" rows="4" readonly="true"/>
@@ -312,7 +314,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>FIRMWARE</td>
+			<td>FIRMWARE:</td>
 			<td>
 				<s:textfield name="sarticle.firmware" readonly="true" size="40" maxlength="50"/>
 			</td>
@@ -328,7 +330,7 @@
 		</tr>
 		 -->
 		<tr>
-			<td>SAVE AS</td>
+			<td>SAVE AS:</td>
 			<td></td>
 			<td></td>
 			<td><s:radio name="statusAction" list="availableStatus" listValue="%{getText('create.statusAction.'+toString())}" value="'WaitForApproving'" /></td>

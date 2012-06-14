@@ -36,6 +36,7 @@ import tw.com.dsc.domain.support.Condition;
 import tw.com.dsc.domain.support.InCondition;
 import tw.com.dsc.domain.support.LikeCondition;
 import tw.com.dsc.domain.support.LikeMode;
+import tw.com.dsc.domain.support.NullCondition;
 import tw.com.dsc.domain.support.OperationEnum;
 import tw.com.dsc.domain.support.OrCondition;
 import tw.com.dsc.domain.support.Page;
@@ -300,8 +301,27 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		this.dao.saveOrUpdate(article);
 		
 		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Approve, op.getAccount(), "Ready to Updated", op.getIp()));
+		this.mailService.readyUpdate(article.getOid());
 	}
 	
+	@Transactional(readOnly=false)
+	public void readyUpdate(String epOid) {
+			ExportPackage ep = this.exportPackageDao.findByOid(epOid);
+			if (null == ep) {
+				logger.error("Can't find ExportPackage[{}] for readyToUpdate operation.", epOid);
+				return;
+			}
+			Article example = new Article();
+			List<Condition> conds = new ArrayList<Condition>();
+			conds.add(new SimpleCondition("exportPackage.oid", epOid, OperationEnum.EQ));
+			
+			List<Article> articles = this.listByExample(example, conds, LikeMode.NONE, null, null);
+			for (Article article : articles) {
+				readyUpdate(article);
+			}
+			
+			ep.setClosed(Boolean.TRUE);
+	}
 	@Transactional(readOnly=false)
 	public void readyPublish(Article article) {
 		User op = ThreadLocalHolder.getOperator();
@@ -541,7 +561,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			conds.add(new InCondition("status", new Object[] {Status.WaitForApproving, Status.WaitForProofRead, Status.ReadyToUpdate, Status.ReadyToPublish, Status.LeaderReject}));
 		} else {
 			example.setEntryUser(op.getAccount());
-			conds.add(new InCondition("status", new Object[] {Status.LeaderReject}));
+			conds.add(new InCondition("status", new Object[] {Status.WaitForApproving, Status.LeaderReject}));
 		}
 		
 		conds.add(new InCondition("level", op.getAvailableLevels()));
@@ -773,6 +793,34 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		return usedLanguage;
 	}
 	
+	public List<ExportInfo> searchForProofRead(Boolean news, Date beginDate, Date endDate, ArticleType[] types) {
+		Article example = new Article();
+		example.setStatus(Status.LeaderApproved);
+		example.setNews(news);
+		List<Condition> conds = new ArrayList<Condition>();
+		conds.add(new BetweenCondition("entryDate", DateUtils.begin(beginDate), DateUtils.end(endDate)));
+		conds.add(new InCondition("type", types));
+		conds.add(new NullCondition("exportPackage"));
+		List<Article> articles = this.dao.listByExample(example, conds, null, new String[] {"entryUser"}, null);
+		
+		List<ExportInfo> infos = new ArrayList<ExportInfo>();
+		
+		if (articles.isEmpty()) {
+			logger.warn("No article can be exported.");
+			return infos;
+		}
+		
+		ExportInfo info = null;
+		for (Article article : articles) {
+			if (null == info || !article.getEntryUser().equals(info.getAccount())) {
+				info = new ExportInfo();
+				info.setAccount(article.getEntryUser());
+				infos.add(info);
+			}
+			info.getArticles().add(article);
+		}
+		return infos;
+	}
 	@Transactional(readOnly=false)
 	public List<ExportInfo> exportProofRead(String epId, ArticleType[] types) {
 		ExportPackage ep = this.exportPackageDao.findByOid(epId);
@@ -783,13 +831,21 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		List<Condition> conds = new ArrayList<Condition>();
 		conds.add(new BetweenCondition("entryDate", DateUtils.begin(ep.getBeginDate()), DateUtils.end(ep.getEndDate())));
 		conds.add(new InCondition("type", types));
-		
+		conds.add(new NullCondition("exportPackage"));
 		List<Article> articles = this.dao.listByExample(example, conds, null, new String[] {"entryUser"}, null);
 		
+		
 		List<ExportInfo> infos = new ArrayList<ExportInfo>();
+		
+		if (articles.isEmpty()) {
+			logger.warn("No article can be exported.");
+			return infos;
+		}
+		
 		ExportInfo info = null;
 		for (Article article : articles) {
 			article.setExportPackage(ep);
+			article.setStatus(Status.WaitForProofRead);
 			this.dao.update(article);
 			if (null == info || !article.getEntryUser().equals(info.getAccount())) {
 				info = new ExportInfo();
@@ -810,6 +866,10 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		ep.setArticleIdList(sb.toString());
 		ep.setExportDate(new Date());
 		this.exportPackageDao.update(ep);
+		
+		for (Article article : articles) {
+			this.mailService.proofread(article.getOid());
+		}
 		return infos;
 	}
 }

@@ -34,6 +34,8 @@ public interface MailService {
 	 * @param articleOid
 	 */
 	void readyPublish(Long articleOid);
+	void readyUpdate(Long articleOid);
+	void proofread(Long articleOid);
 	
 	/**
 	 * Expired Notification for Leader – Notify agent leaders that there is a KB article already expired.

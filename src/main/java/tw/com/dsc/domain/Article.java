@@ -478,18 +478,16 @@ public class Article extends AbstractSeqIdObjectAuditable {
 		ArrayList<Status> result = new ArrayList<Status>();
 		
 		if (null == this.status) {
-			/*
-			if (AgentType.L2 == op.getAgentType() && op.isL2Manager()) {
+			
+			if (AgentType.L2 == op.getAgentType()) {
 				result.add(Status.Published);
 			} else if(AgentType.L3 == op.getAgentType() && op.isL3Manager()) {
-				result.add(Status);
+				result.add(Status.Published);
 			} else {
 				//logger.error("Please check AgentType[{}] for User[{}]", op.getAgentType(), op.getAccount());
 			}
-			*/
-			
+
 			if (!op.isGuest()) {
-				result.add(Status.Published);
 				result.add(Status.WaitForApproving);
 				result.add(Status.Draft);
 				
@@ -645,6 +643,62 @@ public class Article extends AbstractSeqIdObjectAuditable {
 		}
 		return sb.toString();
 	}
+	
+	public String getLineTech() {
+		List<String> list = this.parseLine(this.technology);
+		String[] src = new String[list.size()];
+		src = list.toArray(src);
+		
+		StringBuilder sb = new StringBuilder();
+		if (0 < src.length) {
+		sb.append(src[0]);
+		for (int i = 1; i < src.length; i++) {
+			sb.append(",");
+			sb.append(src[i]);
+		}
+		}
+		if (3 < list.size()) {
+			sb.append("...");
+		}
+		return sb.toString();
+	}
+	
+	public String getLineModel() {
+		List<String> list = this.parseLine(this.product);
+		String[] src = new String[list.size()];
+		src = list.toArray(src);
+		
+		StringBuilder sb = new StringBuilder();
+		if (0 < src.length) {
+		sb.append(src[0]);
+		for (int i = 1; i < src.length; i++) {
+			sb.append(",");
+			sb.append(src[i]);
+		}
+		}
+		if (3 < list.size()) {
+			sb.append("...");
+		}
+		return sb.toString();
+	}
+	
+	protected List<String> parseLine(String origin) {
+		String[] sp = origin.split(",");
+		List<String> tmp = new ArrayList<String>();
+		for (int i =0 ; (i < 3 && i < sp.length); i++) {
+			tmp.add(sp[i]);
+		}
+		List<String> result = new ArrayList<String>();
+		for (String source : tmp) {
+			Matcher matcher = parser.matcher(source);
+			if (matcher.matches()) {
+				result.add(matcher.group(2));
+			}
+		}
+		return result;
+	}
+	
+	
 	
 	public List<String> parser(String origin) {
 		List<String> result = new ArrayList<String>();

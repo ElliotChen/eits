@@ -3,12 +3,21 @@
 <script>
 	$().ready(function() {
 		switchMenu('m7');
+		$.validator.addMethod(
+				'dateGreaterThan', 
+				function(value, element, params) {
+					if (!/Invalid|NaN/.test(new Date(value))) {
+						return new Date(value) > new Date($(params).val());
+					}
+	    			return isNaN(value) && isNaN($(params).val()) || (parseFloat(value) > parseFloat($(params).val()));
+	    		}, 
+	    		'This value must greater than {0}');
 		$('#exportNewsForm').validate({
 				errorClass: "errorField",
 		    	rules : {
 		    		types : { required:true},
 		    		beginDate : { required:true},
-		    		endDate : { required:true}
+		    		endDate : { required:true, dateGreaterThan:'#beginDate'}
 		    		}
 		    	});
 		$('#exportPackageForm').ajaxForm({
@@ -36,17 +45,17 @@
    </div>
 </s:if>
 <div  class="condition">
-<s:form id="exportNewsForm" namespace="/" action="news!export" theme="simple" target="_blank">
+<s:form id="exportNewsForm" namespace="/" action="news!preExport" theme="simple" target="_blank">
 <table class="conditionborder">
 	<tr><th colspan="2">Export Condition</th></tr>
 	<tr>
-		<td>ZyTech News</td><td><s:radio name="news" list="#{'true':'Yes','false':'No'}" value="true"/></td><td align="right"><s:submit value="Export for Proofread" /></td>
+		<td>ZyTech News:</td><td><s:radio name="news" list="#{'true':'Yes','false':'No'}" value="true"/></td><td align="right"><s:submit value="Export for Proofread" /></td>
 	</tr>
 	<tr>
-		<td>FROM</td><td><input type="text" name="beginDate" size="10" id="beginDate1" readonly="readonly" class="calendar"/> TO <input type="text" name="endDate" size="10" id="endDate1" readonly="readonly" class="calendar"/></td>
+		<td>FROM:</td><td><input type="text" id="beginDate" name="beginDate" size="10" id="beginDate1" readonly="readonly" class="calendar"/> TO <input type="text" id="endDate" name="endDate" size="10" id="endDate1" readonly="readonly" class="calendar"/></td>
 	</tr>
 	<tr>
-		<td>TYPE</td><td><s:checkboxlist name="types" list="@tw.com.dsc.domain.ArticleType@values()" listValue="%{getText('enum.ArticleType.'+toString())}" value="@tw.com.dsc.domain.ArticleType@values()"/></td>
+		<td>TYPE:</td><td><s:checkboxlist name="types" list="@tw.com.dsc.domain.ArticleType@values()" listValue="%{getText('enum.ArticleType.'+toString())}" value="@tw.com.dsc.domain.ArticleType@values()"/></td>
 	</tr>
 </table>
 </s:form>

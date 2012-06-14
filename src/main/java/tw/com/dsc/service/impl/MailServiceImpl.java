@@ -18,7 +18,9 @@ import tw.com.dsc.service.TaskManager;
 import tw.com.dsc.task.ApprovalMailTask;
 import tw.com.dsc.task.ArchivedMailTask;
 import tw.com.dsc.task.ExpiredMailTask;
+import tw.com.dsc.task.ProofreadMailTask;
 import tw.com.dsc.task.ReadyPublishMailTask;
+import tw.com.dsc.task.ReadyUpdateMailTask;
 import tw.com.dsc.task.RejectMailTask;
 import tw.com.dsc.task.RepublishMailTask;
 
@@ -76,6 +78,16 @@ public class MailServiceImpl implements MailService {
 	@Override
 	public void readyPublish(Long articleOid) {
 		this.taskManager.arrangeMailTask(new ReadyPublishMailTask(articleOid, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine, serverUrl));
+	}
+	
+	@Override
+	public void proofread(Long articleOid) {
+		this.taskManager.arrangeMailTask(new ProofreadMailTask(articleOid, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine, serverUrl));
+	}
+	
+	@Override
+	public void readyUpdate(Long articleOid) {
+		this.taskManager.arrangeMailTask(new ReadyUpdateMailTask(articleOid, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine, serverUrl));
 	}
 
 	@Override

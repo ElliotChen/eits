@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+<p>Dear $receiver.name,</p>
+<br /><br />
+<p>
+
+#if ($article.news) 
+Some News were returned from Technical Writer.<br>
+Below is the list of News in question:<br>
+<font color="red">News List</font><br>
+#else
+Some Articles were returned from Technical Writer.<br>
+Below is the list of Articles in question:<br>
+<font color="red">KB List</font><br>
+#end
+
+<table>
+	<tr bgcolor="grey"><td>KB#</td><td>Summery</td><td>Last Update</td></tr>
+	<tr>
+		<td><a target="_blank" href="$server/edit!quickEdit.action?oid=$article.oid"> $article.articleId.oid </a></td>
+		<td>$article.summary</td><td>$article.updateDate</td></tr>
+</table>
+</p>
+
+<p>
+<font color="red">********** This E-mail was sent automatically by Knowledgebase System! Do not reply this mail directly **********</font>
+</p>
+</body>
+</html>

@@ -84,11 +84,11 @@
 	
 	<tr>
 		<th>TECHNOLOGY:</th>
-		<td colspan="5">${article.hitCount}</td>
+		<td colspan="5" title="${article.technology}">${article.lineTech}</td>
 	</tr>
 	<tr>
 		<th>PRODUCT MODEL:</th>
-		<td colspan="5">${article.hitCount}</td>
+		<td colspan="5" title="${article.product}">${article.lineModel}</td>
 	</tr>
 	<%-- 
 	<tr>

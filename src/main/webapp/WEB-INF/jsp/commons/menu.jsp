@@ -11,6 +11,7 @@
 	</s:if>
 	<s:if test="user.l3Admin">
 	<li><a id="m7" href="javascript:switchMenu('m7', 'news!index.action');" style="text-transform: uppercase">ZyTech News</a></li>
+	<%-- 
 	<li>
 		<a id="m6" href="#" style="text-transform: uppercase">Export</a>
 		<ul>
@@ -18,6 +19,7 @@
 			<li><a href="${ctx}/export!exportKB.action" target="_blanke">Export KB</a></li>
 		</ul>
 	</li>
+	--%>
 	<li><a id="m4" href="javascript:switchMenu('m4', 'language!index.action');" style="text-transform: uppercase">Language</a></li>
 	</s:if>
 </ul>

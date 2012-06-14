@@ -186,9 +186,13 @@
 		$('#ajaxArticleForm').submit();
 	}
 	function closeAjaxArticle() {
-		$('#search').show();
-		$('#articles').show();
-		$('#detail').html('');
+		if ($('#search').length > 0) {
+			$('#search').show();
+			$('#articles').show();
+			$('#detail').html('');
+		} else {
+			switchMenu('m1', 'searchArticle!index.action');
+		}
 	}
 	
 	function viewArticle(oid) {

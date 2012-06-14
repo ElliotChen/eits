@@ -84,7 +84,8 @@
 		<action name="news!*" method="{1}" class="newsAction">
 			<result name="index">/WEB-INF/jsp/news/index.jsp</result>
 			<result name="packageList">/WEB-INF/jsp/news/packageList.jsp</result>
-			<result name="export">/WEB-INF/jsp/export/export.jsp</result>
+			<result name="export">/WEB-INF/jsp/news/export.jsp</result>
+			<result name="exportRes">/WEB-INF/jsp/news/exportRes.jsp</result>
 		</action>
 	</package>
 

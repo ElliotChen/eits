@@ -49,15 +49,15 @@
 <table class="conditionborder">
 	<tr><th colspan="7">Unpublished Articles</th></tr>
 	<tr>
-		<td>ID</td><td><input type="text" name="example1.articleId.oid" size="6" maxlength="6" class="numeric"/></td>
-		<td>Summary</td><td><input type="text" name="example1.summary" size="30"/></td>
-		<td>Agent</td><td><input type="text" name="example1.entryUser" size="15"/></td>
+		<td>ID:</td><td><input type="text" name="example1.articleId.oid" size="6" maxlength="6" class="numeric"/></td>
+		<td>Summary:</td><td><input type="text" name="example1.summary" size="30"/></td>
+		<td>Agent:</td><td><input type="text" name="example1.entryUser" size="15"/></td>
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
-		<td>Entry Date </td><td><input type="text" name="beginDate" size="10" id="beginDate1" readonly="readonly" class="calendar"/>~<input type="text" name="endDate" size="10" id="endDate1" readonly="readonly" class="calendar"/></td>
-		<td>Prod. Series</td><td><input type="text" name="example1.product" size="30"/></td>
-		<td>Status</td>
+		<td>Entry Date:</td><td><input type="text" name="beginDate" size="10" id="beginDate1" readonly="readonly" class="calendar"/>~<input type="text" name="endDate" size="10" id="endDate1" readonly="readonly" class="calendar"/></td>
+		<td>Prod. Series:</td><td><input type="text" name="example1.product" size="30"/></td>
+		<td>Status:</td>
 			<td>
 				<s:if test="user.l3">
 					<s:select name="example1.status" list="{'WaitForApproving', 'WaitForProofRead', 'ReadyToUpdate', 'ReadyToPublish', 'LeaderReject'}" listValue="%{getText('enum.Status.'+toString())}" headerKey="" headerValue="----"></s:select></td>
@@ -83,13 +83,13 @@
 <table class="conditionborder">
 	<tr><th colspan="6">Latest Draft Articles</th></tr>
 	<tr>
-		<td>ID</td><td><input type="text" name="example2.articleId.oid" size="6" maxlength="6" class="numeric"/></td>
-		<td>Summary</td><td><input type="text" name="example2.summary" size="30"/></td>
-		<td>Agent</td><td><input type="text" name="example2.entryUser" size="15"/></td></tr>
+		<td>ID:</td><td><input type="text" name="example2.articleId.oid" size="6" maxlength="6" class="numeric"/></td>
+		<td>Summary:</td><td><input type="text" name="example2.summary" size="30"/></td>
+		<td>Agent:</td><td><input type="text" name="example2.entryUser" size="15"/></td></tr>
 	<tr>
 	<tr>
-		<td>Entry Date </td><td><input type="text" name="beginDate" size="10" id="beginDate2" readonly="readonly" class="calendar"/>~<input type="text" name="endDate" size="10" id="endDate2" readonly="readonly" class="calendar"/></td>
-		<td>Prod. Series</td><td><input type="text" name="example2.product" size="30"/></td>
+		<td>Entry Date:</td><td><input type="text" name="beginDate" size="10" id="beginDate2" readonly="readonly" class="calendar"/>~<input type="text" name="endDate" size="10" id="endDate2" readonly="readonly" class="calendar"/></td>
+		<td>Prod. Series:</td><td><input type="text" name="example2.product" size="30"/></td>
 		<td colspan="2" align="right"><s:submit value="Search" /></td>
 	<tr>
 </table>
@@ -110,13 +110,13 @@
 <table class="conditionborder">
 	<tr><th colspan="6">Expired Article List</th></tr>
 	<tr>
-		<td>ID</td><td><input type="text" name="example3.articleId.oid" size="6" maxlength="6" class="numeric"/></td>
-		<td>Summary</td><td><input type="text" name="example3.summary" size="30"/></td>
-		<td>Agent</td><td><input type="text" name="example3.entryUser" size="15"/></td></tr>
+		<td>ID:</td><td><input type="text" name="example3.articleId.oid" size="6" maxlength="6" class="numeric"/></td>
+		<td>Summary:</td><td><input type="text" name="example3.summary" size="30"/></td>
+		<td>Agent:</td><td><input type="text" name="example3.entryUser" size="15"/></td></tr>
 	<tr>
 	<tr>
-		<td>Entry Date </td><td><input type="text" name="beginDate" size="10" id="beginDate3" readonly="readonly" class="calendar"/>~<input type="text" name="endDate" size="10" id="endDate3" readonly="readonly" class="calendar"/></td>
-		<td>Prod. Series</td><td><input type="text" name="example3.product" size="30"/></td>
+		<td>Entry Date:</td><td><input type="text" name="beginDate" size="10" id="beginDate3" readonly="readonly" class="calendar"/>~<input type="text" name="endDate" size="10" id="endDate3" readonly="readonly" class="calendar"/></td>
+		<td>Prod. Series:</td><td><input type="text" name="example3.product" size="30"/></td>
 		<td colspan="2" align="right"><s:submit value="Search" /></td>
 	<tr>
 </table>

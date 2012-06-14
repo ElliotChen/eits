@@ -205,7 +205,7 @@
 		--%>
 		<tr class="ArticleType SpecInfo">
 			<td>eITS TICKET ID</td>
-			<td><s:textfield id="ticketId" name="ticketId" size="40" maxlength="50" class="numeric"/></td>
+			<td><s:textfield id="ticketId" name="ticketId" size="40" maxlength="50" cssClass="numeric"/></td>
 		</tr>
 		<tr class="ArticleType GeneralInfo SpecInfo">
 			<td>QUESTION</td>
