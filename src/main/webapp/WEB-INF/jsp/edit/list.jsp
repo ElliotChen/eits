@@ -60,7 +60,7 @@
 		<td>Status:</td>
 			<td>
 				<s:if test="user.l3">
-					<s:select name="example1.status" list="{'WaitForApproving', 'WaitForProofRead', 'ReadyToUpdate', 'ReadyToPublish', 'LeaderReject'}" listValue="%{getText('enum.Status.'+toString())}" headerKey="" headerValue="----"></s:select></td>
+					<s:select name="example1.status" list="{'WaitForApproving', 'ReadyToUpdate', 'ReadyToPublish', 'LeaderReject'}" listValue="%{getText('enum.Status.'+toString())}" headerKey="" headerValue="----"></s:select></td>
 				</s:if>
 				<s:else>
 					<s:select name="example1.status" list="{'WaitForApproving', 'LeaderReject'}" listValue="%{getText('enum.Status.'+toString())}" headerKey="" headerValue="----"></s:select></td>

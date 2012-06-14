@@ -558,7 +558,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			if (groups.length > 0) {
 				conds.add(new InCondition("userGroup", groups));
 			}
-			conds.add(new InCondition("status", new Object[] {Status.WaitForApproving, Status.WaitForProofRead, Status.ReadyToUpdate, Status.ReadyToPublish, Status.LeaderReject}));
+			conds.add(new InCondition("status", new Object[] {Status.WaitForApproving, Status.LeaderReject, Status.ReadyToUpdate, Status.ReadyToPublish}));
 		} else {
 			example.setEntryUser(op.getAccount());
 			conds.add(new InCondition("status", new Object[] {Status.WaitForApproving, Status.LeaderReject}));
@@ -584,7 +584,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		User op = ThreadLocalHolder.getOperator();
 		List<Condition> conds = page.getConditions();
 		
-		conds.add(new InCondition("status", new Object[] {Status.Draft, Status.ReadyToUpdate}));
+		conds.add(new InCondition("status", new Object[] {Status.Draft}));
 		conds.add(new InCondition("level", op.getAvailableLevels()));
 		conds.add(new SimpleCondition("agentType", op.getAgentType(), OperationEnum.EQ));
 		if (!op.isLeader()) {

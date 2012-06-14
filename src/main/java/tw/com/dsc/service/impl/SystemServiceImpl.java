@@ -2,11 +2,18 @@ package tw.com.dsc.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.crypto.BadPaddingException;
+import javax.naming.Context;
+import javax.naming.NamingEnumeration;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.InitialDirContext;
+import javax.naming.directory.SearchControls;
+import javax.naming.directory.SearchResult;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
@@ -33,12 +40,9 @@ import tw.com.dsc.domain.ProductSeries;
 import tw.com.dsc.domain.Project;
 import tw.com.dsc.domain.Technology;
 import tw.com.dsc.domain.support.Condition;
-import tw.com.dsc.domain.support.LikeMode;
 import tw.com.dsc.domain.support.OperationEnum;
 import tw.com.dsc.domain.support.SimpleCondition;
 import tw.com.dsc.service.SystemService;
-import tw.com.dsc.to.Model;
-import tw.com.dsc.to.Series;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.DateUtils;
 import tw.com.dsc.util.EncryptUtils;
@@ -61,6 +65,10 @@ public class SystemServiceImpl implements SystemService {
 	private ProjectDao projectDao;
 	@Autowired
 	private ProductSeriesDao productSeriesDao;
+	
+	private String securityAuthentication = "simple";
+    private String securityPrincipalDomain = "ZyXEL.com";
+    private String ldapUrl = "ldap://172.23.5.2:389";
 	@Override
 	@Cacheable(value="series")
 	public List<ProductSeries> listAllSeries() {
@@ -138,6 +146,44 @@ public class SystemServiceImpl implements SystemService {
 	public List<Project> listAllProject() {
 		return this.projectDao.listAll();
 	}
+	
+	public ErrorType adLogin(final User user) {
+		String result = null;
+        Hashtable<String, String> env = new Hashtable<String, String>();
+        env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
+        env.put(Context.PROVIDER_URL, ldapUrl);
+        env.put(Context.SECURITY_AUTHENTICATION, this.securityAuthentication);
+        env.put(Context.SECURITY_PRINCIPAL, user.getAccount() + "@" + this.securityPrincipalDomain);
+        //UT00139@ZyXEL.com
+        //steven.su@mitrastar.com.tw
+        env.put(Context.SECURITY_CREDENTIALS, user.getPassword() == null ? "" : user.getPassword());
+        try {
+            //可登入成功, 代表存在AD server裡
+        	logger.debug("=======================AD Login start");
+            DirContext ctx = new InitialDirContext(env);
+            SearchControls search = new SearchControls();
+            search.setSearchScope(SearchControls.SUBTREE_SCOPE);
+            String[] attrList = {"mail"};
+            search.setReturningAttributes(attrList);
+            search.setCountLimit(0);
+           search.setTimeLimit(0);
+            NamingEnumeration results = ctx.search("dc=ZyXEL,dc=com", "(cn=" + user.getAccount() + "*)", search);
+            while (result == null && results.hasMore()) {
+            	logger.debug("=======================get results : " + results);
+                SearchResult si = (SearchResult)results.next();
+                logger.debug("=======================get SearchResult : " + si);
+                //登入後, 取得mail
+                logger.debug("=======================get Mail start : " + si.getAttributes());
+                result = si.getAttributes().get("mail") == null ? null : (String)si.getAttributes().get("mail").get(0);
+            }
+            logger.debug("=======================AD Login Success\n mail = " + result);
+            return null;
+        } catch (Exception e) {
+        	logger.debug("=======================AD Login Fail : " + e.getMessage());
+            return ErrorType.NotFound;
+        }
+	}
+	
 	public ErrorType login(final User user) {
 		/* 1. Check account
 		 * 2. Check password 
