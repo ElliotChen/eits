@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,7 @@ public class NewsAction extends BaseAction implements Preparable {
 	private Date endDate;
 	private ArticleType[] types;
 	private String[] epOids;
+	private String epOid;
 	@Override
 	public void prepare() throws Exception {
 		if (null == pageNo) {
@@ -88,6 +90,10 @@ public class NewsAction extends BaseAction implements Preparable {
 		return "exportRes";
 	}
 	
+	public String viewPackage() {
+		infos = this.articleService.viewExportPackage(epOid);
+		return "export";
+	}
 	public String updateProofRead() {
 		for (String epOid : this.epOids) {
 			this.articleService.readyUpdate(epOid);
@@ -96,6 +102,9 @@ public class NewsAction extends BaseAction implements Preparable {
 		return this.searchExportPackage();
 	}
 
+	public boolean getExportable() {
+		return StringUtils.isEmpty(this.epOid);
+	}
 	public ArticleService getArticleService() {
 		return articleService;
 	}
@@ -175,5 +184,14 @@ public class NewsAction extends BaseAction implements Preparable {
 	public void setEpOids(String[] epOids) {
 		this.epOids = epOids;
 	}
+
+	public String getEpOid() {
+		return epOid;
+	}
+
+	public void setEpOid(String epOid) {
+		this.epOid = epOid;
+	}
+
 	
 }

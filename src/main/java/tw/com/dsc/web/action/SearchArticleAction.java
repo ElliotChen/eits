@@ -102,19 +102,21 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	}
 
 	public String index() {
-		Language defaultLan = languageService.findDefaultLanguage();
+		User op = ThreadLocalHolder.getOperator();
+		//Language defaultLan = languageService.findDefaultLanguage();
 		
 		this.languages = this.languageService.listAll();
 		this.productSeries = this.systemService.listAllSeries();
 //		this.productModels = this.systemService.listAllModels();
 		this.productModels = new ArrayList<ProductModel>();
-		example.setLanguage(new Language(defaultLan.getOid(), null));
+		example.setLanguage(new Language(op.getDefaultLanguageOid(), null));
 		faqArticles = this.articleService.searchFaqArticlesPage(faqArticles);
 		latestArticles = this.articleService.searchLatestArticlesPage(latestArticles);
 		return "index";
 	}
 
 	public String search() {
+		User op = ThreadLocalHolder.getOperator();
 		if (StringUtils.isNotEmpty(this.exSeries)) {
 			ProductSeries ps = this.systemService.findBySeriesId(exSeries);
 			if (null != ps) {
@@ -128,7 +130,7 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 			this.example.setProduct(this.exModel);
 		}
 		if (null==this.example.getLanguage() || StringUtils.isEmpty(this.example.getLanguage().getOid())) {
-			this.example.setLanguage(new Language("EN", null));
+			this.example.setLanguage(new Language(op.getDefaultLanguageOid(), null));
 		}
 		Article faq = new Article();
 		faq.setProduct(this.example.getProduct());
@@ -252,6 +254,23 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 		return "published";
 	}
 	
+	public boolean getEditable() {
+		boolean result = false;
+		User op = ThreadLocalHolder.getOperator();
+		if (op.isL3Admin() || op.getAccount().equals(article.getEntryUser())) {
+			result = true;
+		} else {
+			for (String group : op.getAvailableGroups()) {
+				if (group.equals(article.getUserGroup())) {
+					result =true;
+					break;
+				}
+			}
+		}
+		
+		
+		return result;
+	}
 	@Override
 	public void setRequest(Map<String, Object> request) {
 		this.request = request;

@@ -11,6 +11,7 @@ import org.hibernate.annotations.Type;
 public class Language extends AbstractOIdObjectAuditable {
 
 	private static final long serialVersionUID = 4815255597802616325L;
+	public static final String DEFAULT_LANG = "EN";
 	
 	@Type(type = "yes_no")
 	@Column(name = "IS_SYSTEM", length = 3)

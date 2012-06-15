@@ -49,5 +49,6 @@ public interface ArticleService extends BaseDomainService<Article, Long> {
 	
 	List<ExportInfo> searchForProofRead(Boolean news, Date beginDate, Date endDate, ArticleType[] types);
 	List<ExportInfo> exportProofRead(String epId, ArticleType[] types);
+	List<ExportInfo> viewExportPackage(String epId);
 	void readyUpdate(String epOid);
 }

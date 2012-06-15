@@ -42,7 +42,7 @@ public class SystemServiceImplTest {
 		User user = new User();
 		user.setAccount("L3_Admin");
 		
-		this.systemService.login(user);
+		this.systemService.login(user, true);
 	}
 
 	@Test
@@ -145,12 +145,12 @@ public class SystemServiceImplTest {
 		User user = new User();
 		user.setAccount("L3");
 		user.setPassword("123");
-		ErrorType et = this.systemService.login(user);
+		ErrorType et = this.systemService.login(user, false);
 		Assert.assertEquals(ErrorType.NotFound, et);
 		
 		user.setAccount("L3_Admin");
 		user.setPassword("xxx");
-		et = this.systemService.login(user);
+		et = this.systemService.login(user, false);
 		Assert.assertEquals(ErrorType.Password, et);
 	}
 	

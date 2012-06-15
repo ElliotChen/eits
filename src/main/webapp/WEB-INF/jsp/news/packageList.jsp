@@ -45,6 +45,9 @@ Waiting for Proofread
 		<fmt:formatDate value="${ep.beginDate}" pattern="yyyy/MM/dd"/>~<fmt:formatDate value="${ep.endDate}" pattern="yyyy/MM/dd"/>
 	</display:column>
 	<display:column property="articleIdList" title="Article ID" headerClass="tablehead"/>
+	<display:column title="View" headerClass="tablehead">
+      <input type="button" onclick="javascript:viewExportPackage('${ep.oid}');" value="View" />
+    </display:column>
 </display:table>
 	<s:if test="!exportPackages.result.empty">
 	<s:submit value="Send Update Notification"/>

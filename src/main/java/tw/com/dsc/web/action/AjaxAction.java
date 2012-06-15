@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 import tw.com.dsc.domain.ProductModel;
 import tw.com.dsc.service.SystemService;
 import tw.com.dsc.to.SelectOption;
+import tw.com.dsc.to.User;
+import tw.com.dsc.util.ThreadLocalHolder;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -23,6 +25,7 @@ public class AjaxAction extends ActionSupport {
 	@Autowired
 	private SystemService systemService;
 	private String exSeries;
+	private String languageOid;
 	public String ajaxModels() {
 		
 		options = new ArrayList<SelectOption>();
@@ -39,6 +42,13 @@ public class AjaxAction extends ActionSupport {
 		
 		return "jsonModels";
 	}
+	
+	public String ajaxSwitchLanguage() {
+		User op = ThreadLocalHolder.getOperator();
+		op.setDefaultLanguageOid(languageOid);
+		logger.debug("Switch Language to [{}]", this.languageOid);
+		return "lang";
+	}
 	public List<SelectOption> getOptions() {
 		return options;
 	}
@@ -51,5 +61,12 @@ public class AjaxAction extends ActionSupport {
 	public void setExSeries(String exSeries) {
 		this.exSeries = exSeries;
 	}
-	
+
+	public String getLanguageOid() {
+		return languageOid;
+	}
+
+	public void setLanguageOid(String languageOid) {
+		this.languageOid = languageOid;
+	}
 }

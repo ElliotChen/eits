@@ -45,7 +45,7 @@
 <s:if test="infos.empty">
 Sorry, there is no article to export.
 </s:if>
-<s:else>
+<s:elseif test="exportable">
 <s:form id="exportNewsForm" namespace="/" action="news!export" theme="simple" target="_blank">
 	<s:hidden name="news" />
 	<s:hidden name="beginDate" />
@@ -56,25 +56,25 @@ Sorry, there is no article to export.
 	
 	<s:submit value="Export for Proofread" />
 </s:form>
-</s:else>
+</s:elseif>
 </div>
 <div id="exportResDiv">
 </div>
 <div id="exportDiv" class="condition" style="width: 600px">
 	${label}
 	<s:iterator value="infos" var="info">
-		<table class="conditionborder">
+		<table class="conditionborder" border="2">
 			<tr>
-				<td>${info.account}</td>
+				<td align="center">${info.name} (${info.account})</td>
 			</tr>
 		</table>
 		<s:iterator value="#info.articles" var="article">
-			<table class="conditionborder">
+			<table class="conditionborder" border="2">
 				<tr>
-					<th>KB:<s:property value="articleId.oid" />  <s:property value="account" /></th>
+					<td><b>KB:<s:property value="articleId.oid" />,&nbsp;&nbsp;${info.name}</b></td>
 				</tr>
 				<tr>
-					<th><s:property value="summary" /></th>
+					<td><b><s:property value="summary" /></b></td>
 				</tr>
 				<c:if test="${article.type == 'SpecInfo'}">
 				<tr>
@@ -124,9 +124,9 @@ Sorry, there is no article to export.
 				</tr>
 			</table>
 		</s:iterator>
-		<table class="conditionborder">
+		<table class="conditionborder" border="2">
 			<tr>
-				<td colspan="2"><h4>${info.account} Total Amount = 5</h4></td>
+				<td colspan="2"><h4>${info.name} Total Amount = ${info.size}</h4></td>
 			</tr>
 			<tr><td width="50%"><h4>Expression(mature and smooth)</h4></td><td width="50%">&nbsp;</td></tr>
 			<tr><td><h4>Style (fitting the nature of document)</h4></td><td></td></tr>

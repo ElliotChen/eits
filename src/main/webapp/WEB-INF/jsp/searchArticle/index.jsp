@@ -46,7 +46,7 @@
 		<table class="conditionborder">
 			<tr>
 				<td><h3>Knowledge Base</h3></td>
-				<td align="right" colspan="4">Language:<s:select list="languages" listKey="oid" listValue="name" name="example.language.oid" value="EN" /></td>
+				<td align="right" colspan="4">Language:<s:select list="languages" listKey="oid" listValue="name" name="example.language.oid" value="user.defaultLanguageOid" onchange="switchLanguage(this);" /></td>
 			</tr>
 			<tr>
 				<td colspan="5" style="line-height: 18px; font-size: 18px">The Knowledge Base is where we post product information, SB and SMB application, FAQs, and articles that might help solving user issues or problems. We strongly recommend to search your questions from Knowledge Base before submitting a request to our local support.

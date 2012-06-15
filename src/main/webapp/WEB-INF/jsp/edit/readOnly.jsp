@@ -58,7 +58,7 @@
 	<table class="conditionborder">
 		<tr>
 			<td>ARTICLE ID:</td>
-			<td><s:textfield name="articleId.oid" readonly="true" maxlength="6" size="6"/> (${article.status} - ${article.agentType})<input type="button" value="View Reason" onclick="viewRejectLogs('${oid}')"/></td>
+			<td><s:textfield name="articleId.oid" readonly="true" maxlength="6" size="6"/> (${article.i18nStatus} - ${article.agentType})<input type="button" value="View Reason" onclick="viewRejectLogs('${oid}')"/></td>
 		</tr>
 		<tr>
 			<td>LANGUAGE:</td>

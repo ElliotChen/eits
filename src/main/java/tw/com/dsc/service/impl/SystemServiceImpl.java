@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,7 +69,8 @@ public class SystemServiceImpl implements SystemService {
 	
 	private String securityAuthentication = "simple";
     private String securityPrincipalDomain = "ZyXEL.com";
-    private String ldapUrl = "ldap://172.23.5.2:389";
+    @Value("${ad.url}")
+    private String ldapUrl;
 	@Override
 	@Cacheable(value="series")
 	public List<ProductSeries> listAllSeries() {
@@ -147,6 +149,7 @@ public class SystemServiceImpl implements SystemService {
 		return this.projectDao.listAll();
 	}
 	
+	@Override
 	public ErrorType adLogin(final User user) {
 		String result = null;
         Hashtable<String, String> env = new Hashtable<String, String>();
@@ -154,8 +157,6 @@ public class SystemServiceImpl implements SystemService {
         env.put(Context.PROVIDER_URL, ldapUrl);
         env.put(Context.SECURITY_AUTHENTICATION, this.securityAuthentication);
         env.put(Context.SECURITY_PRINCIPAL, user.getAccount() + "@" + this.securityPrincipalDomain);
-        //UT00139@ZyXEL.com
-        //steven.su@mitrastar.com.tw
         env.put(Context.SECURITY_CREDENTIALS, user.getPassword() == null ? "" : user.getPassword());
         try {
             //可登入成功, 代表存在AD server裡
@@ -177,6 +178,7 @@ public class SystemServiceImpl implements SystemService {
                 result = si.getAttributes().get("mail") == null ? null : (String)si.getAttributes().get("mail").get(0);
             }
             logger.debug("=======================AD Login Success\n mail = " + result);
+            user.setAccount(result);
             return null;
         } catch (Exception e) {
         	logger.debug("=======================AD Login Fail : " + e.getMessage());
@@ -184,7 +186,7 @@ public class SystemServiceImpl implements SystemService {
         }
 	}
 	
-	public ErrorType login(final User user) {
+	public ErrorType login(final User user, boolean skipPassword) {
 		/* 1. Check account
 		 * 2. Check password 
 		 * 3. Check active date
@@ -213,7 +215,7 @@ public class SystemServiceImpl implements SystemService {
 		
 		//check password
 		String md5 = DigestUtils.md5Hex(user.getPassword());
-		if (!md5.equals(account.getPassword())) {
+		if (!skipPassword && !md5.equals(account.getPassword())) {
 			logger.warn("Incorrect password for Account[{}] from host[{}]", user.getAccount(), user.getIp());
 			return ErrorType.Password;
 		}
@@ -409,6 +411,14 @@ public class SystemServiceImpl implements SystemService {
 
 	public void setAccountRoleDao(AccountRoleDao accountRoleDao) {
 		this.accountRoleDao = accountRoleDao;
+	}
+
+	public String getLdapUrl() {
+		return ldapUrl;
+	}
+
+	public void setLdapUrl(String ldapUrl) {
+		this.ldapUrl = ldapUrl;
 	}
 	
 }

@@ -16,7 +16,7 @@ Below is the list of News in question:<br>
 #end
 
 <table>
-	<tr bgcolor="grey"><td>KB#</td><td>Summery</td><td>Engineer</td><td>Leader</td><td>Publish Update</td><td>Archived Date</td></tr>
+	<tr bgcolor="#C0C0C0"><td>KB#</td><td>Summery</td><td>Engineer</td><td>Leader</td><td>Publish Update</td><td>Archived Date</td></tr>
 	<tr>
 		<td><a target="_blank" href="$server/edit!quickEdit.action?oid=$article.oid"> $article.articleId.oid </a></td>
 		<td>$article.summary</td><td>$agent.name</td><td>$receiver.name</td><td>$article.publishDate</td><td>$article.updateDate</td></tr>

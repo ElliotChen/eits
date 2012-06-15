@@ -32,7 +32,6 @@
 			<result name="blank">/WEB-INF/jsp/commons/blank.jsp</result>
 			<result name="create">/WEB-INF/jsp/searchArticle/create.jsp</result>
 			<result name="update">/WEB-INF/jsp/searchArticle/update.jsp</result>
-			<result name="reload" type="redirect">/employee.action</result>
 			<result name="rating" type="json">
 				<param name="root">jsonMsg</param>
 			</result>
@@ -57,6 +56,7 @@
 			<result type="tiles" name="quickEdit">quickEdit</result>
 			<result name="productModel">/WEB-INF/jsp/edit/productModel.jsp</result>
 			<result name="blank">/WEB-INF/jsp/commons/blank.jsp</result>
+			<result name="m1">/WEB-INF/jsp/system/loginRedirect.jsp</result>
 		</action>
 		
 		<action name="language!*" method="{1}" class="languageAction">
@@ -73,6 +73,9 @@
 		<action name="ajax!*" method="{1}" class="ajaxAction">
 			<result name="jsonModels" type="json">
 				<param name="root">options</param>
+			</result>
+			<result name="lang" type="json">
+				<param name="root">languageOid</param>
 			</result>
 		</action>
 		

@@ -11,10 +11,10 @@ One of your new Kb article was rejected in knowledgebase system.<br/>
 The basic information is shown as below
 
 <table>
-<tr><td bgcolor="grey">- KB# :</td><td>$article.articleId.oid</td></tr>
-<tr><td bgcolor="grey">- Engineer :</td><td>$agent.name</td></tr>
-<tr><td bgcolor="grey">- Summery :</td><td>$article.summary</td></tr>
-<tr><td bgcolor="grey">- Reject reason :</td><td>$reason</td></tr>
+<tr><td bgcolor="#C0C0C0">- KB# :</td><td>$article.articleId.oid</td></tr>
+<tr><td bgcolor="#C0C0C0">- Engineer :</td><td>$agent.name</td></tr>
+<tr><td bgcolor="#C0C0C0">- Summery :</td><td>$article.summary</td></tr>
+<tr><td bgcolor="#C0C0C0">- Reject reason :</td><td>$reason</td></tr>
 </table>
 
 Please make a click on the link as below, you will be redirected directly to the Article.<br/>

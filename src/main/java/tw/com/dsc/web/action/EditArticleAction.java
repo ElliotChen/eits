@@ -22,6 +22,7 @@ import tw.com.dsc.domain.ArticleId;
 import tw.com.dsc.domain.ArticleLog;
 import tw.com.dsc.domain.ArticleType;
 import tw.com.dsc.domain.Attachment;
+import tw.com.dsc.domain.ExpireType;
 import tw.com.dsc.domain.Language;
 import tw.com.dsc.domain.ProductSeries;
 import tw.com.dsc.domain.Project;
@@ -107,6 +108,8 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	
 	private Date beginDate;
 	private Date endDate;
+	
+	private String comefrom;
 	/**
 	 * 已使用的language
 	 */
@@ -268,6 +271,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 //		article.setStatus(Status.Draft);
 		article.setNews(Boolean.FALSE);
 		article.setSource(Source.OBM);
+		article.setExpireType(ExpireType.M12);
 		return "create";
 	}
 	
@@ -376,6 +380,8 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 			this.addActionError("There is no available language to translate.");
 			return "blank";
 		}
+		
+		this.article.setExpireType(ExpireType.M12);
 		return "copy";
 	}
 	
@@ -412,7 +418,12 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 			this.articleService.archive(article);
 		}
 		this.addActionMessage("Save Success!");
-		return this.list();
+		
+		if ("m1".equals(this.comefrom)) {
+			return "m1";
+		} else {
+			return this.list();
+		}
 	}
 	
 	public String updateStatus() {
@@ -484,6 +495,27 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		return systemService.listAllSeries();
 	}
 	
+	public Status[] getUnpublishedStatus() {
+		return ThreadLocalHolder.getOperator().getUnpublishedStatus();
+	}
+	
+	public boolean getEditable() {
+		boolean result = false;
+		User op = ThreadLocalHolder.getOperator();
+		if (op.isL3Admin() || op.getAccount().equals(article.getEntryUser())) {
+			result = true;
+		} else {
+			for (String group : op.getAvailableGroups()) {
+				if (group.equals(article.getUserGroup())) {
+					result =true;
+					break;
+				}
+			}
+		}
+		
+		
+		return result;
+	}
 	public Long getOid() {
 		return oid;
 	}
@@ -813,6 +845,14 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 
 	public void setUsedLanguage(List<Language> usedLanguage) {
 		this.usedLanguage = usedLanguage;
+	}
+
+	public String getComefrom() {
+		return comefrom;
+	}
+
+	public void setComefrom(String comefrom) {
+		this.comefrom = comefrom;
 	}
 	
 }

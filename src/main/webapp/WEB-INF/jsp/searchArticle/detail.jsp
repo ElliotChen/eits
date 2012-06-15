@@ -40,6 +40,9 @@
 //-->
 </script>
 <div class="condition">
+<s:if test="editable">
+	<input type="button" value="Edit" onclick="editArticle('${article.oid}', 'm1');" />
+</s:if>
 <s:if test="user.l2">
 <s:form id="transform" action="edit!preCopy" theme="simple">
 	<input type="hidden" name="sourceOid" value="${article.oid}" />

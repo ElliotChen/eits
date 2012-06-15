@@ -8,9 +8,11 @@
 		<fmt:formatDate value="${article.entryDate}" pattern="yyyy/MM/dd"/>
 	</display:column>
 	<display:column property="formattedSeries" title="Prod. Series" style="width:150px" headerClass="tablehead"/>
-	<display:column property="status" title="Status" style="width:100px" headerClass="tablehead"/>
+	<display:column property="i18nStatus" title="Status" style="width:100px" headerClass="tablehead">
+	</display:column>
 	<display:column title="Function" style="width:100px;" headerClass="tablehead">
       <input type="button" onclick="javascript:previewArticle('${article.oid}');" value="Preview"/>
       <input type="button" onclick="javascript:editArticle('${article.oid}');" value="Edit"/>
     </display:column>
 </display:table>
+

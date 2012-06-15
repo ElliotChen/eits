@@ -587,7 +587,7 @@ public class Article extends AbstractSeqIdObjectAuditable {
 	public boolean isReadonly() {
 		switch (this.status) {
 		case Archived:
-		case Published:
+		//case Published:
 		case WaitForRepublish:
 		case ReadyToPublish:
 		case Deleted:
@@ -734,6 +734,47 @@ public class Article extends AbstractSeqIdObjectAuditable {
 				logger.debug(format);
 			}
 		}
+		return result;
+	}
+	
+	public String getI18nStatus() {
+		String result = "Draft";
+		if (null == this.status) {
+			return result;
+		}
+		switch(this.status) {
+		case LeaderReject:
+			result = "Leader Rejected";
+			break;
+		case LeaderApproved:
+			result = "Leader Approved";
+			break;
+		case WaitForApproving:
+			result = "Waiting for Approving";
+			break;
+		case WaitForProofRead:
+			result = "Waiting for Proofread";
+			break;
+		case ReadyToUpdate:
+			result = "Ready to Update";
+			break;
+		case ReadyToPublish:
+			result = "Ready to Publish";
+			break;
+		case Published:
+			result = "Published";
+			break;
+		case WaitForRepublish:
+			result = "Expired";
+			break;
+		case Archived:
+			result = "Archived";
+			break;
+		case Deleted:
+			result = "Deleted";
+			break;
+		}
+		
 		return result;
 	}
 }

@@ -14,11 +14,13 @@ import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import tw.com.dsc.dao.AccountDao;
 import tw.com.dsc.dao.ArticleDao;
 import tw.com.dsc.dao.ArticleIdDao;
 import tw.com.dsc.dao.ArticleLogDao;
 import tw.com.dsc.dao.ExportPackageDao;
 import tw.com.dsc.dao.StatisticsDataDao;
+import tw.com.dsc.domain.Account;
 import tw.com.dsc.domain.ActionType;
 import tw.com.dsc.domain.AgentType;
 import tw.com.dsc.domain.Article;
@@ -72,6 +74,9 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	
 	@Autowired
 	private MailService mailService;
+	
+	@Autowired
+	private AccountDao accountDao;
 	
 	@Autowired
 	@Qualifier("articleIdSeq")
@@ -558,12 +563,14 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			if (groups.length > 0) {
 				conds.add(new InCondition("userGroup", groups));
 			}
-			conds.add(new InCondition("status", new Object[] {Status.WaitForApproving, Status.LeaderReject, Status.ReadyToUpdate, Status.ReadyToPublish}));
+//			conds.add(new InCondition("status", new Object[] {Status.WaitForApproving, Status.LeaderReject, Status.ReadyToUpdate, Status.ReadyToPublish}));
 		} else {
 			example.setEntryUser(op.getAccount());
-			conds.add(new InCondition("status", new Object[] {Status.WaitForApproving, Status.LeaderReject}));
+//			conds.add(new InCondition("status", new Object[] {Status.WaitForApproving, Status.LeaderReject}));
 		}
-		
+		if (null == example.getStatus()) {
+			conds.add(new InCondition("status", op.getUnpublishedStatus()));
+		}
 		conds.add(new InCondition("level", op.getAvailableLevels()));
 		conds.add(new SimpleCondition("agentType", op.getAgentType(), OperationEnum.EQ));
 		
@@ -582,11 +589,13 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		}
 		
 		User op = ThreadLocalHolder.getOperator();
+		example.setEntryUser(op.getAccount());
 		List<Condition> conds = page.getConditions();
 		
 		conds.add(new InCondition("status", new Object[] {Status.Draft}));
 		conds.add(new InCondition("level", op.getAvailableLevels()));
 		conds.add(new SimpleCondition("agentType", op.getAgentType(), OperationEnum.EQ));
+		/*
 		if (!op.isLeader()) {
 			conds.add(new SimpleCondition("entryUser", op.getAccount(), OperationEnum.EQ));
 		} else {
@@ -595,7 +604,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 				conds.add(new InCondition("userGroup", groups));
 			}
 		}
-		
+		*/
 		return this.dao.listByPage(page);
 	}
 	
@@ -793,6 +802,24 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		return usedLanguage;
 	}
 	
+	protected void group(List<Article> articles, List<ExportInfo> infos) {
+		ExportInfo info = null;
+		for (Article article : articles) {
+			if (null == info || !article.getEntryUser().equals(info.getAccount())) {
+				info = new ExportInfo();
+				info.setAccount(article.getEntryUser());
+				infos.add(info);
+				Account account = this.accountDao.findByOid(article.getEntryUser());
+				if (null != account) {
+					info.setName(account.getName());
+				}
+			}
+			info.getArticles().add(article);
+		}
+	}
+	
+	
+	
 	public List<ExportInfo> searchForProofRead(Boolean news, Date beginDate, Date endDate, ArticleType[] types) {
 		Article example = new Article();
 		example.setStatus(Status.LeaderApproved);
@@ -801,7 +828,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		conds.add(new BetweenCondition("entryDate", DateUtils.begin(beginDate), DateUtils.end(endDate)));
 		conds.add(new InCondition("type", types));
 		conds.add(new NullCondition("exportPackage"));
-		List<Article> articles = this.dao.listByExample(example, conds, null, new String[] {"entryUser"}, null);
+		List<Article> articles = this.dao.listByExample(example, conds, null, new String[] {"entryUser", "oid"}, null);
 		
 		List<ExportInfo> infos = new ArrayList<ExportInfo>();
 		
@@ -810,15 +837,8 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			return infos;
 		}
 		
-		ExportInfo info = null;
-		for (Article article : articles) {
-			if (null == info || !article.getEntryUser().equals(info.getAccount())) {
-				info = new ExportInfo();
-				info.setAccount(article.getEntryUser());
-				infos.add(info);
-			}
-			info.getArticles().add(article);
-		}
+		this.group(articles, infos);
+		
 		return infos;
 	}
 	@Transactional(readOnly=false)
@@ -832,7 +852,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		conds.add(new BetweenCondition("entryDate", DateUtils.begin(ep.getBeginDate()), DateUtils.end(ep.getEndDate())));
 		conds.add(new InCondition("type", types));
 		conds.add(new NullCondition("exportPackage"));
-		List<Article> articles = this.dao.listByExample(example, conds, null, new String[] {"entryUser"}, null);
+		List<Article> articles = this.dao.listByExample(example, conds, null, new String[] {"entryUser", "oid"}, null);
 		
 		
 		List<ExportInfo> infos = new ArrayList<ExportInfo>();
@@ -842,6 +862,14 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			return infos;
 		}
 		
+		for (Article article : articles) {
+			article.setExportPackage(ep);
+			article.setStatus(Status.WaitForProofRead);
+			this.dao.update(article);
+		}
+		
+		this.group(articles, infos);
+		/*
 		ExportInfo info = null;
 		for (Article article : articles) {
 			article.setExportPackage(ep);
@@ -854,6 +882,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			}
 			info.getArticles().add(article);
 		}
+		*/
 		
 		//Update ArticleIdList
 		StringBuilder sb = new StringBuilder();
@@ -870,6 +899,17 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		for (Article article : articles) {
 			this.mailService.proofread(article.getOid());
 		}
+		return infos;
+	}
+	
+	public List<ExportInfo> viewExportPackage(String epOid) {
+		Article example = new Article();
+		List<Condition> conds = new ArrayList<Condition>();
+		conds.add(new SimpleCondition("exportPackage.oid", epOid, OperationEnum.EQ));
+		List<Article> articles = this.dao.listByExample(example, conds, null, new String[] {"entryUser", "oid"}, null);
+		List<ExportInfo> infos = new ArrayList<ExportInfo>();
+		
+		this.group(articles, infos);
 		return infos;
 	}
 }

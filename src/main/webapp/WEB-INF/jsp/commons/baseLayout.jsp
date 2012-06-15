@@ -161,6 +161,10 @@
 		}
 	}
 	
+	function switchLanguage(lang) {
+		$.post('ajax!ajaxSwitchLanguage.action', {languageOid:lang.value});
+	}
+	
 	function switchRole(userRole) {
 		$('#switchRoleName').val($('#userRole').val());
 		$('#switchRoleForm').submit();
@@ -211,14 +215,24 @@
 		$('#articleForm').submit();
 	}
 	
-	function editArticle(oid) {
+	function editArticle(oid, comefrom) {
 		$('#editOid').val(oid);
+		if (comefrom) {
+			$('#comefrom').val(comefrom);
+		} else {
+			$('#comefrom').val('');
+		}
 		$('#editArticleForm').submit();
 	}
 	
 	function previewArticle(oid) {
 		$('#previewOid').val(oid);
 		$('#previewArticleForm').submit();
+	}
+	
+	function viewExportPackage(oid) {
+		$('#viewPackageOid').val(oid);
+		$('#viewPackageForm').submit();
 	}
 	
 	function viewArticleLog(oid) {
@@ -260,10 +274,14 @@
 		<input id="detailArticleId" type="hidden" name="articleId" />
 	</s:form>
 	<s:form id="editArticleForm" namespace="/" action="edit!load" theme="simple">
+		<input id="comefrom" type="hidden" name="comefrom" />
 		<input id="editOid" type="hidden" name="oid" />
 	</s:form>
 	<s:form id="previewArticleForm" namespace="/" target="_blank" action="edit!preview" theme="simple">
 		<input id="previewOid" type="hidden" name="oid" />
+	</s:form>
+	<s:form id="viewPackageForm" namespace="/" target="_blank" action="news!viewPackage" theme="simple">
+		<input id="viewPackageOid" type="hidden" name="epOid" />
 	</s:form>
 	<s:form id="viewLogForm" namespace="/" target="_blank" action="edit" theme="simple">
 		<input id="viewLogOid" type="hidden" name="oid" />

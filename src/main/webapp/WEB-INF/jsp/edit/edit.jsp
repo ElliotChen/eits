@@ -160,10 +160,11 @@
 <s:form id="editForm" namespace="/" action="edit!save" theme="simple" method="POST" enctype ="multipart/form-data">
 	<s:hidden name="oid" />
 	<s:hidden name="keywords" />
+	<s:hidden name="comefrom" />
 	<table class="conditionborder">
 		<tr>
 			<td>ARTICLE ID:</td>
-			<td><s:textfield name="articleId.oid" readonly="true" maxlength="6" size="6"/> (${article.status} - ${article.agentType})<input type="button" value="View Reason" onclick="viewRejectLogs('${oid}')"/></td>
+			<td><s:textfield name="articleId.oid" readonly="true" maxlength="6" size="6"/> (${article.i18nStatus} - ${article.agentType})<input type="button" value="View Reason" onclick="viewRejectLogs('${oid}')"/></td>
 		</tr>
 		<tr>
 			<td>LANGUAGE:</td>
@@ -317,7 +318,12 @@
 				<s:submit value="Update" cssClass="save" />
 				<s:submit value="Delete" cssClass="delete" action="edit" method="disable"/>
 				<input type="button" value="Preview" onclick="previewSave()" />
+				<s:if test="'m1' == comefrom">
+					<input type="button" value="Do Nothing" onclick="switchMenu('m1', 'searchArticle!index.action');" />
+				</s:if>
+				<s:else>
 				<input type="button" value="Do Nothing" onclick="switchMenu('m3', 'edit!list.action');" />			  
+				</s:else>
 			</td>
 		</tr>
 	</table>

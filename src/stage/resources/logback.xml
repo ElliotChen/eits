@@ -8,7 +8,7 @@
 	</appender>
 	<appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>logs/%d{yyyy/MM/dd}/eits.log</fileNamePattern>
+			<fileNamePattern>logs/%d{yyyy/MM/dd}/kb.log</fileNamePattern>
 		</rollingPolicy>
 		<encoder>
 			<Pattern>%date %level [%thread] %logger{50} [%file : %line] %msg%n</Pattern>

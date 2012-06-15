@@ -19,7 +19,7 @@ Below is the list of Articles in question:<br>
 #end
 
 <table>
-	<tr bgcolor="grey"><td>KB#</td><td>Summery</td><td>Last Update</td></tr>
+	<tr bgcolor="#C0C0C0"><td>KB#</td><td>Summery</td><td>Last Update</td></tr>
 	<tr>
 		<td><a target="_blank" href="$server/edit!quickEdit.action?oid=$article.oid"> $article.articleId.oid </a></td>
 		<td>$article.summary</td><td>$article.updateDate</td></tr>

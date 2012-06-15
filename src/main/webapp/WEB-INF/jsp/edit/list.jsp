@@ -59,12 +59,8 @@
 		<td>Prod. Series:</td><td><input type="text" name="example1.product" size="30"/></td>
 		<td>Status:</td>
 			<td>
-				<s:if test="user.l3">
-					<s:select name="example1.status" list="{'WaitForApproving', 'ReadyToUpdate', 'ReadyToPublish', 'LeaderReject'}" listValue="%{getText('enum.Status.'+toString())}" headerKey="" headerValue="----"></s:select></td>
-				</s:if>
-				<s:else>
-					<s:select name="example1.status" list="{'WaitForApproving', 'LeaderReject'}" listValue="%{getText('enum.Status.'+toString())}" headerKey="" headerValue="----"></s:select></td>
-				</s:else>
+			<s:select name="example1.status" list="unpublishedStatus" listValue="%{getText('enum.Status.'+toString())}" headerKey="" headerValue="----"></s:select>
+			</td>
 		<td><s:submit value="Search" /></td>
 	</tr>
 </table>

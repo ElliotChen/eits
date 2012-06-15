@@ -35,7 +35,12 @@ public class SystemAction extends BaseAction implements Preparable {
 		return "loginRedirect";
 	}
 	public String login() {
-		ErrorType error = this.systemService.login(loginUser);
+		ErrorType error = null;
+		if (null == this.systemService.adLogin(loginUser)) { 
+			error = this.systemService.login(loginUser, true);
+		} else {
+			error = this.systemService.login(loginUser, false);
+		}
 		if (null != error) {
 			this.addActionError(this.getText("error."+error.name()));
 		}

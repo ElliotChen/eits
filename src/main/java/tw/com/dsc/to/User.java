@@ -3,12 +3,16 @@ package tw.com.dsc.to;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import tw.com.dsc.domain.AgentType;
+import tw.com.dsc.domain.Language;
 import tw.com.dsc.domain.Level;
 import tw.com.dsc.domain.Role;
+import tw.com.dsc.domain.Status;
+import tw.com.dsc.util.ThreadLocalHolder;
 
 
 public class User {
@@ -44,6 +48,7 @@ public class User {
 	private List<UserRole> userRoles = new ArrayList<UserRole>();
 	
 	private String defaultRoleId;
+	private String defaultLanguageOid;
 	public User() {
 		this("Guest","Guest","Guest","Unknown", new UserRole(Role.Guest, "Guest"), "Guest");
 	}
@@ -367,5 +372,37 @@ public class User {
 		this.defaultRoleId = defaultRoleId;
 	}
 	
-	
+	public Status[] getUnpublishedStatus() {
+		User op = ThreadLocalHolder.getOperator();
+		ArrayList<Status> results = new ArrayList<Status>();
+		
+		results.add(Status.WaitForApproving);
+		
+		if(op.isL2Agent() || op.isL3Agent()) {
+			results.add(Status.LeaderReject);
+		}
+		
+		if (op.isL3()) {
+			results.add(Status.ReadyToUpdate);
+		}
+		
+		if (op.isL3Manager()) {
+			results.add(Status.ReadyToPublish);
+		}
+		Status[] ls = new Status[results.size()];
+		ls = results.toArray(ls);
+		logger.debug("Get Available Levels[{}] for User[{}]", ls, this);
+		return ls;
+	}
+
+	public String getDefaultLanguageOid() {
+		if (StringUtils.isEmpty(defaultLanguageOid)) {
+			this.defaultLanguageOid = Language.DEFAULT_LANG;
+		}
+		return defaultLanguageOid;
+	}
+
+	public void setDefaultLanguageOid(String defaultLanguageOid) {
+		this.defaultLanguageOid = defaultLanguageOid;
+	}
 }
