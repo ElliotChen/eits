@@ -22,7 +22,10 @@
 			<result type="tiles" name="index">index</result>
 			<result type="tiles" name="loginRedirect">loginRedirect</result>
 		</action>
-		
+		<action name="advSearchArticle!*" method="{1}" class="searchArticleAction">
+			<result name="index">/WEB-INF/jsp/searchArticle/index.jsp</result>
+			<result name="list">/WEB-INF/jsp/searchArticle/list.jsp</result>
+		</action>
 		<action name="searchArticle!*" method="{1}" class="searchArticleAction">
 			<result name="index">/WEB-INF/jsp/searchArticle/index.jsp</result>
 			<result name="list">/WEB-INF/jsp/searchArticle/list.jsp</result>
