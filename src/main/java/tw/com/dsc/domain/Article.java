@@ -166,6 +166,8 @@ public class Article extends AbstractSeqIdObjectAuditable {
 	@Column(name = "RATE_5")
 	private Integer rate5;
 	
+	@Column(name = "AVG_RATE")
+	private Float avgRate;
 	@ManyToOne
 	private ExportPackage exportPackage;
 	
@@ -473,6 +475,14 @@ public class Article extends AbstractSeqIdObjectAuditable {
 		this.exportPackage = exportPackage;
 	}
 
+	public Float getAvgRate() {
+		return avgRate;
+	}
+
+	public void setAvgRate(Float avgRate) {
+		this.avgRate = avgRate;
+	}
+
 	public List<Status> getAvailableStatus() {
 		User op = ThreadLocalHolder.getOperator();
 		ArrayList<Status> result = new ArrayList<Status>();
@@ -559,6 +569,27 @@ public class Article extends AbstractSeqIdObjectAuditable {
 
 	public String getRatingInfo() {
 		int count = 0;
+		if (null != this.rate1) {
+			count += this.rate1;
+		}
+		if (null != this.rate2) {
+			count += this.rate2;
+		}
+		if (null != this.rate3) {
+			count += this.rate3;
+		}
+		if (null != this.rate4) {
+			count += this.rate4;
+		}
+		if (null != this.rate5) {
+			count += this.rate5;
+		}
+		
+		return count != 0 ? this.avgRate+" ("+count+" votes)":"";
+	}
+	
+	public Float countRating() {
+		int count = 0;
 		float points = 0;
 		if (null != this.rate1) {
 			count += this.rate1;
@@ -581,7 +612,10 @@ public class Article extends AbstractSeqIdObjectAuditable {
 			points += 5f * this.rate5;
 		}
 		
-		return count != 0 ?(points/count)+" ("+count+" votes)":"";
+		if (0 == count) {
+			return 0f;
+		}
+		return points/count;
 	}
 	
 	public boolean isReadonly() {

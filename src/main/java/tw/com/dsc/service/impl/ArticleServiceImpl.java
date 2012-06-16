@@ -444,6 +444,8 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		default:
 			logger.error("Unknow rate number[{}] for Article[{}]", point, article.getOid());
 		}
+		
+		article.setAvgRate(article.countRating());
 		this.dao.saveOrUpdate(article);
 //		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Rating, op.getAccount(), String.valueOf(point), op.getIp()));
 		this.statisticsDataDao.create(new StatisticsData(article.getOid(), at, op.getAccount(), op.getIp()));

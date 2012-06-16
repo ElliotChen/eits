@@ -5,6 +5,7 @@ import java.util.List;
 import tw.com.dsc.domain.Account;
 import tw.com.dsc.domain.Article;
 import tw.com.dsc.domain.ErrorType;
+import tw.com.dsc.domain.Group;
 import tw.com.dsc.domain.ProductModel;
 import tw.com.dsc.domain.ProductSeries;
 import tw.com.dsc.domain.Project;
@@ -46,4 +47,7 @@ public interface SystemService {
 	List<ProductModel> listModels(String seriesId, String branchCode);
 	ProductSeries findBySeriesId(String seriesId);
 	List<ProductSeries> listSeriesByProjectCode(String projectCode);
+	
+	List<Account> findTeamAccounts();
+	List<Group> findGroups();
 }

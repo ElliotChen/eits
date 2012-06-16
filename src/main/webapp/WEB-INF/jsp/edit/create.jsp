@@ -204,48 +204,48 @@
 		</tr>
 		--%>
 		<tr class="ArticleType SpecInfo">
-			<td>eITS TICKET ID</td>
+			<td>eITS TICKET ID:</td>
 			<td><s:textfield id="ticketId" name="ticketId" size="40" maxlength="50" cssClass="numeric"/></td>
 		</tr>
 		<tr class="ArticleType GeneralInfo SpecInfo">
-			<td>QUESTION</td>
+			<td>QUESTION:</td>
 			<td><s:textarea id="question" name="question" cols="40" rows="4" /></td>
 		</tr>
 		<tr class="ArticleType GeneralInfo SpecInfo">
-			<td>ANSWER</td>
+			<td>ANSWER:</td>
 			<td><s:textarea id="answer" name="answer" cols="40" rows="8" /></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
-			<td>SCENARIO DESCRIPTION</td>
+			<td>SCENARIO DESCRIPTION:</td>
 			<td><s:textarea id="scenario" name="scenario" cols="40" rows="4" /></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
-			<td>SETUP/STEP BY STEP PROCEDURE</td>
+			<td>SETUP/STEP BY STEP PROCEDURE:</td>
 			<td><s:textarea id="step" name="step" cols="40" rows="4" /></td>
 		</tr>
 		<tr class="ArticleType Application TroubleShooting">
-			<td>VERIFICATION</td>
+			<td>VERIFICATION:</td>
 			<td><s:textarea id="verification" name="verification" cols="40" rows="4" /></td>
 		</tr>
 		
 		<tr class="ArticleType Issue">
-			<td>PROBLEM DESCRIPTION</td>
+			<td>PROBLEM DESCRIPTION:</td>
 			<td><s:textarea id="problem" name="problem" cols="40" rows="4" /></td>
 		</tr>
 		<tr class="ArticleType Issue">
-			<td>SOLUTION</td>
+			<td>SOLUTION:</td>
 			<td><s:textarea id="solution" name="solution" cols="40" rows="4" /></td>
 		</tr>
 		<tr class="ArticleType Issue">
-			<td>CONDITION/REPRODUCE PROCEDURE</td>
+			<td>CONDITION/REPRODUCE PROCEDURE:</td>
 			<td><s:textarea id="procedure" name="procedure" cols="40" rows="4" /></td>
 		</tr>
 		<tr>
-			<td>VIEW LEVEL</td>
+			<td>VIEW LEVEL:</td>
 			<td><s:select id="level" name="level" list="user.availableLevels" listValue="%{getText('enum.Level.'+toString())}" /></td>
 		</tr>
 		<tr>
-			<td>TECHNOLOGY</td>
+			<td>TECHNOLOGY:</td>
 			<td><s:textarea id="technology" name="technology" cols="40" rows="4" readonly="true"/>
 				<div>
 				<select id="techSelect" name="techSelect" multiple="true">
@@ -261,7 +261,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>PRODUCT</td>
+			<td>PRODUCT:</td>
 			<td><s:textarea id="product" name="product" cols="40" rows="4" readonly="true"/>
 				<div id="productSelectDiv">
 				<select id="productSelect" name="productSelect" multiple="true">
@@ -277,12 +277,12 @@
 			</td>
 		</tr>
 		<tr>
-			<td>FIRMWARE</td>
+			<td>FIRMWARE:</td>
 			<td><s:textfield name="firmware" size="40" maxlength="50"/></td>
 		</tr>
 
 		<tr>
-			<td>SAVE AS</td>
+			<td>SAVE AS:</td>
 			<td>
 				<s:radio name="statusAction" list="availableStatus" listValue="%{getText('create.statusAction.'+toString())}" value="'WaitForApproving'" />
 			</td>

@@ -62,8 +62,8 @@
 				<td nowrap="nowrap">Product Model:</td><td><s:select id="exModel" name="exModel" list="productModels" listKey="name" listValue="name" headerKey="" headerValue="----"/></td>
 				<td><s:submit value="Search" /></td>
 			</tr>
-			</s:form>
 		</table>
+	</s:form>
 </div>
 <div id="articles">
 	<jsp:include page="list.jsp"></jsp:include>

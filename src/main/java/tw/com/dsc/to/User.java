@@ -165,6 +165,23 @@ public class User {
 		checkAuthorization();
 	}
 	
+	public Status[] getAdvSearchStatus() {
+		User op = ThreadLocalHolder.getOperator();
+		
+		if (op.isL2()) {
+			return new Status[] { Status.Archived, Status.Draft,
+					Status.LeaderApproved, Status.LeaderReject,
+					Status.ReadyToPublish, Status.ReadyToUpdate,
+					Status.WaitForApproving, Status.WaitForProofRead,
+					Status.WaitForRepublish };
+		} else {
+			return new Status[] { Status.Archived, Status.Draft,
+					Status.LeaderApproved, Status.LeaderReject,
+					Status.ReadyToPublish, Status.ReadyToUpdate,
+					Status.WaitForApproving, Status.WaitForProofRead,
+					Status.WaitForRepublish };
+		}
+	}
 	@Override
 	public String toString() {
 		return "User [account=" + account + ", ip=" + ip + ", currentUserRole=" + this.currentUserRole + "]";

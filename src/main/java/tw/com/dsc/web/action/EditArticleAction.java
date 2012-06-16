@@ -146,7 +146,6 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		this.technologies = this.systemService.listAllTech();
 		this.projects = this.systemService.listAllProject();
 		User op = ThreadLocalHolder.getOperator();
-		logger.debug("[{}]", op);
 		if (op.isL3()) {
 			this.products = this.systemService.listAllSeries();
 		} else {

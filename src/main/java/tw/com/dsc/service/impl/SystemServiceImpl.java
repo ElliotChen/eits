@@ -41,6 +41,8 @@ import tw.com.dsc.domain.ProductSeries;
 import tw.com.dsc.domain.Project;
 import tw.com.dsc.domain.Technology;
 import tw.com.dsc.domain.support.Condition;
+import tw.com.dsc.domain.support.LikeCondition;
+import tw.com.dsc.domain.support.LikeMode;
 import tw.com.dsc.domain.support.OperationEnum;
 import tw.com.dsc.domain.support.SimpleCondition;
 import tw.com.dsc.service.SystemService;
@@ -71,6 +73,8 @@ public class SystemServiceImpl implements SystemService {
     private String securityPrincipalDomain = "ZyXEL.com";
     @Value("${ad.url}")
     private String ldapUrl;
+    @Value("${ad.skip}")
+    private Boolean skipAd;
 	@Override
 	@Cacheable(value="series")
 	public List<ProductSeries> listAllSeries() {
@@ -151,6 +155,9 @@ public class SystemServiceImpl implements SystemService {
 	
 	@Override
 	public ErrorType adLogin(final User user) {
+		if (this.skipAd) {
+			return null;
+		}
 		String result = null;
         Hashtable<String, String> env = new Hashtable<String, String>();
         env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
@@ -167,7 +174,7 @@ public class SystemServiceImpl implements SystemService {
             String[] attrList = {"mail"};
             search.setReturningAttributes(attrList);
             search.setCountLimit(0);
-           search.setTimeLimit(0);
+            search.setTimeLimit(0);
             NamingEnumeration results = ctx.search("dc=ZyXEL,dc=com", "(cn=" + user.getAccount() + "*)", search);
             while (result == null && results.hasMore()) {
             	logger.debug("=======================get results : " + results);
@@ -385,6 +392,34 @@ public class SystemServiceImpl implements SystemService {
 		return null;
 		
 	}
+	
+	public List<Account> findTeamAccounts() {
+		User user = ThreadLocalHolder.getOperator();
+		if (user.isL3()) {
+			return this.accountDao.findByL3();
+		} else if (user.isL2()) {
+			return this.accountDao.findByL2Branch(user.getCurrentUserRole().getBranchCode());
+		} else {
+			logger.warn("Unknown {} for findTeamAccounts", user);
+			return new ArrayList<Account>();
+		}
+	}
+	
+	public List<Group> findGroups() {
+		User user = ThreadLocalHolder.getOperator();
+		Group example = new Group();
+		List<Condition> conds = new ArrayList<Condition>();
+		if (user.isL3()) {
+			conds.add(new LikeCondition("id", "L3_%"));
+			return this.groupDao.listByExample(example, conds, LikeMode.START, null, null);
+		} else if (user.isL2()) {
+			conds.add(new LikeCondition("id", "L2_"+user.getCurrentUserRole().getBranchCode()+"%"));
+			return this.groupDao.listByExample(example, conds, LikeMode.START, null, null);
+		} else {
+			logger.warn("Unknown {} for findGroups", user);
+			return new ArrayList<Group>();
+		}
+	}
 	public Account findAccountByOid(String oid) {
 		return this.accountDao.findByOid(oid);
 	}
@@ -419,6 +454,14 @@ public class SystemServiceImpl implements SystemService {
 
 	public void setLdapUrl(String ldapUrl) {
 		this.ldapUrl = ldapUrl;
+	}
+
+	public Boolean getSkipAd() {
+		return skipAd;
+	}
+
+	public void setSkipAd(Boolean skipAd) {
+		this.skipAd = skipAd;
 	}
 	
 }
