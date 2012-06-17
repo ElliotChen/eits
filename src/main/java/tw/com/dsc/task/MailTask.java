@@ -15,6 +15,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 
 import tw.com.dsc.domain.Account;
 import tw.com.dsc.domain.Article;
+import tw.com.dsc.domain.Status;
 import tw.com.dsc.service.ArticleLogService;
 import tw.com.dsc.service.ArticleService;
 import tw.com.dsc.service.SystemService;
@@ -64,6 +65,11 @@ public abstract class MailTask implements Runnable {
 				return;
 			}
 		}
+		
+		if (this.getAvailableStatus() != article.getStatus()) {
+			logger.warn("Article[{}]'s status is [{}] not [{}]", new Object[] {this.article.getOid(), this.article.getStatus(), this.getAvailableStatus()});
+			return;
+		}
 		this.agent = this.systemService.findAccountByOid(article.getEntryUser());
 		this.leaders = this.systemService.findGroupLeaders(article);
 		this.admins = this.systemService.findGroupAdmins(article);
@@ -92,7 +98,8 @@ public abstract class MailTask implements Runnable {
 				javaMailSender.send(mail);
 			}
 		} catch (Exception e) {
-
+			e.printStackTrace();
+			logger.error("Sending mail failed.",e);
 		}
 		
 		logger.info("Send Mail Success!");
@@ -103,6 +110,7 @@ public abstract class MailTask implements Runnable {
 	public abstract List<Account> getCcReceivers();
 	public abstract String getTitle();
 	public abstract String getMessage(Account receiver);
+	public abstract Status getAvailableStatus();
 	
 	
 	protected List<Account> getLeaders() {

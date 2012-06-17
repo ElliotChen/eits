@@ -141,11 +141,13 @@
 <s:form id="psForm" namespace="/" action="edit!listModels" theme="simple">
 	<input id="pCode" type="hidden" name="example.projectCode" />
 </s:form>
+<jsp:include page="/WEB-INF/jsp/commons/message.jsp"></jsp:include>
 <div class="condition">
 <s:form id="editForm" namespace="/" action="edit!create" theme="simple" method="POST" enctype ="multipart/form-data">
 	<s:hidden name="entryUser" />
 	<s:hidden name="articleId.oid" />
 	<s:hidden name="keywords" />
+	<input type="hidden" name="comefrom" value="create" />
 	<table class="conditionborder">
 		<!-- 
 		<tr>

@@ -10,6 +10,7 @@ import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import tw.com.dsc.domain.Account;
 import tw.com.dsc.domain.ArticleLog;
+import tw.com.dsc.domain.Status;
 import tw.com.dsc.service.ArticleLogService;
 import tw.com.dsc.service.ArticleService;
 import tw.com.dsc.service.SystemService;
@@ -52,6 +53,11 @@ public class RepublishMailTask extends MailTask {
 		Map<String, Object> map = initBaseMap(receiver);
 		String message = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "mail/republish.vm", map);
 		return message;
+	}
+	
+	@Override
+	public Status getAvailableStatus() {
+		return Status.Published;
 	}
 
 }

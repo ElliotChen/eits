@@ -3,7 +3,8 @@
 <script>
 	$().ready(function() {
 		$('#searchForm').ajaxForm({
-            target: '#articles'
+            target: '#articles',
+            success : $.unblockUI
         });
 		$('#psForm').ajaxForm({
             target: '#productSelectDiv',

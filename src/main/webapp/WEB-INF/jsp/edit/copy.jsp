@@ -180,6 +180,7 @@
 <s:form id="psForm" namespace="/" action="edit!listModels" theme="simple">
 	<input id="pCode" type="hidden" name="example.projectCode" />
 </s:form>
+<jsp:include page="/WEB-INF/jsp/commons/message.jsp"></jsp:include>
 <div class="condition">
 <s:form id="copyEditForm" namespace="/" action="edit!create" theme="simple" method="POST" enctype ="multipart/form-data">
 	<input type="hidden" name="sourceOid" value="${sarticle.oid}" />
@@ -190,6 +191,7 @@
 	<input type="hidden" name="keywords" value="${sarticle.keywords}" />
 	<input type="hidden" name="level" value="Public" />
 	<input type="hidden" id="type" name="type" value="${sarticle.type}" />
+	<input type="hidden" name="comefrom" value="copy" />
 	<table class="conditionborder">
 		<tr>
 			<td colspan="4" style="text-align: center;"><input type="button" value="Copy All" onclick="copyAll();" /></td>

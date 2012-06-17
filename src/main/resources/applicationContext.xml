@@ -50,6 +50,15 @@
 		</property>
 		<property name="packagesToScan" value="tw.com.dsc.domain" />
 	</bean>
+	
+	<bean id="mysqlDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+		<property name="driverClass" value="${mysql.driverClass}" />
+		<property name="jdbcUrl" value="${mysql.url}" />
+		<property name="username" value="${mysql.user}" />
+		<property name="password" value="${mysql.password}" />
+		<property name="maxConnectionsPerPartition" value="${mysql.max.connection}"/>
+		<property name="minConnectionsPerPartition" value="${mysql.min.connection}"/>
+	</bean>
 
 	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />

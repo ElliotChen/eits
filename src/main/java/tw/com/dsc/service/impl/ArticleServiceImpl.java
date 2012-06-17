@@ -226,7 +226,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Create, op.getAccount(), "Create Draft", op.getIp()));
 		} else if (Status.WaitForApproving == status) {
 			this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Create, op.getAccount(), "Create Draft and Save as Final", op.getIp()));
-			this.mailService.approval(article);
+			this.mailService.approval(article.getOid());
 		} else if (Status.Published == status) {
 			this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Create, op.getAccount(), "Create Draft and Published", op.getIp()));
 		} else if (Status.WaitForProofRead == status) {

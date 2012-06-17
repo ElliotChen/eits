@@ -263,7 +263,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 //		logger.debug("Get new ArticleId[{}]", articleId);
 //		article.setArticleId(new ArticleId(articleId));
 		article.setType(ArticleType.GeneralInfo);
-		article.setLanguage(this.languageService.findDefaultLanguage());
+//		article.setLanguage(this.languageService.findDefaultLanguage());
 		article.setHitCount(0);
 		article.setEntryUser(ThreadLocalHolder.getOperator().getAccount());
 		article.setEntryDate(new Date());
@@ -289,6 +289,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		}
 //		this.article.setArticleId(new ArticleId(articleIdOid));
 		//For Copy Action
+		/*
 		if(null != this.sourceOid) {
 			this.sarticle = this.articleService.findByOid(sourceOid);
 			this.article.setArticleId(this.sarticle.getArticleId());
@@ -297,28 +298,41 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 			}
 			
 		}
-		
-		if ("Draft".equals(statusAction)) {
-			this.articleService.draftNewArticle(article);
-		} else if ("WaitForApproving".equals(statusAction)) {
-			this.articleService.finalNewArticle(article);
-		} else if ("Published".equals(statusAction) ) {
-			logger.debug("");
-			if (ThreadLocalHolder.getOperator().isL2()) {
-				this.articleService.publishNewL2Article(article);
-			} else if (ThreadLocalHolder.getOperator().isL3()){
-				this.articleService.publishNewL3Article(article);
-			} else {
-				logger.error("Incorrect AgentType to publish Article");
-			}
-		}
-		/*
-		else if ("WaitForProofRead".equals(statusAction)) {
-			this.articleService.publishNewL3Article(article);
-		}
 		*/
 		
-		return this.list();
+		try {
+			if ("Draft".equals(statusAction)) {
+				this.articleService.draftNewArticle(article);
+			} else if ("WaitForApproving".equals(statusAction)) {
+				this.articleService.finalNewArticle(article);
+			} else if ("Published".equals(statusAction)) {
+				logger.debug("");
+				if (ThreadLocalHolder.getOperator().isL2()) {
+					this.articleService.publishNewL2Article(article);
+				} else if (ThreadLocalHolder.getOperator().isL3()) {
+					this.articleService.publishNewL3Article(article);
+				} else {
+					logger.error("Incorrect AgentType to publish Article");
+				}
+			}
+			/*
+			 * else if ("WaitForProofRead".equals(statusAction)) {
+			 * this.articleService.publishNewL3Article(article); }
+			 */
+			this.addActionMessage("Create article success");
+			return this.list();
+		} catch (Exception e) {
+			logger.error("Create Article failed", e);
+			this.article.setStatus(null);
+			this.addActionError("Create article failed, Please contact system administrator. Reason:"+e.getMessage());
+			e.printStackTrace();
+			if (StringUtils.isNotEmpty(this.comefrom)) {
+				return comefrom;
+			} else {
+				return this.list();
+			}
+		}
+		
 	}
 	
 	public String previewSave() {
@@ -395,10 +409,12 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		if (null != this.lan && !this.lan.getOid().equals(this.article.getLanguage().getOid())) {
 			this.article.setLanguage(this.lan);
 		}
+		Status origin = this.article.getStatus();
 //		Language lang = this.languageService.findByOid(this.article.getLanguage().getOid());
 //		this.article.setLanguage(lang);
+		try {
 		this.article.setUpdateDate(new Date());
-				
+		
 		if (StringUtils.isEmpty(this.statusAction)) {
 			this.articleService.saveOrUpdate(article);
 		} else if ("LeaderApproved".equals(this.statusAction)) {
@@ -416,7 +432,13 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		} else if ("Archived".equals(this.statusAction)) {
 			this.articleService.archive(article);
 		}
-		this.addActionMessage("Save Success!");
+			this.addActionMessage("Update article success!");
+		} catch (Exception e) {
+			logger.error("Update article failed. ", e);
+			this.addActionError("Update article failed! Reason:"+e.getMessage());
+			this.article.setStatus(origin);
+			return "edit";
+		}
 		
 		if ("m1".equals(this.comefrom)) {
 			return "m1";
@@ -426,6 +448,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	}
 	
 	public String updateStatus() {
+		try {
 		if (StringUtils.isEmpty(this.statusAction)) {
 			this.articleService.saveOrUpdate(article);
 		} else if ("LeaderApproved".equals(this.statusAction)) {
@@ -443,7 +466,11 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		} else if ("Archived".equals(this.statusAction)) {
 			this.articleService.archive(article);
 		}
-		this.addActionMessage("Update Status Success!");
+		this.addActionMessage("Update status success!");
+		} catch (Exception e) {
+			logger.error("Update article failed. ", e);
+			this.addActionMessage("Update status failed! Reason:"+e.getMessage());
+		}
 		return this.list();
 	}
 	public String disable() {
@@ -468,13 +495,13 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	
 	public String rating() {
 		this.articleService.rate(article, ratingNumber);
-		this.jsonMsg = new JsonMsg("Thanks for your rating for articleId");
+		this.jsonMsg = new JsonMsg("Thanks for your rating for this article.");
 		return "rating";
 	}
 	
 	public String suggest() {
 		this.articleService.comment(article, suggestion);
-		this.jsonMsg = new JsonMsg("Thanks for your suggestion, ["+this.suggestion+"]");
+		this.jsonMsg = new JsonMsg("Thanks for your suggestion.");
 		return "rating";
 	}
 	

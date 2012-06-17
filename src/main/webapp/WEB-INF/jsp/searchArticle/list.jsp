@@ -11,11 +11,7 @@
 	});
 
 </script>
-<s:if test="hasActionMessages()">
-   <div>
-      <s:actionmessage/>
-   </div>
-</s:if>
+<jsp:include page="/WEB-INF/jsp/commons/message.jsp"></jsp:include>
 
 <s:form id="faqForm" namespace="/" action="searchArticle!faq" theme="simple">
 	<div id="distagArea" class="distagArea"></div>

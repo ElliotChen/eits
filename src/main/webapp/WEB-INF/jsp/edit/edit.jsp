@@ -153,7 +153,7 @@
 <s:form id="psForm" namespace="/" action="edit!listModels" theme="simple">
 	<input id="pCode" type="hidden" name="example.projectCode" />
 </s:form>
-
+<jsp:include page="/WEB-INF/jsp/commons/message.jsp"></jsp:include>
 <input type="button" value="View Log" onclick="viewArticleLog('${oid}')"/>
 
 <div class="condition">

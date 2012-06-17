@@ -10,6 +10,7 @@ import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import tw.com.dsc.domain.Account;
 import tw.com.dsc.domain.Article;
+import tw.com.dsc.domain.Status;
 import tw.com.dsc.service.ArticleLogService;
 import tw.com.dsc.service.ArticleService;
 import tw.com.dsc.service.SystemService;
@@ -73,4 +74,8 @@ public class CommentMailTask extends MailTask {
 		return message;
 	}
 
+	@Override
+	public Status getAvailableStatus() {
+		return Status.Published;
+	}
 }

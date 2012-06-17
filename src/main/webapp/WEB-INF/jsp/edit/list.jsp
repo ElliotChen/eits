@@ -39,11 +39,7 @@
 	});
 	
 </script>
-<s:if test="hasActionMessages()">
-   <div>
-      <s:actionmessage/>
-   </div>
-</s:if>
+<jsp:include page="/WEB-INF/jsp/commons/message.jsp"></jsp:include>
 <div  class="condition">
 <s:form id="searchUnpublishedForm" namespace="/" action="edit!searchUnpublished" theme="simple">
 <table class="conditionborder">

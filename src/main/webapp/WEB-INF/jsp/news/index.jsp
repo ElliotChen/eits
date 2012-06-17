@@ -39,11 +39,7 @@
 	});
 	
 </script>
-<s:if test="hasActionMessages()">
-   <div>
-      <s:actionmessage/>
-   </div>
-</s:if>
+<jsp:include page="/WEB-INF/jsp/commons/message.jsp"></jsp:include>
 <div  class="condition">
 <s:form id="exportNewsForm" namespace="/" action="news!preExport" theme="simple" target="_blank">
 <table class="conditionborder">

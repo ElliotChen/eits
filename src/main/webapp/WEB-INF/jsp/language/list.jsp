@@ -104,11 +104,7 @@
 		}
 	};
 </script>
-<s:if test="hasActionMessages()">
-   <div>
-      <s:actionmessage/>
-   </div>
-</s:if>
+<jsp:include page="/WEB-INF/jsp/commons/message.jsp"></jsp:include>
 
 <div id="searchFormDiv" class="datagrid">
 	<s:form id="searchForm" namespace="/" action="language!search" theme="simple">

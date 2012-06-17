@@ -8,11 +8,7 @@
 	});
 
 </script>
-<s:if test="hasActionMessages()">
-   <div>
-      <s:actionmessage/>
-   </div>
-</s:if>
+<jsp:include page="/WEB-INF/jsp/commons/message.jsp"></jsp:include>
 <s:form id="publishedForm" namespace="/" action="searchArticle!latestL3Published" theme="simple">
 	<div id="distagArea" class="distagArea"></div>
 </s:form>
