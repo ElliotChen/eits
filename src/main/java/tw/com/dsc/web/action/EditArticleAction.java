@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import tw.com.dsc.domain.Account;
 import tw.com.dsc.domain.ActionType;
 import tw.com.dsc.domain.AgentType;
 import tw.com.dsc.domain.Article;
@@ -23,7 +24,9 @@ import tw.com.dsc.domain.ArticleLog;
 import tw.com.dsc.domain.ArticleType;
 import tw.com.dsc.domain.Attachment;
 import tw.com.dsc.domain.ExpireType;
+import tw.com.dsc.domain.Group;
 import tw.com.dsc.domain.Language;
+import tw.com.dsc.domain.Level;
 import tw.com.dsc.domain.ProductSeries;
 import tw.com.dsc.domain.Project;
 import tw.com.dsc.domain.Source;
@@ -110,6 +113,33 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	private Date endDate;
 	
 	private String comefrom;
+	
+	
+	private String advLanguageOid;
+	private Source advSourceType;
+	private String advProjectCode;
+	private Boolean advNews;
+	private ArticleType advType;
+	private String advDateType; //entryDate, lastUpdate, publishDate
+	private Date advBeginDate;
+	private Date advEndDate;
+	private String advApType; //publishedType, statusType
+	private Boolean advPublished;
+	private Status advStatus;
+	private String advAgentSearchType; //group, agent, self
+	private String advGroup;
+	private String advAccount;
+	private Level[] advLevels;
+	private String advTechnology;
+	private String advProduct;
+	private String advFirmware;
+	private OperationEnum advViewsType;
+	private Integer advHitCount;
+	private OperationEnum advRatingType;
+	private Float advAvgRate;
+	private List<Account> accounts;
+	private List<Group> groups;
+	private Boolean reload = Boolean.FALSE;
 	/**
 	 * 已使用的language
 	 */
@@ -442,11 +472,21 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 		
 		if ("m1".equals(this.comefrom)) {
 			return "m1";
+		} else if ("m8".equals(this.comefrom)) {
+			this.initAdvSearch();
+			return "m8";
 		} else {
 			return this.list();
 		}
 	}
 	
+	public String cancel() {
+		if ("m8".equals(this.comefrom)) {
+			this.initAdvSearch();
+			return "m8";
+		} 
+		return this.list();
+	}
 	public String updateStatus() {
 		try {
 		if (StringUtils.isEmpty(this.statusAction)) {
@@ -471,12 +511,52 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 			logger.error("Update article failed. ", e);
 			this.addActionMessage("Update status failed! Reason:"+e.getMessage());
 		}
-		return this.list();
+		if ("m1".equals(this.comefrom)) {
+			return "m1";
+		} else if ("m8".equals(this.comefrom)) {
+			this.initAdvSearch();
+			return "m8";
+		} else {
+			return this.list();
+		}
+	}
+	
+	private void initAdvSearch() {
+		User op = ThreadLocalHolder.getOperator();
+		this.languages = this.languageService.listAll();
+		this.technologies = this.systemService.listAllTech();
+		this.projects = this.systemService.listAllProject();
+		if (op.isL3()) {
+			this.products = this.systemService.listAllSeries();
+		} else {
+			this.products = this.systemService.listSeries(op.getCurrentUserRole().getBranchCode());
+		}
+		this.languages = this.languageService.listAll();
+		example.setLanguage(new Language(this.advLanguageOid, null));
+//		articles = this.articleService.searchFaqArticlesPage(articles);
+		
+		this.technologies = this.systemService.listAllTech();
+		this.projects = this.systemService.listAllProject();
+		this.accounts = this.systemService.findTeamAccounts();
+		this.groups = this.systemService.findGroups();
+		if (op.isL3()) {
+			this.products = this.systemService.listAllSeries();
+		} else {
+			this.products = this.systemService.listSeries(op.getCurrentUserRole().getBranchCode());
+		}
+		this.reload=Boolean.TRUE;
 	}
 	public String disable() {
 		logger.debug("Disable has been invoked");
 		this.articleService.disable(article);
-		return this.list();
+		if ("m1".equals(this.comefrom)) {
+			return "m1";
+		} else if ("m8".equals(this.comefrom)) {
+			this.initAdvSearch();
+			return "m8";
+		} else {
+			return this.list();
+		}
 	}
 	public String viewLogs() {
 		ArticleLog exam = new ArticleLog();
@@ -880,5 +960,205 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	public void setComefrom(String comefrom) {
 		this.comefrom = comefrom;
 	}
-	
+
+	public String getAdvLanguageOid() {
+		return advLanguageOid;
+	}
+
+	public void setAdvLanguageOid(String advLanguageOid) {
+		this.advLanguageOid = advLanguageOid;
+	}
+
+	public Source getAdvSourceType() {
+		return advSourceType;
+	}
+
+	public void setAdvSourceType(Source advSourceType) {
+		this.advSourceType = advSourceType;
+	}
+
+	public String getAdvProjectCode() {
+		return advProjectCode;
+	}
+
+	public void setAdvProjectCode(String advProjectCode) {
+		this.advProjectCode = advProjectCode;
+	}
+
+	public Boolean getAdvNews() {
+		return advNews;
+	}
+
+	public void setAdvNews(Boolean advNews) {
+		this.advNews = advNews;
+	}
+
+	public ArticleType getAdvType() {
+		return advType;
+	}
+
+	public void setAdvType(ArticleType advType) {
+		this.advType = advType;
+	}
+
+	public String getAdvDateType() {
+		return advDateType;
+	}
+
+	public void setAdvDateType(String advDateType) {
+		this.advDateType = advDateType;
+	}
+
+	public Date getAdvBeginDate() {
+		return advBeginDate;
+	}
+
+	public void setAdvBeginDate(Date advBeginDate) {
+		this.advBeginDate = advBeginDate;
+	}
+
+	public Date getAdvEndDate() {
+		return advEndDate;
+	}
+
+	public void setAdvEndDate(Date advEndDate) {
+		this.advEndDate = advEndDate;
+	}
+
+	public String getAdvApType() {
+		return advApType;
+	}
+
+	public void setAdvApType(String advApType) {
+		this.advApType = advApType;
+	}
+
+	public Boolean getAdvPublished() {
+		return advPublished;
+	}
+
+	public void setAdvPublished(Boolean advPublished) {
+		this.advPublished = advPublished;
+	}
+
+	public Status getAdvStatus() {
+		return advStatus;
+	}
+
+	public void setAdvStatus(Status advStatus) {
+		this.advStatus = advStatus;
+	}
+
+	public String getAdvAgentSearchType() {
+		return advAgentSearchType;
+	}
+
+	public void setAdvAgentSearchType(String advAgentSearchType) {
+		this.advAgentSearchType = advAgentSearchType;
+	}
+
+	public String getAdvGroup() {
+		return advGroup;
+	}
+
+	public void setAdvGroup(String advGroup) {
+		this.advGroup = advGroup;
+	}
+
+	public String getAdvAccount() {
+		return advAccount;
+	}
+
+	public void setAdvAccount(String advAccount) {
+		this.advAccount = advAccount;
+	}
+
+	public Level[] getAdvLevels() {
+		return advLevels;
+	}
+
+	public void setAdvLevels(Level[] advLevels) {
+		this.advLevels = advLevels;
+	}
+
+	public String getAdvTechnology() {
+		return advTechnology;
+	}
+
+	public void setAdvTechnology(String advTechnology) {
+		this.advTechnology = advTechnology;
+	}
+
+	public String getAdvProduct() {
+		return advProduct;
+	}
+
+	public void setAdvProduct(String advProduct) {
+		this.advProduct = advProduct;
+	}
+
+	public String getAdvFirmware() {
+		return advFirmware;
+	}
+
+	public void setAdvFirmware(String advFirmware) {
+		this.advFirmware = advFirmware;
+	}
+
+	public OperationEnum getAdvViewsType() {
+		return advViewsType;
+	}
+
+	public void setAdvViewsType(OperationEnum advViewsType) {
+		this.advViewsType = advViewsType;
+	}
+
+	public Integer getAdvHitCount() {
+		return advHitCount;
+	}
+
+	public void setAdvHitCount(Integer advHitCount) {
+		this.advHitCount = advHitCount;
+	}
+
+	public OperationEnum getAdvRatingType() {
+		return advRatingType;
+	}
+
+	public void setAdvRatingType(OperationEnum advRatingType) {
+		this.advRatingType = advRatingType;
+	}
+
+	public Float getAdvAvgRate() {
+		return advAvgRate;
+	}
+
+	public void setAdvAvgRate(Float advAvgRate) {
+		this.advAvgRate = advAvgRate;
+	}
+
+	public List<Account> getAccounts() {
+		return accounts;
+	}
+
+	public void setAccounts(List<Account> accounts) {
+		this.accounts = accounts;
+	}
+
+	public List<Group> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(List<Group> groups) {
+		this.groups = groups;
+	}
+
+	public Boolean getReload() {
+		return reload;
+	}
+
+	public void setReload(Boolean reload) {
+		this.reload = reload;
+	}
+
 }

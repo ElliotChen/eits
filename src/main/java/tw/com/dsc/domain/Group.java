@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Immutable;
 import org.slf4j.Logger;
@@ -30,6 +31,8 @@ public class Group implements Identifiable<String> {
 	@ManyToMany(mappedBy="groups")
 	private List<Account> accounts;
 
+	@Transient
+	private String teamName;
 	public String getId() {
 		return id;
 	}
@@ -62,6 +65,14 @@ public class Group implements Identifiable<String> {
 	@Override
 	public void setOid(String oid) {
 		this.id = oid;
+	}
+
+	public String getTeamName() {
+		return teamName;
+	}
+
+	public void setTeamName(String teamName) {
+		this.teamName = teamName;
 	}
 	
 }

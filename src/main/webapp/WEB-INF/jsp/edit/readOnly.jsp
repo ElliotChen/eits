@@ -55,6 +55,31 @@
 <s:form id="editForm" namespace="/" action="edit!updateStatus" theme="simple" method="POST" enctype ="multipart/form-data">
 	<s:hidden name="oid" />
 	<s:hidden name="keywords" />
+	<s:hidden name="comefrom" />
+	<s:hidden name="advLanguageOid" />
+		<s:hidden name="advSourceType" />
+		<s:hidden name="advProjectCode" />
+		<s:hidden name="advNews" />
+		<s:hidden name="advType" />
+		<s:hidden name="advDateType" />
+		<s:hidden name="advBeginDate" />
+		<s:hidden name="advEndDate" />
+		<s:hidden name="advApType" />
+		<s:hidden name="advPublished" />
+		<s:hidden name="advStatus" />
+		<s:hidden name="advAgentSearchType" />
+		<s:hidden name="advGroup" />
+		<s:hidden name="advAccount" />
+		<s:hidden name="advTechnology" />
+		<s:hidden name="advProduct" />
+		<s:hidden name="advFirmware" />
+		<s:hidden name="advViewsType" />
+		<s:hidden name="advHitCount" />
+		<s:hidden name="advRatingType" />
+		<s:hidden name="advAvgRate" />
+		<s:iterator value="advLevels" var="lev">
+			<input type="hidden" name="advLevels" value="${lev}" />
+		</s:iterator>
 	<table class="conditionborder">
 		<tr>
 			<td>ARTICLE ID:</td>
@@ -171,7 +196,19 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2" align="right"><s:submit value="Update" cssClass="save" /> <s:submit value="Delete" cssClass="delete" action="edit" method="disable"/><input type="button" value="Do Nothing" onclick="switchMenu('m3', 'edit!list.action');" />
+			<td colspan="2" align="right"><s:submit value="Update" cssClass="save" /> <s:submit value="Delete" cssClass="delete" action="edit" method="disable"/>
+			<s:if test="'m1' == comefrom">
+					<input type="button" value="Do Nothing" onclick="switchMenu('m1', 'searchArticle!index.action');" />
+				</s:if>
+				<s:elseif test="'m8' == comefrom">
+					<s:submit action="edit" method="cancel" value="Do Nothing" />
+					<%--
+					<input type="button" value="Do Nothing" onclick="switchMenu('m8', 'advSearchArticle!index.action');" />
+					 --%>
+				</s:elseif>
+				<s:else>
+				<input type="button" value="Do Nothing" onclick="switchMenu('m3', 'edit!list.action');" />			  
+				</s:else>
 			</td>
 		</tr>
 	</table>

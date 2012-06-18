@@ -39,6 +39,7 @@ import tw.com.dsc.service.LanguageService;
 import tw.com.dsc.service.SystemService;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.DateUtils;
+import tw.com.dsc.util.SystemUtils;
 import tw.com.dsc.util.ThreadLocalHolder;
 
 import com.opensymphony.xwork2.Preparable;
@@ -73,28 +74,29 @@ public class AdvSearchArticleAction extends BaseAction  implements Preparable {
 	@Autowired
 	private SystemService systemService;
 	
-	private String languageOid;
-	private Source sourceType;
-	private String projectCode;
-	private Boolean news;
-	private ArticleType type;
-	private String dateType; //entryDate, lastUpdate, publishDate
-	private Date beginDate;
-	private Date endDate;
-	private String apType; //publishedType, statusType
-	private Boolean published;
-	private Status status;
-	private String agentSearchType; //group, agent, self
-	private String group;
-	private String account;
-	private Level[] levels;
-	private String technology;
-	private String product;
-	private String firmware;
-	private OperationEnum viewsType;
-	private Integer hitCount;
-	private OperationEnum ratingType;
-	private Float avgRate;
+	private String advLanguageOid;
+	private Source advSourceType;
+	private String advProjectCode;
+	private Boolean advNews;
+	private ArticleType advType;
+	private String advDateType; //entryDate, lastUpdate, publishDate
+	private Date advBeginDate;
+	private Date advEndDate;
+	private String advApType; //publishedType, statusType
+	private Boolean advPublished;
+	private Status advStatus;
+	private String advAgentSearchType; //group, agent, self
+	private String advGroup;
+	private String advAccount;
+	private Level[] advLevels;
+	private String advTechnology;
+	private String advProduct;
+	private String advFirmware;
+	private OperationEnum advViewsType;
+	private Integer advHitCount;
+	private OperationEnum advRatingType;
+	private Float advAvgRate;
+	private Boolean reload = Boolean.FALSE;
 	/**
 	 * 已使用的language
 	 */
@@ -174,75 +176,104 @@ public class AdvSearchArticleAction extends BaseAction  implements Preparable {
 		 */
 		logger.info(this.toString());
 		
-		if (StringUtils.isNotEmpty(this.languageOid)) {
-			example.setLanguage(new Language(languageOid, null));
+		if (StringUtils.isNotEmpty(this.advLanguageOid)) {
+			example.setLanguage(new Language(advLanguageOid, null));
 		}
 		
-		if (null != sourceType) {
-			example.setSource(sourceType);
-			if (Source.Project == sourceType) {
-				example.setProjectCode(projectCode);
+		if (null != advSourceType) {
+			example.setSource(advSourceType);
+			if (Source.Project == advSourceType) {
+				example.setProjectCode(advProjectCode);
 			}
 		}
-		if (null != news) {
-			example.setNews(news);
+		if (null != advNews) {
+			example.setNews(advNews);
 		}
-		if (null != type) {
-			example.setType(type);
-		}
-		
-		if (StringUtils.isNotEmpty(dateType)) {
-			beginDate = DateUtils.begin(beginDate);
-			endDate = DateUtils.end(endDate);
-			conds.add(new BetweenCondition(dateType, beginDate, endDate));
+		if (null != advType) {
+			example.setType(advType);
 		}
 		
-		if (StringUtils.isNotEmpty(apType)) {
-			if ("publishedType".equals(apType)) {
-				if (!published) {
+		if (StringUtils.isNotEmpty(advDateType)) {
+//			beginDate = DateUtils.begin(beginDate);
+//			endDate = DateUtils.end(endDate);
+			if (null != this.advBeginDate && null != this.advEndDate) {
+				if (this.advBeginDate.before(this.advEndDate)) {
+					conds.add(new BetweenCondition(advDateType, DateUtils.begin(advBeginDate), DateUtils.end(advEndDate)));
+				} else {
+					conds.add(new BetweenCondition(advDateType, DateUtils.begin(advEndDate), DateUtils.end(advBeginDate)));
+				}
+			} else if (null != this.advBeginDate) {
+				conds.add(new SimpleCondition(advDateType, DateUtils.begin(this.advBeginDate), OperationEnum.GE));
+			} else if (null != this.advEndDate) {
+				conds.add(new SimpleCondition(advDateType, DateUtils.end(this.advEndDate), OperationEnum.LE));
+			}
+		}
+		
+		if (StringUtils.isNotEmpty(advApType)) {
+			if ("publishedType".equals(advApType)) {
+				if (!advPublished) {
 					conds.add(new SimpleCondition("status", Status.Published, OperationEnum.NE));
 				} else {
 					conds.add(new SimpleCondition("status", Status.Published, OperationEnum.EQ));
 				}
-			} else if ("statusType".equals(apType)) {
-				if (null != status) {
-					example.setStatus(status);
+			} else if ("statusType".equals(advApType)) {
+				if (null != advStatus) {
+					example.setStatus(advStatus);
 				}
 			}
 		}
 		
-		if (StringUtils.isNotEmpty(agentSearchType)) {
-			if ("self".equals(agentSearchType)) {
+		if (StringUtils.isNotEmpty(advAgentSearchType)) {
+			if ("self".equals(advAgentSearchType)) {
 				example.setEntryUser(op.getAccount());
-			} else if ("group".equals(agentSearchType)) {
-				example.setUserGroup(group);
-			} else if ("agent".equals(agentSearchType)) {
-				example.setEntryUser(account);
+			} else if ("group".equals(advAgentSearchType)) {
+				if (StringUtils.isEmpty(this.advGroup)) {
+					List<Group> findGroups = this.systemService.findGroups();
+					String[] groups = new String[findGroups.size()];
+					for (int i = 0; i < groups.length; i++) {
+						groups[i] = findGroups.get(i).getTeamName();
+					}
+					
+					conds.add(new InCondition("userGroup", groups));
+				} else {
+					example.setUserGroup(advGroup);
+				}
+			} else if ("agent".equals(advAgentSearchType)) {
+				if (StringUtils.isEmpty(this.advAccount)) {
+					List<Account> accList = this.systemService.findTeamAccounts();
+					String[] accs = new String[accList.size()];
+					for (int i=0; i<accs.length; i++) {
+						accs[i] = accList.get(i).getId();
+					}
+					conds.add(new InCondition("entryUser", accs));
+				} else {
+					example.setEntryUser(advAccount);
+				}
 			}
 		}
 		
-		if (null != this.levels) {
-			conds.add(new InCondition("level", this.levels));
+		if (null != this.advLevels) {
+			conds.add(new InCondition("level", this.advLevels));
 		}
 		
-		if (StringUtils.isNotEmpty(this.technology)) {
-			conds.add(parseString(this.technology, "technology"));
+		if (StringUtils.isNotEmpty(this.advTechnology)) {
+			conds.add(parseString(this.advTechnology, "technology"));
 		}
 		
-		if (StringUtils.isNotEmpty(this.product)) {
-			conds.add(parseString(this.product, "product"));
+		if (StringUtils.isNotEmpty(this.advProduct)) {
+			conds.add(parseString(this.advProduct, "product"));
 		}
 		
-		if (StringUtils.isNotEmpty(this.firmware)) {
-			example.setFirmware(firmware);
+		if (StringUtils.isNotEmpty(this.advFirmware)) {
+			example.setFirmware(advFirmware);
 		}
 		
-		if (null != this.viewsType && null != hitCount) {
-			conds.add(new SimpleCondition("hitCount", hitCount, viewsType));
+		if (null != this.advViewsType && null != advHitCount) {
+			conds.add(new SimpleCondition("hitCount", advHitCount, advViewsType));
 		}
 		
-		if (null != this.ratingType && null != avgRate) {
-			conds.add(new SimpleCondition("avgRate", avgRate, ratingType));
+		if (null != this.advRatingType && null != advAvgRate) {
+			conds.add(new SimpleCondition("avgRate", advAvgRate, advRatingType));
 		}
 		this.articles = this.articleService.listByExample(example, conds, LikeMode.ANYWHERE, new String[] {"oid"}, null);
 
@@ -416,196 +447,207 @@ public class AdvSearchArticleAction extends BaseAction  implements Preparable {
 	/** Form Parameter **/
 	/********************************************/
 	
-	public String getLanguageOid() {
-		return languageOid;
-	}
-
-	public void setLanguageOid(String languageOid) {
-		this.languageOid = languageOid;
-	}
-
-	public Source getSourceType() {
-		return sourceType;
-	}
-
-	public void setSourceType(Source sourceType) {
-		this.sourceType = sourceType;
-	}
-
-	public String getProjectCode() {
-		return projectCode;
-	}
-
-	public void setProjectCode(String projectCode) {
-		this.projectCode = projectCode;
-	}
-
-	public Boolean getNews() {
-		return news;
-	}
-
-	public void setNews(Boolean news) {
-		this.news = news;
-	}
-
-	public ArticleType getType() {
-		return type;
-	}
-
-	public void setType(ArticleType type) {
-		this.type = type;
-	}
-
-	public String getDateType() {
-		return dateType;
-	}
-
-	public void setDateType(String dateType) {
-		this.dateType = dateType;
-	}
-
-	public String getApType() {
-		return apType;
-	}
-
-	public void setApType(String apType) {
-		this.apType = apType;
-	}
-
-	public Boolean getPublished() {
-		return published;
-	}
-
-	public void setPublished(Boolean published) {
-		this.published = published;
-	}
-
-	public Status getStatus() {
-		return status;
-	}
-
-	public void setStatus(Status status) {
-		this.status = status;
-	}
-
-	public String getAgentSearchType() {
-		return agentSearchType;
-	}
-
-	public void setAgentSearchType(String agentSearchType) {
-		this.agentSearchType = agentSearchType;
-	}
-
-	public Level[] getLevels() {
-		return levels;
-	}
-
-	public void setLevels(Level[] levels) {
-		this.levels = levels;
-	}
-
-	public String getTechnology() {
-		return technology;
-	}
-
-	public void setTechnology(String technology) {
-		this.technology = technology;
-	}
-
-	public String getProduct() {
-		return product;
-	}
-
-	public void setProduct(String product) {
-		this.product = product;
-	}
-
-	public String getFirmware() {
-		return firmware;
-	}
-
-	public void setFirmware(String firmware) {
-		this.firmware = firmware;
-	}
-
-	public OperationEnum getViewsType() {
-		return viewsType;
-	}
-
-	public void setViewsType(OperationEnum viewsType) {
-		this.viewsType = viewsType;
-	}
-
-	public Integer getHitCount() {
-		return hitCount;
-	}
-
-	public void setHitCount(Integer hitCount) {
-		this.hitCount = hitCount;
-	}
-
-	public OperationEnum getRatingType() {
-		return ratingType;
-	}
-
-	public void setRatingType(OperationEnum ratingType) {
-		this.ratingType = ratingType;
-	}
-
-	public Date getBeginDate() {
-		return beginDate;
-	}
-
-	public void setBeginDate(Date beginDate) {
-		this.beginDate = beginDate;
-	}
-
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
-
-	public String getGroup() {
-		return group;
-	}
-
-	public void setGroup(String group) {
-		this.group = group;
-	}
-
-	public String getAccount() {
-		return account;
-	}
-
-	public void setAccount(String account) {
-		this.account = account;
-	}
-
-	public Float getAvgRate() {
-		return avgRate;
-	}
-
-	public void setAvgRate(Float avgRate) {
-		this.avgRate = avgRate;
-	}
+	
 
 	@Override
 	public String toString() {
-		return "AdvSearchArticleAction [languageOid=" + languageOid
-				+ ", sourceType=" + sourceType + ", projectCode=" + projectCode
-				+ ", news=" + news + ", type=" + type + ", dateType="
-				+ dateType + ", beginDate=" + beginDate + ", endDate="
-				+ endDate + ", apType=" + apType + ", published=" + published
-				+ ", status=" + status + ", agentSearchType=" + agentSearchType
-				+ ", group=" + group + ", account=" + account + ", levels="
-				+ Arrays.toString(levels) + ", technology=" + technology
-				+ ", product=" + product + ", firmware=" + firmware
-				+ ", viewsType=" + viewsType + ", hitCount=" + hitCount
-				+ ", ratingType=" + ratingType + ", avgRate=" + avgRate + "]";
+		return "AdvSearchArticleAction [languageOid=" + advLanguageOid
+				+ ", sourceType=" + advSourceType + ", projectCode=" + advProjectCode
+				+ ", news=" + advNews + ", type=" + advType + ", dateType="
+				+ advDateType + ", beginDate=" + advBeginDate + ", endDate="
+				+ advEndDate + ", apType=" + advApType + ", published=" + advPublished
+				+ ", status=" + advStatus + ", agentSearchType=" + advAgentSearchType
+				+ ", group=" + advGroup + ", account=" + advAccount + ", levels="
+				+ Arrays.toString(advLevels) + ", technology=" + advTechnology
+				+ ", product=" + advProduct + ", firmware=" + advFirmware
+				+ ", viewsType=" + advViewsType + ", hitCount=" + advHitCount
+				+ ", ratingType=" + advRatingType + ", avgRate=" + advAvgRate + "]";
 	}
 
+	public String getAdvLanguageOid() {
+		return advLanguageOid;
+	}
+
+	public void setAdvLanguageOid(String advLanguageOid) {
+		this.advLanguageOid = advLanguageOid;
+	}
+
+	public Source getAdvSourceType() {
+		return advSourceType;
+	}
+
+	public void setAdvSourceType(Source advSourceType) {
+		this.advSourceType = advSourceType;
+	}
+
+	public String getAdvProjectCode() {
+		return advProjectCode;
+	}
+
+	public void setAdvProjectCode(String advProjectCode) {
+		this.advProjectCode = advProjectCode;
+	}
+
+	public Boolean getAdvNews() {
+		return advNews;
+	}
+
+	public void setAdvNews(Boolean advNews) {
+		this.advNews = advNews;
+	}
+
+	public ArticleType getAdvType() {
+		return advType;
+	}
+
+	public void setAdvType(ArticleType advType) {
+		this.advType = advType;
+	}
+
+	public String getAdvDateType() {
+		return advDateType;
+	}
+
+	public void setAdvDateType(String advDateType) {
+		this.advDateType = advDateType;
+	}
+
+	public Date getAdvBeginDate() {
+		return advBeginDate;
+	}
+
+	public void setAdvBeginDate(Date advBeginDate) {
+		this.advBeginDate = advBeginDate;
+	}
+
+	public Date getAdvEndDate() {
+		return advEndDate;
+	}
+
+	public void setAdvEndDate(Date advEndDate) {
+		this.advEndDate = advEndDate;
+	}
+
+	public String getAdvApType() {
+		return advApType;
+	}
+
+	public void setAdvApType(String advApType) {
+		this.advApType = advApType;
+	}
+
+	public Boolean getAdvPublished() {
+		return advPublished;
+	}
+
+	public void setAdvPublished(Boolean advPublished) {
+		this.advPublished = advPublished;
+	}
+
+	public Status getAdvStatus() {
+		return advStatus;
+	}
+
+	public void setAdvStatus(Status advStatus) {
+		this.advStatus = advStatus;
+	}
+
+	public String getAdvAgentSearchType() {
+		return advAgentSearchType;
+	}
+
+	public void setAdvAgentSearchType(String advAgentSearchType) {
+		this.advAgentSearchType = advAgentSearchType;
+	}
+
+	public String getAdvGroup() {
+		return advGroup;
+	}
+
+	public void setAdvGroup(String advGroup) {
+		this.advGroup = advGroup;
+	}
+
+	public String getAdvAccount() {
+		return advAccount;
+	}
+
+	public void setAdvAccount(String advAccount) {
+		this.advAccount = advAccount;
+	}
+
+	public Level[] getAdvLevels() {
+		return advLevels;
+	}
+
+	public void setAdvLevels(Level[] advLevels) {
+		this.advLevels = advLevels;
+	}
+
+	public String getAdvTechnology() {
+		return advTechnology;
+	}
+
+	public void setAdvTechnology(String advTechnology) {
+		this.advTechnology = advTechnology;
+	}
+
+	public String getAdvProduct() {
+		return advProduct;
+	}
+
+	public void setAdvProduct(String advProduct) {
+		this.advProduct = advProduct;
+	}
+
+	public String getAdvFirmware() {
+		return advFirmware;
+	}
+
+	public void setAdvFirmware(String advFirmware) {
+		this.advFirmware = advFirmware;
+	}
+
+	public OperationEnum getAdvViewsType() {
+		return advViewsType;
+	}
+
+	public void setAdvViewsType(OperationEnum advViewsType) {
+		this.advViewsType = advViewsType;
+	}
+
+	public Integer getAdvHitCount() {
+		return advHitCount;
+	}
+
+	public void setAdvHitCount(Integer advHitCount) {
+		this.advHitCount = advHitCount;
+	}
+
+	public OperationEnum getAdvRatingType() {
+		return advRatingType;
+	}
+
+	public void setAdvRatingType(OperationEnum advRatingType) {
+		this.advRatingType = advRatingType;
+	}
+
+	public Float getAdvAvgRate() {
+		return advAvgRate;
+	}
+
+	public void setAdvAvgRate(Float advAvgRate) {
+		this.advAvgRate = advAvgRate;
+	}
+
+	public Boolean getReload() {
+		return reload;
+	}
+
+	public void setReload(Boolean reload) {
+		this.reload = reload;
+	}
+
+	
 	
 }

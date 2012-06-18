@@ -16,6 +16,7 @@ import tw.com.dsc.to.UserRole;
 
 public abstract class SystemUtils {
 	private static final Logger logger = LoggerFactory.getLogger(SystemUtils.class);
+	public static final Pattern GROUP_NAME = Pattern.compile("^(L._.*)_.*$");
 	public static final Pattern L3_LEADER = Pattern.compile("^(L3_.*)_Leader$");
 	public static final Pattern L3_AGENT = Pattern.compile("^(L3_.*)_Team$");
 	public static final Pattern L2_ADMIN = Pattern.compile("^(L2_.*)_Admin$");
@@ -57,7 +58,14 @@ public abstract class SystemUtils {
 			return gname;
 		}
 
-		Matcher matcher = L3_LEADER.matcher(gid);
+		Matcher matcher = GROUP_NAME.matcher(gid);
+		
+		if (!gid.startsWith("L") && matcher.matches()) {
+			gname = gid;
+			return gname;
+		}
+		
+		matcher = L3_LEADER.matcher(gid);;
 		if (matcher.matches()) {
 			gname = matcher.group(1);
 			return gname;

@@ -40,7 +40,7 @@ $.growlUI = function(title, message, timeout, onClose) {
 	if (message) $m.append('<h2>'+message+'</h2>');
 	if (timeout == undefined) timeout = 3000;
 	$.blockUI({
-		message: $m, fadeIn: 700, fadeOut: 1000, centerY: false,
+		message: $m, fadeIn: 100, fadeOut: 200, centerY: false,
 		timeout: timeout, showOverlay: false,
 		onUnblock: onClose, 
 		css: $.blockUI.defaults.growlCSS
@@ -150,10 +150,10 @@ $.blockUI.defaults = {
 	constrainTabKey: true,
 
 	// fadeIn time in millis; set to 0 to disable fadeIn on block
-	fadeIn:  200,
+	fadeIn:  100,
 
 	// fadeOut time in millis; set to 0 to disable fadeOut on unblock
-	fadeOut:  400,
+	fadeOut:  100,
 
 	// time in millis to wait before auto-unblocking; set to 0 to disable auto-unblock
 	timeout: 0,

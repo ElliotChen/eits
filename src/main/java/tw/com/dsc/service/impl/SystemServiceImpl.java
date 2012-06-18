@@ -2,8 +2,10 @@ package tw.com.dsc.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -409,16 +411,30 @@ public class SystemServiceImpl implements SystemService {
 		User user = ThreadLocalHolder.getOperator();
 		Group example = new Group();
 		List<Condition> conds = new ArrayList<Condition>();
+		List<Group> tmps = null;
+		List<Group> groups = new ArrayList<Group>();
 		if (user.isL3()) {
 			conds.add(new LikeCondition("id", "L3_%"));
-			return this.groupDao.listByExample(example, conds, LikeMode.START, null, null);
+			tmps = this.groupDao.listByExample(example, conds, LikeMode.START, null, null);
 		} else if (user.isL2()) {
 			conds.add(new LikeCondition("id", "L2_"+user.getCurrentUserRole().getBranchCode()+"%"));
-			return this.groupDao.listByExample(example, conds, LikeMode.START, null, null);
+			tmps = this.groupDao.listByExample(example, conds, LikeMode.START, null, null);
 		} else {
 			logger.warn("Unknown {} for findGroups", user);
 			return new ArrayList<Group>();
 		}
+		Set<String> gname = new HashSet<String>();
+		for (Group group : tmps) {
+			String gidname = SystemUtils.parseGroupId(group.getId());
+			logger.debug("Parsing Group Id [{}] as [{}]", group.getId(), gidname);
+			if (StringUtils.isNotEmpty(gidname) && !gname.contains(gidname)) {
+				gname.add(gidname);
+				group.setTeamName(gidname);
+				groups.add(group);
+			}
+		}
+		
+		return groups;
 	}
 	public Account findAccountByOid(String oid) {
 		return this.accountDao.findByOid(oid);

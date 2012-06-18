@@ -60,6 +60,7 @@
 			<result name="productModel">/WEB-INF/jsp/edit/productModel.jsp</result>
 			<result name="blank">/WEB-INF/jsp/commons/blank.jsp</result>
 			<result name="m1">/WEB-INF/jsp/system/loginRedirect.jsp</result>
+			<result name="m8" >/WEB-INF/jsp/advSearch/index.jsp</result>
 		</action>
 		
 		<action name="language!*" method="{1}" class="languageAction">

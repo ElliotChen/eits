@@ -8,6 +8,7 @@
             target: '#productSelectDiv',
             success : $.unblockUI
         });
+	
 		$('#editForm').ajaxForm({
 			target: '#main',
 			  beforeSubmit: function() {
@@ -59,6 +60,7 @@
 			    return $('#editForm').valid();
 			  }
 			});
+		
 		delete CKEDITOR.instances['question'];
 		delete CKEDITOR.instances['answer'];
 		delete CKEDITOR.instances['scenario'];
@@ -79,6 +81,7 @@
 		
 		switchType();
 		switchSource();
+		
 		$(".numeric").numeric({ decimal: false, negative: false });
 		$('#techSelect').multiselect({beforeclose: function(){
 			$('#technology').val($('#techSelect').val());
@@ -148,6 +151,7 @@
 		$('#pCode').val('');
 		$('#psForm').submit();
 	}
+	
 //-->
 </script>
 <s:form id="psForm" namespace="/" action="edit!listModels" theme="simple">
@@ -161,6 +165,30 @@
 	<s:hidden name="oid" />
 	<s:hidden name="keywords" />
 	<s:hidden name="comefrom" />
+	<s:hidden name="advLanguageOid" />
+		<s:hidden name="advSourceType" />
+		<s:hidden name="advProjectCode" />
+		<s:hidden name="advNews" />
+		<s:hidden name="advType" />
+		<s:hidden name="advDateType" />
+		<s:hidden name="advBeginDate" />
+		<s:hidden name="advEndDate" />
+		<s:hidden name="advApType" />
+		<s:hidden name="advPublished" />
+		<s:hidden name="advStatus" />
+		<s:hidden name="advAgentSearchType" />
+		<s:hidden name="advGroup" />
+		<s:hidden name="advAccount" />
+		<s:hidden name="advTechnology" />
+		<s:hidden name="advProduct" />
+		<s:hidden name="advFirmware" />
+		<s:hidden name="advViewsType" />
+		<s:hidden name="advHitCount" />
+		<s:hidden name="advRatingType" />
+		<s:hidden name="advAvgRate" />
+		<s:iterator value="advLevels" var="lev">
+			<input type="hidden" name="advLevels" value="${lev}" />
+		</s:iterator>
 	<table class="conditionborder">
 		<tr>
 			<td>ARTICLE ID:</td>
@@ -321,6 +349,12 @@
 				<s:if test="'m1' == comefrom">
 					<input type="button" value="Do Nothing" onclick="switchMenu('m1', 'searchArticle!index.action');" />
 				</s:if>
+				<s:elseif test="'m8' == comefrom">
+					<s:submit action="edit" method="cancel" value="Do Nothing" />
+					<%--
+					<input type="button" value="Do Nothing" onclick="switchMenu('m8', 'advSearchArticle!index.action');" />
+					 --%>
+				</s:elseif>
 				<s:else>
 				<input type="button" value="Do Nothing" onclick="switchMenu('m3', 'edit!list.action');" />			  
 				</s:else>
