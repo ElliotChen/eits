@@ -11,5 +11,6 @@ public enum Status {
 	Archived,
 	Deleted,
 	LeaderReject,
-	LeaderApproved
+	LeaderApproved,
+	RejectToUpdate // only use for action
 }

@@ -6,7 +6,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
+import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.interceptor.ParameterAware;
+import org.apache.struts2.interceptor.RequestAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +38,7 @@ import tw.com.dsc.domain.support.LikeCondition;
 import tw.com.dsc.domain.support.LikeMode;
 import tw.com.dsc.domain.support.OperationEnum;
 import tw.com.dsc.domain.support.OrCondition;
+import tw.com.dsc.domain.support.Page;
 import tw.com.dsc.domain.support.SimpleCondition;
 import tw.com.dsc.service.ArticleService;
 import tw.com.dsc.service.LanguageService;
@@ -50,7 +56,7 @@ public class AdvSearchArticleAction extends BaseAction  implements Preparable {
 
 	private static final long serialVersionUID = -772891469904917298L;
 	private static final Logger logger = LoggerFactory.getLogger(AdvSearchArticleAction.class);
-	private Map<String, Object> request;
+//	private Map<String, Object> request;
 	private Article example;
 	private String articleId;
 	private Long oid;
@@ -65,8 +71,10 @@ public class AdvSearchArticleAction extends BaseAction  implements Preparable {
 	private List<ProductSeries> products;
 	private List<Account> accounts;
 	private List<Group> groups;
+	private Page<Article> page;
 	private List<Article> articles;
 	
+	private Integer pageNo;
 	@Autowired
 	private LanguageService languageService;
 	@Autowired
@@ -102,6 +110,7 @@ public class AdvSearchArticleAction extends BaseAction  implements Preparable {
 	 */
 	private List<Language> usedLanguage;
 
+	private Boolean export = false;
 	@Override
 	public void prepare() throws Exception {
 		if (null != oid) {
@@ -115,6 +124,9 @@ public class AdvSearchArticleAction extends BaseAction  implements Preparable {
 		example.setArticleId(new ArticleId());
 		example.setLanguage(new Language());
 //		articles= new Page<Article>(example);
+		if (null == pageNo) {
+			this.pageNo = 1;
+		}
 	}
 
 	@Override
@@ -124,6 +136,10 @@ public class AdvSearchArticleAction extends BaseAction  implements Preparable {
 
 	public String index() {
 		User op = ThreadLocalHolder.getOperator();
+		
+		this.advDateType = "entryDate";
+		this.advNews = Boolean.TRUE;
+		
 		this.languages = this.languageService.listAll();
 		this.technologies = this.systemService.listAllTech();
 		this.projects = this.systemService.listAllProject();
@@ -135,7 +151,7 @@ public class AdvSearchArticleAction extends BaseAction  implements Preparable {
 		this.languages = this.languageService.listAll();
 		example.setLanguage(new Language(op.getDefaultLanguageOid(), null));
 //		articles = this.articleService.searchFaqArticlesPage(articles);
-		
+		this.advLevels = new Level[] {Level.Public};
 		this.technologies = this.systemService.listAllTech();
 		this.projects = this.systemService.listAllProject();
 		this.accounts = this.systemService.findTeamAccounts();
@@ -275,8 +291,36 @@ public class AdvSearchArticleAction extends BaseAction  implements Preparable {
 		if (null != this.advRatingType && null != advAvgRate) {
 			conds.add(new SimpleCondition("avgRate", advAvgRate, advRatingType));
 		}
+		HttpServletRequest request = ServletActionContext.getRequest();
+		String exp = request.getParameter("d-1332308-e");
+		logger.debug("find d-1332308-e as [{}]", exp);
+		if (StringUtils.isNotEmpty(exp)) {
+			this.export = true;
+		}
+		/*
+		if (null != obj && StringUtils.isNotEmpty(obj.toString())) {
+			this.export = false;
+		}
+		*/
+		page = new Page<Article>(example);
+		if (this.export) {
+			this.articles =this.articleService.listByExample(example, conds, LikeMode.ANYWHERE, new String[] {"oid"}, null);
+			logger.debug("export size[{}]", articles.size());
+			page.setResult(articles);
+			page.setTotalCount(articles.size());
+			page.setPageNo(1);
+			page.setPageSize(articles.size());
+		} else {
+			page.setConditions(conds);
+			page.setPageNo(pageNo);
+			page.setAscOrders(new String[] {"oid"});
+			page = this.articleService.listByPage(page);
+		}
+		/*
 		this.articles = this.articleService.listByExample(example, conds, LikeMode.ANYWHERE, new String[] {"oid"}, null);
-
+		 */
+		
+		
 		return "list";
 	}
 	
@@ -293,10 +337,11 @@ public class AdvSearchArticleAction extends BaseAction  implements Preparable {
 	public List<ProductSeries> getSeries() {
 		return systemService.listAllSeries();
 	}
-	
+	/*
 	public void setRequest(Map<String, Object> request) {
 		this.request = request;
 	}
+	*/
 
 	public Article getExample() {
 		return example;
@@ -421,10 +466,6 @@ public class AdvSearchArticleAction extends BaseAction  implements Preparable {
 
 	public void setSystemService(SystemService systemService) {
 		this.systemService = systemService;
-	}
-
-	public Map<String, Object> getRequest() {
-		return request;
 	}
 
 	public List<Account> getAccounts() {
@@ -648,6 +689,21 @@ public class AdvSearchArticleAction extends BaseAction  implements Preparable {
 		this.reload = reload;
 	}
 
+	public Page<Article> getPage() {
+		return page;
+	}
+
+	public void setPage(Page<Article> page) {
+		this.page = page;
+	}
+
+	public Integer getPageNo() {
+		return pageNo;
+	}
+
+	public void setPageNo(Integer pageNo) {
+		this.pageNo = pageNo;
+	}
 	
 	
 }

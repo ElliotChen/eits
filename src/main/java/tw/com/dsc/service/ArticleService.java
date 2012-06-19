@@ -9,6 +9,7 @@ import tw.com.dsc.domain.ExportPackage;
 import tw.com.dsc.domain.Language;
 import tw.com.dsc.domain.support.Page;
 import tw.com.dsc.to.ExportInfo;
+import tw.com.dsc.to.PackagedArticle;
 
 public interface ArticleService extends BaseDomainService<Article, Long> {
 	void draftNewArticle(Article article);
@@ -23,6 +24,7 @@ public interface ArticleService extends BaseDomainService<Article, Long> {
 	void disable(Article article);
 	void readyUpdate(Article article);
 	void readyPublish(Article article);
+	void expire(Article art);
 	void expire();
 	void archive(Article article);
 	
@@ -51,4 +53,8 @@ public interface ArticleService extends BaseDomainService<Article, Long> {
 	List<ExportInfo> exportProofRead(String epId, ArticleType[] types);
 	List<ExportInfo> viewExportPackage(String epId);
 	void readyUpdate(String epOid);
+	
+	
+	List<PackagedArticle> findPAByExportPackage(String epOid);
+	List<PackagedArticle> findFWPAByExportPackage(String epOid);
 }

@@ -23,6 +23,9 @@
 		$('#exportPackageForm').ajaxForm({
             target: '#exportPackageDiv'
         });
+		$('#closedPackageForm').ajaxForm({
+            target: '#closedPackageDiv'
+        });
 		
 		var datepicker_CurrentInput;
 		options = {
@@ -37,8 +40,21 @@
 		$( ".calendar" ).datepicker(options);
 		$(".numeric").numeric({ decimal: false, negative: false });
 	});
-	
+	function viewPackageStatus(epOid) {
+		$("#vpOid").val(epOid);
+		$("#viewPackageStatusForm").submit();
+	}
+	function viewFirmwareStatus(epOid) {
+		$("#vfOid").val(epOid);
+		$("#viewFirmwareStatusFrom").submit();
+	}
 </script>
+<s:form id="viewPackageStatusForm" namespace="/" action="news!viewPackageStatus" target="_blank" theme="simple">
+	<input type="hidden" name="epOid" id="vpOid"/>
+</s:form>
+<s:form id="viewFirmwareStatusFrom" namespace="/" action="news!viewFirmwareStatus" target="_blank" theme="simple">
+	<input type="hidden" name="epOid" id="vfOid"/>
+</s:form>
 <jsp:include page="/WEB-INF/jsp/commons/message.jsp"></jsp:include>
 <div  class="condition">
 <s:form id="exportNewsForm" namespace="/" action="news!preExport" theme="simple" target="_blank">
@@ -62,4 +78,12 @@
 </div>
 <div id="exportPackageDiv" class="datagrid">
 	<jsp:include page="packageList.jsp" />
+</div>
+
+
+<s:form id="closedPackageForm" namespace="/" action="news!searchClosedPackage" theme="simple">
+	<div id="distagArea" class="distagArea"></div>
+</s:form>
+<div id="closedPackageDiv" class="datagrid">
+	<jsp:include page="closedList.jsp" />
 </div>

@@ -49,10 +49,17 @@ public class LanguageAction extends BaseAction implements Preparable, ModelDrive
 	}
 
 	public String index() {
+		if (!ThreadLocalHolder.getOperator().isL3Admin()) {
+			return "redirect";
+		}
 		return this.list();
 	}
 	
 	public String search() {
+		if (!ThreadLocalHolder.getOperator().isL3Admin()) {
+			return "redirect";
+		}
+		
 		logger.debug("Search for Example[{}] and PageNo[{}]", this.example, this.pageNo);
 		if (null != pageNo) {
 			page.setPageNo(pageNo);

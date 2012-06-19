@@ -70,6 +70,14 @@
 		<property name="configLocation" value="classpath:ehcache.xml" />
 	</bean>
 	
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<constructor-arg index="0" ref="mysqlDataSource"/>
+	</bean>
+	
+	<bean id="mysqlTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="mysqlDataSource" />
+	</bean>
+	
 	<bean id="articleIdSeq" class="org.springframework.jdbc.support.incrementer.OracleSequenceMaxValueIncrementer">
 		<property name="dataSource" ref="dataSource" />
 		<property name="incrementerName" value="SEQ_ARTICLE_ID" />
@@ -100,7 +108,7 @@
 	</bean>
 	<task:scheduler id="scheduler" pool-size="10" />
 	<task:scheduled-tasks scheduler="scheduler">
-		<task:scheduled ref="articleService" method="expire" cron="0 */2 * * * *"/>
+		<task:scheduled ref="articleService" method="expire" cron="0 0 */6 * * *"/>
 	</task:scheduled-tasks>
 	<!-- <task:annotation-driven executor="taskExecutor" scheduler="scheduler"/> -->
 	<import resource="applicationContext_Mail.xml"/>

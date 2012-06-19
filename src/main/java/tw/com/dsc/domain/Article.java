@@ -546,6 +546,7 @@ public class Article extends AbstractSeqIdObjectAuditable {
 			case ReadyToPublish:
 				if(AgentType.L3 == this.agentType && op.isL3Manager()) {
 					result.add(Status.Published);
+					result.add(Status.RejectToUpdate);
 				}
 				break;
 			case Published:

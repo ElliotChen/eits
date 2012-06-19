@@ -78,7 +78,7 @@
 		$('#advPsForm').submit();
 	}
 </script>
-
+<jsp:include page="/WEB-INF/jsp/commons/message.jsp"></jsp:include>
 <s:form id="advPsForm" namespace="/" action="edit!listModels" theme="simple">
 	<input id="advPCode" type="hidden" name="example.projectCode" />
 </s:form>
@@ -93,8 +93,8 @@
 			<tr>
 				<td>SOURCE:</td>
 				<td>
-				<s:radio name="advSourceType" list="#{'':'Any','OBM':'OBM', 'Project':'Project'}" />
-				<s:select id="advProjectCode" name="advProjectCode" disabled="true" list="projects" listKey="oid" listValue="advProjectCode" onchange="switchAdvProjectCode()"/>
+				<s:radio name="advSourceType" list="#{'':'Any','OBM':'OBM', 'Project':'Project'}"  onchange="switchAdvSource()"/>
+				<s:select id="advProjectCode" name="advProjectCode" disabled="true" list="projects" listKey="oid" listValue="projectCode" onchange="switchAdvProjectCode()"/>
 				</td>
 			</tr>
 			</s:if>
@@ -190,7 +190,7 @@
 		</tr>
 		<tr>
 			<td>FIRMWARE:</td>
-			<td><s:textfield name="advfirmware" size="40" maxlength="50"/></td>
+			<td><s:textfield name="advFirmware" size="40" maxlength="50"/></td>
 		</tr>
 		<tr>
 			<td>VIEWS:</td>

@@ -65,66 +65,62 @@ Sorry, there is no article to export.
 	<s:iterator value="infos" var="info">
 		<table class="conditionborder" border="2">
 			<tr>
-				<td align="center">${info.name} (${info.account})</td>
+				<td align="center" colspan="2">${info.name} (${info.account})</td>
 			</tr>
-		</table>
 		<s:iterator value="#info.articles" var="article">
-			<table class="conditionborder" border="2">
 				<tr>
-					<td><b>KB:<s:property value="articleId.oid" />,&nbsp;&nbsp;${info.name}</b></td>
+					<td colspan="2"><b>KB:<s:property value="articleId.oid" />,&nbsp;&nbsp;${info.name}</b></td>
 				</tr>
 				<tr>
-					<td><b><s:property value="summary" /></b></td>
+					<td colspan="2"><b><s:property value="summary" /></b></td>
 				</tr>
 				<c:if test="${article.type == 'SpecInfo'}">
 				<tr>
-					<td>Ticket Id : <s:property value="ticketId" /></td>
+					<td colspan="2">Ticket Id : <s:property value="ticketId" /></td>
 				</tr>
 				</c:if>
 				<c:if test="${(article.type == 'GeneralInfo') || (article.type == 'SpecInfo')}">
 				<tr>
-					<td>Question : <s:property value="question" escapeHtml="false" />
+					<td colspan="2">Question : <s:property value="question" escapeHtml="false" />
 					</td>
 				</tr>
 				<tr>
-					<td>Answer : <s:property value="answer" escapeHtml="false" />
+					<td colspan="2">Answer : <s:property value="answer" escapeHtml="false" />
 					</td>
 				</tr>
 				</c:if>
 				<c:if test="${(article.type == 'Application') || (article.type == 'TroubleShooting')}">
 				<tr>
-					<td>Scenario : <s:property value="scenario" escapeHtml="false" />
+					<td colspan="2">Scenario : <s:property value="scenario" escapeHtml="false" />
 					</td>
 				</tr>
 				<tr>
-					<td>Step : <s:property value="step" escapeHtml="false" />
+					<td colspan="2">Step : <s:property value="step" escapeHtml="false" />
 					</td>
 				</tr>
 				<tr>
-					<td>Verification : <s:property value="verification" escapeHtml="false" />
+					<td colspan="2">Verification : <s:property value="verification" escapeHtml="false" />
 					</td>
 				</tr>
 				</c:if>
 				<c:if test="${article.type == 'Issue'}">
 				<tr>
-					<td>Problem : <s:property value="problem" escapeHtml="false" />
+					<td colspan="2">Problem : <s:property value="problem" escapeHtml="false" />
 					</td>
 				</tr>
 				<tr>
-					<td>Solution : <s:property value="solution" escapeHtml="false" />
+					<td colspan="2">Solution : <s:property value="solution" escapeHtml="false" />
 					</td>
 				</tr>
 				<tr>
-					<td>Procedure : <s:property value="procedure" escapeHtml="false" />
+					<td colspan="2">Procedure : <s:property value="procedure" escapeHtml="false" />
 					</td>
 				</tr>
 				</c:if>
 				<tr>
-					<td></td>
+					<td colspan="2">&nbsp;</td>
 				</tr>
-			</table>
 		</s:iterator>
-		<table class="conditionborder" border="2">
 			<tr>
 				<td colspan="2"><h4>${info.name} Total Amount = ${info.size}</h4></td>
 			</tr>

@@ -38,6 +38,12 @@ public class ExportPackage extends AbstractOIdObjectAuditable {
 	@Column(name="ARTICLE_ID_LIST", length=500)
 	private String articleIdList;
 	
+	@Column(name="NEWS_ID_LIST", length=500)
+	private String newsIdList; //Firmware ids
+	
+	@Column(name="OID_LIST", length=500)
+	private String oidList; //Firmware ids
+	
 	@Type(type = "yes_no")
 	@Column(name = "CLOSED", length = 3)
 	private Boolean closed;
@@ -97,5 +103,22 @@ public class ExportPackage extends AbstractOIdObjectAuditable {
 	public void setArticleTypes(String articleTypes) {
 		this.articleTypes = articleTypes;
 	}
+
+	public String getNewsIdList() {
+		return newsIdList;
+	}
+
+	public void setNewsIdList(String newsIdList) {
+		this.newsIdList = newsIdList;
+	}
+
+	public String getOidList() {
+		return oidList;
+	}
+
+	public void setOidList(String oidList) {
+		this.oidList = oidList;
+	}
+	
 	
 }

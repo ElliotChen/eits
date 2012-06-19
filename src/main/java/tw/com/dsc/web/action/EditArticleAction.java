@@ -455,10 +455,13 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 			this.articleService.publish(article);
 		} else if ("WaitForApproving".equals(this.statusAction)) {
 			this.articleService.finalArticle(article);
-		} else if ("ReadyToUpdate".equals(this.statusAction)) {
+		} else if ("ReadyToUpdate".equals(this.statusAction) || 
+				"RejectToUpdate".equals(this.statusAction)) {
 			this.articleService.readyUpdate(article);
 		} else if ("ReadyToPublish".equals(this.statusAction)) {
 			this.articleService.readyPublish(article);
+		} else if ("WaitForRepublish".equals(this.statusAction)) { 
+			this.articleService.expire(article);
 		} else if ("Archived".equals(this.statusAction)) {
 			this.articleService.archive(article);
 		}
@@ -499,10 +502,13 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 			this.articleService.publish(article);
 		} else if ("WaitForApproving".equals(this.statusAction)) {
 			this.articleService.finalArticle(article);
-		} else if ("ReadyToUpdate".equals(this.statusAction)) {
+		} else if ("ReadyToUpdate".equals(this.statusAction) || 
+				"RejectToUpdate".equals(this.statusAction)) {
 			this.articleService.readyUpdate(article);
 		} else if ("ReadyToPublish".equals(this.statusAction)) {
 			this.articleService.readyPublish(article);
+		} else if ("WaitForRepublish".equals(this.statusAction)) { 
+			this.articleService.expire(article);
 		} else if ("Archived".equals(this.statusAction)) {
 			this.articleService.archive(article);
 		}
@@ -549,6 +555,7 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 	public String disable() {
 		logger.debug("Disable has been invoked");
 		this.articleService.disable(article);
+		this.addActionMessage("Update status success!");
 		if ("m1".equals(this.comefrom)) {
 			return "m1";
 		} else if ("m8".equals(this.comefrom)) {

@@ -20,6 +20,8 @@ import tw.com.dsc.domain.support.SimpleCondition;
 import tw.com.dsc.service.ArticleService;
 import tw.com.dsc.service.ExportPackageService;
 import tw.com.dsc.to.ExportInfo;
+import tw.com.dsc.to.PackagedArticle;
+import tw.com.dsc.util.ThreadLocalHolder;
 
 import com.opensymphony.xwork2.Preparable;
 
@@ -38,8 +40,9 @@ public class NewsAction extends BaseAction implements Preparable {
 	private ExportPackageService exportPackageService;
 	
 	private Page<ExportPackage> exportPackages;
+	private Page<ExportPackage> closedPackages;
 	private List<ExportInfo> infos;
-	
+	private List<PackagedArticle> packagedArticle;
 	private Integer pageNo;
 	private Boolean news;
 	private Date beginDate;
@@ -47,6 +50,7 @@ public class NewsAction extends BaseAction implements Preparable {
 	private ArticleType[] types;
 	private String[] epOids;
 	private String epOid;
+	private List<String> sels;
 	@Override
 	public void prepare() throws Exception {
 		if (null == pageNo) {
@@ -55,14 +59,11 @@ public class NewsAction extends BaseAction implements Preparable {
 	}
 
 	public String index() {
-		
-		ExportPackage example = new ExportPackage();
-		example.setClosed(Boolean.FALSE);
-		Page<ExportPackage> page = new Page<ExportPackage>(example);
-		page.setPageNo(pageNo);
-		page.setDescOrders(new String[] {"oid"});
-//		page.getConditions().add(new SimpleCondition("news", 'N', OperationEnum.EQ));
-		this.exportPackages = this.exportPackageService.listByPage(page);
+		if (!ThreadLocalHolder.getOperator().isL3Admin()) {
+			return "redirect";
+		}
+		this.searchExportPackage();
+		this.searchClosedPackage();
 		
 		return "index";
 	}
@@ -73,12 +74,24 @@ public class NewsAction extends BaseAction implements Preparable {
 		Page<ExportPackage> page = new Page<ExportPackage>(example);
 		page.setPageNo(pageNo);
 		page.setDescOrders(new String[] {"oid"});
-//		page.getConditions().add(new SimpleCondition("news", 'N', OperationEnum.EQ));
 		
 		this.exportPackages = this.exportPackageService.listByPage(page);
 		
 		return "packageList";
 	}
+	
+	public String searchClosedPackage() {
+		ExportPackage example = new ExportPackage();
+		example.setClosed(Boolean.TRUE);
+		Page<ExportPackage> page = new Page<ExportPackage>(example);
+		page.setPageNo(pageNo);
+		page.setDescOrders(new String[] {"oid"});
+		
+		this.closedPackages = this.exportPackageService.listByPage(page);
+		
+		return "closedList";
+	}
+	
 	public String preExport() {
 		infos = this.articleService.searchForProofRead(news, beginDate, endDate, types);
 		return "export";
@@ -102,6 +115,34 @@ public class NewsAction extends BaseAction implements Preparable {
 		return this.searchExportPackage();
 	}
 
+	public String viewPackageStatus() {
+		packagedArticle = this.articleService.findPAByExportPackage(epOid);
+		return "articleStatus";
+	}
+	
+	public String gennews() {
+		ExportPackage ep = null;
+		this.sels = new ArrayList<String>();
+		if (null != this.epOids) {
+			for (String oid : epOids) {
+				ep = this.exportPackageService.findByOid(oid);
+				if (null != ep) {
+					if (StringUtils.isNotEmpty(ep.getOidList())) {
+						sels.add("0_"+ep.getOidList());
+					}
+					if (StringUtils.isNotEmpty(ep.getNewsIdList())) {
+						sels.add("1_"+ep.getNewsIdList());
+					}
+				}
+			}
+		}
+		return "gennews";
+	}
+	
+	public String viewFirmwareStatus() {
+		packagedArticle = this.articleService.findFWPAByExportPackage(epOid);
+		return "firmwareStatus";
+	}
 	public boolean getExportable() {
 		return StringUtils.isEmpty(this.epOid);
 	}
@@ -193,5 +234,28 @@ public class NewsAction extends BaseAction implements Preparable {
 		this.epOid = epOid;
 	}
 
+	public Page<ExportPackage> getClosedPackages() {
+		return closedPackages;
+	}
+
+	public void setClosedPackages(Page<ExportPackage> closedPackages) {
+		this.closedPackages = closedPackages;
+	}
+
+	public List<PackagedArticle> getPackagedArticle() {
+		return packagedArticle;
+	}
+
+	public void setPackagedArticle(List<PackagedArticle> packagedArticle) {
+		this.packagedArticle = packagedArticle;
+	}
+
+	public List<String> getSels() {
+		return sels;
+	}
+
+	public void setSels(List<String> sels) {
+		this.sels = sels;
+	}
 	
 }

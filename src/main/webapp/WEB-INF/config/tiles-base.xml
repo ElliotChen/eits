@@ -14,6 +14,9 @@
     <definition name="loginRedirect" extends=".baseLayout">
         <put-attribute name="main" value="/WEB-INF/jsp/system/loginRedirect.jsp" />
     </definition>
+    <definition name="viewDetail" extends=".baseLayout">
+        <put-attribute name="main" value="/WEB-INF/jsp/searchArticle/detail.jsp" />
+    </definition>
     <definition name="searchArticle" extends=".baseLayout">
         <put-attribute name="body" value="/WEB-INF/jsp/commons/blank.jsp" />
     </definition>

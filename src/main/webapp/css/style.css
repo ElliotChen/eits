@@ -29,6 +29,7 @@ h1{ font-family:Verdana, Geneva, sans-serif; font-size:30px; font-weight:bold; c
 h2{ font-family:Verdana, Geneva, sans-serif; font-size:24px; font-weight:bold; color: #069;}
 h3{ font-family:Verdana, Geneva, sans-serif; font-size:18px; font-weight:bold; color: #069;}
 h4{ font-family:Verdana, Geneva, sans-serif; font-size:12px; color: #333;}
+h5{ font-family:Verdana, Geneva, sans-serif; font-size:14px; font-weight:bold;}
 
 /* Layout */
 .page {width:970px; margin:0 auto; background-color:#fff;}

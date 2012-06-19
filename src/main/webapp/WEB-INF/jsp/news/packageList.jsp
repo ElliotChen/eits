@@ -44,7 +44,7 @@ Waiting for Proofread
 	<display:column title="Duration" headerClass="tablehead">
 		<fmt:formatDate value="${ep.beginDate}" pattern="yyyy/MM/dd"/>~<fmt:formatDate value="${ep.endDate}" pattern="yyyy/MM/dd"/>
 	</display:column>
-	<display:column property="articleIdList" title="Article ID" headerClass="tablehead"/>
+	<display:column property="articleIdList" style="width:200px" title="Article ID" headerClass="tablehead"/>
 	<display:column title="View" headerClass="tablehead">
       <input type="button" onclick="javascript:viewExportPackage('${ep.oid}');" value="View" />
     </display:column>

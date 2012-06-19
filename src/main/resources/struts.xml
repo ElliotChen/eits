@@ -40,6 +40,8 @@
 			</result>
 			<result name="publishedIndex">/WEB-INF/jsp/searchArticle/publishedIndex.jsp</result>
 			<result name="published">/WEB-INF/jsp/searchArticle/published.jsp</result>
+			<result name="redirect">/WEB-INF/jsp/system/loginRedirect.jsp</result>
+			<result type="tiles" name="viewDetail">viewDetail</result>
 		</action>
 		<action name="edit!*" method="{1}" class="editAction">
 			<result name="list">/WEB-INF/jsp/edit/list.jsp</result>
@@ -66,6 +68,7 @@
 		<action name="language!*" method="{1}" class="languageAction">
 			<result name="list">/WEB-INF/jsp/language/list.jsp</result>
 			<result name="language">/WEB-INF/jsp/language/language.jsp</result>
+			<result name="redirect">/index.jsp</result>
 		</action>
 		
 		<action name="export!*" method="{1}" class="exportAction">
@@ -91,8 +94,13 @@
 		<action name="news!*" method="{1}" class="newsAction">
 			<result name="index">/WEB-INF/jsp/news/index.jsp</result>
 			<result name="packageList">/WEB-INF/jsp/news/packageList.jsp</result>
+			<result name="closedList">/WEB-INF/jsp/news/closedList.jsp</result>
 			<result name="export">/WEB-INF/jsp/news/export.jsp</result>
 			<result name="exportRes">/WEB-INF/jsp/news/exportRes.jsp</result>
+			<result name="articleStatus">/WEB-INF/jsp/news/articleStatus.jsp</result>
+			<result name="firmwareStatus">/WEB-INF/jsp/news/firmwareStatus.jsp</result>
+			<result name="gennews">/WEB-INF/jsp/news/gennews.jsp</result>
+			<result name="redirect">/index.jsp</result>
 		</action>
 	</package>
 

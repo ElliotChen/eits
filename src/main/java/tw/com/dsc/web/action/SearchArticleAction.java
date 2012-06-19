@@ -150,7 +150,7 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 
 		return "list";
 	}
-
+	
 	public String detail() {
 		if (StringUtils.isNotEmpty(this.articleId)) {
 //			example.setArticleId(new ArticleId(articleId));
@@ -165,7 +165,7 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 			sameArticles = this.articleService.listByExample(example, conds, LikeMode.NONE, null, null);
 			if (sameArticles.isEmpty()) {
 				this.addActionError("No such article id : ["+this.articleId+"]");
-				return "blank";
+				return "redirect";
 			}
 			this.article = sameArticles.get(0);
 		} else {
@@ -178,13 +178,13 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 		User op = ThreadLocalHolder.getOperator();
 		if (article.getStatus() != Status.Published && article.getStatus() != Status.WaitForRepublish) {
 			this.addActionError("This article is not public.");
-			return "blank";
+			return "redirect";
 		} else if (Level.L3CSO == article.getLevel() && AgentType.L3 != op.getAgentType()) {
 			this.addActionError("You have no authorization for this article");
-			return "blank";
+			return "redirect";
 		} else if (Level.Partner == article.getLevel() && op.isGuest()) {
 			this.addActionError("You have no authorization for this article");
-			return "blank";
+			return "redirect";
 		}
 		
 		this.articleService.addHitCount(article);
@@ -196,7 +196,39 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 		}
 		return "detail";
 	}
-	
+	public String viewDetail() {
+		this.article = this.articleService.findByOid(oid);
+		if (null == article) {
+			this.addActionError("No such article id : ["+this.articleId+"]");
+			return "redirect";
+		}
+ 		User op = ThreadLocalHolder.getOperator();
+		if (article.getStatus() != Status.Published && article.getStatus() != Status.WaitForRepublish) {
+			this.addActionError("This article is not public.");
+			return "redirect";
+		} else if (Level.L3CSO == article.getLevel() && AgentType.L3 != op.getAgentType()) {
+			this.addActionError("You have no authorization for this article");
+			return "redirect";
+		} else if (Level.Partner == article.getLevel() && op.isGuest()) {
+			this.addActionError("You have no authorization for this article");
+			return "redirect";
+		}
+		
+		List<Condition> conds = new ArrayList<Condition>();
+		conds.add(new SimpleCondition("articleId.oid", this.article.getArticleId().getOid(), OperationEnum.EQ));
+		conds.add(new InCondition("status", new Object[] {Status.Published,Status.WaitForRepublish}));
+		sameArticles = this.articleService.listByExample(example, conds, LikeMode.NONE, null, null);
+		
+		this.articleService.addHitCount(article);
+		this.usedLanguage = this.articleService.listUsedLanguage(article);
+		
+		this.rated = Boolean.FALSE;
+		if (!op.isGuest()) {
+			this.rated = this.articleService.checkRated(this.article.getOid(), op.getAccount());
+		}
+		
+		return "viewDetail";
+	}
 	public String faq() {
 		if (null != pageNo) {
 			faqArticles.setPageNo(pageNo);

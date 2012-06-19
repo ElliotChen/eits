@@ -22,6 +22,7 @@ import tw.com.dsc.task.ProofreadMailTask;
 import tw.com.dsc.task.ReadyPublishMailTask;
 import tw.com.dsc.task.ReadyUpdateMailTask;
 import tw.com.dsc.task.RejectMailTask;
+import tw.com.dsc.task.RejectUpdateMailTask;
 import tw.com.dsc.task.RepublishMailTask;
 
 /**
@@ -90,6 +91,10 @@ public class MailServiceImpl implements MailService {
 		this.taskManager.arrangeMailTask(new ReadyUpdateMailTask(articleOid, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine, serverUrl));
 	}
 
+	@Override
+	public void rejectToUpdate(Long articleOid) {
+		this.taskManager.arrangeMailTask(new RejectUpdateMailTask(articleOid, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine, serverUrl));
+	}
 	@Override
 	public void expired(Long articleOid) {
 		this.taskManager.arrangeMailTask(new ExpiredMailTask(articleOid, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine, serverUrl));

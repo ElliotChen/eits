@@ -23,7 +23,7 @@
 </s:form>
 <div id="articleBlock" class="datagrid">
 <h5>KBs</h5>
-<display:table name="${articles}" export="true" form="advExportForm" id="article" requestURI="advSearchArticle!search.action">
+<display:table name="page.result" partialList="true" pagesize="${page.pageSize}" size="${page.totalCount}" sort="external" export="true" form="advExportForm" id="article" requestURI="advSearchArticle!search.action">
 	<display:column property="articleId.oid" title="ID" headerClass="tablehead"/>
 	<display:column property="summary" title="Summary" headerClass="tablehead"/>
 	<display:column property="formattedSeries" title="Prod. Series" headerClass="tablehead"/>
@@ -36,7 +36,7 @@
 	<display:column property="level" title="View Level" headerClass="tablehead"/>
 	<display:column property="hitCount" title="Views" headerClass="tablehead"/>
 	<display:column property="ratingInfo" title="Rating" headerClass="tablehead"/>
-	<display:column title="Function" headerClass="tablehead">
+	<display:column title="Function" headerClass="tablehead" media='html'>
       <input type="button" onclick="javascript:previewArticle('${article.oid}');" value="Preview" />
       <input type="button" onclick="javascript:advEditArticle('${article.oid}');" value="Edit"/>
     </display:column>

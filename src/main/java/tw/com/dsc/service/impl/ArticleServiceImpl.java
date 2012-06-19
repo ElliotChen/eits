@@ -19,6 +19,8 @@ import tw.com.dsc.dao.ArticleDao;
 import tw.com.dsc.dao.ArticleIdDao;
 import tw.com.dsc.dao.ArticleLogDao;
 import tw.com.dsc.dao.ExportPackageDao;
+import tw.com.dsc.dao.GroupDao;
+import tw.com.dsc.dao.NewsDao;
 import tw.com.dsc.dao.StatisticsDataDao;
 import tw.com.dsc.domain.Account;
 import tw.com.dsc.domain.ActionType;
@@ -29,6 +31,7 @@ import tw.com.dsc.domain.ArticleLog;
 import tw.com.dsc.domain.ArticleType;
 import tw.com.dsc.domain.ExpireType;
 import tw.com.dsc.domain.ExportPackage;
+import tw.com.dsc.domain.Group;
 import tw.com.dsc.domain.Language;
 import tw.com.dsc.domain.Level;
 import tw.com.dsc.domain.StatisticsData;
@@ -46,6 +49,7 @@ import tw.com.dsc.domain.support.SimpleCondition;
 import tw.com.dsc.service.ArticleService;
 import tw.com.dsc.service.MailService;
 import tw.com.dsc.to.ExportInfo;
+import tw.com.dsc.to.PackagedArticle;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.DateUtils;
 import tw.com.dsc.util.ThreadLocalHolder;
@@ -77,6 +81,11 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	
 	@Autowired
 	private AccountDao accountDao;
+	
+	@Autowired
+	private GroupDao groupDao;
+	@Autowired
+	private NewsDao newsDao;
 	
 	@Autowired
 	@Qualifier("articleIdSeq")
@@ -247,7 +256,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		this.dao.saveOrUpdate(article);
 		
 		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Final, op.getAccount(), "Update Status to Waiting for Approving", op.getIp()));
-		this.mailService.approval(article.getOid());
+		this.mailService.approval(article);
 	}
 	
 	@Transactional(readOnly=false)
@@ -296,17 +305,26 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	@Transactional(readOnly=false)
 	public void readyUpdate(Article article) {
 		User op = ThreadLocalHolder.getOperator();
+		/*
 		if (!article.getAvailableStatus().contains(Status.ReadyToUpdate)) {
 			logger.warn("Article[{}] can't be ReadyToUpdate for User[{}]", article, op.getAccount());
 			return;
 		}
+		*/
+		Status origin = article.getStatus();
 		article.setUpdateDate(new Date());
 		article.setStatus(Status.ReadyToUpdate);
 		
 		this.dao.saveOrUpdate(article);
 		
-		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Approve, op.getAccount(), "Ready to Updated", op.getIp()));
-		this.mailService.readyUpdate(article.getOid());
+		
+		if (origin == Status.WaitForProofRead) {
+			this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Approve, op.getAccount(), "Ready to Updated", op.getIp()));
+			this.mailService.readyUpdate(article.getOid());
+		} else {
+			this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Reject, op.getAccount(), "Reject to Ready to Updated", op.getIp()));
+			this.mailService.rejectToUpdate(article.getOid());
+		}
 	}
 	
 	@Transactional(readOnly=false)
@@ -671,6 +689,19 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 //		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.View,  op.getAccount(), "View Detail.", op.getIp()));
 		this.statisticsDataDao.create(new StatisticsData(article.getOid(), ActionType.View,  op.getAccount(), op.getIp()));
 	}
+	
+	@Transactional(readOnly=false)
+	public void expire(Article art) {
+		logger.info("Expire KB [{}] ", art.getOid());
+		User op = ThreadLocalHolder.getOperator();
+				
+			art.setStatus(Status.WaitForRepublish);
+			art.setExpireDate(null);
+			this.dao.saveOrUpdate(art);
+			this.articleLogDao.create(new ArticleLog(art.getOid(), ActionType.Expired, op.getAccount(), "Wait For Republish", op.getIp()));
+			this.mailService.expired(art.getOid());
+		
+	}
 
 	@Transactional(readOnly=false)
 	public void expire() {
@@ -701,15 +732,25 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			logger.warn("Article[{}] can't be archived for User[{}]", article, op.getAccount());
 			return;
 		}
-		article.setUpdateDate(new Date());
-		article.setStatus(Status.Archived);
 		
-		this.dao.saveOrUpdate(article);
-		
-		this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Archived, op.getAccount(), "Archived", op.getIp()));
-		this.mailService.archived(article.getOid());
+		List<Article> same = this.findByArticleId(article.getArticleId().getOid());
+		for (Article target : same) {
+			target.setUpdateDate(new Date());
+			target.setStatus(Status.Archived);
+			
+			this.dao.saveOrUpdate(target);
+			
+			this.articleLogDao.create(new ArticleLog(target.getOid(), ActionType.Archived, op.getAccount(), "Archived", op.getIp()));
+			this.mailService.archived(target.getOid());
+		}
 	}
 
+	public List<Article> findByArticleId(String articleId) {
+		Article example = new Article();
+		List<Condition> conds = new ArrayList<Condition>();
+		conds.add(new SimpleCondition("articleId.oid", articleId, OperationEnum.EQ));
+		return this.listByExample(example, conds, LikeMode.NONE, null, null);
+	}
 	@Transactional(readOnly=false)
 	public String getNextArticleId() {
 		return this.incrementer.nextStringValue();
@@ -871,20 +912,6 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		}
 		
 		this.group(articles, infos);
-		/*
-		ExportInfo info = null;
-		for (Article article : articles) {
-			article.setExportPackage(ep);
-			article.setStatus(Status.WaitForProofRead);
-			this.dao.update(article);
-			if (null == info || !article.getEntryUser().equals(info.getAccount())) {
-				info = new ExportInfo();
-				info.setAccount(article.getEntryUser());
-				infos.add(info);
-			}
-			info.getArticles().add(article);
-		}
-		*/
 		
 		//Update ArticleIdList
 		StringBuilder sb = new StringBuilder();
@@ -894,14 +921,41 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 				sb.append(","+articles.get(i).getArticleId().getOid());
 			}
 		}
+		
+		StringBuilder oids = new StringBuilder();
+		if (!articles.isEmpty()) {
+			oids.append(articles.get(0).getOid());
+			for (int i = 1; i < articles.size(); i++) {
+				oids.append(","+articles.get(i).getOid());
+			}
+		}
 		ep.setArticleIdList(sb.toString());
+		ep.setOidList(oids.toString());
+		ep.setNewsIdList(this.updateNewsForEP(epId, ep.getBeginDate(), ep.getEndDate()));
 		ep.setExportDate(new Date());
 		this.exportPackageDao.update(ep);
 		
 		for (Article article : articles) {
 			this.mailService.proofread(article.getOid());
 		}
+		
 		return infos;
+	}
+	
+	protected String updateNewsForEP(String epOid, Date beginDate, Date endDate) {
+		List<String> newsIds = this.newsDao.findUpdateableNewsId(beginDate, endDate);
+		for (String newsId : newsIds) {
+			this.newsDao.updateNewsPackageId(epOid, newsId);
+		}
+		
+		StringBuilder sb = new StringBuilder();
+		if (!newsIds.isEmpty()) {
+			sb.append(newsIds.get(0));
+			for (int i = 1; i < newsIds.size(); i++) {
+				sb.append(","+newsIds.get(i));
+			}
+		}
+		return sb.toString();
 	}
 	
 	public List<ExportInfo> viewExportPackage(String epOid) {
@@ -914,4 +968,71 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		this.group(articles, infos);
 		return infos;
 	}
+
+	@Override
+	@Transactional(readOnly=false)
+	public void saveOrUpdate(Article entity) {
+		User op = ThreadLocalHolder.getOperator();
+		super.saveOrUpdate(entity);
+		this.articleLogDao.create(new ArticleLog(entity.getOid(), ActionType.Update, op.getAccount(), "Update Data", op.getIp()));
+	}
+	
+	public List<PackagedArticle> findPAByExportPackage(String epOid) {
+		List<PackagedArticle> results = new ArrayList<PackagedArticle>();
+		Article example = new Article();
+		List<Condition> conds = new ArrayList<Condition>();
+		conds.add(new SimpleCondition("exportPackage.oid", epOid, OperationEnum.EQ));
+		List<Article> articles = this.dao.listByExample(example, conds, null, new String[] {"entryUser", "oid"}, null);
+		Account agent = null;
+		Account leader = null;
+		for (Article article : articles) {
+			if (null == agent || !agent.getId().equals(article.getEntryUser())) {
+				agent = this.accountDao.findByOid(article.getEntryUser());
+				leader = findGroupLeaders(article.getUserGroup());
+			}
+			PackagedArticle pa = new PackagedArticle();
+			pa.setAgent(agent.getName());
+			pa.setArticleId(article.getArticleId().getOid());
+			if (null != leader) {
+				pa.setLeader(leader.getName());
+			}
+			pa.setStatus(article.getI18nStatus());
+			pa.setSummary(article.getSummary());
+			results.add(pa);
+		}
+		return results;
+	}
+	public List<PackagedArticle> findFWPAByExportPackage(String epOid) {
+		List<PackagedArticle> results = new ArrayList<PackagedArticle>();
+		ExportPackage ep = this.exportPackageDao.findByOid(epOid);
+		if (null == ep || StringUtils.isEmpty(ep.getNewsIdList())) {
+			return results;
+		}
+		String[] newsIds = ep.getNewsIdList().split(",");
+		for (String newsId : newsIds) {
+			results.add(this.newsDao.findPAByNewsId(newsId));
+		}
+		return results;
+	}
+	private Account findGroupLeaders(String groupId) {
+		List<Account> result = new ArrayList<Account>();
+		//Find Leader 
+		String leaderGroupId = "";
+		if (!"L3_Admin".equals(groupId)) {
+			leaderGroupId = groupId+"_Leader";
+		} else {
+			leaderGroupId = groupId;
+		}
+		
+		Group leader = this.groupDao.findByOid(leaderGroupId);
+		
+		if (null != leader) {
+			result.addAll(leader.getAccounts());
+		} else {
+			logger.error("Can't find Leader Group[{}] in system", leaderGroupId);
+		}
+		
+		return result.isEmpty()?null:result.get(0);
+	}
+	
 }

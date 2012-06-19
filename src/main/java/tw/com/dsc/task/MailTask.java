@@ -65,11 +65,12 @@ public abstract class MailTask implements Runnable {
 				return;
 			}
 		}
-		
+		/*
 		if (this.getAvailableStatus() != article.getStatus()) {
 			logger.warn("Article[{}]'s status is [{}] not [{}]", new Object[] {this.article.getOid(), this.article.getStatus(), this.getAvailableStatus()});
 			return;
 		}
+		*/
 		this.agent = this.systemService.findAccountByOid(article.getEntryUser());
 		this.leaders = this.systemService.findGroupLeaders(article);
 		this.admins = this.systemService.findGroupAdmins(article);

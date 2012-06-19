@@ -1,6 +1,7 @@
 package tw.com.dsc.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import tw.com.dsc.dao.ExportPackageDao;
+import tw.com.dsc.dao.NewsDao;
 import tw.com.dsc.domain.ArticleType;
 import tw.com.dsc.domain.ExportPackage;
 import tw.com.dsc.service.ExportPackageService;
@@ -23,6 +25,8 @@ public class ExportPackageServiceImpl extends
 	@Autowired
 	private ExportPackageDao dao;
 	
+	@Autowired
+	private NewsDao newsDao;
 	@Autowired
 	@Qualifier("exportIdSeq")
 	private DataFieldMaxValueIncrementer incrementer;
@@ -65,4 +69,22 @@ public class ExportPackageServiceImpl extends
 		this.dao.create(ep);
 		return ep;
 	}
+	/*
+	@Transactional(readOnly=false)
+	public String updateNewsForEP(String epOid, Date beginDate, Date endDate) {
+		List<String> newsIds = this.newsDao.findUpdateableNewsId(beginDate, endDate);
+		for (String newsId : newsIds) {
+			this.newsDao.updateNewsPackageId(epOid, newsId);
+		}
+		
+		StringBuilder sb = new StringBuilder();
+		if (!newsIds.isEmpty()) {
+			sb.append(newsIds.get(0));
+			for (int i = 1; i < newsIds.size(); i++) {
+				sb.append(","+newsIds.get(i));
+			}
+		}
+		return sb.toString();
+	}
+	*/
 }

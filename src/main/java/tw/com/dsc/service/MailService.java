@@ -35,6 +35,7 @@ public interface MailService {
 	 */
 	void readyPublish(Long articleOid);
 	void readyUpdate(Long articleOid);
+	void rejectToUpdate(Long articleOid); //
 	void proofread(Long articleOid);
 	
 	/**
