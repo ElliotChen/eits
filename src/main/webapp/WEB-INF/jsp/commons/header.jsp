@@ -34,6 +34,7 @@
 	</s:if>
 	<s:else>
 		<a href="#" onclick="switchMenu('m3', 'edit!list.action');">Home</a>
+		<a href="${user.eitsUrl}">eITS</a>
 		<a href="${ctx}/system!logout.action">Logout</a>
 		<br />
 			Article#:<input type="text" id="quickOid" name="quickOid" size="6" maxlength="6"  class="numeric"/>

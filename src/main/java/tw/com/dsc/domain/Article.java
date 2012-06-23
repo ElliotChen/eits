@@ -19,6 +19,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.LazyToOne;
@@ -171,6 +172,10 @@ public class Article extends AbstractSeqIdObjectAuditable {
 	@ManyToOne
 	private ExportPackage exportPackage;
 	
+	@Transient
+	private String entryUserName;
+	@Transient
+	private String leaderAccount;
 	public ArticleId getArticleId() {
 		return articleId;
 	}
@@ -481,6 +486,22 @@ public class Article extends AbstractSeqIdObjectAuditable {
 
 	public void setAvgRate(Float avgRate) {
 		this.avgRate = avgRate;
+	}
+
+	public String getEntryUserName() {
+		return entryUserName;
+	}
+
+	public void setEntryUserName(String entryUserName) {
+		this.entryUserName = entryUserName;
+	}
+
+	public String getLeaderAccount() {
+		return leaderAccount;
+	}
+
+	public void setLeaderAccount(String leaderAccount) {
+		this.leaderAccount = leaderAccount;
 	}
 
 	public List<Status> getAvailableStatus() {
@@ -811,5 +832,23 @@ public class Article extends AbstractSeqIdObjectAuditable {
 		}
 		
 		return result;
+	}
+	
+	public String getLeaderGroupId() {
+		String groupId = this.userGroup;
+		String leaderGroupId = "";
+		if (AgentType.L3 == this.agentType) {
+			if (!"L3_Admin".equals(groupId)) {
+				leaderGroupId = groupId+"_Leader";
+			} else {
+				leaderGroupId = groupId;
+			}
+		} else if (AgentType.L2 == this.agentType) {
+			leaderGroupId = groupId+"_Leader";
+		} else {
+			logger.error("AgentType[{}] doesn't have Group Leader named [{}].", this.agentType, this.userGroup);
+		}
+		
+		return leaderGroupId;
 	}
 }

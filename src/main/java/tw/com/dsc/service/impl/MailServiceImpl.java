@@ -1,5 +1,7 @@
 package tw.com.dsc.service.impl;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.app.VelocityEngine;
 import org.slf4j.Logger;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
+import tw.com.dsc.domain.Account;
 import tw.com.dsc.domain.Article;
 import tw.com.dsc.service.ArticleLogService;
 import tw.com.dsc.service.ArticleService;
@@ -18,6 +21,9 @@ import tw.com.dsc.service.TaskManager;
 import tw.com.dsc.task.ApprovalMailTask;
 import tw.com.dsc.task.ArchivedMailTask;
 import tw.com.dsc.task.ExpiredMailTask;
+import tw.com.dsc.task.PackageReadAgentMailTask;
+import tw.com.dsc.task.PackageReadLeaderMailTask;
+import tw.com.dsc.task.PackageUpdateMailTask;
 import tw.com.dsc.task.ProofreadMailTask;
 import tw.com.dsc.task.ReadyPublishMailTask;
 import tw.com.dsc.task.ReadyUpdateMailTask;
@@ -105,6 +111,17 @@ public class MailServiceImpl implements MailService {
 		this.taskManager.arrangeMailTask(new RepublishMailTask(articleOid, javaMailSender, systemService, articleService, articleLogService, sender, velocityEngine, serverUrl));
 	}
 	
+	public void packageReadAgent(Account receiver, List<Article> articles) {
+		this.taskManager.arrangePackageMailTask(new PackageReadAgentMailTask(receiver, this.serverUrl, this.sender, articles, "mail/packageReadAgent.vm", this.javaMailSender, this.velocityEngine));
+	}
+	
+	public void packageReadLeader(Account receiver, List<Article> articles) {
+		this.taskManager.arrangePackageMailTask(new PackageReadLeaderMailTask(receiver, this.serverUrl, this.sender, articles, "mail/packageReadLeader.vm", this.javaMailSender, this.velocityEngine));
+	}
+	
+	public void packageUpdate(Account receiver, List<Article> articles) {
+		this.taskManager.arrangePackageMailTask(new PackageUpdateMailTask(receiver, this.serverUrl, this.sender, articles, "mail/packageUpdate.vm", this.javaMailSender, this.velocityEngine));
+	}
 	@Override
 	public void archived(Long articleOid) {
 		if (StringUtils.isEmpty(allGroup)) {

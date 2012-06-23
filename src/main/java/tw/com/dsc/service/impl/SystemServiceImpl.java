@@ -16,6 +16,7 @@ import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
@@ -77,6 +78,8 @@ public class SystemServiceImpl implements SystemService {
     private String ldapUrl;
     @Value("${ad.skip}")
     private Boolean skipAd;
+    @Value("${eits.url}")
+    private String eitsUrl;
 	@Override
 	@Cacheable(value="series")
 	public List<ProductSeries> listAllSeries() {
@@ -260,7 +263,7 @@ public class SystemServiceImpl implements SystemService {
 			logger.error("System can't find leaders for an article[{}] with an empty group", article);
 			return result;
 		}
-		
+		/*
 		if (AgentType.L3 == article.getAgentType()) {
 			if (!"L3_Admin".equals(groupId)) {
 				leaderGroupId = groupId+"_Leader";
@@ -272,6 +275,8 @@ public class SystemServiceImpl implements SystemService {
 		} else {
 			logger.error("AgentType[{}] doesn't have Group Leader.", article.getAgentType());
 		}
+		*/
+		leaderGroupId = article.getLeaderGroupId();
 		
 		logger.debug("Look up accounts for Leader Group[{}]", leaderGroupId);
 		
@@ -394,6 +399,15 @@ public class SystemServiceImpl implements SystemService {
 		return null;
 		
 	}
+	@Override
+	public void initEitsUrl(User user, HttpServletRequest request) {
+		try {
+			String token = EncryptUtils.encrypt(request, user.getAccount());
+			user.setEitsUrl(eitsUrl+token);
+		} catch (BadPaddingException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public List<Account> findTeamAccounts() {
 		User user = ThreadLocalHolder.getOperator();
@@ -478,6 +492,14 @@ public class SystemServiceImpl implements SystemService {
 
 	public void setSkipAd(Boolean skipAd) {
 		this.skipAd = skipAd;
+	}
+
+	public String getEitsUrl() {
+		return eitsUrl;
+	}
+
+	public void setEitsUrl(String eitsUrl) {
+		this.eitsUrl = eitsUrl;
 	}
 	
 }

@@ -23,6 +23,7 @@ public class User {
 //	private String group;
 	private String mail;
 	private String ip;
+	private String eitsUrl;
 	
 	private AgentType agentType;
 	private boolean admin;
@@ -270,12 +271,21 @@ public class User {
 	public UserRole getCurrentUserRole() {
 		return currentUserRole;
 	}
+	
 	/*
 	public void setCurrentUserRole(UserRole currentUserRole) {
 		this.currentUserRole = currentUserRole;
 	}
 	*/
 	
+	public String getEitsUrl() {
+		return eitsUrl;
+	}
+
+	public void setEitsUrl(String eitsUrl) {
+		this.eitsUrl = eitsUrl;
+	}
+
 	public void switchRole(Role role) {
 		for (UserRole ur : userRoles) {
 			if (ur.getRole() == role) {

@@ -1,5 +1,8 @@
 package tw.com.dsc.service;
 
+import java.util.List;
+
+import tw.com.dsc.domain.Account;
 import tw.com.dsc.domain.Article;
 
 /**
@@ -52,4 +55,8 @@ public interface MailService {
 	void republish(Long articleOid);
 	void archived(Long articleOid);
 	
+	
+	void packageReadAgent(Account receiver, List<Article> articles);
+	void packageReadLeader(Account receiver, List<Article> articles);
+	void packageUpdate(Account receiver, List<Article> articles);
 }

@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+<p>Dear $receiver.name,</p>
+<br /><br />
+<p>
+Some of your Articles were exported to be 'proofread' by Technical Writer.<br>
+Below is the list of Articles in question:<br>
+<font color="red">KB List</font><br>
+
+<table>
+	<tr bgcolor="#C0C0C0"><td>KB#</td><td>Summery</td><td>Engineer</td><td>Leader</td><td>Create Date</td></tr>
+#set ($rowCount = 0)
+#foreach ($article in $kbs)
+	#if($rowCount % 2 == 0)
+	<tr>
+	#else
+	<tr bgcolor="#C0C0C0">
+	#end
+		<td><a target="_blank" href="$server/edit!quickEdit.action?oid=$article.oid"> $article.articleId.oid </a></td>
+		<td>$article.summary</td><td>$article.entryUser</td><td>$receiver.name</td><td>$article.entryDate</td></tr>
+	#set ($rowCount = $rowCount + 1)
+#end
+</table>
+</p>
+
+<p>
+Some of your News were exported to be 'proofread' by Technical Writer.<br>
+Below is the list of Articles in question:<br>
+<font color="red">News List</font><br>
+
+<table>
+	<tr bgcolor="#C0C0C0"><td>KB#</td><td>Summery</td><td>Engineer</td><td>Leader</td><td>Create Date</td></tr>
+#set ($rowCount = 0)
+#foreach ($article in $news)
+	#if($rowCount % 2 == 0)
+	<tr>
+	#else
+	<tr bgcolor="#C0C0C0">
+	#end
+		<td><a target="_blank" href="$server/edit!quickEdit.action?oid=$article.oid"> $article.articleId.oid </a></td>
+		<td>$article.summary</td><td>$article.entryUser</td><td>$receiver.name</td><td>$article.entryDate</td></tr>
+	#set ($rowCount = $rowCount + 1)
+#end
+</table>
+</p>
+<p>
+<font color="red">********** This E-mail was sent automatically by Knowledgebase System! Do not reply this mail directly **********</font>
+</p>
+</body>
+</html>

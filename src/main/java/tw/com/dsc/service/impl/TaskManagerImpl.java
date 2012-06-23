@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import tw.com.dsc.service.TaskManager;
 import tw.com.dsc.task.MailTask;
+import tw.com.dsc.task.PackageMailTask;
 
 @Component("taskManager")
 public class TaskManagerImpl implements TaskManager {
@@ -24,5 +25,8 @@ public class TaskManagerImpl implements TaskManager {
 		this.taskExecutor = taskExecutor;
 	}
 	
+	public void arrangePackageMailTask(PackageMailTask task) {
+		taskExecutor.execute(task);
+	}
 	
 }

@@ -2,6 +2,8 @@ package tw.com.dsc.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import tw.com.dsc.domain.Account;
 import tw.com.dsc.domain.Article;
 import tw.com.dsc.domain.ErrorType;
@@ -50,4 +52,6 @@ public interface SystemService {
 	
 	List<Account> findTeamAccounts();
 	List<Group> findGroups();
+	
+	void initEitsUrl(User user, HttpServletRequest request);
 }

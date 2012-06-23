@@ -3,7 +3,10 @@ package tw.com.dsc.service.impl;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -329,21 +332,62 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	
 	@Transactional(readOnly=false)
 	public void readyUpdate(String epOid) {
-			ExportPackage ep = this.exportPackageDao.findByOid(epOid);
-			if (null == ep) {
-				logger.error("Can't find ExportPackage[{}] for readyToUpdate operation.", epOid);
-				return;
+		User op = ThreadLocalHolder.getOperator();
+		ExportPackage ep = this.exportPackageDao.findByOid(epOid);
+		if (null == ep) {
+			logger.error("Can't find ExportPackage[{}] for readyToUpdate operation.", epOid);
+			return;
+		}
+		Article example = new Article();
+		List<Condition> conds = new ArrayList<Condition>();
+		conds.add(new SimpleCondition("exportPackage.oid", epOid, OperationEnum.EQ));
+
+		List<Article> articles = this.listByExample(example, conds, LikeMode.NONE, null, null);
+
+		//Map<Account, List<Article>> leaderMap = new HashMap<Account, List<Article>>();
+		Map<Account, List<Article>> engineerMap = new HashMap<Account, List<Article>>();
+
+		for (Article article : articles) {
+			List<Article> list = null;
+			// Find Leader Group
+			/*
+			Group lGroup = this.groupDao.findByOid(article.getLeaderGroupId());
+			List<Account> leaders = lGroup.getAccounts();
+			for (Account leader : leaders) {
+				if (leaderMap.containsKey(leader)) {
+					list = leaderMap.get(leader);
+				} else {
+					list = new ArrayList<Article>();
+					leaderMap.put(leader, list);
+				}
+				list.add(article);
 			}
-			Article example = new Article();
-			List<Condition> conds = new ArrayList<Condition>();
-			conds.add(new SimpleCondition("exportPackage.oid", epOid, OperationEnum.EQ));
-			
-			List<Article> articles = this.listByExample(example, conds, LikeMode.NONE, null, null);
-			for (Article article : articles) {
-				readyUpdate(article);
+			*/
+			// Engineer
+			Account engineer = this.accountDao.findByOid(article.getEntryUser());
+			article.setEntryUserName(engineer.getName());
+			list = null;
+			if (engineerMap.containsKey(engineer)) {
+				list = engineerMap.get(engineer);
+			} else {
+				list = new ArrayList<Article>();
+				engineerMap.put(engineer, list);
 			}
-			
-			ep.setClosed(Boolean.TRUE);
+			list.add(article);
+
+			// Update Article to "Ready to Update"
+			article.setUpdateDate(new Date());
+			article.setStatus(Status.ReadyToUpdate);
+
+			this.dao.saveOrUpdate(article);
+			this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Approve, op.getAccount(), "Ready to Updated", op.getIp()));
+			// readyUpdate(article);
+		}
+		
+		for (Entry<Account, List<Article>> entry : engineerMap.entrySet()) {
+			this.mailService.packageUpdate(entry.getKey(), entry.getValue());
+		}
+		ep.setClosed(Boolean.TRUE);
 	}
 	@Transactional(readOnly=false)
 	public void readyPublish(Article article) {
@@ -886,6 +930,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 	}
 	@Transactional(readOnly=false)
 	public List<ExportInfo> exportProofRead(String epId, ArticleType[] types) {
+		User op = ThreadLocalHolder.getOperator();
 		ExportPackage ep = this.exportPackageDao.findByOid(epId);
 		
 		Article example = new Article();
@@ -909,35 +954,83 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			article.setExportPackage(ep);
 			article.setStatus(Status.WaitForProofRead);
 			this.dao.update(article);
+			this.articleLogDao.create(new ArticleLog(article.getOid(), ActionType.Approve, op.getAccount(), "Waiting For Proofread", op.getIp()));
+		}
+		
+		Map<Account, List<Article>> leaderMap = new HashMap<Account, List<Article>>();
+		Map<Account, List<Article>> engineerMap = new HashMap<Account, List<Article>>();
+
+		for (Article article : articles) {
+			Account engineer = this.accountDao.findByOid(article.getEntryUser());
+			article.setEntryUserName(engineer.getName());
+			
+			List<Article> list = null;
+			// Find Leader Group
+			Group lGroup = this.groupDao.findByOid(article.getLeaderGroupId());
+			List<Account> leaders = lGroup.getAccounts();
+			String leaderId = "";
+			for (Account leader : leaders) {
+				if (StringUtils.isEmpty(leaderId)) {
+					leaderId += leader.getId();
+				} else {
+					leaderId += (","+leader.getId());
+				}
+				if (leaderMap.containsKey(leader)) {
+					list = leaderMap.get(leader);
+				} else {
+					list = new ArrayList<Article>();
+					leaderMap.put(leader, list);
+				}
+				list.add(article);
+			}
+			article.setLeaderAccount(leaderId);
+
+			// Engineer
+			list = null;
+			if (engineerMap.containsKey(engineer)) {
+				list = engineerMap.get(engineer);
+			} else {
+				list = new ArrayList<Article>();
+				engineerMap.put(engineer, list);
+			}
+			list.add(article);
+			
+		}
+		
+		//Send mail to leader
+		for (Entry<Account, List<Article>> entry : leaderMap.entrySet()) {
+			this.mailService.packageReadLeader(entry.getKey(), entry.getValue());
+		}
+		//Send mail to engineer(agent)
+		for (Entry<Account, List<Article>> entry : engineerMap.entrySet()) {
+			this.mailService.packageReadAgent(entry.getKey(), entry.getValue());
 		}
 		
 		this.group(articles, infos);
 		
 		//Update ArticleIdList
 		StringBuilder sb = new StringBuilder();
-		if (!articles.isEmpty()) {
-			sb.append(articles.get(0).getArticleId().getOid());
-			for (int i = 1; i < articles.size(); i++) {
-				sb.append(","+articles.get(i).getArticleId().getOid());
-			}
-		}
-		
 		StringBuilder oids = new StringBuilder();
 		if (!articles.isEmpty()) {
+			sb.append(articles.get(0).getArticleId().getOid());
 			oids.append(articles.get(0).getOid());
 			for (int i = 1; i < articles.size(); i++) {
+				sb.append(","+articles.get(i).getArticleId().getOid());
 				oids.append(","+articles.get(i).getOid());
 			}
 		}
+
 		ep.setArticleIdList(sb.toString());
 		ep.setOidList(oids.toString());
 		ep.setNewsIdList(this.updateNewsForEP(epId, ep.getBeginDate(), ep.getEndDate()));
 		ep.setExportDate(new Date());
 		this.exportPackageDao.update(ep);
-		
+		/*
 		for (Article article : articles) {
 			this.mailService.proofread(article.getOid());
 		}
+		*/
+		
 		
 		return infos;
 	}

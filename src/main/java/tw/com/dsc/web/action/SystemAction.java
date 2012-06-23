@@ -1,5 +1,10 @@
 package tw.com.dsc.web.action;
 
+import javax.crypto.BadPaddingException;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.config.ServletContextSingleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +15,7 @@ import tw.com.dsc.domain.ErrorType;
 import tw.com.dsc.domain.Role;
 import tw.com.dsc.service.SystemService;
 import tw.com.dsc.to.User;
+import tw.com.dsc.util.EncryptUtils;
 import tw.com.dsc.util.ThreadLocalHolder;
 
 import com.opensymphony.xwork2.Preparable;
@@ -43,6 +49,8 @@ public class SystemAction extends BaseAction implements Preparable {
 		}
 		if (null != error) {
 			this.addActionError(this.getText("error."+error.name()));
+		} else {
+			this.systemService.initEitsUrl(loginUser, ServletActionContext.getRequest());
 		}
 		
 		ThreadLocalHolder.setUser(loginUser);
@@ -67,10 +75,12 @@ public class SystemAction extends BaseAction implements Preparable {
 		ErrorType error = this.systemService.eitsLogin(token);
 		if (null != error) {
 			this.addActionError(this.getText("error."+error.name()));
+		} else {
+			this.systemService.initEitsUrl(ThreadLocalHolder.getOperator(), ServletActionContext.getRequest());
 		}
 		return "loginRedirect";
 	}
-	
+
 	public User getLoginUser() {
 		return loginUser;
 	}
