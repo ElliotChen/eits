@@ -591,7 +591,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			Condition pmcond = new ContainsCondition("PROBLEM", keyword, index++);
 			Condition socond = new ContainsCondition("SOLUTION", keyword, index++);
 			Condition pecond = new ContainsCondition("PROCEDURE_DATA", keyword, index++);
-			Condition smcond = new ContainsCondition("SUMMARY", keyword, index++);
+			//Condition smcond = new ContainsCondition("SUMMARY", keyword, index++);
 			/*
 			String likeValue = "%"+keyword+"%";
 			Condition qcond = new LikeCondition("question", likeValue, true);
@@ -604,7 +604,8 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			Condition pecond = new LikeCondition("procedure", likeValue, true);
 			Condition smcond = new LikeCondition("summary", likeValue, true);
 			*/
-			conds.add(new OrCondition(qcond, acond, scond, stcond, vcond, pmcond, socond, pecond, smcond));
+//			conds.add(new OrCondition(qcond, acond, scond, stcond, vcond, pmcond, socond, pecond, smcond));
+			conds.add(new OrCondition(qcond, acond, scond, stcond, vcond, pmcond, socond, pecond));
 			example.setKeywords(null);
 		}
 	}

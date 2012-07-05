@@ -311,24 +311,27 @@ public class EditArticleAction extends BaseAction implements Preparable, ModelDr
 			this.article.setFirmware(attachment);
 		}
 		*/
-		String articleId = this.articleService.getNextArticleId();
-		logger.debug("Get new ArticleId[{}]", articleId);
-		article.setArticleId(new ArticleId(articleId));
-		if (null != this.lan) {
-			this.article.setLanguage(lan);
-		}
+		
+		
 //		this.article.setArticleId(new ArticleId(articleIdOid));
 		//For Copy Action
-		/*
 		if(null != this.sourceOid) {
 			this.sarticle = this.articleService.findByOid(sourceOid);
 			this.article.setArticleId(this.sarticle.getArticleId());
+			/*
 			if (Boolean.TRUE.equals(this.copySourceFirmware)) {
 				this.article.setFirmware(this.sarticle.getFirmware());
 			}
-			
+			*/
+		} else {
+			String articleId = this.articleService.getNextArticleId();
+			logger.debug("Get new ArticleId[{}]", articleId);
+			article.setArticleId(new ArticleId(articleId));
 		}
-		*/
+		
+		if (null != this.lan) {
+			this.article.setLanguage(lan);
+		}
 		
 		try {
 			if ("Draft".equals(statusAction)) {
