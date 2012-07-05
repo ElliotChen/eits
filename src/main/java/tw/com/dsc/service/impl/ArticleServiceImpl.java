@@ -41,6 +41,7 @@ import tw.com.dsc.domain.StatisticsData;
 import tw.com.dsc.domain.Status;
 import tw.com.dsc.domain.support.BetweenCondition;
 import tw.com.dsc.domain.support.Condition;
+import tw.com.dsc.domain.support.ContainsCondition;
 import tw.com.dsc.domain.support.InCondition;
 import tw.com.dsc.domain.support.LikeCondition;
 import tw.com.dsc.domain.support.LikeMode;
@@ -581,6 +582,17 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 		}
 		*/
 		if (StringUtils.isNotEmpty(keyword)) {
+			int index = 1;
+			Condition qcond = new ContainsCondition("QUESTION", keyword, index++);
+			Condition acond = new ContainsCondition("ANSWER", keyword, index++);
+			Condition scond = new ContainsCondition("SCENARIO", keyword, index++);
+			Condition stcond = new ContainsCondition("STEP", keyword, index++);
+			Condition vcond = new ContainsCondition("VERIFICATION", keyword, index++);
+			Condition pmcond = new ContainsCondition("PROBLEM", keyword, index++);
+			Condition socond = new ContainsCondition("SOLUTION", keyword, index++);
+			Condition pecond = new ContainsCondition("PROCEDURE_DATA", keyword, index++);
+			Condition smcond = new ContainsCondition("SUMMARY", keyword, index++);
+			/*
 			String likeValue = "%"+keyword+"%";
 			Condition qcond = new LikeCondition("question", likeValue, true);
 			Condition acond = new LikeCondition("answer", likeValue, true);
@@ -591,6 +603,7 @@ public class ArticleServiceImpl extends AbstractDomainService<ArticleDao, Articl
 			Condition socond = new LikeCondition("solution", likeValue, true);
 			Condition pecond = new LikeCondition("procedure", likeValue, true);
 			Condition smcond = new LikeCondition("summary", likeValue, true);
+			*/
 			conds.add(new OrCondition(qcond, acond, scond, stcond, vcond, pmcond, socond, pecond, smcond));
 			example.setKeywords(null);
 		}

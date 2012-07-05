@@ -5,10 +5,12 @@ import java.util.List;
 
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.type.StringType;
 
 import tw.com.dsc.domain.support.AndCondition;
 import tw.com.dsc.domain.support.BetweenCondition;
 import tw.com.dsc.domain.support.Condition;
+import tw.com.dsc.domain.support.ContainsCondition;
 import tw.com.dsc.domain.support.InCondition;
 import tw.com.dsc.domain.support.LikeCondition;
 import tw.com.dsc.domain.support.NotNullCondition;
@@ -43,6 +45,9 @@ public abstract class CriterionHelper {
 			break;
 		case Simple:
 			result = parse((SimpleCondition) condition);
+			break;
+		case Contains:
+			result = parse((ContainsCondition) condition);
 			break;
 		}
 		return result;
@@ -83,6 +88,10 @@ public abstract class CriterionHelper {
 		return result;
 	}
 
+	public static Criterion parse(ContainsCondition cc) {
+		Criterion result = Restrictions.sqlRestriction("Contains( "+cc.getFieldName()+" ,?,"+cc.getIndex()+") >0", cc.getValue(), StringType.INSTANCE );
+		return result;
+	}
 	public static Criterion parse(InCondition ic) {
 		Criterion result = Restrictions.in(ic.getFieldName(), ic.getValues());
 		return result;

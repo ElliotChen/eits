@@ -13,6 +13,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
@@ -169,7 +170,7 @@ public class Article extends AbstractSeqIdObjectAuditable {
 	
 	@Column(name = "AVG_RATE")
 	private Float avgRate;
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	private ExportPackage exportPackage;
 	
 	@Transient
