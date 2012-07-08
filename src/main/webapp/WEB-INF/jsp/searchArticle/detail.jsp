@@ -19,7 +19,7 @@
 	}
 	
 	function suggest() {
-		if (!$('#suggestion').val().trim()) {
+		if ($.trim($('#suggestion').val()) == '') {
 			alert('Please leave us your comment.');
 			return false;
 		}
@@ -170,7 +170,7 @@
 
 <div id="suggestionDiv">
 	<fieldset class="conditionborder">
-		<legend>Suggest new content or let us know we can imporve
+		<legend>Suggest new content or let us know we can improve
 			this content:</legend>
 		<textarea id="suggestion" name="suggestion" rows="10" cols="80"></textarea>
 		<input type="button" id="sugButton" value="Send" onclick="suggest();"/>
