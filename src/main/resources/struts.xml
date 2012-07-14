@@ -8,6 +8,7 @@
 	<constant name="struts.devMode" value="false" />
 	<constant name="struts.custom.i18n.resources" value="i18n" />
 	<constant name="struts.ognl.allowStaticMethodAccess" value="true" />
+	<constant name="struts.multipart.maxSize" value="5242880" />
 	
 	<package namespace="/" name="root" extends="tiles-default">
 		<result-types>
