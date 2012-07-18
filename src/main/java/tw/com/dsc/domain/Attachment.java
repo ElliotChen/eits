@@ -2,6 +2,7 @@ package tw.com.dsc.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -28,6 +29,10 @@ public class Attachment extends AbstractSeqIdObject {
 	
 	@Column(name="REAL_ABS_PATH", length=400)
 	private String realAbsPath;
+	
+	@Lob
+	@Column(name="CONTENT")
+	private byte[] content;
 	public String getName() {
 		return name;
 	}
@@ -80,4 +85,13 @@ public class Attachment extends AbstractSeqIdObject {
 		}
 		return this.oid+"."+this.extension;
 	}
+
+	public byte[] getContent() {
+		return content;
+	}
+
+	public void setContent(byte[] content) {
+		this.content = content;
+	}
+	
 }

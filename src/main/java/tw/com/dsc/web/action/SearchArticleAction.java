@@ -1,9 +1,12 @@
 package tw.com.dsc.web.action;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.RequestAware;
 import org.slf4j.Logger;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Component;
 import tw.com.dsc.domain.AgentType;
 import tw.com.dsc.domain.Article;
 import tw.com.dsc.domain.ArticleId;
+import tw.com.dsc.domain.Attachment;
 import tw.com.dsc.domain.Language;
 import tw.com.dsc.domain.Level;
 import tw.com.dsc.domain.ProductModel;
@@ -27,6 +31,7 @@ import tw.com.dsc.domain.support.OperationEnum;
 import tw.com.dsc.domain.support.Page;
 import tw.com.dsc.domain.support.SimpleCondition;
 import tw.com.dsc.service.ArticleService;
+import tw.com.dsc.service.AttachmentService;
 import tw.com.dsc.service.LanguageService;
 import tw.com.dsc.service.SystemService;
 import tw.com.dsc.to.JsonMsg;
@@ -71,10 +76,16 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	
 	@Autowired
 	private SystemService systemService;
+	@Autowired
+	private AttachmentService attachmentService;
 	
 	private List<ProductSeries> productSeries;
 	private List<ProductModel> productModels;
 	
+	private Long attOid;
+	private String contentType;
+	private InputStream fileStream;
+	private String fileName;
 	/**
 	 * 已使用的language
 	 */
@@ -303,6 +314,22 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 		
 		return result;
 	}
+	
+	public String viewBlob() {
+		if (null == this.attOid) {
+			return null;
+		}
+		Attachment attach = attachmentService.findByOid(attOid);
+		if (null == attach) {
+			return null;
+		}
+		
+		this.contentType = attach.getContentType();
+		this.fileName = attach.getName();
+		this.fileStream = new ByteArrayInputStream(attach.getContent());
+		
+		return "stream";
+	}
 	@Override
 	public void setRequest(Map<String, Object> request) {
 		this.request = request;
@@ -488,7 +515,54 @@ public class SearchArticleAction extends BaseAction implements Preparable, Reque
 	public void setUsedLanguage(List<Language> usedLanguage) {
 		this.usedLanguage = usedLanguage;
 	}
-	
-	
 
+	public Long getAttOid() {
+		return attOid;
+	}
+
+	public void setAttOid(Long attOid) {
+		this.attOid = attOid;
+	}
+
+	public SystemService getSystemService() {
+		return systemService;
+	}
+
+	public void setSystemService(SystemService systemService) {
+		this.systemService = systemService;
+	}
+
+	public AttachmentService getAttachmentService() {
+		return attachmentService;
+	}
+
+	public void setAttachmentService(AttachmentService attachmentService) {
+		this.attachmentService = attachmentService;
+	}
+
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+
+	public InputStream getFileStream() {
+		return fileStream;
+	}
+
+	public void setFileStream(InputStream fileStream) {
+		this.fileStream = fileStream;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	
 }

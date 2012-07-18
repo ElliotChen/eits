@@ -43,6 +43,13 @@
 			<result name="published">/WEB-INF/jsp/searchArticle/published.jsp</result>
 			<result name="redirect">/WEB-INF/jsp/system/loginRedirect.jsp</result>
 			<result type="tiles" name="viewDetail">viewDetail</result>
+			
+			<result name="stream" type="stream">
+				<param name="contentType">${contentType}</param>
+				<param name="inputName">fileStream</param>
+				<param name="contentDisposition">filename="${fileName}"</param>
+				<param name="bufferSize">1024</param>
+			</result>
 		</action>
 		<action name="edit!*" method="{1}" class="editAction">
 			<result name="list">/WEB-INF/jsp/edit/list.jsp</result>

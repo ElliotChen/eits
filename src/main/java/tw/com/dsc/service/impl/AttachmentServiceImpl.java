@@ -38,7 +38,8 @@ public class AttachmentServiceImpl extends AbstractDomainService<AttachmentDao, 
 	private String firmwareFolder;
 	@Value("${upload.realParent}")
 	private String realParentPath;
-	
+	@Value("${upload.blob}")
+	private Boolean useBlob;
 	
 	@Override
 	public AttachmentDao getDao() {
@@ -90,12 +91,23 @@ public class AttachmentServiceImpl extends AbstractDomainService<AttachmentDao, 
 		
 		File dest = new File(destPath, attachment.getFullName());
 		
-		attachment.setUri(subPath + "/" + attachment.getFullName());
+		if (this.useBlob) {
+			attachment.setUri(contextPath+"/searchArticle!viewBlob.action?attOid="+attachment.getOid());
+		} else {
+			attachment.setUri(subPath + "/" + attachment.getFullName());
+		}
+		
 		attachment.setRealAbsPath(dest.getAbsolutePath());
 		try {
 			org.apache.commons.io.FileUtils.moveFile(file, dest);
 		} catch (IOException e) {
 			logger.error("Move File Failed", e);
+		}
+		
+		try {
+			attachment.setContent(org.apache.commons.io.FileUtils.readFileToByteArray(dest));
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		this.dao.update(attachment);
 		return attachment;

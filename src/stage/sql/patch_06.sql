@@ -1,0 +1,1 @@
+alter table T_EITS_ATTACHMENT add CONTENT BLOB;
