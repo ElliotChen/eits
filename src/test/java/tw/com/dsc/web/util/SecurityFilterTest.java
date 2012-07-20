@@ -11,7 +11,7 @@ import org.junit.Test;
 import tw.com.dsc.domain.ErrorType;
 
 public class SecurityFilterTest {
-	public static final Pattern pattern = Pattern.compile("^/\\w*/(\\w*)!\\w*\\.action$");
+	public static final Pattern pattern = Pattern.compile("^/\\w*/(\\w*)!\\w*\\.action.*");
 	@Test
 	public void test() {
 		Matcher matcher = pattern.matcher("/eits/edit!rating.action");
@@ -27,5 +27,13 @@ public class SecurityFilterTest {
 		System.out.println(md5Hex);
 		
 		System.out.println(ErrorType.NotFound);
+	}
+	
+	@Test
+	public void testViewBlob() {
+		Matcher matcher = pattern.matcher("/eits/searchArticle!viewBolob.action?attOid=123");
+		Assert.assertTrue(matcher.matches());
+		System.out.println(matcher.group(1));
+		Assert.assertEquals("searchArticle",matcher.group(1));
 	}
 }

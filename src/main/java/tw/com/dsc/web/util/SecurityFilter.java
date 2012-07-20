@@ -26,7 +26,7 @@ public class SecurityFilter implements Filter {
 	
 	private static final Logger logger = LoggerFactory.getLogger(SecurityFilter.class);
 	
-	protected static final Pattern pattern = Pattern.compile("^/\\w*/(\\w*)!\\w*\\.action$");
+	protected static final Pattern pattern = Pattern.compile("^/\\w*/(\\w*)!\\w*\\.action.*");
 	
 	@Override
 	public void destroy() {
