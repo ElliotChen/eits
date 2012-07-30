@@ -92,7 +92,7 @@ public class AttachmentServiceImpl extends AbstractDomainService<AttachmentDao, 
 		File dest = new File(destPath, attachment.getFullName());
 		
 		if (this.useBlob) {
-			attachment.setUri(contextPath+"/searchArticle!viewBlob.action?attOid="+attachment.getOid());
+			attachment.setUri(contextPath+"searchArticle!viewBlob.action?attOid="+attachment.getOid());
 		} else {
 			attachment.setUri(subPath + "/" + attachment.getFullName());
 		}

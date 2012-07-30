@@ -19,8 +19,8 @@
 			    $('#editForm').validate({ rules : {
 			    	languageOid : {required:true},
 					summary : {required:true},
-					product : {required:true},
-					technology : {required:true},
+					product : {required:true, maxlength:900},
+					technology : {required:true, maxlength:900},
 					firmware : {required:true},
 					projectCode : {required:function(element) {
 				        return 'Project' == $('input:[name="source"]:checked').val();
@@ -52,6 +52,10 @@
 					procedure : {required:function(element) {
 						return $("#type").val() == 'Issue';
 					}}
+				},
+				messages : {
+					technology : {maxlength:'There are too many selected technologies for this KB.'},
+					product : {maxlength:'There are too many selected products for this KB.'}
 				},
 				ignore : [],
 				errorClass: "errorField"
