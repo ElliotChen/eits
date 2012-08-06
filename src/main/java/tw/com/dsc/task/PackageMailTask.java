@@ -62,7 +62,7 @@ public abstract class PackageMailTask implements Runnable {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("receiver", receiver);
-		map.put("server", "localhost");
+		map.put("server", serverUrl);
 		map.put("kbs", kbs);
 		map.put("news", news);
 		

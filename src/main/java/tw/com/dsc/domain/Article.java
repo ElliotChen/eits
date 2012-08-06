@@ -99,11 +99,11 @@ public class Article extends AbstractSeqIdObjectAuditable {
 	
 	@Lob
 	@Column(name = "QUESTION")
-	private String question;
+	private String zquestion;
 	
 	@Lob
 	@Column(name = "ANSWER")
-	private String answer;
+	private String zanswer;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "LEVEL_TYPE", length = 10)
@@ -135,27 +135,27 @@ public class Article extends AbstractSeqIdObjectAuditable {
 	/** Application and TroubleShooting **/
 	@Lob
 	@Column(name = "SCENARIO")
-	private String scenario;
+	private String zscenario;
 	
 	@Lob
 	@Column(name = "STEP")
-	private String step;
+	private String zstep;
 	
 	@Lob
 	@Column(name = "VERIFICATION")
-	private String verification;
+	private String zverification;
 	
 	/**Type = Issue**/
 	@Lob
 	@Column(name = "PROBLEM")
-	private String problem;
+	private String zproblem;
 	@Lob
 	@Column(name = "SOLUTION")
-	private String solution;
+	private String zsolution;
 	
 	@Lob
 	@Column(name = "PROCEDURE_DATA")
-	private String procedure;
+	private String zprocedure;
 	
 	@Column(name = "RATE_1")
 	private Integer rate1;
@@ -234,19 +234,19 @@ public class Article extends AbstractSeqIdObjectAuditable {
 	}
 
 	public String getQuestion() {
-		return question;
+		return zquestion;
 	}
 
 	public void setQuestion(String question) {
-		this.question = question;
+		this.zquestion = question;
 	}
 
 	public String getAnswer() {
-		return answer;
+		return zanswer;
 	}
 
 	public void setAnswer(String answer) {
-		this.answer = answer;
+		this.zanswer = answer;
 	}
 
 	public ExpireType getExpireType() {
@@ -362,51 +362,51 @@ public class Article extends AbstractSeqIdObjectAuditable {
 	}
 
 	public String getScenario() {
-		return scenario;
+		return zscenario;
 	}
 
 	public void setScenario(String scenario) {
-		this.scenario = scenario;
+		this.zscenario = scenario;
 	}
 
 	public String getStep() {
-		return step;
+		return zstep;
 	}
 
 	public void setStep(String step) {
-		this.step = step;
+		this.zstep = step;
 	}
 
 	public String getVerification() {
-		return verification;
+		return zverification;
 	}
 
 	public void setVerification(String verification) {
-		this.verification = verification;
+		this.zverification = verification;
 	}
 
 	public String getProblem() {
-		return problem;
+		return zproblem;
 	}
 
 	public void setProblem(String problem) {
-		this.problem = problem;
+		this.zproblem = problem;
 	}
 
 	public String getSolution() {
-		return solution;
+		return zsolution;
 	}
 
 	public void setSolution(String solution) {
-		this.solution = solution;
+		this.zsolution = solution;
 	}
 
 	public String getProcedure() {
-		return procedure;
+		return zprocedure;
 	}
 
 	public void setProcedure(String procedure) {
-		this.procedure = procedure;
+		this.zprocedure = procedure;
 	}
 
 	public Date getExpireDate() {
@@ -852,4 +852,70 @@ public class Article extends AbstractSeqIdObjectAuditable {
 		
 		return leaderGroupId;
 	}
+
+	public String getZanswer() {
+		return zanswer;
+	}
+
+	public void setZanswer(String zanswer) {
+		this.zanswer = zanswer;
+	}
+
+	public String getZquestion() {
+		return zquestion;
+	}
+
+	public void setZquestion(String zquestion) {
+		this.zquestion = zquestion;
+	}
+
+	public String getZscenario() {
+		return zscenario;
+	}
+
+	public void setZscenario(String zscenario) {
+		this.zscenario = zscenario;
+	}
+
+	public String getZstep() {
+		return zstep;
+	}
+
+	public void setZstep(String zstep) {
+		this.zstep = zstep;
+	}
+
+	public String getZverification() {
+		return zverification;
+	}
+
+	public void setZverification(String zverification) {
+		this.zverification = zverification;
+	}
+
+	public String getZproblem() {
+		return zproblem;
+	}
+
+	public void setZproblem(String zproblem) {
+		this.zproblem = zproblem;
+	}
+
+	public String getZsolution() {
+		return zsolution;
+	}
+
+	public void setZsolution(String zsolution) {
+		this.zsolution = zsolution;
+	}
+
+	public String getZprocedure() {
+		return zprocedure;
+	}
+
+	public void setZprocedure(String zprocedure) {
+		this.zprocedure = zprocedure;
+	}
+	
+	
 }
