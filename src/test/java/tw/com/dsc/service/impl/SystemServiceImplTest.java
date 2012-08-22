@@ -26,6 +26,7 @@ import tw.com.dsc.domain.ProductSeries;
 import tw.com.dsc.domain.Project;
 import tw.com.dsc.domain.Technology;
 import tw.com.dsc.service.SystemService;
+import tw.com.dsc.test.BaseTest;
 import tw.com.dsc.to.User;
 import tw.com.dsc.util.SystemUtils;
 import tw.com.dsc.util.ThreadLocalHolder;
@@ -211,5 +212,20 @@ public class SystemServiceImplTest {
 		
 		et = this.systemService.eitsLogin("abc");
 		Assert.assertEquals(ErrorType.TokenIncorrect, et);
+	}
+	
+	@Test
+	public void testFindTeamAccount() {
+		ThreadLocalHolder.setUser(BaseTest.l3leader);
+		
+		for (Account acc : this.systemService.findTeamAccounts()) {
+			System.out.println(acc.getName());
+		}
+		
+		ThreadLocalHolder.setUser(BaseTest.l2leader);
+		
+		for (Account acc : this.systemService.findTeamAccounts()) {
+			System.out.println(acc.getName());
+		}
 	}
 }

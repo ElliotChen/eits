@@ -143,7 +143,7 @@
 			<tr>
 				<td>
 					<input type="radio" name="advAgentSearchType" value="agent" <c:if test="${'agent' eq advAgentSearchType}">checked="checked"</c:if>/>by Agent
-					<s:select id="accountList" name="account" list="accounts" listKey="id" listValue="name" headerKey="" headerValue="----"/>
+					<s:select id="accountList" name="advAccount" list="accounts" listKey="id" listValue="name" headerKey="" headerValue="----"/>
 				</td>
 			</tr>
 			<tr>
